@@ -4,6 +4,7 @@ import { Google as GoogleIcon } from '@mui/icons-material'
 import { styled } from '@mui/system'
 import backgroundImage from '../../images/login.jpg'
 import logo from '../../images/logo.png'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Root = styled(Box)({
   display: 'flex',
@@ -67,7 +68,15 @@ const Login = () => {
             로그인
           </StyledButton>
           <Typography variant='body2' marginTop='10px'>
-            아직 계정이 없으신가요? <Button color='primary'>회원가입</Button>
+            아직 계정이 없으신가요?{' '}
+            <Button color='primary'>
+              <Link
+                to='/signup'
+                style={{ textDecoration: 'none', color: 'blue' }}
+              >
+                회원가입
+              </Link>
+            </Button>
           </Typography>
           <Typography variant='body2'>
             비밀번호를 잊으셨나요?{' '}
