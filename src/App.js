@@ -1,13 +1,14 @@
 import './styles/common.css'
+import { Route, Routes } from 'react-router-dom'
 
 function App() {
    return (
       <>
-         <>test1243124</>
-         <div>dfdfdf</div>
+         <Routes>
+            <Route path="/" element={<Home />} />
+         </Routes>
       </>
    )
-   // 아무거나 올리기
 }
 
 export default App
