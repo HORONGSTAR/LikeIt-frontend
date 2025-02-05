@@ -1,7 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
+import mainReducer from '../features/mainSlice'
 
 const store = configureStore({
-   reducer: {},
+   reducer: {
+      main: mainReducer,
+   },
 })
 
 export default store
