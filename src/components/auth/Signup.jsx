@@ -52,18 +52,20 @@ const Signup = () => {
             회원가입 후 서비스를 이용할 수 있습니다.
           </Typography>
 
-          <StyledButton
-            fullWidth
-            variant='contained'
-            sx={{ backgroundColor: '#000000', color: '#FFFFFF' }}
-          >
-            이메일로 회원가입
-          </StyledButton>
+          <Link to='/commonsignup'>
+            <StyledButton
+              fullWidth
+              variant='contained'
+              sx={{ backgroundColor: '#000000', color: '#FFFFFF' }}
+            >
+              이메일로 회원가입
+            </StyledButton>
+          </Link>
 
           <StyledButton
             fullWidth
             variant='contained'
-            sx={{ backgroundColor: '#FFFF00', color: '#000000' }}
+            sx={{ backgroundColor: '#FFF200', color: '#000000' }}
           >
             카카오 계정으로 회원가입
           </StyledButton>
@@ -71,7 +73,7 @@ const Signup = () => {
           <StyledButton
             fullWidth
             variant='contained'
-            color='secondary'
+            sx={{ backgroundColor: '#FFFFFF', color: '#000000' }}
             startIcon={<GoogleIcon />}
           >
             구글 계정으로 회원가입
