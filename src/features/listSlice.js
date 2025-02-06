@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { showProjects } from '../api/mainApi'
+import { showProjects } from '../api/listApi'
 
 // 프로젝트 목록 호출
-export const fetchShowProjectsThunk = createAsyncThunk('main/fetchShowProjects', async (type, { rejectWithValue }) => {
+export const fetchShowProjectsThunk = createAsyncThunk('list/fetchShowProjects', async (type, { rejectWithValue }) => {
    try {
       const response = await showProjects(type)
       return response.data
@@ -11,8 +11,8 @@ export const fetchShowProjectsThunk = createAsyncThunk('main/fetchShowProjects',
    }
 })
 
-const mainSlice = createSlice({
-   name: 'main',
+const listSlice = createSlice({
+   name: 'list',
    initialState: {
       projects: [],
       loading: false,
@@ -39,4 +39,4 @@ const mainSlice = createSlice({
    },
 })
 
-export default mainSlice.reducer
+export default listSlice.reducer

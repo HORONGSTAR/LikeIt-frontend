@@ -6,11 +6,11 @@ import 'swiper/css/navigation'
 
 import { useState, useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchShowBannerThunk } from '../../features/mainSlice'
+import { fetchShowBannerThunk } from '../../features/indexSlice'
 
 function Banner() {
    const dispatch = useDispatch()
-   const { banners, loading, error } = useSelector((state) => state.main)
+   const { banners, loading, error } = useSelector((state) => state.index)
 
    useEffect(() => {
       dispatch(fetchShowBannerThunk())

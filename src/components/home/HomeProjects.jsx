@@ -3,11 +3,11 @@ import ProjectCard from '../shared/ProjectCard'
 import { useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { fetchShowProjectsThunk } from '../../features/mainSlice'
+import { fetchShowProjectsThunk } from '../../features/listSlice'
 
 function HomeProjects() {
    const dispatch = useDispatch()
-   const { projects, pagination, loading, error } = useSelector((state) => state.main)
+   const { projects, pagination, loading, error } = useSelector((state) => state.list)
 
    useEffect(() => {
       dispatch(fetchShowProjectsThunk('all'))
@@ -28,19 +28,19 @@ function HomeProjects() {
    return (
       projects && (
          <>
-            <p>인기 프로젝트</p>
-            {/* <div className="hotCards" style={{ display: 'flex' }}>
+            <p>인기 프로젝트 ▶</p>
+            <div className="hotCards" style={{ display: 'flex' }}>
                {showCards('hot')}
-            </div> */}
-            <p>신규 프로젝트</p>
+            </div>
+            <p>신규 프로젝트 ▶</p>
             <div className="newCards" style={{ display: 'flex' }}>
                {showCards('new')}
             </div>
-            <p>마감 임박</p>
+            <p>마감 임박 ▶</p>
             <div className="endCards" style={{ display: 'flex' }}>
                {showCards('end')}
             </div>
-            <p>공개 예정</p>
+            <p>공개 예정 ▶</p>
             <div className="commingCards" style={{ display: 'flex' }}>
                {showCards('comming')}
             </div>
