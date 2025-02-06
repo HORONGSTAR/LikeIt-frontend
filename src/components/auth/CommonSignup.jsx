@@ -52,12 +52,12 @@ const CommonSignup = () => {
   const [isSignupComplete, setIsSignupComplete] = useState(false) // 회원가입 완료 상태 추가
   const dispatch = useDispatch()
 
-  // const handlePhoneChange = (e) => {
-  //   console.log(e.target.value)
-  //   const inputValue = e.target.value
-  //   const formattedValue = inputValue.replace(/[^0-9]/g, '') // 숫자 빼고는 다 없앰.
-  //   setPhone(formattedValue)
-  // }
+  const validatePhone = (phone) => {
+    const phoneRegex1 = /^\d{11}$/ //true로 반환돼야 좋은거
+    const phoneRegex2 = /[^0-9]/ //false로 반환돼야 좋은거
+    const boolResult = phoneRegex1.test(phone) && !phoneRegex2.test(phone)
+    return boolResult
+  }
 
   const handleCommonSignup = useCallback(() => {
     if (
@@ -69,6 +69,9 @@ const CommonSignup = () => {
     ) {
       alert('모든 필드를 입력해주세요!')
       return
+    }
+    if (!validatePhone(phone)) {
+      alert('유효한 전화번호를 입력해주세요!')
     }
 
     // dispatch(registerUserThunk({ email, phone, nickname, password }))
@@ -130,14 +133,14 @@ const CommonSignup = () => {
           />
 
           <TextField
-            inputProps={{ maxLength: 11, inputMode: 'numeric' }}
+            // inputProps={{ maxLength: 11, inputMode: 'numeric' }}
             label='연락처'
             variant='outlined'
             type='text'
             fullWidth
             margin='dense'
             value={phone}
-            onChange={handlePhoneChange}
+            onChange={setPhone}
           />
           <Typography
             variant='body2'
