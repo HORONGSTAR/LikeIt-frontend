@@ -14,7 +14,7 @@ const Root = styled(Box)({
 const LeftPanel = styled(Box)({
   flex: 1,
   backgroundImage: `url(${backgroundImage})`,
-  backgroundSize: 'contain',
+  backgroundSize: 'cover',
   backgroundPosition: 'right',
   backgroundRepeat: 'no-repeat',
   width: '100%',
