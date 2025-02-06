@@ -52,6 +52,13 @@ const CommonSignup = () => {
   const [isSignupComplete, setIsSignupComplete] = useState(false) // 회원가입 완료 상태 추가
   const dispatch = useDispatch()
 
+  // const handlePhoneChange = (e) => {
+  //   console.log(e.target.value)
+  //   const inputValue = e.target.value
+  //   const formattedValue = inputValue.replace(/[^0-9]/g, '') // 숫자 빼고는 다 없앰.
+  //   setPhone(formattedValue)
+  // }
+
   const handleCommonSignup = useCallback(() => {
     if (
       !email.trim() ||
@@ -63,17 +70,18 @@ const CommonSignup = () => {
       alert('모든 필드를 입력해주세요!')
       return
     }
-    dispatch(registerUserThunk({ email, phone, nickname, password }))
-      .unwrap()
-      .then(() => {
-        //회원가입 성공시
-        setIsSignupComplete(true)
-      })
-      .catch((error) => {
-        // 회원가입중 에러 발생시
-        console.error('회원가입 에러:', error)
-      })
-  }, [email, phone, nickname, password, confirmPassword, dispatch])
+
+    // dispatch(registerUserThunk({ email, phone, nickname, password }))
+    //   .unwrap()
+    //   .then(() => {
+    //     //회원가입 성공시
+    //     setIsSignupComplete(true)
+    //   })
+    //   .catch((error) => {
+    //     // 회원가입중 에러 발생시
+    //     console.error('회원가입 에러:', error)
+    //   })
+  }, [email, phone, nickname, password, confirmPassword])
 
   //회원가입이 완료 되었을 때
   if (isSignupComplete) {
@@ -122,13 +130,23 @@ const CommonSignup = () => {
           />
 
           <TextField
+            inputProps={{ maxLength: 11, inputMode: 'numeric' }}
             label='연락처'
             variant='outlined'
+            type='text'
             fullWidth
             margin='dense'
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={handlePhoneChange}
           />
+          <Typography
+            variant='body2'
+            color='textSecondary'
+            sx={{ fontSize: '10px' }}
+            align='center'
+          >
+            숫자만 입력하세요.
+          </Typography>
 
           <TextField
             label='닉네임'
@@ -151,8 +169,7 @@ const CommonSignup = () => {
           <Typography
             variant='body2'
             color='textSecondary'
-            gutterBottom
-            sx={{ fontSize: '11px' }}
+            sx={{ fontSize: '10px' }}
           >
             비밀번호는 영문, 숫자, 특수문자를 포함하여 공백 없이 8~20자로 입력.
           </Typography>
