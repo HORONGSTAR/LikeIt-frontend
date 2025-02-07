@@ -7,7 +7,7 @@ function Home() {
    return (
       <Container maxWidth="md">
          <Banner />
-         <img src="./images/rankBanner.png" alt="후원랭킹배너" />
+         <img src="./images/rankBanner.png" alt="후원랭킹배너" width="100%" />
          <HomeProjects />
       </Container>
    )

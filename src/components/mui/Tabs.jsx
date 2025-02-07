@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 function CustomTabPanel(props) {
    const { children, value, index, ...other } = props
@@ -28,10 +29,16 @@ function a11yProps(index) {
 }
 
 export default function BasicTabs({ tabs }) {
-   const [value, setValue] = React.useState(0)
+   const navigate = useNavigate()
+   const location = useLocation()
+
+   // 현재 URL이 tabs의 path와 일치하는 인덱스를 찾음
+   const currentTab = tabs.findIndex((tab) => location.pathname.startsWith(tab.path))
+   const [value, setValue] = React.useState(currentTab !== -1 ? currentTab : 0)
 
    const handleChange = (event, newValue) => {
       setValue(newValue)
+      navigate(tabs[newValue].path) // ✅ 클릭 시 해당 path로 이동
    }
 
    return (
