@@ -73,7 +73,7 @@ const Signup = () => {
           <StyledButton
             fullWidth
             variant='contained'
-            sx={{ backgroundColor: '#FFFFFF', color: '#000000' }}
+            sx={{ backgroundColor: '#FFFFFF', color: '#000000', border: 2 }}
             startIcon={<GoogleIcon />}
           >
             구글 계정으로 회원가입

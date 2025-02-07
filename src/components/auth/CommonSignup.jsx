@@ -59,6 +59,17 @@ const CommonSignup = () => {
     return boolResult
   }
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/
+    return emailRegex.test(email)
+  }
+
+  const validatePassword = (password) => {
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&)(])[A-Za-z\d@!%*#?&)(]{8,20}$/
+    return passwordRegex.test(password)
+  }
+
   const handleCommonSignup = useCallback(() => {
     if (
       !email.trim() ||
@@ -74,6 +85,18 @@ const CommonSignup = () => {
       alert('유효한 전화번호를 입력해주세요!')
       return
     }
+    if (!validateEmail(email)) {
+      alert('유효한 이메일을 입력해주세요!')
+      return
+    }
+    if (!validatePassword(password)) {
+      alert('유효한 비밀번호를 입력해주세요!')
+      return
+    }
+    if (password !== confirmPassword) {
+      alert('비밀번호가 일치하지 않습니다!')
+      return
+    }
 
     dispatch(registerUserThunk({ email, phone, nickname, password }))
       .unwrap()
@@ -84,6 +107,7 @@ const CommonSignup = () => {
       .catch((error) => {
         // 회원가입중 에러 발생시
         console.error('회원가입 에러:', error)
+        alert(error)
       })
   }, [email, phone, nickname, password, confirmPassword])
 
@@ -134,7 +158,6 @@ const CommonSignup = () => {
           />
 
           <TextField
-            // inputProps={{ maxLength: 11, inputMode: 'numeric' }}
             label='연락처'
             variant='outlined'
             type='text'
