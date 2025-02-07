@@ -5,12 +5,13 @@ import Home from './pages/Home'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import Navber from './components/shared/Navber'
+import StudioNavber from './components/shared/StudioNavber'
 import StudioPage from './pages/StudioPage'
 
 function App() {
    return (
       <>
-         <Navber />
+         <StudioNavber />
          <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<LoginPage />} />

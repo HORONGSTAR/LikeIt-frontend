@@ -3,11 +3,50 @@ import { Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, Di
 import { Close } from '@mui/icons-material'
 import { useState } from 'react'
 
+export const Stack2 = (props) => {
+   return <Stack direction="row" alignItems="center" {...props} />
+}
+
+export const ImgBox = (props) => {
+   return <Box component="img" {...props} />
+}
+
 export const LoadingBox = () => {
    return (
       <Stack sx={{ alignItems: 'center', justifyContent: 'center', height: '400px' }}>
          <CircularProgress color="secondary" size={50} />
       </Stack>
+   )
+}
+
+export const ModalBox = ({ children, openBtn }) => {
+   const [open, setOpen] = useState(false)
+
+   return (
+      <>
+         <Box onClick={() => setOpen(true)}>{openBtn}</Box>
+         <Modal open={open} onClose={() => setOpen(false)}>
+            <Box
+               sx={{
+                  position: 'absolute',
+                  boxSizing: 'border-box',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: 320,
+                  bgcolor: 'background.paper',
+                  borderRadius: 1,
+                  boxShadow: 24,
+                  px: 2,
+                  py: 3,
+                  maxHeight: '600px',
+                  overflowY: 'auto',
+               }}
+            >
+               {children}
+            </Box>
+         </Modal>
+      </>
    )
 }
 
@@ -50,37 +89,6 @@ export const ErrorBox = ({ error, open, setOpen }) => {
                </Typography>
             </DialogContent>
          </Dialog>
-      </>
-   )
-}
-
-export const ModalBox = ({ children, openBtn }) => {
-   const [open, setOpen] = useState(false)
-
-   return (
-      <>
-         <Box onClick={() => setOpen(true)}>{openBtn}</Box>
-         <Modal open={open} onClose={() => setOpen(false)}>
-            <Box
-               sx={{
-                  position: 'absolute',
-                  boxSizing: 'border-box',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: 320,
-                  bgcolor: 'background.paper',
-                  borderRadius: 1,
-                  boxShadow: 24,
-                  px: 2,
-                  py: 3,
-                  maxHeight: '600px',
-                  overflowY: 'auto',
-               }}
-            >
-               {children}
-            </Box>
-         </Modal>
       </>
    )
 }
