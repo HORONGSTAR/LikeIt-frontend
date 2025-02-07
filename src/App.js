@@ -21,7 +21,7 @@ function App() {
          {!dontNeedNavber && <Navber />}
          <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/list/hot" element={<HotPages />} />
+            <Route path="/list/hot" element={<HotPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/commonsignup" element={<CommonSignupPage />} />
