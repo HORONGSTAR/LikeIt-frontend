@@ -1,4 +1,4 @@
-import ProjectCard from '../shared/ProjectCard'
+import ProjectCard from '../list/ProjectCard'
 
 import { useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
