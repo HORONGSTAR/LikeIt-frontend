@@ -5,7 +5,7 @@ import HomeProjects from '../components/home/HomeProjects'
 
 function Home() {
    return (
-      <Container maxWidth="md">
+      <Container maxWidth="md" disableGutters>
          <Banner />
          <img src="./images/rankBanner.png" alt="후원랭킹배너" width="100%" />
          <HomeProjects />

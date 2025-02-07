@@ -4,13 +4,14 @@ import { useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { fetchShowProjectsThunk } from '../../features/listSlice'
+import { Container } from '@mui/material'
 
 function HomeProjects() {
    const dispatch = useDispatch()
    const { projects, pagination, loading, error } = useSelector((state) => state.list)
 
    useEffect(() => {
-      dispatch(fetchShowProjectsThunk('all'))
+      dispatch(fetchShowProjectsThunk({ type: 'all' }))
    }, [dispatch])
 
    const showCards = (type) => {
@@ -18,7 +19,7 @@ function HomeProjects() {
       if (projects[type]) {
          cards = cards.concat(
             projects[type].map((project) => {
-               return <ProjectCard project={project} type={type} />
+               return <ProjectCard key={project.id} d project={project} type={type} />
             })
          )
       }
@@ -28,22 +29,54 @@ function HomeProjects() {
    return (
       projects && (
          <>
-            <p>인기 프로젝트 ▶</p>
-            <div className="hotCards" style={{ display: 'flex' }}>
+            <p style={{ margin: '10px', fontSize: '22px', fontWeight: 'bold' }}>인기 프로젝트 ▶</p>
+            <Container
+               disableGutters
+               sx={{
+                  display: {
+                     xs: 'block',
+                     sm: 'flex',
+                  },
+               }}
+            >
                {showCards('hot')}
-            </div>
-            <p>신규 프로젝트 ▶</p>
-            <div className="newCards" style={{ display: 'flex' }}>
+            </Container>
+            <p style={{ margin: '10px', fontSize: '22px', fontWeight: 'bold' }}>신규 프로젝트 ▶</p>
+            <Container
+               disableGutters
+               sx={{
+                  display: {
+                     xs: 'block',
+                     sm: 'flex',
+                  },
+               }}
+            >
                {showCards('new')}
-            </div>
-            <p>마감 임박 ▶</p>
-            <div className="endCards" style={{ display: 'flex' }}>
+            </Container>
+            <p style={{ margin: '10px', fontSize: '22px', fontWeight: 'bold' }}>마감 임박 ▶</p>
+            <Container
+               disableGutters
+               sx={{
+                  display: {
+                     xs: 'block',
+                     sm: 'flex',
+                  },
+               }}
+            >
                {showCards('end')}
-            </div>
-            <p>공개 예정 ▶</p>
-            <div className="commingCards" style={{ display: 'flex' }}>
+            </Container>
+            <p style={{ margin: '10px', fontSize: '22px', fontWeight: 'bold' }}>공개 예정 ▶</p>
+            <Container
+               disableGutters
+               sx={{
+                  display: {
+                     xs: 'block',
+                     sm: 'flex',
+                  },
+               }}
+            >
                {showCards('comming')}
-            </div>
+            </Container>
          </>
       )
    )

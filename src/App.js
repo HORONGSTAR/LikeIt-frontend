@@ -1,6 +1,6 @@
 import './styles/common.css'
 import Home from './pages/Home'
-import HotPages from './pages/list/HotPages'
+import HotPage from './pages/list/HotPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
@@ -14,7 +14,7 @@ function App() {
          <Navber />
          <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/list/hot" element={<HotPages />} />
+            <Route path="/list/hot" element={<HotPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/commonsignup" element={<CommonSignupPage />} />

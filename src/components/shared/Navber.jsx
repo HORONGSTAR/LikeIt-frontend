@@ -1,20 +1,4 @@
-import {
-   AppBar,
-   Stack,
-   Container,
-   Box,
-   Typography,
-   Button,
-   TextField,
-   InputAdornment,
-   IconButton,
-   Avatar,
-   Tooltip,
-   Menu,
-   MenuItem,
-   ListItemIcon,
-   Divider,
-} from '@mui/material'
+import { AppBar, Stack, Container, Box, Typography, Button, TextField, InputAdornment, IconButton, Avatar, Tooltip, Menu, MenuItem, ListItemIcon, Divider } from '@mui/material'
 import { NavLink, Link } from 'react-router-dom'
 import { Menu as MenuClose, MenuOpen, Search as SearchIcon, Settings, Logout, Notifications, AutoAwesome } from '@mui/icons-material'
 import { ModalBox } from '../../styles/StyledComponent'
@@ -32,11 +16,11 @@ function Navber({ isAuthenticated, user }) {
    }
 
    const navMeue = [
-      { page: '인기', path: '/hot' },
-      { page: '신규', path: '/new' },
-      { page: '마감 임박', path: '/end' },
-      { page: '공개 예정', path: '/comming' },
-      { page: '구독', path: '/follow' },
+      { page: '인기', path: '/list/hot' },
+      { page: '신규', path: '/list/new' },
+      { page: '마감 임박', path: '/list/end' },
+      { page: '공개 예정', path: '/list/comming' },
+      { page: '구독', path: '/list/follow' },
    ]
 
    const categoryMenu = [
@@ -82,7 +66,7 @@ function Navber({ isAuthenticated, user }) {
             <Container maxWidth="md" sx={{ background: '#fff' }}>
                <Stack my={2}>
                   <Link>
-                     <img src="images/logo.svg" alt="Like It!" />
+                     <img src={process.env.REACT_APP_FRONT_URL + '/images/logo.svg'} alt="Like It!" />
                   </Link>
                   <Stack sx={{ ml: 'auto', alignItems: 'end' }}>
                      <IconButton sx={{ display: breakpoint.mobile }} size="small">
@@ -92,13 +76,7 @@ function Navber({ isAuthenticated, user }) {
                         <Button variant="contained">로그인</Button>
                      ) : (
                         <Tooltip title="내 계정">
-                           <IconButton
-                              onClick={handleClick}
-                              size="small"
-                              aria-controls={userOpen ? 'account-menu' : undefined}
-                              aria-haspopup="true"
-                              aria-expanded={userOpen ? 'true' : undefined}
-                           >
+                           <IconButton onClick={handleClick} size="small" aria-controls={userOpen ? 'account-menu' : undefined} aria-haspopup="true" aria-expanded={userOpen ? 'true' : undefined}>
                               <Avatar sx={{ width: 32, height: 32 }} />
                            </IconButton>
                         </Tooltip>
@@ -120,8 +98,8 @@ function Navber({ isAuthenticated, user }) {
                </Stack>
                <Stack sx={{ flexWrap: 'wrap', my: 2, display: categoryOpen ? 'flex' : 'none' }}>
                   {categoryMenu.map((item) => (
-                     <Stack key={item.id} mx={2} onClick={() => setCategoryOpen(!categoryOpen)} component={Link} to={`/category/${item.id}`}>
-                        <img src={`images/icon/${item.icon}.svg`} width={12} />
+                     <Stack key={item.id} mx={2} onClick={() => setCategoryOpen(!categoryOpen)} component={Link} to={`/list/category/${item.id}`}>
+                        <img src={process.env.REACT_APP_FRONT_URL + `/images/icon/${item.icon}.svg`} width={12} />
                         &nbsp;
                         <Typography variant="body2">{item.name}</Typography>
                      </Stack>

@@ -20,7 +20,7 @@ function Banner() {
       return banners.map((banner) => {
          return (
             <SwiperSlide key={banner.imgUrl}>
-               <img src={process.env.REACT_APP_API_URL + '/bannerProject' + banner.imgUrl} alt="배너 프로젝트" height={'300px'} />
+               <img src={process.env.REACT_APP_API_URL + '/bannerProject' + banner.imgUrl} alt="배너 프로젝트" width="100%" />
             </SwiperSlide>
          )
       })
@@ -28,7 +28,7 @@ function Banner() {
 
    return (
       banners && (
-         <div className="Home_Banner">
+         <div className="Home_Banner" style={{ padding: '20px 0' }}>
             <Swiper
                spaceBetween={30}
                centeredSlides={true}
