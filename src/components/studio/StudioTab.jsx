@@ -1,9 +1,9 @@
 import React from 'react'
 import { Box, Typography, Stack, IconButton } from '@mui/material'
-import CreatorList from '../ui/CreatorList'
-import StatusChip from '../ui/StatusChip'
-import ProjectCard from '../ui/ProjectCard'
-import TimelineList from '../ui/TimelineList'
+import CreatorList from '../mui/CreatorList'
+import StatusChip from '../mui/StatusChip'
+import ProjectCard from '../mui/ProjectCard'
+import TimelineList from '../mui/TimelineList'
 import EmailIcon from '@mui/icons-material/Email'
 import InstagramIcon from '@mui/icons-material/Instagram'
 

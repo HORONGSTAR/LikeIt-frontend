@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box } from '@mui/material'
-import CommonCard from '../ui/CommonCard'
+import CommonCard from '../mui/CommonCard'
 
 const ProjectTab = () => {
    return (

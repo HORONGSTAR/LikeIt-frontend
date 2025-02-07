@@ -1,25 +1,26 @@
-import BasicTabs from '../components/ui/Tabs'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardMedia, Typography, Button, Box } from '@mui/material'
+import BasicTabs from '../components/mui/Tabs'
+import StudioTab from '../components/studio/StudioTab'
+import ProjectTab from '../components/studio/ProjectTab'
+import { useState } from 'react'
 
-import StudioTab from '../components/studiotabs/StudioTab'
-import ProjectTab from '../components/studiotabs/ProjectTab'
-import CommunityTab from '../components/studiotabs/CommunityTab'
-import SpaceBar from '../components/space/SpaceBar'
+const StudioPage = () => {
+   const [posts, setPosts] = useState([])
+   const location = useLocation()
+   const navigate = useNavigate()
 
-const Studiopage = () => {
    const tabs = [
-      { label: '스튜디오', content: <StudioTab /> },
-      { label: '프로젝트', content: <ProjectTab /> },
-      { label: '커뮤니티', content: <CommunityTab /> },
+      { label: '스튜디오', path: '/studio', content: <StudioTab /> },
+      { label: '프로젝트', path: '/studio', content: <ProjectTab /> },
+      { label: '커뮤니티', path: '/studio/commu' },
    ]
 
    return (
-      <Box sx={{ maxWidth: '1200px', width: '100%', ml: '20px', margin: 'auto' }}>
+      <Box sx={{ maxWidth: '1200px', width: '100%', margin: 'auto' }}>
+         {/* 상단 카드 - 모든 탭에서 공통 */}
          <Card sx={{ display: 'flex', maxWidth: 1200, p: 2, boxShadow: 'none', border: 'none' }}>
-            {/* 왼쪽 이미지 */}
             <CardMedia component="img" sx={{ width: 200, height: 200, borderRadius: 2 }} image="/images/발레리나.jpg" alt="발레리나" />
-
-            {/* 오른쪽 정보 */}
             <CardContent sx={{ flex: 1, ml: 2 }}>
                <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography variant="h4" fontWeight="bold">
@@ -53,9 +54,13 @@ const Studiopage = () => {
 
          <SpaceBar />
 
-         <BasicTabs tabs={tabs} />
+         {/* 탭 UI */}
+         <BasicTabs tabs={tabs} currentPath={location.pathname} onChange={(path) => navigate(path)} />
+
+         {/* 현재 URL에 따라 콘텐츠 변경 */}
+         <Outlet context={{ posts }} />
       </Box>
    )
 }
 
-export default Studiopage
+export default StudioPage
