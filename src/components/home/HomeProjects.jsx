@@ -8,7 +8,7 @@ import { Container } from '@mui/material'
 
 function HomeProjects() {
    const dispatch = useDispatch()
-   const { projects, pagination, loading, error } = useSelector((state) => state.list)
+   const { projects, loading, error } = useSelector((state) => state.list)
 
    useEffect(() => {
       dispatch(fetchShowProjectsThunk({ type: 'all' }))
