@@ -58,7 +58,10 @@ const Login = () => {
         dispatch(loginUserThunk({ email, password }))
           .unwrap()
           .then(() => navigate('/'))
-          .catch((error) => console.error('로그인실패:', error))
+          .catch((error) => {
+            console.error('로그인실패:', error)
+            alert(error)
+          })
       }
     },
     [dispatch, navigate, email, password]

@@ -7,6 +7,7 @@ import { Box, TextField, Button, Typography, Container } from '@mui/material'
 import { Google as GoogleIcon } from '@mui/icons-material'
 import { styled } from '@mui/system'
 import { registerUserThunk } from '../../features/authSlice'
+import Navber from '../../components/shared/Navber'
 
 const Root = styled(Box)({
   display: 'flex',
@@ -66,7 +67,7 @@ const CommonSignup = () => {
 
   const validatePassword = (password) => {
     const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&)(])[A-Za-z\d@!%*#?&)(]{8,20}$/
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&)($])[A-Za-z\d@!%*#?&)($]{8,20}$/
     return passwordRegex.test(password)
   }
 
@@ -114,27 +115,30 @@ const CommonSignup = () => {
   //회원가입이 완료 되었을 때
   if (isSignupComplete) {
     return (
-      <Container maxWidth='sm'>
-        <Typography variant='h4' gutterBottom align='center'>
-          회원가입이 완료되었습니다!
-        </Typography>
-        <Typography
-          variant='body1'
-          align='center'
-          style={{ marginTop: '20px' }}
-        >
-          로그인 페이지로 이동하거나 다른 작업을 계속 진행할 수 있습니다.
-        </Typography>
-        <Button
-          variant='contained'
-          color='primary'
-          fullWidth
-          style={{ marginTop: '20px' }}
-          onClick={() => (window.location.href = '/login')} // 로그인 페이지로 이동
-        >
-          로그인 하러 가기
-        </Button>
-      </Container>
+      <>
+        <Navber />
+        <Container maxWidth='sm' sx={{ mt: 5 }}>
+          <Typography variant='h4' gutterBottom align='center'>
+            회원가입이 완료되었습니다!
+          </Typography>
+          <Typography
+            variant='body1'
+            align='center'
+            style={{ marginTop: '20px' }}
+          >
+            로그인 페이지로 이동하거나 다른 작업을 계속 진행할 수 있습니다.
+          </Typography>
+          <Button
+            variant='contained'
+            color='primary'
+            fullWidth
+            style={{ marginTop: '20px' }}
+            onClick={() => (window.location.href = '/login')} // 로그인 페이지로 이동
+          >
+            로그인 하러 가기
+          </Button>
+        </Container>
+      </>
     )
   }
 

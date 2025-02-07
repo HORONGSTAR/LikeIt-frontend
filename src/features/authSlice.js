@@ -56,7 +56,6 @@ const authSlice = createSlice({
     error: null,
   },
   reducers: {},
-  extraReducers: {},
   extraReducers: (builder) => {
     //회원가입
     builder
