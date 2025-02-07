@@ -1,37 +1,14 @@
-import {
-   AppBar,
-   Stack,
-   Container,
-   Box,
-   Typography,
-   Button,
-   TextField,
-   InputAdornment,
-   IconButton,
-   Avatar,
-   Tooltip,
-   Menu,
-   MenuItem,
-   ListItemIcon,
-   Divider,
-} from '@mui/material'
+import { AppBar, Container, Box, Typography, Button, TextField, InputAdornment, IconButton } from '@mui/material'
 import { NavLink, Link } from 'react-router-dom'
-import { Menu as MenuClose, MenuOpen, Search as SearchIcon, Settings, Logout, Notifications, AutoAwesome } from '@mui/icons-material'
-import { ModalBox } from '../../styles/StyledComponent'
+import { Menu as MenuClose, MenuOpen, Search as SearchIcon } from '@mui/icons-material'
+import { ModalBox, Stack2 } from '../../styles/StyledComponent'
 import { useState } from 'react'
+import AccountMenu from './AccountMenu'
 
-function Navber({ isAuthenticated, user }) {
-   const [categoryOpen, setCategoryOpen] = useState(false)
-   const [anchorEl, setAnchorEl] = useState(null)
-   const userOpen = Boolean(anchorEl)
-   const handleClick = (event) => {
-      setAnchorEl(event.currentTarget)
-   }
-   const handleClose = () => {
-      setAnchorEl(null)
-   }
+function Navber({ isAuthenticated }) {
+   const [open, setOpen] = useState(false)
 
-   const navMeue = [
+   const navMeueItems = [
       { page: '인기', path: '/hot' },
       { page: '신규', path: '/new' },
       { page: '마감 임박', path: '/end' },
@@ -39,7 +16,13 @@ function Navber({ isAuthenticated, user }) {
       { page: '구독', path: '/follow' },
    ]
 
-   const categoryMenu = [
+   const accountMeunItems = [
+      { page: '알림', path: '/hot', icon: 'bell' },
+      { page: '스튜디오', path: '/studio', icon: 'edit' },
+      { page: '마이페이지', path: '/my', icon: 'user' },
+   ]
+
+   const categoryItems = [
       { id: 1, name: '푸드', icon: 'utensils' },
       { id: 2, name: '도서', icon: 'book' },
       { id: 3, name: '뷰티', icon: 'spray' },
@@ -79,120 +62,42 @@ function Navber({ isAuthenticated, user }) {
    return (
       <>
          <AppBar position="static">
-            <Container maxWidth="md" sx={{ background: '#fff' }}>
-               <Stack my={2}>
-                  <Link>
-                     <img src="images/logo.svg" alt="Like It!" />
+            <Container maxWidth="md">
+               <Stack2 my={2}>
+                  <Link to="/">
+                     <Box component="img" src="images/logo.svg" alt="Like It!" />
                   </Link>
-                  <Stack sx={{ ml: 'auto', alignItems: 'end' }}>
+                  <Stack2 sx={{ ml: 'auto', alignItems: 'end' }}>
                      <IconButton sx={{ display: breakpoint.mobile }} size="small">
-                        <ModalBox openBtn={<SearchIcon fontSize="small" />}>{searchBox}</ModalBox>
+                        <ModalBox openBtn={<SearchIcon />}>{searchBox}</ModalBox>
                      </IconButton>
-                     {isAuthenticated ? (
-                        <Button variant="contained">로그인</Button>
-                     ) : (
-                        <Tooltip title="내 계정">
-                           <IconButton
-                              onClick={handleClick}
-                              size="small"
-                              aria-controls={userOpen ? 'account-menu' : undefined}
-                              aria-haspopup="true"
-                              aria-expanded={userOpen ? 'true' : undefined}
-                           >
-                              <Avatar sx={{ width: 32, height: 32 }} />
-                           </IconButton>
-                        </Tooltip>
-                     )}
-                  </Stack>
-               </Stack>
-               <Stack my={2}>
-                  <Stack onClick={() => setCategoryOpen(!categoryOpen)} sx={{ mr: breakpoint.margin, cursor: 'pointer' }}>
-                     {categoryOpen ? <MenuOpen fontSize="small" /> : <MenuClose fontSize="small" />}
+                     {isAuthenticated ? <Button variant="contained">로그인</Button> : <AccountMenu items={accountMeunItems} />}
+                  </Stack2>
+               </Stack2>
+               <Stack2 my={2}>
+                  <Stack2 onClick={() => setOpen(!open)} sx={{ mr: breakpoint.margin, cursor: 'pointer' }}>
+                     {open ? <MenuOpen fontSize="small" /> : <MenuClose fontSize="small" />}
                      &nbsp;
                      <Typography display={breakpoint.desktop}>카테고리</Typography>
-                  </Stack>
-                  {navMeue.map((item) => (
-                     <Typography key={item.page} component={NavLink} to={item.path} mr={breakpoint.margin} onClick={() => setCategoryOpen(false)}>
+                  </Stack2>
+                  {navMeueItems.map((item) => (
+                     <Typography key={item.page} component={NavLink} to={item.path} mr={breakpoint.margin} onClick={() => setOpen(false)}>
                         {item.page}
                      </Typography>
                   ))}
                   <Box sx={{ ml: 'auto', width: breakpoint.width, display: breakpoint.desktop }}>{searchBox}</Box>
-               </Stack>
-               <Stack sx={{ flexWrap: 'wrap', my: 2, display: categoryOpen ? 'flex' : 'none' }}>
-                  {categoryMenu.map((item) => (
-                     <Stack key={item.id} mx={2} onClick={() => setCategoryOpen(!categoryOpen)} component={Link} to={`/category/${item.id}`}>
-                        <img src={`images/icon/${item.icon}.svg`} width={12} />
+               </Stack2>
+               <Stack2 sx={{ flexWrap: 'wrap', my: 2, display: open ? 'flex' : 'none' }}>
+                  {categoryItems.map((item) => (
+                     <Stack2 key={item.id} mx={2} onClick={() => setOpen(!open)} component={Link} to={`/category/${item.id}`}>
+                        <img src={`images/icon/${item.icon}.svg`} alt={item.name} width={12} />
                         &nbsp;
                         <Typography variant="body2">{item.name}</Typography>
-                     </Stack>
+                     </Stack2>
                   ))}
-               </Stack>
+               </Stack2>
             </Container>
          </AppBar>
-
-         <Menu
-            anchorEl={anchorEl}
-            id="account-menu"
-            open={userOpen}
-            onClose={handleClose}
-            onClick={handleClose}
-            slotProps={{
-               paper: {
-                  elevation: 0,
-                  sx: {
-                     overflow: 'visible',
-                     filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                     mt: 1.5,
-                     '& .MuiAvatar-root': {
-                        width: 32,
-                        height: 32,
-                        ml: -0.5,
-                        mr: 1,
-                     },
-                     '&::before': {
-                        content: '""',
-                        display: 'block',
-                        position: 'absolute',
-                        top: 0,
-                        right: 14,
-                        width: 10,
-                        height: 10,
-                        bgcolor: 'background.paper',
-                        transform: 'translateY(-50%) rotate(45deg)',
-                        zIndex: 0,
-                     },
-                  },
-               },
-            }}
-            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-         >
-            <MenuItem onClick={handleClose}>
-               <ListItemIcon>
-                  <Notifications fontSize="small" />
-               </ListItemIcon>
-               알림
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-               <ListItemIcon>
-                  <AutoAwesome fontSize="small" />
-               </ListItemIcon>
-               스튜디오
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-               <ListItemIcon>
-                  <Settings fontSize="small" />
-               </ListItemIcon>
-               마이페이지
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleClose}>
-               <ListItemIcon>
-                  <Logout fontSize="small" />
-               </ListItemIcon>
-               로그아웃
-            </MenuItem>
-         </Menu>
       </>
    )
 }

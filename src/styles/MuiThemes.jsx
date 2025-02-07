@@ -105,8 +105,14 @@ export const theme = createTheme({
       MuiStack: {
          styleOverrides: {
             root: {
-               flexDirection: 'row',
-               alignItems: 'center',
+               variants: [
+                  {
+                     props: { variant: 'right' },
+                     style: {
+                        marginLeft: 'auto',
+                     },
+                  },
+               ],
             },
          },
       },
@@ -139,11 +145,19 @@ export const theme = createTheme({
                      },
                   },
                   {
-                     props: { variant: 'thin' },
+                     props: { variant: 'yellow' },
                      style: {
-                        fontSize: 13,
-                        fontWeight: 500,
-                        ':hover': { background: 'none' },
+                        fontWeight: 700,
+                        color: '#B25F00',
+                        background: '#FFCC4D',
+                     },
+                  },
+                  {
+                     props: { variant: 'green' },
+                     style: {
+                        fontWeight: 700,
+                        color: '#45843C',
+                        background: '#DBE7D9',
                      },
                   },
                ],
