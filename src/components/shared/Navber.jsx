@@ -1,7 +1,7 @@
 import { AppBar, Container, Box, Typography, Button, TextField, InputAdornment, IconButton } from '@mui/material'
 import { NavLink, Link } from 'react-router-dom'
 import { Menu as MenuClose, MenuOpen, Search as SearchIcon } from '@mui/icons-material'
-import { ModalBox, Stack2 } from '../../styles/StyledComponent'
+import { ModalBox, Stack2 } from '../../styles/BaseStyles'
 import { useState } from 'react'
 import AccountMenu from './AccountMenu'
 
@@ -78,10 +78,19 @@ function Navber({ isAuthenticated }) {
                   <Stack2 onClick={() => setOpen(!open)} sx={{ mr: breakpoint.margin, cursor: 'pointer' }}>
                      {open ? <MenuOpen fontSize="small" /> : <MenuClose fontSize="small" />}
                      &nbsp;
-                     <Typography display={breakpoint.desktop}>카테고리</Typography>
+                     <Typography fontWeight="500" display={breakpoint.desktop}>
+                        카테고리
+                     </Typography>
                   </Stack2>
                   {navMeueItems.map((item) => (
-                     <Typography key={item.page} component={NavLink} to={item.path} mr={breakpoint.margin} onClick={() => setOpen(false)}>
+                     <Typography
+                        key={item.page}
+                        fontWeight="500"
+                        component={NavLink}
+                        to={item.path}
+                        mr={breakpoint.margin}
+                        onClick={() => setOpen(false)}
+                     >
                         {item.page}
                      </Typography>
                   ))}
