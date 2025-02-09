@@ -1,5 +1,5 @@
-import { Container, Grid2, Box, Typography } from '@mui/material'
-import { SubTitle } from '../styles/BaseStyles'
+import { Container, Grid2, Box, Typography, Chip } from '@mui/material'
+import { SubTitle, Stack2, TextLink } from '../styles/BaseStyles'
 import { ProjectCard, CommingCard, HistoryCard, StudioCard, BasicCard } from '../components/ui/Cards'
 import Navber from '../components/shared/Navber'
 
@@ -45,6 +45,18 @@ function DesignGuide() {
             <Memo component={'SubTitle'} props={'children, to'}>
                홈에서 사용하는 제목입니다. props의 to를 사용해서 페이지 링크를 걸 수 있습니다.
             </Memo>
+            <Stack2 spacing={2}>
+               <Chip label={'Stack2 안에 들어있는 칩1'} />
+               <Chip label={'Stack2 안에 들어있는 칩2'} />
+            </Stack2>
+            <Memo component={'Stack2'} props={'mui Stack props'}>
+               기존 Mui의 Stack컴포넌트에서 기본 direction을 row로 변경했습니다. Stack에서 사용하던 props를 동일하게 사용할 수 있습니다. alignItems는
+               기본적으로 center입니다.
+            </Memo>
+            <TextLink to="/desinguide">텍스트 링크</TextLink>
+            <Memo component={'TextLink'} props={'mui Typography props'}>
+               Mui의 Link와 라우터 돔의 Link를 합쳐둔 컴포넌트입니다. Mui Typography의 props와 혼용 가능합니다.
+            </Memo>
             <Grid2 container columnSpacing={1.5} rowSpacing={{ sm: 3, xs: 1.5 }}>
                <Grid2 size={{ md: 3, sm: 6, xs: 12 }}>
                   <BasicCard>
@@ -72,7 +84,7 @@ function DesignGuide() {
                </Grid2>
             </Grid2>
             <Memo component={'HistoryCard'} props={'project'}>
-               스튜디오 페이지에서 사용하는 프로젝트 카드입니다. 프로젝트 상태에 따라 칩이 바뀝니다.
+               스튜디오 페이지에서 사용하는 프로젝트 카드입니다. 프로젝트 상태에 따라 칩이 바뀌고 카드에 보정 필터를 추가합니다.
             </Memo>
             <Grid2 container columnSpacing={1.5} rowSpacing={{ sm: 3, xs: 1.5 }}>
                <Grid2 size={{ md: 3, sm: 6, xs: 12 }}>
@@ -87,7 +99,7 @@ function DesignGuide() {
                   <StudioCard studio={sampleData[1]} />
                </Grid2>
             </Grid2>
-            <Memo component={'StudioCard'} props={'project'}>
+            <Memo component={'StudioCard'} props={'studio'}>
                구독 페이지에서 사용하는 스튜디오 계정 카드입니다.
             </Memo>
          </Container>
