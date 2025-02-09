@@ -4,43 +4,33 @@ export const theme = createTheme({
    palette: {
       primary: {
          main: '#222',
+         light: '#666',
          contrastText: '#fff',
       },
-      secondary: {
-         main: '#FFCC4D',
-         contrastText: '#D97400',
-      },
-
-      error: {
-         main: '#C84137',
-         contrastText: '#fff',
-      },
-
-      info: {
-         main: '#DBE7D9',
-         contrastText: '#45843C',
-      },
-
-      warning: {
-         main: '#D97400',
-         contrastText: '#fff',
-      },
-      success: {
-         main: '#4ACBCF',
-         contrastText: '#fff',
-      },
+      yellow: { main: '#FFCC4D' },
+      orenge: { main: '#d97400' },
+      green: { main: '#45843C' },
    },
    typography: {
-      h1: { fontSize: 26, fontWeight: 600 },
-      h2: { fontSize: 24, fontWeight: 600 },
-      h3: { fontSize: 22, fontWeight: 600 },
+      h1: { fontSize: 32, fontWeight: 600 },
+      h2: { fontSize: 28, fontWeight: 600 },
+      h3: { fontSize: 24, fontWeight: 600 },
       h4: { fontSize: 20, fontWeight: 600 },
-      h5: { fontSize: 16, fontWeight: 600 },
-      h6: { fontSize: 14, fontWeight: 600 },
-      body1: { fontSize: 14, fontWeight: 500 },
-      body2: { fontSize: 12, fontWeight: 500 },
+      h5: { fontSize: 18, fontWeight: 600 },
+      h6: { fontSize: 16, fontWeight: 600, lineHeight: '24px' },
+      body1: { fontSize: 15, fontWeight: 400 },
+      body2: { fontSize: 13, fontWeight: 400 },
+      caption: { fontSize: 11, fontWeight: 500 },
       fontFamily: "'Pretendard', 'sans-serif'",
    },
+   breakpoints: {
+      values: {
+         xs: 0,
+         sm: 500,
+         md: 920,
+      },
+   },
+
    components: {
       MuiAppBar: {
          styleOverrides: {
@@ -48,6 +38,52 @@ export const theme = createTheme({
                '--AppBar-background': '#fff',
                '--AppBar-color': '#222',
                boxShadow: '0px 2px 4px rgba(0,0,0,0.25)',
+               marginBottom: 10,
+            },
+         },
+      },
+      MuiOutlinedInput: {
+         styleOverrides: {
+            root: {
+               borderRadius: 10,
+               height: '42px',
+            },
+            notchedOutline: {
+               borderRadius: 10,
+            },
+            input: {
+               padding: '12px 14px',
+            },
+         },
+      },
+      MuiInputLabel: {
+         styleOverrides: {
+            root: {
+               top: '-4px',
+               fontSize: '14px',
+            },
+            shrink: {
+               top: '0px',
+            },
+         },
+      },
+
+      MuiCard: {
+         styleOverrides: {
+            root: {
+               borderRadius: 10,
+               display: 'flex',
+               variants: [
+                  {
+                     props: { variant: 'none' },
+                     style: {
+                        boxShadow: 'none',
+                        border: 'none',
+                        flexWrap: 'wrap',
+                        gap: 10,
+                     },
+                  },
+               ],
             },
          },
       },
@@ -102,26 +138,14 @@ export const theme = createTheme({
             },
          },
       },
-      MuiStack: {
-         styleOverrides: {
-            root: {
-               variants: [
-                  {
-                     props: { variant: 'right' },
-                     style: {
-                        marginLeft: 'auto',
-                     },
-                  },
-               ],
-            },
-         },
-      },
+
       MuiButton: {
          styleOverrides: {
             root: {
                borderRadius: 10,
                height: 32,
                fontSize: 12,
+               margin: 4,
                variants: [
                   {
                      props: { variant: 'contained' },

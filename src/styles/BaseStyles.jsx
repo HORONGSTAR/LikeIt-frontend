@@ -1,14 +1,52 @@
 import * as React from 'react'
-import { Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, DialogContent, DialogTitle, Chip } from '@mui/material'
-import { Close } from '@mui/icons-material'
+import styled from 'styled-components'
+import {
+   Typography,
+   Modal,
+   Box,
+   IconButton,
+   Stack,
+   CircularProgress,
+   Dialog,
+   DialogContent,
+   DialogTitle,
+   Chip,
+   Container,
+   Link as MuiLink,
+} from '@mui/material'
+import { Close, PlayArrowRounded } from '@mui/icons-material'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
-export const Stack2 = (props) => {
-   return <Stack direction="row" alignItems="center" {...props} />
+export const Main = ({ children, spacing }) => {
+   return (
+      <Container maxWidth="md">
+         <Stack spacing={spacing || 2}>{children}</Stack>
+      </Container>
+   )
 }
 
-export const ImgBox = (props) => {
-   return <Box component="img" {...props} />
+export const SubTitle = ({ children, to }) => {
+   return (
+      <Stack2 pt={3}>
+         <Typography variant="h4" component={Link} to={to}>
+            {children}
+         </Typography>
+         <PlayArrowRounded />
+      </Stack2>
+   )
+}
+
+export const Dot = () => {
+   return <Box sx={{ display: 'block', width: 5, height: 5, background: '#222', borderRadius: '50%', m: 1 }} />
+}
+
+export const TextLink = (props) => {
+   return <MuiLink underline="hover" component={Link} fontWeight="bold" {...props} />
+}
+
+export const Stack2 = (props) => {
+   return <Stack direction="row" alignItems="center" sx={{ flexWrap: 'wrap' }} {...props} />
 }
 
 export const LoadingBox = () => {
@@ -92,3 +130,16 @@ export const ErrorBox = ({ error, open, setOpen }) => {
       </>
    )
 }
+
+export const Ellipsis = styled.div`
+   width: 100%;
+   text-overflow: ellipsis;
+   overflow: hidden;
+   word-break: break-word;
+   display: -webkit-box;
+   -webkit-line-clamp: ${(props) => props.$line || 1};
+   -webkit-box-orient: vertical;
+   @media (max-width: 600px) {
+      -webkit-line-clamp: 1;
+   }
+`

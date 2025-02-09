@@ -1,5 +1,5 @@
 import { Box, Typography, Avatar, AvatarGroup, Divider, Chip } from '@mui/material'
-import { Stack2 } from '../../styles/StyledComponent'
+import { Stack2 } from '../../styles/BaseStyles'
 import SpaceBox from './SpaceBox'
 import { useState } from 'react'
 

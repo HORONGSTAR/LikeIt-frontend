@@ -1,5 +1,6 @@
 import React from 'react'
 import { Box, Typography, Avatar, Button, Grid, Card, CardMedia, CardContent, Tabs, Tab } from '@mui/material'
+
 import { useNavigate, useParams } from 'react-router-dom'
 import FundingOverview from '../components/funding/FundingOverview'
 import FundingReview from '../components/funding/FundingReview'
@@ -67,15 +68,15 @@ const FundingDetailPage = () => {
                         </Typography>
                      </Typography>
 
-                     <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                     <Typography color="text.secondary" sx={{ mt: 1 }}>
                         목표 금액: {project.targetAmount.toLocaleString()}원
                      </Typography>
 
-                     <Typography variant="body2" color="text.secondary">
+                     <Typography color="text.secondary">
                         펀딩 기간: {project.startDate} ~ {project.endDate}
                      </Typography>
 
-                     <Button variant="contained" color="warning" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem' }}>
+                     <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem' }}>
                         후원하기
                      </Button>
                   </CardContent>
