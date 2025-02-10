@@ -1,5 +1,5 @@
 import './styles/common.css'
-import { Route, Routes, Link } from 'react-router-dom'
+import { Route, Routes, Link, useLocation } from 'react-router-dom'
 import { Button } from '@mui/material'
 import Home from './pages/Home'
 import HotPage from './pages/list/HotPage'
@@ -7,7 +7,6 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
 import Navber from './components/shared/Navber'
-import { Routes, Route, useLocation } from 'react-router-dom'
 import StudioPage from './pages/StudioPage'
 import CommunityPage from './pages/CommunityPage'
 import CommunityWritePage from './pages/CommunityWritePage'
@@ -24,7 +23,6 @@ function App() {
 
    return (
       <>
-         {/* <Navber /> */}
          {!dontNeedNavber && <Navber />}
          <Routes>
             <Route path="/desinguide" element={<DesignGuide />} />
