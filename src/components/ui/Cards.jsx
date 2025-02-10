@@ -20,7 +20,7 @@ export const BasicCard = ({ imgUrl, children, cardEf }) => {
    return (
       <Box sx={cardEf}>
          <Card sx={cardSx.body}>
-            <CardMedia image={imgUrl || '/images/notFindImg.png'} sx={cardSx.media} />
+            <CardMedia image={process.env.REACT_APP_API_URL + imgUrl || '/images/notFindImg.png'} sx={cardSx.media} />
             <Stack sx={cardSx.stack}>{children}</Stack>
          </Card>
       </Box>
@@ -93,7 +93,12 @@ export const CommingCard = ({ project }) => {
             <Typography color="orenge" variant="caption">
                {project.userCount}명 알림 신청 중
             </Typography>
-            <Button fullWidth variant="outlined" sx={{ p: 0, m: 0 }} startIcon={<Box component="img" src="/images/icon/bell.svg" alt="알림버튼" sx={{ height: 12 }} />}>
+            <Button
+               fullWidth
+               variant="outlined"
+               sx={{ p: 0, m: 0 }}
+               startIcon={<Box component="img" src="/images/icon/bell.svg" alt="알림버튼" sx={{ height: 12 }} />}
+            >
                알림 신청하기
             </Button>
          </Stack2>
@@ -106,10 +111,10 @@ export const HistoryCard = ({ project }) => {
 
    useEffect(() => {
       const sx = {}
-      if (project.state !== 'ON_FUNDING') sx.opacity = 0.5
-      if (project.state === 'FUNDING_FAILED') sx.filter = 'grayscale(100%)'
+      if (project.projectStatus !== 'ON_FUNDING') sx.opacity = 0.5
+      if (project.projectStatus === 'FUNDING_FAILED') sx.filter = 'grayscale(100%)'
       setCardEf(sx)
-   }, [project.state])
+   }, [project.projectStatus])
 
    const cententSx = {
       title: {
@@ -128,12 +133,12 @@ export const HistoryCard = ({ project }) => {
 
    const chipDt = {
       ON_FUNDING: { color: 'green', label: '진행 중' },
-      FUNDING_COMPLE: { color: 'yellow', label: '펀딩 성공' },
+      FUNDING_COMPLETE: { color: 'yellow', label: '펀딩 성공' },
       FUNDING_FAILED: { color: 'grey', label: '펀딩 실패' },
    }
 
    return (
-      <BasicCard imgUrl={project.imgUrl} cardEf={cardEf}>
+      <BasicCard imgUrl={'/projectImg' + project.imgUrl} cardEf={cardEf}>
          <Typography variant="caption">BY.{project.studioName}</Typography>
          <Ellipsis $line={2}>
             <Typography sx={cententSx.title}>{project.title}</Typography>
@@ -144,7 +149,7 @@ export const HistoryCard = ({ project }) => {
             </Typography>
          </Ellipsis>
          <Stack2 mt={{ sm: 1, xs: 0.5 }}>
-            <Chip variant={chipDt[project.state].color} label={chipDt[project.state].label} />
+            <Chip variant={chipDt[project.projectStatus].color} label={chipDt[project.projectStatus]?.label} />
             <Stack2 ml="auto" alignItems="end">
                <Favorite color="yellow" sx={cententSx.favorite} />
                <Typography sx={cententSx.percent}>67%</Typography>
