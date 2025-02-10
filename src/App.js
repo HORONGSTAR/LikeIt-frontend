@@ -12,6 +12,8 @@ import CommunityPage from './pages/CommunityPage'
 import CommunityWritePage from './pages/CommunityWritePage'
 import FundingDetailPage from './pages/FundingDetailPage'
 import FundingReview from './components/funding/FundingReview'
+import FundingTimeline from './components/funding/FundingTimeline'
+import FundingLayout from './components/funding/FundingLayout'
 import DesignGuide from './pages/DesignGuide'
 
 function App() {
@@ -38,8 +40,11 @@ function App() {
             <Route path="/studio" element={<StudioPage />} />
             <Route path="commu" element={<CommunityPage />} />
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />
-            <Route path="/funding/detail" element={<FundingDetailPage />} />
-            <Route path="/funding/review" element={<FundingReview />} />
+            <Route path="/funding" element={<FundingLayout />}>
+               <Route path="detail" element={<FundingDetailPage />} />
+               <Route path="timeline" element={<FundingTimeline />} />
+               <Route path="review" element={<FundingReview />} />
+            </Route>
          </Routes>
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기
