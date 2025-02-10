@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchShowProjectsThunk } from '../../features/listSlice'
 import { Main } from '../../styles/BaseStyles'
+import { useSearchParams } from 'react-router-dom'
 
-const EndPage = () => {
+const SearchPage = () => {
    const dispatch = useDispatch()
    const { projects, count, loading, error } = useSelector((state) => state.list)
    const [page, setPage] = useState(1)
@@ -15,17 +16,20 @@ const EndPage = () => {
    const [loadingCount, setLoadingCount] = useState(8)
    const [scrollPosition, setScrollPosition] = useState(0)
 
+   const [searchParams] = useSearchParams()
+   const searchTerm = searchParams.get('searchTerm')
+
    useEffect(() => {
-      dispatch(fetchShowProjectsThunk({ page, limit: 8, type: 'end' }))
-   }, [dispatch, page])
+      dispatch(fetchShowProjectsThunk({ page, limit: 8, type: 'new', searchTerm }))
+   }, [dispatch, page, searchTerm])
 
    useEffect(() => {
       const newCards = []
       let cardCount = 0
       let row = []
 
-      if (projects && projects.end) {
-         projects.end.forEach((project, index) => {
+      if (projects && projects.new) {
+         projects.new.forEach((project, index) => {
             let totalOrderPrice = 0
             if (project.totalOrderPrice) totalOrderPrice = project.totalOrderPrice
             let rate = Math.floor((totalOrderPrice / project.goal) * 100)
@@ -48,7 +52,7 @@ const EndPage = () => {
             )
 
             // 4개마다 새로운 row로 묶기
-            if (cardCount % 4 === 0 || index === projects.end.length - 1) {
+            if (cardCount % 4 === 0 || index === projects.new.length - 1) {
                newCards.push(
                   <Grid2 key={project.id} container columnSpacing={1.5} rowSpacing={{ sm: 3, xs: 1.5 }}>
                      {row}
@@ -63,7 +67,7 @@ const EndPage = () => {
             window.scrollTo(0, scrollPosition)
          }, 0)
       }
-   }, [projects.end])
+   }, [projects.new])
 
    const loadMoreProjects = () => {
       setScrollPosition(window.scrollY)
@@ -98,4 +102,4 @@ const EndPage = () => {
    )
 }
 
-export default EndPage
+export default SearchPage

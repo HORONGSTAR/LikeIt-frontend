@@ -14,14 +14,14 @@ export const BasicCard = ({ imgUrl, children, cardEf }) => {
          minWidth: 100,
          minHeight: { sm: 144, xs: 90 },
       },
-      padding: { md: 2, sm: 1.4, xs: 1 },
+      stack: { p: { md: 2, sm: 1.4, xs: 1 }, width: { sm: 'auto', xs: '100%' } },
    }
 
    return (
       <Box sx={cardEf}>
          <Card sx={cardSx.body}>
             <CardMedia image={imgUrl || '/images/notFindImg.png'} sx={cardSx.media} />
-            <Stack p={cardSx.padding}>{children}</Stack>
+            <Stack sx={cardSx.stack}>{children}</Stack>
          </Card>
       </Box>
    )
@@ -60,7 +60,7 @@ export const ProjectCard = ({ project }) => {
             <Chip variant={date > 3 ? 'grey' : 'green'} label={date + '일 남음'} />
             <Stack2 ml="auto" alignItems="end">
                <Favorite color="yellow" sx={cententSx.favorite} />
-               <Typography sx={cententSx.percent}>67%</Typography>
+               <Typography sx={cententSx.percent}>{project.rate}%</Typography>
             </Stack2>
          </Stack2>
       </BasicCard>
@@ -91,14 +91,9 @@ export const CommingCard = ({ project }) => {
          </Ellipsis>
          <Stack2 mt={{ sm: 1, xs: 0.5 }}>
             <Typography color="orenge" variant="caption">
-               10명 알림 신청 중
+               {project.userCount}명 알림 신청 중
             </Typography>
-            <Button
-               fullWidth
-               variant="outlined"
-               sx={{ p: 0, m: 0 }}
-               startIcon={<Box component="img" src="/images/icon/bell.svg" alt="알림버튼" sx={{ height: 12 }} />}
-            >
+            <Button fullWidth variant="outlined" sx={{ p: 0, m: 0 }} startIcon={<Box component="img" src="/images/icon/bell.svg" alt="알림버튼" sx={{ height: 12 }} />}>
                알림 신청하기
             </Button>
          </Stack2>

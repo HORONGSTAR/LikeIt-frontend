@@ -42,7 +42,6 @@ function DesignGuide() {
 
    return (
       <>
-         <Navber />
          <Main>
             <Memo component={'Main'} props={'children, spacing'}>
                페이지는 기본적으로 Main 컴포넌트로 감싸는 것을 기본으로 합니다. 이 페이지도 Main으로 랩핑한 상태입니다. 간격은 spaching으로 조절할 수
