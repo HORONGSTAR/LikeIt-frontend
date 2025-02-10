@@ -37,25 +37,8 @@ function Login() {
             <Dot />
          </Stack2>
          <form onSubmit={handleLogin}>
-            <TextField
-               fullWidth
-               label="이메일 주소"
-               margin="normal"
-               variant="outlined"
-               name="email"
-               value={email}
-               onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-               fullWidth
-               label="비밀번호"
-               type="password"
-               margin="normal"
-               variant="outlined"
-               name="password"
-               value={password}
-               onChange={(e) => setPassword(e.target.value)}
-            />
+            <TextField fullWidth label="이메일 주소" margin="normal" variant="outlined" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <TextField fullWidth label="비밀번호" type="password" margin="normal" variant="outlined" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             <Button fullWidth variant="contained" type="submit">
                로그인
             </Button>

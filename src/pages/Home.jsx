@@ -1,4 +1,4 @@
-import { Container, Grid2, Stack, Typography } from '@mui/material'
+import { Grid2 } from '@mui/material'
 import { Main } from '../styles/BaseStyles'
 import Banner from '../components/home/Banner'
 import HomeProjects from '../components/home/HomeProjects'
