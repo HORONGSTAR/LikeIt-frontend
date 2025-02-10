@@ -10,7 +10,6 @@ import {
    Dialog,
    DialogContent,
    DialogTitle,
-   Chip,
    Container,
    Link as MuiLink,
 } from '@mui/material'
@@ -37,8 +36,18 @@ export const SubTitle = ({ children, to }) => {
    )
 }
 
-export const Dot = () => {
-   return <Box sx={{ display: 'block', width: 5, height: 5, background: '#222', borderRadius: '50%', m: 1 }} />
+export const Dot = ({ children, both, float }) => {
+   const dotSx = { display: 'block', width: 5, height: 5, background: '#222', borderRadius: '50%', m: 1, position: float && 'absolute', left: -20 }
+
+   return (
+      <Box display={'flex'}>
+         <Stack2 sx={{ position: 'relative' }}>
+            <Box sx={{ ...dotSx, left: -20 }} />
+            {children}
+            {both && <Box sx={{ ...dotSx, right: -20 }} />}
+         </Stack2>
+      </Box>
+   )
 }
 
 export const TextLink = (props) => {
@@ -49,21 +58,21 @@ export const Stack2 = (props) => {
    return <Stack direction="row" alignItems="center" sx={{ flexWrap: 'wrap' }} {...props} />
 }
 
-export const LoadingBox = () => {
+export const LoadingBox = ({ heightValue }) => {
    return (
-      <Stack sx={{ alignItems: 'center', justifyContent: 'center', height: '400px' }}>
-         <CircularProgress color="secondary" size={50} />
+      <Stack sx={{ alignItems: 'center', justifyContent: 'center', height: heightValue || '120px' }}>
+         <CircularProgress color="yellow" size={50} />
       </Stack>
    )
 }
 
-export const ModalBox = ({ children, openBtn }) => {
+export const ModalBox = ({ children, openBtn, closeBtn }) => {
    const [open, setOpen] = useState(false)
 
    return (
       <>
          <Box onClick={() => setOpen(true)}>{openBtn}</Box>
-         <Modal open={open} onClose={() => setOpen(false)}>
+         <Modal open={open} onClose={() => closeBtn || setOpen(false)}>
             <Box
                sx={{
                   position: 'absolute',
@@ -77,10 +86,24 @@ export const ModalBox = ({ children, openBtn }) => {
                   boxShadow: 24,
                   px: 2,
                   py: 3,
-                  maxHeight: '600px',
+                  maxHeight: 600,
                   overflowY: 'auto',
                }}
             >
+               <IconButton
+                  aria-label="close"
+                  onClick={() => {
+                     setOpen(false)
+                  }}
+                  sx={(theme) => ({
+                     position: 'absolute',
+                     right: 8,
+                     top: 8,
+                     color: theme.palette.grey[500],
+                  })}
+               >
+                  <Close />
+               </IconButton>
                {children}
             </Box>
          </Modal>
@@ -122,9 +145,7 @@ export const ErrorBox = ({ error, open, setOpen }) => {
                <Typography gutterBottom variant="body2">
                   문제가 계속 해결되지 않을 경우 관리자에게 문의 부탁드립니다.
                </Typography>
-               <Typography gutterBottom variant="body2">
-                  <Chip label="Email : admin@naver.com" size="small" />
-               </Typography>
+               <Typography gutterBottom variant="body2"></Typography>
             </DialogContent>
          </Dialog>
       </>

@@ -12,14 +12,14 @@ import CommunityPage from './pages/CommunityPage'
 import CommunityWritePage from './pages/CommunityWritePage'
 import FundingDetailPage from './pages/FundingDetailPage'
 import FundingReview from './components/funding/FundingReview'
+import FundingTimeline from './components/funding/FundingTimeline'
+import FundingLayout from './components/funding/FundingLayout'
 import DesignGuide from './pages/DesignGuide'
 
 function App() {
    const location = useLocation()
-   // Check if the current path is "/login" or "/signup"
-   const dontNeedNavber = location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/commonsignup'
-   // 로그인 이랑 회원가입부분이 네브바가 필요가 없어서 요렇게 했습니다 ㅠ
-   // navber가 필요없는 화면은 위에 형식처럼해서 path 경로만 넣어주시면 됩니다!!! - 세빈
+   const pageName = { '/login': true, '/signup': true, '/commonsignup': true, '/studio': true }
+   const dontNeedNavber = pageName[location.pathname]
 
    return (
       <>
@@ -40,8 +40,11 @@ function App() {
             <Route path="/studio" element={<StudioPage />} />
             <Route path="commu" element={<CommunityPage />} />
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />
-            <Route path="/funding/detail" element={<FundingDetailPage />} />
-            <Route path="/funding/review" element={<FundingReview />} />
+            <Route path="/funding" element={<FundingLayout />}>
+               <Route path="detail" element={<FundingDetailPage />} />
+               <Route path="timeline" element={<FundingTimeline />} />
+               <Route path="review" element={<FundingReview />} />
+            </Route>
          </Routes>
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기

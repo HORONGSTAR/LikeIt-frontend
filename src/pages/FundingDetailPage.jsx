@@ -1,18 +1,17 @@
 import React from 'react'
-import { Box, Typography, Avatar, Button, Grid, Card, CardMedia, CardContent, Tabs, Tab } from '@mui/material'
-
-import { useNavigate, useParams } from 'react-router-dom'
+import { Box, Typography, Avatar, Button, Grid, Card, CardMedia, CardContent } from '@mui/material'
+import BasicTabs from '../components/mui/Tabs'
+import { useNavigate, useLocation } from 'react-router-dom'
 import FundingOverview from '../components/funding/FundingOverview'
-import FundingReview from '../components/funding/FundingReview'
-import FundingTimeline from '../components/funding/FundingTimeline'
 
 const FundingDetailPage = () => {
    const navigate = useNavigate()
+   const location = useLocation()
 
    const tabs = [
-      { label: '프로젝트 소개', path: '/funding/detail', content: <FundingOverview /> },
-      { label: '진행 소식', path: '/funding/timeline', content: <FundingTimeline /> },
-      { label: '후기', path: '/funding/review', content: <FundingReview /> },
+      { label: '프로젝트 소개', path: '/funding/detail' },
+      { label: '진행 소식', path: '/funding/timeline' },
+      { label: '후기', path: '/funding/review' },
    ]
 
    const project = {
@@ -84,11 +83,11 @@ const FundingDetailPage = () => {
             </Grid>
          </Grid>
 
-         <Tabs value={false} onChange={(e, newValue) => navigate(tabs[newValue].path)}>
-            {tabs.map((tab, index) => (
-               <Tab key={index} label={tab.label} />
-            ))}
-         </Tabs>
+         {/* 공통 탭 네비게이션 */}
+         <BasicTabs tabs={tabs} currentPath={location.pathname} onChange={(path) => navigate(path)} />
+
+         {/* 현재 탭에 따라 다른 페이지로 이동 */}
+         {location.pathname === '/funding/detail' && <FundingOverview />}
       </Box>
    )
 }
