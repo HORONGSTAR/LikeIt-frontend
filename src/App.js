@@ -13,18 +13,18 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
 import Navber from './components/shared/Navber'
-import StudioPage from './pages/StudioPage'
-import CommunityPage from './pages/CommunityPage'
+import CommunityTab from './components/studio/CommunityTab'
 import CommunityWritePage from './pages/CommunityWritePage'
-import FundingDetailPage from './pages/FundingDetailPage'
 import FundingReview from './components/funding/FundingReview'
-import FundingTimeline from './components/funding/FundingTimeline'
-import FundingLayout from './components/funding/FundingLayout'
 import DesignGuide from './pages/DesignGuide'
+import FundingLayout from './components/funding/FundingLayout'
+import FundingTimeline from './components/funding/FundingTimeline'
+import FundingOverview from './components/funding/FundingOverview'
+import StudioLayout from './components/studio/StudioLayout'
 
 function App() {
    const location = useLocation()
-   const pageName = { '/login': true, '/signup': true, '/commonsignup': true, '/studio': true }
+   const pageName = { '/login': true, '/signup': true, '/commonsignup': true, '/studio': true, '/studio/commu': true, '/studio/commu/write': true }
    const dontNeedNavber = pageName[location.pathname]
 
    return (
@@ -43,11 +43,12 @@ function App() {
             <Route path="/end" element={<EndPage />} />
             <Route path="/comming" element={<CommingPage />} />
             <Route path="/follow" element={<Home />} />
-            <Route path="/studio" element={<StudioPage />} />
-            <Route path="commu" element={<CommunityPage />} />
-            <Route path="/studio/commu/write" element={<CommunityWritePage />} />
+            <Route path="/studio" element={<StudioLayout />}>
+               <Route path="commu" element={<CommunityTab />} />
+               <Route path="commu/write" element={<CommunityWritePage />} />
+            </Route>
             <Route path="/funding" element={<FundingLayout />}>
-               <Route path="detail" element={<FundingDetailPage />} />
+               <Route path="detail" element={<FundingOverview />} />
                <Route path="timeline" element={<FundingTimeline />} />
                <Route path="review" element={<FundingReview />} />
             </Route>
