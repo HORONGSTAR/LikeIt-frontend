@@ -9,6 +9,8 @@ import CommunityPage from './pages/CommunityPage'
 import CommunityWritePage from './pages/CommunityWritePage'
 import FundingDetailPage from './pages/FundingDetailPage'
 import FundingReview from './components/funding/FundingReview'
+import FundingTimeline from './components/funding/FundingTimeline'
+import FundingLayout from './components/funding/FundingLayout'
 
 function App() {
    return (
@@ -28,8 +30,11 @@ function App() {
                <Route path="commu" element={<CommunityPage />} />
             </Route>
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />
-            <Route path="/funding/detail" element={<FundingDetailPage />} />
-            <Route path="/funding/review" element={<FundingReview />} />
+            <Route path="/funding" element={<FundingLayout />}>
+               <Route path="detail" element={<FundingDetailPage />} />
+               <Route path="timeline" element={<FundingTimeline />} />
+               <Route path="review" element={<FundingReview />} />
+            </Route>
          </Routes>
       </>
    )
