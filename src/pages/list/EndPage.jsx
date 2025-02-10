@@ -5,7 +5,7 @@ import { Box, Button } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchShowProjectsThunk } from '../../features/listSlice'
-import { Main } from '../../styles/BaseStyles'
+import { Main, LoadingBox } from '../../styles/BaseStyles'
 
 const EndPage = () => {
    const dispatch = useDispatch()
@@ -71,7 +71,13 @@ const EndPage = () => {
       setPage(page + 1) // 페이지 번호 증가
    }
 
-   if (loading) return <>Loading...</>
+   if (loading)
+      return (
+         <Main>
+            <LoadingBox />
+         </Main>
+      )
+   if (error) return <Main>{error}</Main>
 
    return (
       <Main>

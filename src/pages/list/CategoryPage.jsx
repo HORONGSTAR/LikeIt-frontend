@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchShowProjectsThunk } from '../../features/listSlice'
 import { Main, LoadingBox } from '../../styles/BaseStyles'
-import { useSearchParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-const SearchPage = () => {
+const CategoryPage = () => {
    const dispatch = useDispatch()
    const { projects, count, loading, error } = useSelector((state) => state.list)
    const [page, setPage] = useState(1)
@@ -16,12 +16,11 @@ const SearchPage = () => {
    const [loadingCount, setLoadingCount] = useState(8)
    const [scrollPosition, setScrollPosition] = useState(0)
 
-   const [searchParams] = useSearchParams()
-   const searchTerm = searchParams.get('searchTerm')
+   const categoryId = useParams().id
 
    useEffect(() => {
-      dispatch(fetchShowProjectsThunk({ page, limit: 8, type: 'new', searchTerm }))
-   }, [dispatch, page, searchTerm])
+      dispatch(fetchShowProjectsThunk({ page, limit: 8, type: 'new', categoryId }))
+   }, [dispatch, page, categoryId])
 
    useEffect(() => {
       const newCards = []
@@ -102,10 +101,10 @@ const SearchPage = () => {
                )}
             </>
          ) : (
-            <img src={process.env.REACT_APP_FRONT_URL + '/images/noSearch.png'} width="640px" style={{ margin: '0 auto' }}></img>
+            <img src={process.env.REACT_APP_FRONT_URL + '/images/noProject.png'} width="640px" style={{ margin: '0 auto' }}></img>
          )}
       </Main>
    )
 }
 
-export default SearchPage
+export default CategoryPage

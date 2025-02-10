@@ -8,6 +8,8 @@ import NewPage from './pages/list/NewPage'
 import EndPage from './pages/list/EndPage'
 import CommingPage from './pages/list/CommingPage'
 import SearchPage from './pages/list/SearchPage'
+import FollowPage from './pages/list/FollowPage'
+import CategoryPage from './pages/list/CategoryPage'
 
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
@@ -21,6 +23,7 @@ import FundingReview from './components/funding/FundingReview'
 import FundingTimeline from './components/funding/FundingTimeline'
 import FundingLayout from './components/funding/FundingLayout'
 import DesignGuide from './pages/DesignGuide'
+import RankingPage from './pages/RankingPage'
 
 function App() {
    const location = useLocation()
@@ -33,16 +36,17 @@ function App() {
          <Routes>
             <Route path="/desinguide" element={<DesignGuide />} />
             <Route path="/" element={<Home />} />
+            <Route path="/rank" element={<RankingPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/commonsignup" element={<CommonSignupPage />} />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/category/:id" element={<Home />} />
+            <Route path="/category/:id" element={<CategoryPage />} />
             <Route path="/hot" element={<HotPage />} />
             <Route path="/new" element={<NewPage />} />
             <Route path="/end" element={<EndPage />} />
             <Route path="/comming" element={<CommingPage />} />
-            <Route path="/follow" element={<Home />} />
+            <Route path="/follow" element={<FollowPage />} />
             <Route path="/studio" element={<StudioPage />} />
             <Route path="commu" element={<CommunityPage />} />
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />

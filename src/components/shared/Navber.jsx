@@ -80,7 +80,7 @@ function Navber({ isAuthenticated }) {
                <Stack2 sx={{ flexWrap: 'wrap', my: 2, display: open ? 'flex' : 'none' }}>
                   {categoryItems.map((item) => (
                      <Stack2 key={item.id} mx={2} onClick={() => setOpen(!open)} component={Link} to={`/category/${item.id}`}>
-                        <img src={`images/icon/${item.icon}.svg`} alt={item.name} width={12} />
+                        <img src={process.env.REACT_APP_FRONT_URL + `/images/icon/${item.icon}.svg`} alt={item.name} width={12} />
                         &nbsp;
                         <Typography variant="body2">{item.name}</Typography>
                      </Stack2>
