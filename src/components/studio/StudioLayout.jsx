@@ -1,14 +1,14 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardMedia, Typography, Button, Divider } from '@mui/material'
-import BasicTabs from '../components/mui/Tabs'
-import StudioTab from '../components/studio/StudioTab'
-import ProjectTab from '../components/studio/ProjectTab'
-import StudioNavber from '../components/shared/StudioNavber'
-import SpaceBar from '../components/studio/SpaceBar'
+import BasicTabs from '../../components/mui/Tabs'
+import StudioNavber from '../shared/StudioNavber'
+import StudioTab from '../studio/StudioTab'
+import ProjectTab from '../studio/ProjectTab'
+import SpaceBar from '../studio/SpaceBar'
 import { useState } from 'react'
-import { Main, Stack2 } from '../styles/BaseStyles'
+import { Main, Stack2 } from '../../styles/BaseStyles'
 
-const StudioPage = () => {
+const StudioLayout = () => {
    const [posts, setPosts] = useState([])
    const location = useLocation()
    const navigate = useNavigate()
@@ -63,4 +63,4 @@ const StudioPage = () => {
    )
 }
 
-export default StudioPage
+export default StudioLayout

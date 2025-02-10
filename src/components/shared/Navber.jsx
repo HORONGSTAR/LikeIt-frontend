@@ -64,7 +64,7 @@ function Navber({ isAuthenticated }) {
          <AppBar position="static">
             <Container maxWidth="md" sx={{ background: '#fff' }}>
                <Stack2 my={2}>
-                  <Link>
+                  <Link to="/">
                      <img src={process.env.REACT_APP_FRONT_URL + '/images/logo.svg'} alt="Like It!" />
                   </Link>
                   <Stack2 sx={{ ml: 'auto', alignItems: 'end' }}>
@@ -83,14 +83,7 @@ function Navber({ isAuthenticated }) {
                      </Typography>
                   </Stack2>
                   {navMeueItems.map((item) => (
-                     <Typography
-                        key={item.page}
-                        fontWeight="500"
-                        component={NavLink}
-                        to={item.path}
-                        mr={breakpoint.margin}
-                        onClick={() => setOpen(false)}
-                     >
+                     <Typography key={item.page} fontWeight="500" component={NavLink} to={item.path} mr={breakpoint.margin} onClick={() => setOpen(false)}>
                         {item.page}
                      </Typography>
                   ))}

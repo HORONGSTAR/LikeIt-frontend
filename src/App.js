@@ -7,24 +7,19 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
 import Navber from './components/shared/Navber'
-import StudioPage from './pages/StudioPage'
-import CommunityPage from './pages/CommunityPage'
+import CommunityTab from './components/studio/CommunityTab'
 import CommunityWritePage from './pages/CommunityWritePage'
-import FundingDetailPage from './pages/FundingDetailPage'
 import FundingReview from './components/funding/FundingReview'
-<<<<<<< HEAD
-import FundingTimeline from './components/funding/FundingTimeline'
-import FundingLayout from './components/funding/FundingLayout'
-=======
 import DesignGuide from './pages/DesignGuide'
->>>>>>> 7dd990ce481465e05aac674f376517d5b84eddaa
+import FundingLayout from './components/funding/FundingLayout'
+import FundingTimeline from './components/funding/FundingTimeline'
+import FundingOverview from './components/funding/FundingOverview'
+import StudioLayout from './components/studio/StudioLayout'
 
 function App() {
    const location = useLocation()
-   // Check if the current path is "/login" or "/signup"
-   const dontNeedNavber = location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/commonsignup'
-   // 로그인 이랑 회원가입부분이 네브바가 필요가 없어서 요렇게 했습니다 ㅠ
-   // navber가 필요없는 화면은 위에 형식처럼해서 path 경로만 넣어주시면 됩니다!!! -  세빈
+   const pageName = { '/login': true, '/signup': true, '/commonsignup': true, '/studio': true, '/studio/commu': true, '/studio/commu/write': true }
+   const dontNeedNavber = pageName[location.pathname]
 
    return (
       <>
@@ -42,11 +37,12 @@ function App() {
             <Route path="/end" element={<Home />} />
             <Route path="/comming" element={<Home />} />
             <Route path="/follow" element={<Home />} />
-            <Route path="/studio" element={<StudioPage />} />
-            <Route path="commu" element={<CommunityPage />} />
-            <Route path="/studio/commu/write" element={<CommunityWritePage />} />
+            <Route path="/studio" element={<StudioLayout />}>
+               <Route path="commu" element={<CommunityTab />} />
+               <Route path="commu/write" element={<CommunityWritePage />} />
+            </Route>
             <Route path="/funding" element={<FundingLayout />}>
-               <Route path="detail" element={<FundingDetailPage />} />
+               <Route path="detail" element={<FundingOverview />} />
                <Route path="timeline" element={<FundingTimeline />} />
                <Route path="review" element={<FundingReview />} />
             </Route>
