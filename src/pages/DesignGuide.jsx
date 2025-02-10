@@ -1,5 +1,5 @@
-import { Container, Grid2, Box, Typography, Chip } from '@mui/material'
-import { SubTitle, Stack2, TextLink } from '../styles/BaseStyles'
+import { Grid2, Box, Typography, Chip, Divider } from '@mui/material'
+import { Main, SubTitle, Stack2, TextLink } from '../styles/BaseStyles'
 import { ProjectCard, CommingCard, HistoryCard, StudioCard, BasicCard } from '../components/ui/Cards'
 import Navber from '../components/shared/Navber'
 
@@ -24,15 +24,18 @@ function DesignGuide() {
 
    const Memo = ({ component, props, children }) => {
       return (
-         <Box sx={{ p: 2, m: 2, mb: 8, borderRadius: 2, background: '#ffeebd' }}>
-            <Typography variant="h6">{component}</Typography>
-            <Typography variant="body2" color="orenge">
-               <Typography component="span" variant="body2" fontWeight="700" color="brown">
-                  props&nbsp;
+         <Box pb={4}>
+            <Box sx={{ p: 2, m: 2, borderRadius: 2, background: '#ffeebd' }}>
+               <Typography variant="h5">{component}</Typography>
+               <Typography variant="body2" color="orenge">
+                  <Typography component="span" variant="body2" fontWeight="700" color="brown">
+                     props&nbsp;
+                  </Typography>
+                  {props}
                </Typography>
-               {props}
-            </Typography>
-            <Typography>{children}</Typography>
+               <Typography>{children}</Typography>
+            </Box>
+            <Divider variant="middle" />
          </Box>
       )
    }
@@ -40,10 +43,11 @@ function DesignGuide() {
    return (
       <>
          <Navber />
-         <Container maxWidth="md">
-            <SubTitle to="/desinguide">서브 타이틀</SubTitle>
-            <Memo component={'SubTitle'} props={'children, to'}>
-               홈에서 사용하는 제목입니다. props의 to를 사용해서 페이지 링크를 걸 수 있습니다.
+         <Main>
+            <Memo component={'Main'} props={'children, spacing'}>
+               페이지는 기본적으로 Main 컴포넌트로 감싸는 것을 기본으로 합니다. 이 페이지도 Main으로 랩핑한 상태입니다. 간격은 spaching으로 조절할 수
+               있지만, 어지간한 경우는 기본 설정으로 충분합니다. Main의 children은 margin이 안 먹힐 수 있으므로 여백을 추가로 주고 싶다면 padding을
+               사용해주세요. children을 가로로 나열하고 싶다면 아래의 Stack2를 사용하길 권장합니다.
             </Memo>
             <Stack2 spacing={2}>
                <Chip label={'Stack2 안에 들어있는 칩1'} />
@@ -53,6 +57,11 @@ function DesignGuide() {
                기존 Mui의 Stack컴포넌트에서 기본 direction을 row로 변경했습니다. Stack에서 사용하던 props를 동일하게 사용할 수 있습니다. alignItems는
                기본적으로 center입니다.
             </Memo>
+            <SubTitle to="/desinguide">서브 타이틀</SubTitle>
+            <Memo component={'SubTitle'} props={'children, to'}>
+               홈에서 사용하는 제목입니다. props의 to를 사용해서 페이지 링크를 걸 수 있습니다.
+            </Memo>
+
             <TextLink to="/desinguide">텍스트 링크</TextLink>
             <Memo component={'TextLink'} props={'mui Typography props'}>
                Mui의 Link와 라우터 돔의 Link를 합쳐둔 컴포넌트입니다. Mui Typography의 props와 혼용 가능합니다.
@@ -102,7 +111,7 @@ function DesignGuide() {
             <Memo component={'StudioCard'} props={'studio'}>
                구독 페이지에서 사용하는 스튜디오 계정 카드입니다.
             </Memo>
-         </Container>
+         </Main>
       </>
    )
 }
