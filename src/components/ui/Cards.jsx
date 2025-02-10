@@ -14,14 +14,14 @@ export const BasicCard = ({ imgUrl, children, cardEf }) => {
          minWidth: 100,
          minHeight: { sm: 144, xs: 90 },
       },
-      padding: { md: 2, sm: 1.4, xs: 1 },
+      stack: { p: { md: 2, sm: 1.4, xs: 1 }, width: { sm: 'auto', xs: '100%' } },
    }
 
    return (
       <Box sx={cardEf}>
          <Card sx={cardSx.body}>
             <CardMedia image={imgUrl || '/images/notFindImg.png'} sx={cardSx.media} />
-            <Stack p={cardSx.padding}>{children}</Stack>
+            <Stack sx={cardSx.stack}>{children}</Stack>
          </Card>
       </Box>
    )

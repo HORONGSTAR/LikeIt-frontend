@@ -10,6 +10,7 @@ import Navber from './components/shared/Navber'
 import CommunityTab from './components/studio/CommunityTab'
 import CommunityWritePage from './pages/CommunityWritePage'
 import FundingReview from './components/funding/FundingReview'
+<<<<<<< HEAD
 import DesignGuide from './pages/DesignGuide'
 import FundingLayout from './components/funding/FundingLayout'
 import FundingTimeline from './components/funding/FundingTimeline'
@@ -19,6 +20,15 @@ import StudioLayout from './components/studio/StudioLayout'
 function App() {
    const location = useLocation()
    const pageName = { '/login': true, '/signup': true, '/commonsignup': true, '/studio': true, '/studio/commu': true, '/studio/commu/write': true }
+=======
+import FundingTimeline from './components/funding/FundingTimeline'
+import FundingLayout from './components/funding/FundingLayout'
+import DesignGuide from './pages/DesignGuide'
+
+function App() {
+   const location = useLocation()
+   const pageName = { '/login': true, '/signup': true, '/commonsignup': true, '/studio': true }
+>>>>>>> ad11d9da0d70b8f1e8c2b435f4f68e065d142ab5
    const dontNeedNavber = pageName[location.pathname]
 
    return (
