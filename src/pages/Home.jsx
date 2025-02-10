@@ -7,6 +7,7 @@ import { BasicCard } from '../components/ui/Cards'
 
 function Home() {
    return (
+
       <>
          <Navber />
          <Main>

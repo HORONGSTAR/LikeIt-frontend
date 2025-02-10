@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom'
-import React from 'react'
 import { Stack, TextField, Button, Typography } from '@mui/material'
 import { Dot, Stack2 } from '../../styles/BaseStyles'
 
@@ -11,7 +10,7 @@ const Signup = () => {
             <Typography>회원가입 후 서비스를 이용할 수 있습니다</Typography>
             <Dot />
          </Stack2>
-         <Button fullWidth variant="contained">
+         <Button component={Link} to={'/commonsignup'} fullWidth variant="contained">
             이메일로 회원가입
          </Button>
          <Button variant="contained" sx={{ background: '#F9E000', color: '#3A1D1D' }} startIcon={<img src="/images/icon/kakao.svg" alt="kakao" />}>
