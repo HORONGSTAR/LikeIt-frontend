@@ -2,14 +2,10 @@ import { Container, Grid2, Stack, Typography } from '@mui/material'
 import { Main } from '../styles/BaseStyles'
 import Banner from '../components/home/Banner'
 import HomeProjects from '../components/home/HomeProjects'
-import Navber from '../components/shared/Navber'
-import { BasicCard } from '../components/ui/Cards'
 
 function Home() {
    return (
-
       <>
-         <Navber />
          <Main>
             <Banner />
             <img src="./images/rankBanner.png" alt="후원랭킹배너" width="100%" />

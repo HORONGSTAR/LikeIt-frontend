@@ -1,10 +1,10 @@
 import ProjectCard from '../list/ProjectCard'
-
 import { useCallback, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { fetchShowProjectsThunk } from '../../features/listSlice'
 import { Container } from '@mui/material'
+import { SubTitle } from '../../styles/BaseStyles'
 
 function HomeProjects() {
    const dispatch = useDispatch()
@@ -29,7 +29,7 @@ function HomeProjects() {
    return (
       projects && (
          <>
-            <p style={{ margin: '10px', fontSize: '22px', fontWeight: 'bold' }}>인기 프로젝트 ▶</p>
+            <SubTitle>인기 프로젝트</SubTitle>
             <Container
                disableGutters
                sx={{
@@ -41,7 +41,7 @@ function HomeProjects() {
             >
                {showCards('hot')}
             </Container>
-            <p style={{ margin: '10px', fontSize: '22px', fontWeight: 'bold' }}>신규 프로젝트 ▶</p>
+            <SubTitle>신규 프로젝트</SubTitle>
             <Container
                disableGutters
                sx={{
@@ -53,7 +53,7 @@ function HomeProjects() {
             >
                {showCards('new')}
             </Container>
-            <p style={{ margin: '10px', fontSize: '22px', fontWeight: 'bold' }}>마감 임박 ▶</p>
+            <SubTitle>마감 임박</SubTitle>
             <Container
                disableGutters
                sx={{
@@ -65,7 +65,7 @@ function HomeProjects() {
             >
                {showCards('end')}
             </Container>
-            <p style={{ margin: '10px', fontSize: '22px', fontWeight: 'bold' }}>공개 예정 ▶</p>
+            <SubTitle>공개 예정</SubTitle>
             <Container
                disableGutters
                sx={{
