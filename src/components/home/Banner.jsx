@@ -6,11 +6,11 @@ import 'swiper/css/navigation'
 
 import { useState, useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchShowBannerThunk } from '../../features/mainSlice'
+import { fetchShowBannerThunk } from '../../features/indexSlice'
 
 function Banner() {
    const dispatch = useDispatch()
-   const { banners, loading, error } = useSelector((state) => state.main)
+   const { banners, loading, error } = useSelector((state) => state.index)
 
    useEffect(() => {
       dispatch(fetchShowBannerThunk())
@@ -20,7 +20,7 @@ function Banner() {
       return banners.map((banner) => {
          return (
             <SwiperSlide key={banner.imgUrl}>
-               <img src={process.env.REACT_APP_API_URL + '/bannerProject/' + banner.imgUrl} alt="배너 프로젝트" height={'300px'} />
+               <img src={process.env.REACT_APP_API_URL + '/bannerProject' + banner.imgUrl} alt="배너 프로젝트" width="100%" />
             </SwiperSlide>
          )
       })
@@ -28,7 +28,7 @@ function Banner() {
 
    return (
       banners && (
-         <div className="Home_Banner">
+         <div className="Home_Banner" style={{ padding: '20px 0' }}>
             <Swiper
                spaceBetween={30}
                centeredSlides={true}

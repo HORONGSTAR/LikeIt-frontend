@@ -1,9 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
-import mainReducer from '../features/mainSlice'
+import listReducer from '../features/listSlice'
+import authReducer from '../features/authSlice'
+import indexReducer from '../features/indexSlice'
 
 const store = configureStore({
    reducer: {
-      main: mainReducer,
+      list: listReducer,
+      auth: authReducer,
+      index: indexReducer,
    },
 })
 

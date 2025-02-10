@@ -1,7 +1,13 @@
 import React from 'react'
+<<<<<<< HEAD
 import { Box, Typography, Avatar, Button, Grid, Card, CardMedia, CardContent } from '@mui/material'
 import BasicTabs from '../components/mui/Tabs'
 import { useNavigate, useLocation } from 'react-router-dom'
+=======
+import { Box, Typography, Avatar, Button, Grid, Card, CardMedia, CardContent, Tabs, Tab } from '@mui/material'
+
+import { useNavigate, useParams } from 'react-router-dom'
+>>>>>>> 7dd990ce481465e05aac674f376517d5b84eddaa
 import FundingOverview from '../components/funding/FundingOverview'
 
 const FundingDetailPage = () => {
@@ -67,15 +73,15 @@ const FundingDetailPage = () => {
                         </Typography>
                      </Typography>
 
-                     <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                     <Typography color="text.secondary" sx={{ mt: 1 }}>
                         목표 금액: {project.targetAmount.toLocaleString()}원
                      </Typography>
 
-                     <Typography variant="body2" color="text.secondary">
+                     <Typography color="text.secondary">
                         펀딩 기간: {project.startDate} ~ {project.endDate}
                      </Typography>
 
-                     <Button variant="contained" color="warning" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem' }}>
+                     <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem' }}>
                         후원하기
                      </Button>
                   </CardContent>

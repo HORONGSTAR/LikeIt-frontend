@@ -1,12 +1,12 @@
 import Signup from '../components/auth/Signup'
-import { Container } from '@mui/material'
-
+import { Panel } from '../components/ui/Panel'
 const SignupPage = () => {
-  return (
-    <Container maxWidth='md'>
-      <Signup />
-    </Container>
-  )
+
+   return (
+      <Panel image="/images/page-register.png">
+         <Signup />
+      </Panel>
+   )
 }
 
 export default SignupPage
