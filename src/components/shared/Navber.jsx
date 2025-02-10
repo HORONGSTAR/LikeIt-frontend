@@ -1,12 +1,13 @@
-import { AppBar, Container, Box, Typography, Button, TextField, InputAdornment, IconButton } from '@mui/material'
+
 import { NavLink, Link } from 'react-router-dom'
 import { Menu as MenuClose, MenuOpen, Search as SearchIcon } from '@mui/icons-material'
-import { ModalBox, Stack2 } from '../../styles/StyledComponent'
+import { ModalBox, Stack2 } from '../../styles/BaseStyles'
 import { useState } from 'react'
 import AccountMenu from './AccountMenu'
 
 function Navber({ isAuthenticated }) {
    const [open, setOpen] = useState(false)
+
 
    const navMeueItems = [
       { page: '인기', path: '/hot' },
@@ -62,15 +63,17 @@ function Navber({ isAuthenticated }) {
    return (
       <>
          <AppBar position="static">
-            <Container maxWidth="md">
-               <Stack2 my={2}>
-                  <Link to="/">
-                     <Box component="img" src="images/logo.svg" alt="Like It!" />
+            <Container maxWidth="md" sx={{ background: '#fff' }}>
+               <Stack my={2}>
+                  <Link>
+                     <img src={process.env.REACT_APP_FRONT_URL + '/images/logo.svg'} alt="Like It!" />
+
                   </Link>
                   <Stack2 sx={{ ml: 'auto', alignItems: 'end' }}>
                      <IconButton sx={{ display: breakpoint.mobile }} size="small">
                         <ModalBox openBtn={<SearchIcon />}>{searchBox}</ModalBox>
                      </IconButton>
+
                      {isAuthenticated ? <Button variant="contained">로그인</Button> : <AccountMenu items={accountMeunItems} />}
                   </Stack2>
                </Stack2>
@@ -78,14 +81,24 @@ function Navber({ isAuthenticated }) {
                   <Stack2 onClick={() => setOpen(!open)} sx={{ mr: breakpoint.margin, cursor: 'pointer' }}>
                      {open ? <MenuOpen fontSize="small" /> : <MenuClose fontSize="small" />}
                      &nbsp;
-                     <Typography display={breakpoint.desktop}>카테고리</Typography>
+                     <Typography fontWeight="500" display={breakpoint.desktop}>
+                        카테고리
+                     </Typography>
                   </Stack2>
                   {navMeueItems.map((item) => (
-                     <Typography key={item.page} component={NavLink} to={item.path} mr={breakpoint.margin} onClick={() => setOpen(false)}>
+                     <Typography
+                        key={item.page}
+                        fontWeight="500"
+                        component={NavLink}
+                        to={item.path}
+                        mr={breakpoint.margin}
+                        onClick={() => setOpen(false)}
+                     >
                         {item.page}
                      </Typography>
                   ))}
                   <Box sx={{ ml: 'auto', width: breakpoint.width, display: breakpoint.desktop }}>{searchBox}</Box>
+
                </Stack2>
                <Stack2 sx={{ flexWrap: 'wrap', my: 2, display: open ? 'flex' : 'none' }}>
                   {categoryItems.map((item) => (

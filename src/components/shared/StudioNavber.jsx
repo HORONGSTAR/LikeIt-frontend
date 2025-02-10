@@ -1,12 +1,12 @@
-import { AppBar, Stack, Container, Typography, Button, IconButton } from '@mui/material'
+import { AppBar, Container, Typography, Button, IconButton } from '@mui/material'
 import { Menu as MenuClose, MenuOpen } from '@mui/icons-material'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import AccountMenu from './AccountMenu'
-import { Stack2 } from '../../styles/StyledComponent'
-import { height } from '@mui/system'
+import { Stack2 } from '../../styles/BaseStyles'
 
 function StudioNavber({ isAuthenticated, user }) {
+   const { studioId } = useParams()
    const [open, setOpen] = useState(false)
 
    const studioMenu = [
@@ -33,15 +33,22 @@ function StudioNavber({ isAuthenticated, user }) {
          <AppBar position="static">
             <Container maxWidth="md">
                <Stack2 my={2}>
-                  <Link>
-                     <img src="images/logo.svg" alt="Like It!" />
-                  </Link>
+                  {studioId ? (
+                     <Link to="/">
+                        <img src="images/logo.svg" alt="Like It!" />
+                     </Link>
+                  ) : (
+                     <Link to="/studio">
+                        <img src="images/logo-studio.svg" alt="Studio" />
+                     </Link>
+                  )}
+
                   <Stack2 sx={{ display: breakpoint.desktop, ml: breakpoint.margin, alignItems: 'end', height: 32 }}>
                      {studioMenu.map((item) => (
                         <Typography mr={breakpoint.margin}>{item.page}</Typography>
                      ))}
                   </Stack2>
-                  <Stack2 variant="right">
+                  <Stack2 ml="auto">
                      <IconButton sx={{ display: breakpoint.mobile }} onClick={() => setOpen(!open)}>
                         {open ? <MenuOpen /> : <MenuClose />}
                      </IconButton>
@@ -50,7 +57,7 @@ function StudioNavber({ isAuthenticated, user }) {
                </Stack2>
                <Stack2 sx={{ flexWrap: 'wrap', my: 2, display: open ? 'flex' : 'none', gap: 2 }}>
                   {studioMenu.map((item) => (
-                     <Typography>{item.page}</Typography>
+                     <Typography fontWeight="500">{item.page}</Typography>
                   ))}
                </Stack2>
             </Container>
