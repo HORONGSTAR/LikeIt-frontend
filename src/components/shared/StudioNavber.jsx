@@ -45,7 +45,9 @@ function StudioNavber({ isAuthenticated, user }) {
 
                   <Stack2 sx={{ display: breakpoint.desktop, ml: breakpoint.margin, alignItems: 'end', height: 32 }}>
                      {studioMenu.map((item) => (
-                        <Typography mr={breakpoint.margin}>{item.page}</Typography>
+                        <Typography key={item.page} mr={breakpoint.margin}>
+                           {item.page}
+                        </Typography>
                      ))}
                   </Stack2>
                   <Stack2 ml="auto">
@@ -57,7 +59,9 @@ function StudioNavber({ isAuthenticated, user }) {
                </Stack2>
                <Stack2 sx={{ flexWrap: 'wrap', my: 2, display: open ? 'flex' : 'none', gap: 2 }}>
                   {studioMenu.map((item) => (
-                     <Typography fontWeight="500">{item.page}</Typography>
+                     <Typography key={item.page} fontWeight="500">
+                        {item.page}
+                     </Typography>
                   ))}
                </Stack2>
             </Container>
