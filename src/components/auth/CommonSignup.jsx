@@ -100,7 +100,7 @@ const CommonSignup = () => {
             console.error('회원가입 에러:', error)
             alert(error)
          })
-   }, [email, phone, nickname, password, confirmPassword])
+   }, [dispatch, email, phone, nickname, password, confirmPassword])
 
    //회원가입이 완료 되었을 때
    if (isSignupComplete) {
@@ -139,43 +139,19 @@ const CommonSignup = () => {
 
                <TextField label="이메일 주소" variant="outlined" fullWidth margin="normal" value={email} onChange={(e) => setEmail(e.target.value)} />
 
-               <TextField
-                  label="연락처"
-                  variant="outlined"
-                  type="text"
-                  fullWidth
-                  margin="dense"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-               />
+               <TextField label="연락처" variant="outlined" type="text" fullWidth margin="dense" value={phone} onChange={(e) => setPhone(e.target.value)} />
                <Typography variant="body2" color="textSecondary" sx={{ fontSize: '10px' }} align="center">
                   숫자만 입력하세요.
                </Typography>
 
                <TextField label="닉네임" variant="outlined" fullWidth margin="dense" value={nickname} onChange={(e) => setNickname(e.target.value)} />
 
-               <TextField
-                  label="비밀번호"
-                  variant="outlined"
-                  type="password"
-                  fullWidth
-                  margin="dense"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-               />
+               <TextField label="비밀번호" variant="outlined" type="password" fullWidth margin="dense" value={password} onChange={(e) => setPassword(e.target.value)} />
                <Typography variant="body2" color="textSecondary" sx={{ fontSize: '10px' }}>
                   비밀번호는 영문, 숫자, 특수문자를 포함하여 공백 없이 8~20자로 입력.
                </Typography>
 
-               <TextField
-                  label="비밀번호 확인"
-                  variant="outlined"
-                  type="password"
-                  fullWidth
-                  margin="dense"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-               />
+               <TextField label="비밀번호 확인" variant="outlined" type="password" fullWidth margin="dense" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                <StyledButton fullWidth variant="contained" sx={{ backgroundColor: '#000000', color: '#FFFFFF' }} onClick={handleCommonSignup}>
                   회원가입
                </StyledButton>
@@ -186,4 +162,3 @@ const CommonSignup = () => {
 }
 
 export default CommonSignup
-//ㅠㅠ 왜 안되지

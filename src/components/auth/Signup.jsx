@@ -3,6 +3,10 @@ import { Stack, TextField, Button, Typography } from '@mui/material'
 import { Dot, Stack2 } from '../../styles/BaseStyles'
 
 const Signup = () => {
+   const googleLoginOrSignup = () => {
+      window.location.href = 'http://localhost:8000/auth/google'
+   }
+
    return (
       <Stack width={300} spacing={2}>
          <Stack2 justifyContent="center">
@@ -16,7 +20,7 @@ const Signup = () => {
          <Button variant="contained" sx={{ background: '#F9E000', color: '#3A1D1D' }} startIcon={<img src="/images/icon/kakao.svg" alt="kakao" />}>
             카카오 계정으로 회원가입
          </Button>
-         <Button variant="outlined" startIcon={<img src="/images/icon/google.svg" alt="google" />}>
+         <Button onClick={googleLoginOrSignup} variant="outlined" startIcon={<img src="/images/icon/google.svg" alt="google" />}>
             구글 계정으로 회원가입
          </Button>
       </Stack>
