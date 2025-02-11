@@ -8,7 +8,7 @@ import NewPage from './pages/list/NewPage'
 import EndPage from './pages/list/EndPage'
 import CommingPage from './pages/list/CommingPage'
 import SearchPage from './pages/list/SearchPage'
-
+import StudioPage from './pages/StudioPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
@@ -20,7 +20,6 @@ import DesignGuide from './pages/DesignGuide'
 import FundingLayout from './components/funding/FundingLayout'
 import FundingTimeline from './components/funding/FundingTimeline'
 import FundingOverview from './components/funding/FundingOverview'
-import StudioLayout from './components/studio/StudioLayout'
 
 function App() {
    const location = useLocation()
@@ -43,7 +42,7 @@ function App() {
             <Route path="/end" element={<EndPage />} />
             <Route path="/comming" element={<CommingPage />} />
             <Route path="/follow" element={<Home />} />
-            <Route path="/studio" element={<StudioLayout />}>
+            <Route path="/studio" element={<StudioPage />}>
                <Route path="commu" element={<CommunityTab />} />
                <Route path="commu/write" element={<CommunityWritePage />} />
             </Route>
