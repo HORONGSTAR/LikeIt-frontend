@@ -7,7 +7,8 @@ export const registerUser = async (userData) => {
       return response
    } catch (error) {
       console.error(`API request 오류: ${error.message}`)
-      throw error //request 할떄 오류 발생시 에러르 registerUser() 함수를 실행한 곳으로 던짐
+
+      throw error //request 할떄 오류 발생시 에러를 registerUser() 함수를 실행한 곳으로 던짐
    }
 }
 
@@ -31,6 +32,7 @@ export const googleRegisterUser = async (credential) => {
       console.error(`API request 오류: ${error.message}`)
       throw error
    }
+
 }
 
 //로그아웃
@@ -53,4 +55,5 @@ export const checkAuthStatus = async () => {
       console.error(`API Request 오류: ${error.message}`)
       throw error
    }
+
 }
