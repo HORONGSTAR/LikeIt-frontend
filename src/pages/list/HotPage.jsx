@@ -1,10 +1,11 @@
-import ProjectCard from '../../components/list/ProjectCard'
-
-import { Container, Box, Button } from '@mui/material'
+import { ProjectCard } from '../../components/ui/Cards'
+import { Grid2 } from '@mui/material'
+import { Box, Button } from '@mui/material'
 
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchShowProjectsThunk } from '../../features/listSlice'
+import { LoadingBox, Main } from '../../styles/BaseStyles'
 
 const HotPage = () => {
    const dispatch = useDispatch()
@@ -13,11 +14,6 @@ const HotPage = () => {
    const [allCards, setAllCards] = useState([])
    const [loadingCount, setLoadingCount] = useState(8)
    const [scrollPosition, setScrollPosition] = useState(0)
-
-   const handleScroll = () => {
-      const position = window.pageYOffset
-      setScrollPosition(position)
-   }
 
    useEffect(() => {
       dispatch(fetchShowProjectsThunk({ page, limit: 8, type: 'hot' }))
@@ -30,24 +26,33 @@ const HotPage = () => {
 
       if (projects && projects.hot) {
          projects.hot.forEach((project, index) => {
+            let totalOrderPrice = 0
+            if (project.totalOrderPrice) totalOrderPrice = project.totalOrderPrice
+            let rate = Math.floor((totalOrderPrice / project.goal) * 100)
+            const projectData = {
+               studioName: project.Studio.name,
+               title: project.title,
+               intro: project.intro,
+               state: project.projectStatus,
+               imgUrl: process.env.REACT_APP_API_URL + '/projectImg' + project.imgUrl,
+               startDate: project.startDate,
+               endDate: project.endDate,
+               userCount: project.userCount,
+               rate,
+            }
             cardCount++
-            row.push(<ProjectCard key={index} project={project} type="hot" />)
+            row.push(
+               <Grid2 key={project.id} size={{ md: 3, sm: 6, xs: 12 }}>
+                  <ProjectCard key={project.id} project={projectData} />
+               </Grid2>
+            )
 
             // 4개마다 새로운 row로 묶기
             if (cardCount % 4 === 0 || index === projects.hot.length - 1) {
                newCards.push(
-                  <Box
-                     sx={{
-                        display: {
-                           xs: 'block',
-                           sm: 'flex',
-                        },
-                     }}
-                     className="Cards"
-                     key={newCards.length + loadingCount}
-                  >
+                  <Grid2 key={project.id} container columnSpacing={1.5} rowSpacing={{ sm: 3, xs: 1.5 }}>
                      {row}
-                  </Box>
+                  </Grid2>
                )
                row = [] // 다음 배치를 위해 row 배열 초기화
             }
@@ -66,25 +71,36 @@ const HotPage = () => {
       setPage(page + 1) // 페이지 번호 증가
    }
 
-   if (loading) return <>Loading...</>
+   if (loading)
+      return (
+         <Main>
+            <LoadingBox />
+         </Main>
+      )
+   if (error) return <Main>{error}</Main>
 
    return (
-      <Container maxWidth="md">
-         <p style={{ margin: '10px 0' }}>{count}개의 프로젝트가 있습니다.</p>
-
-         {allCards}
-         {loadingCount >= count ? (
-            <p style={{ textAlign: 'center', margin: '16px' }}>모든 프로젝트를 불러왔습니다</p>
+      <Main>
+         {count ? (
+            <>
+               <p style={{ margin: '10px 0' }}>{count}개의 프로젝트가 있습니다.</p>
+               {allCards}
+               {loadingCount >= count ? (
+                  <p style={{ textAlign: 'center', margin: '16px' }}>모든 프로젝트를 불러왔습니다</p>
+               ) : (
+                  <Box display="flex" alignItems="center" width="100%" sx={{ my: 2 }}>
+                     <Box flexGrow={1} height="1px" bgcolor="gray" />
+                     <Button onClick={loadMoreProjects} variant="contained" sx={{ marginLeft: 2, marginRight: 2 }}>
+                        더보기
+                     </Button>
+                     <Box flexGrow={1} height="1px" bgcolor="gray" />
+                  </Box>
+               )}
+            </>
          ) : (
-            <Box display="flex" alignItems="center" width="100%" sx={{ my: 2 }}>
-               <Box flexGrow={1} height="1px" bgcolor="gray" />
-               <Button onClick={loadMoreProjects} variant="contained" sx={{ marginLeft: 2, marginRight: 2 }}>
-                  더보기
-               </Button>
-               <Box flexGrow={1} height="1px" bgcolor="gray" />
-            </Box>
+            <img src={process.env.REACT_APP_FRONT_URL + '/images/noProject.png'} width="640px" style={{ margin: '0 auto' }}></img>
          )}
-      </Container>
+      </Main>
    )
 }
 

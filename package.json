@@ -7,6 +7,7 @@
       "@emotion/styled": "^11.14.0",
       "@mui/base": "^5.0.0-beta.69",
       "@mui/icons-material": "^6.4.2",
+      "@mui/lab": "^6.0.0-beta.26",
       "@mui/material": "^6.4.2",
       "@mui/system": "^6.4.2",
       "@mui/x-date-pickers": "^7.25.0",
@@ -20,12 +21,13 @@
       "react-dom": "^19.0.0",
       "react-redux": "^9.2.0",
       "react-router-dom": "^7.1.5",
-      "react-scripts": "5.0.1",
+      "react-scripts": "^5.0.1",
+      "react-scroll": "^1.9.2",
       "redux": "^5.0.1",
       "socket.io-client": "^4.8.1",
       "styled-components": "^6.1.14",
-      "web-vitals": "^2.1.0",
-      "swiper": "^11.1.15"
+      "swiper": "^11.1.15",
+      "web-vitals": "^2.1.0"
    },
    "scripts": {
       "start": "react-scripts start",
