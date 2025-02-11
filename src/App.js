@@ -2,7 +2,12 @@ import './styles/common.css'
 import { Route, Routes, Link, useLocation } from 'react-router-dom'
 import { Button } from '@mui/material'
 
+import RedirectLoginRoute from './components/auth/RedirectLoginRoute'
+import RedirectLogoutRoute from './components/auth/RedirectLogoutRoute'
+
 import Home from './pages/Home'
+import AdminPage from './pages/AdminPage'
+
 import HotPage from './pages/list/HotPage'
 import NewPage from './pages/list/NewPage'
 import EndPage from './pages/list/EndPage'
@@ -24,6 +29,7 @@ import FundingTimeline from './components/funding/FundingTimeline'
 import FundingLayout from './components/funding/FundingLayout'
 import DesignGuide from './pages/DesignGuide'
 import RankingPage from './pages/RankingPage'
+import AdminRoute from './components/auth/AdminRoute'
 
 function App() {
    const location = useLocation()
@@ -34,6 +40,14 @@ function App() {
       <>
          {!dontNeedNavber && <Navber />}
          <Routes>
+            <Route
+               path="/admin"
+               element={
+                  <AdminRoute>
+                     <AdminPage />
+                  </AdminRoute>
+               }
+            />
             <Route path="/desinguide" element={<DesignGuide />} />
             <Route path="/" element={<Home />} />
             <Route path="/rank" element={<RankingPage />} />

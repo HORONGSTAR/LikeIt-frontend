@@ -1,6 +1,6 @@
 import { ProjectCard } from '../../components/ui/Cards'
 import { Grid2 } from '@mui/material'
-import { Box, Button } from '@mui/material'
+import { Box, Divider, Chip } from '@mui/material'
 
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -85,17 +85,9 @@ const NewPage = () => {
             <>
                <p style={{ margin: '10px 0' }}>{count}개의 프로젝트가 있습니다.</p>
                {allCards}
-               {loadingCount >= count ? (
-                  <p style={{ textAlign: 'center', margin: '16px' }}>모든 프로젝트를 불러왔습니다</p>
-               ) : (
-                  <Box display="flex" alignItems="center" width="100%" sx={{ my: 2 }}>
-                     <Box flexGrow={1} height="1px" bgcolor="gray" />
-                     <Button onClick={loadMoreProjects} variant="contained" sx={{ marginLeft: 2, marginRight: 2 }}>
-                        더보기
-                     </Button>
-                     <Box flexGrow={1} height="1px" bgcolor="gray" />
-                  </Box>
-               )}
+               <Box py={4}>
+                  <Divider>{loadingCount >= count ? <p style={{ textAlign: 'center', margin: '16px' }}>모든 프로젝트를 불러왔습니다</p> : <Chip onClick={loadMoreProjects} label="더보기" />}</Divider>
+               </Box>
             </>
          ) : (
             <img src={process.env.REACT_APP_FRONT_URL + '/images/noProject.png'} width="640px" style={{ margin: '0 auto' }}></img>

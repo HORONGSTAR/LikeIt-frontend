@@ -4,9 +4,10 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchShowBannerThunk } from '../../features/indexSlice'
+import { Box } from '@mui/material'
 
 function Banner() {
    const dispatch = useDispatch()
@@ -28,7 +29,15 @@ function Banner() {
 
    return (
       banners && (
-         <div className="Home_Banner" style={{ padding: '20px 0' }}>
+         <Box
+            className="Home_Banner"
+            sx={{
+               padding: {
+                  xs: '0',
+                  sm: '20px 0',
+               },
+            }}
+         >
             <Swiper
                spaceBetween={30}
                centeredSlides={true}
@@ -44,7 +53,7 @@ function Banner() {
             >
                {showBanner()}
             </Swiper>
-         </div>
+         </Box>
       )
    )
 }

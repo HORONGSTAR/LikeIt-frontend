@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 
-function RedirectLoginRoute({ children }) {
+function RedirectLogoutRoute({ children }) {
    const { isAuthenticated, loading } = useSelector((state) => state.auth)
 
    // 로딩 중일 때는 아무것도 렌더링하지 않음
@@ -18,4 +18,4 @@ function RedirectLoginRoute({ children }) {
    return children
 }
 
-export default RedirectLoginRoute
+export default RedirectLogoutRoute

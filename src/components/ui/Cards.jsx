@@ -67,6 +67,50 @@ export const ProjectCard = ({ project }) => {
    )
 }
 
+export const AdminCard = ({ project }) => {
+   const date = setDDay(project.endDate)
+   let proposalStatus = ''
+   if (project.proposalStatus === 'COMPLETE') proposalStatus = '승인완료'
+   else if (project.proposalStatus === 'REVIEW_REQ') proposalStatus = '승인대기중'
+   else if (project.proposalStatus === 'DENIED') proposalStatus = '승인거부'
+
+   const cententSx = {
+      title: {
+         fontWeight: 600,
+         height: { md: 48, sm: 'auto' },
+      },
+      favorite: {
+         fontSize: { sm: 24, xs: 18 },
+      },
+      percent: {
+         fontFamily: 'BMJUA',
+         fontSize: { sm: 20, xs: 16 },
+         lineHeight: { sm: '20px', xs: '16px' },
+      },
+   }
+
+   return (
+      <BasicCard imgUrl={project.imgUrl}>
+         <Typography variant="caption">BY.{project.studioName}</Typography>
+         <Ellipsis $line={2}>
+            <Typography sx={cententSx.title}>{project.title}</Typography>
+         </Ellipsis>
+         <Ellipsis>
+            <Typography variant="body2" color="grey">
+               {project.intro}
+            </Typography>
+         </Ellipsis>
+         <Stack2 mt={{ sm: 1, xs: 0.5 }}>
+            <Chip label={proposalStatus} />
+            <Stack2 ml="auto" alignItems="end">
+               <Favorite color="yellow" sx={cententSx.favorite} />
+               <Typography sx={cententSx.percent}>{project.rate}%</Typography>
+            </Stack2>
+         </Stack2>
+      </BasicCard>
+   )
+}
+
 export const CommingCard = ({ project }) => {
    const cententSx = {
       title: {
