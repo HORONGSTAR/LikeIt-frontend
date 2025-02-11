@@ -1,6 +1,8 @@
 import './styles/common.css'
 import { Route, Routes, Link, useLocation } from 'react-router-dom'
 import { Button } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
 import Home from './pages/Home'
 import HotPage from './pages/list/HotPage'
@@ -24,11 +26,25 @@ import FundingTimeline from './components/funding/FundingTimeline'
 import FundingLayout from './components/funding/FundingLayout'
 import DesignGuide from './pages/DesignGuide'
 import RankingPage from './pages/RankingPage'
+import AdditionalSignupPage from './pages/AdditionalSignupPage'
+import { checkAuthStatusThunk } from './features/authSlice'
 
 function App() {
    const location = useLocation()
-   const pageName = { '/login': true, '/signup': true, '/commonsignup': true, '/studio': true }
+   const pageName = {
+      '/login': true,
+      '/signup': true,
+      '/commonsignup': true,
+      '/studio': true,
+   }
    const dontNeedNavber = pageName[location.pathname]
+
+   const dispatch = useDispatch()
+   const { isAuthenticated, user } = useSelector((state) => state.auth)
+
+   useEffect(() => {
+      dispatch(checkAuthStatusThunk())
+   }, [dispatch])
 
    return (
       <>
@@ -49,6 +65,7 @@ function App() {
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/studio" element={<StudioPage />} />
             <Route path="commu" element={<CommunityPage />} />
+            <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />
             <Route path="/funding" element={<FundingLayout />}>
                <Route path="detail" element={<FundingDetailPage />} />
