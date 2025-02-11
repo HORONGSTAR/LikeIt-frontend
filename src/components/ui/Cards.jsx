@@ -106,7 +106,7 @@ export const CommingCard = ({ project }) => {
    )
 }
 
-export const HistoryCard = ({ project }) => {
+export const HistoryCard = ({ project, studioName }) => {
    const [cardEf, setCardEf] = useState(null)
 
    useEffect(() => {
@@ -122,12 +122,12 @@ export const HistoryCard = ({ project }) => {
          height: { md: 48, sm: 'auto' },
       },
       favorite: {
-         fontSize: { md: 24, sm: 16, xs: 18 },
+         fontSize: { sm: 22, xs: 18 },
       },
       percent: {
          fontFamily: 'BMJUA',
-         fontSize: { md: 20, sm: 14, xs: 16 },
-         lineHeight: { md: '20px', sm: '14px', xs: '16px' },
+         fontSize: { sm: 18, xs: 16 },
+         lineHeight: { sm: '18px', xs: '16px' },
       },
    }
 
@@ -138,8 +138,8 @@ export const HistoryCard = ({ project }) => {
    }
 
    return (
-      <BasicCard imgUrl={project.imgUrl} cardEf={cardEf}>
-         <Typography variant="caption">BY.{project.studioName}</Typography>
+      <BasicCard imgUrl={process.env.REACT_APP_API_URL + '/projectImg' + project.imgUrl} cardEf={cardEf}>
+         <Typography variant="caption">BY.{studioName}</Typography>
          <Ellipsis $line={2}>
             <Typography sx={cententSx.title}>{project.title}</Typography>
          </Ellipsis>
@@ -152,7 +152,7 @@ export const HistoryCard = ({ project }) => {
             <Chip variant={chipDt[project.projectStatus].color} label={chipDt[project.projectStatus]?.label} />
             <Stack2 ml="auto" alignItems="end">
                <Favorite color="yellow" sx={cententSx.favorite} />
-               <Typography sx={cententSx.percent}>67%</Typography>
+               <Typography sx={cententSx.percent}>{Math.floor((project.totalOrderPrice / project.goal) * 100)}%</Typography>
             </Stack2>
          </Stack2>
       </BasicCard>

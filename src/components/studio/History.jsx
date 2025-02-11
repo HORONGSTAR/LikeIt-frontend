@@ -2,17 +2,15 @@ import { Box, Stack, Grid2 } from '@mui/material'
 import { Stack2 } from '../../styles/BaseStyles'
 import { HistoryCard } from '../ui/Cards'
 
-function History({ projects }) {
+function History({ items }) {
    return (
       <Grid2 container columnSpacing={1.5} rowSpacing={{ sm: 3, xs: 1.5 }}>
-         {projects &&
-            projects
-               .filter((project) => project.projectStatus !== 'WAITING_FUNDING')
-               .map((project) => (
-                  <Grid2 size={{ md: 3, sm: 6, xs: 12 }}>
-                     <HistoryCard project={project} />
-                  </Grid2>
-               ))}
+         {items &&
+            items.projects.map((project) => (
+               <Grid2 key={project.id} size={{ md: 3, sm: 6, xs: 12 }}>
+                  <HistoryCard project={project} studioName={items.studioName} />
+               </Grid2>
+            ))}
       </Grid2>
    )
 }

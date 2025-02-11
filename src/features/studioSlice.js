@@ -13,6 +13,7 @@ const studioSlice = createSlice({
    name: 'studio',
    initialState: {
       studio: null,
+      projects: null,
       loading: false,
       pagination: null,
       error: null,
@@ -27,6 +28,7 @@ const studioSlice = createSlice({
          .addCase(fetchStudioThunk.fulfilled, (state, action) => {
             state.loading = false
             state.studio = action.payload.studio
+            state.projects = action.payload.projects
          })
          .addCase(fetchStudioThunk.rejected, (state, action) => {
             state.loading = false

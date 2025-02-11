@@ -160,7 +160,7 @@ export const Ellipsis = styled.div`
    display: -webkit-box;
    -webkit-line-clamp: ${(props) => props.$line || 1};
    -webkit-box-orient: vertical;
-   @media (max-width: 600px) {
+   @media (max-width: 500px) {
       -webkit-line-clamp: 1;
    }
 `
