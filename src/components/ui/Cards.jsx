@@ -20,7 +20,7 @@ export const BasicCard = ({ imgUrl, children, cardEf }) => {
    return (
       <Box sx={cardEf}>
          <Card sx={cardSx.body}>
-            <CardMedia image={process.env.REACT_APP_API_URL + imgUrl || '/images/notFindImg.png'} sx={cardSx.media} />
+            <CardMedia image={imgUrl || '/images/notFindImg.png'} sx={cardSx.media} />
             <Stack sx={cardSx.stack}>{children}</Stack>
          </Card>
       </Box>
@@ -138,7 +138,7 @@ export const HistoryCard = ({ project }) => {
    }
 
    return (
-      <BasicCard imgUrl={'/projectImg' + project.imgUrl} cardEf={cardEf}>
+      <BasicCard imgUrl={project.imgUrl} cardEf={cardEf}>
          <Typography variant="caption">BY.{project.studioName}</Typography>
          <Ellipsis $line={2}>
             <Typography sx={cententSx.title}>{project.title}</Typography>
