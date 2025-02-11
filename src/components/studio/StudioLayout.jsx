@@ -16,7 +16,7 @@ const StudioLayout = () => {
    const tabs = [
       { label: '스튜디오', path: '/studio', content: <StudioTab /> },
       { label: '프로젝트', path: '/studio', content: <ProjectTab /> },
-      { label: '커뮤니티', path: '/studio/commu' },
+      { label: '커뮤니티', path: '/studio/community' },
    ]
 
    const Spen = (props) => <Typography component="span" color="green" {...props} />
