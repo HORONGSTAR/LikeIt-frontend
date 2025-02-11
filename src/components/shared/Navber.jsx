@@ -73,7 +73,13 @@ function Navber({ isAuthenticated }) {
                         {item.page}
                      </Typography>
                   ))}
-                  <Box sx={{ ml: 'auto', width: breakpoint.width, display: breakpoint.desktop }}>
+                  <Box
+                     sx={{
+                        ml: 'auto',
+                        width: breakpoint.width,
+                        display: breakpoint.desktop,
+                     }}
+                  >
                      <SearchBar />
                   </Box>
                </Stack2>

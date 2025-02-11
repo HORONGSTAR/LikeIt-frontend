@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { fetchShowProjectsThunk } from '../../features/listSlice'
 import { Grid2 } from '@mui/material'
-import { SubTitle } from '../../styles/BaseStyles'
+import { LoadingBox, SubTitle } from '../../styles/BaseStyles'
 
 function HomeProjects() {
    const dispatch = useDispatch()
@@ -51,6 +51,8 @@ function HomeProjects() {
       if (cards.length) return cards
       else return <p>프로젝트가 존재하지 않습니다!</p>
    }
+
+   if (loading) return <LoadingBox />
 
    return (
       projects && (
