@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getStudio } from '../api/studioApi'
+import { getStudio, createStudio } from '../api/studioApi'
 
+// 스튜디오 조회
 export const fetchStudioThunk = createAsyncThunk('studio/fetchStudioThunk', async (_, { rejectWithValue }) => {
    try {
       const response = await getStudio()
@@ -9,6 +10,17 @@ export const fetchStudioThunk = createAsyncThunk('studio/fetchStudioThunk', asyn
       return rejectWithValue(error.response?.data?.message || '스튜디오 불러오기 실패')
    }
 })
+
+// 스튜디오 생성
+export const createStudioThunk = createAsyncThunk('studio/createStudioThunk', async (studioData, { rejectWithValue }) => {
+   try {
+      const response = await createStudio(studioData)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '스튜디오 생성 실패')
+   }
+})
+
 const studioSlice = createSlice({
    name: 'studio',
    initialState: {
@@ -21,6 +33,7 @@ const studioSlice = createSlice({
    reducers: {},
    extraReducers: (builder) => {
       builder
+         // 스튜디오 조회
          .addCase(fetchStudioThunk.pending, (state) => {
             state.loading = true
             state.error = null
@@ -31,6 +44,19 @@ const studioSlice = createSlice({
             state.projects = action.payload.projects
          })
          .addCase(fetchStudioThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+         // 스튜디오 생성
+         .addCase(createStudioThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(createStudioThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.studio = action.payload
+         })
+         .addCase(createStudioThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

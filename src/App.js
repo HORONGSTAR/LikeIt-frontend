@@ -21,6 +21,7 @@ import FundingTimeline from './components/funding/FundingTimeline'
 import FundingOverview from './components/funding/FundingOverview'
 import StudioPage from './pages/StudioPage'
 import CommunityDetail from './components/community/CommunityDetail'
+import StudioCreatePage from './pages/StudioCreatePage'
 
 function App() {
    const location = useLocation()
@@ -29,6 +30,7 @@ function App() {
       '/signup': true,
       '/commonsignup': true,
       '/studio': true,
+      '/studio/create': true,
    }
 
    const dontNeedNavber = pageName[location.pathname]
@@ -49,11 +51,12 @@ function App() {
             <Route path="/end" element={<EndPage />} />
             <Route path="/comming" element={<CommingPage />} />
             <Route path="/follow" element={<Home />} />
-            <Route path="/studio" element={<StudioPage />}>
-               <Route path="community" element={<Community />} />
-               <Route path="community/write" element={<CommunityWritePage />} />
-               <Route path="community/:id" element={<CommunityDetail />} />
-            </Route>
+            <Route path="/studio" element={<StudioPage />} />
+            <Route path="/studio/create" element={<StudioCreatePage />} />
+            <Route path="/studio/community" element={<Community />} />
+            <Route path="/studio/community/write" element={<CommunityWritePage />} />
+            <Route path="/studio/community/:id" element={<CommunityDetail />} />
+
             <Route path="/funding" element={<FundingLayout />}>
                <Route path="detail" element={<FundingOverview />} />
                <Route path="timeline" element={<FundingTimeline />} />

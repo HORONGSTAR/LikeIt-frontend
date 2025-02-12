@@ -9,3 +9,13 @@ export const getStudio = async () => {
       throw error
    }
 }
+
+export const createStudio = async (studioData) => {
+   try {
+      const response = await likeitApi.post('/studio', studioData)
+      return response.data
+   } catch (error) {
+      console.error(`스튜디오 생성 오류: ${error.message}`)
+      throw error
+   }
+}
