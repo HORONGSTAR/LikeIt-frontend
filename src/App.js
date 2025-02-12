@@ -19,8 +19,8 @@ import DesignGuide from './pages/DesignGuide'
 import FundingLayout from './components/funding/FundingLayout'
 import FundingTimeline from './components/funding/FundingTimeline'
 import FundingOverview from './components/funding/FundingOverview'
-import CommunityDetail from './components/community/CommunityDetail'
 import StudioPage from './pages/StudioPage'
+import CommunityDetail from './components/community/CommunityDetail'
 
 function App() {
    const location = useLocation()
