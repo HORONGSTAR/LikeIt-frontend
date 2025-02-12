@@ -32,7 +32,6 @@ export const googleRegisterUser = async (credential) => {
       console.error(`API request 오류: ${error.message}`)
       throw error
    }
-
 }
 
 //로그아웃
@@ -55,5 +54,4 @@ export const checkAuthStatus = async () => {
       console.error(`API Request 오류: ${error.message}`)
       throw error
    }
-
 }

@@ -11,3 +11,15 @@ export const showProjects = async (data) => {
       throw error
    }
 }
+
+// 프로젝트 목록 호출
+export const showFollowStudios = async (data) => {
+   try {
+      const { page, id } = data
+      const response = await likeitApi.get(`/list/follow/${id}?page=${page}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
