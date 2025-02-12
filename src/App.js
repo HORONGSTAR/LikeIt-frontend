@@ -53,7 +53,7 @@ function App() {
             <Route path="/end" element={<EndPage />} />
             <Route path="/comming" element={<CommingPage />} />
             <Route path="/follow" element={<Home />} />
-            <Route path="/studio" element={<StudioLayout />}>
+            <Route path="/studio" element={<StudioPage />}>
                <Route path="community" element={<CommunityTab />} />
                <Route path="community/write" element={<CommunityWritePage />} />
                <Route path="community/:id" element={<CommunityDetail />} />
