@@ -28,10 +28,7 @@ function Portfolio({ items }) {
             <Typography variant="h4">최근 프로젝트</Typography>
          </Dot>
          {items.new ? (
-            <Card
-               variant="outlined"
-               sx={{ borderRadius: 0, width: '100%', my: 4, display: 'flex', flexDirection: { sm: 'row-reverse', xs: 'column' } }}
-            >
+            <Card variant="outlined" sx={{ borderRadius: 0, width: '100%', my: 4, display: 'flex', flexDirection: { sm: 'row-reverse', xs: 'column' } }}>
                <CardMedia image={process.env.REACT_APP_API_URL + '/projectImg/' + items.new.imgUrl} sx={{ width: '45%', minHeight: 240 }} />
                <CardContent sx={{ width: '55%', display: 'flex', flexDirection: 'column' }}>
                   <Box sx={{ flexGrow: 1 }}>
@@ -78,10 +75,7 @@ function Portfolio({ items }) {
                      </Typography>
                   </TimelineOppositeContent>
                   <TimelineSeparator>
-                     <Avatar
-                        sx={{ width: { sm: 100, xs: 40 }, height: { sm: 100, xs: 40 }, m: 1 }}
-                        src={process.env.REACT_APP_API_URL + '/projectImg/' + project.imgUrl}
-                     />
+                     <Avatar sx={{ width: { sm: 100, xs: 40 }, height: { sm: 100, xs: 40 }, m: 1 }} src={process.env.REACT_APP_API_URL + '/projectImg/' + project.imgUrl} />
                      {index < items.projects.length - 1 && <TimelineConnector sx={{ minHeight: { sm: 50, xs: 70 }, mb: -3.5 }} />}
                   </TimelineSeparator>
                   <TimelineContent>

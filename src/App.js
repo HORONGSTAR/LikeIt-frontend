@@ -12,15 +12,15 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
 import Navber from './components/shared/Navber'
-import CommunityTab from './components/studio/CommunityTab'
+import Community from './components/studio/Community'
 import CommunityWritePage from './pages/CommunityWritePage'
 import FundingReview from './components/funding/FundingReview'
 import DesignGuide from './pages/DesignGuide'
 import FundingLayout from './components/funding/FundingLayout'
 import FundingTimeline from './components/funding/FundingTimeline'
 import FundingOverview from './components/funding/FundingOverview'
-import StudioLayout from './components/studio/StudioLayout'
 import CommunityDetail from './components/community/CommunityDetail'
+import StudioPage from './pages/StudioPage'
 
 function App() {
    const location = useLocation()
@@ -29,9 +29,6 @@ function App() {
       '/signup': true,
       '/commonsignup': true,
       '/studio': true,
-      '/studio/community': true,
-      '/studio/community/write': true,
-      '/studio/community/:id': true,
    }
 
    const dontNeedNavber = pageName[location.pathname]
@@ -53,7 +50,7 @@ function App() {
             <Route path="/comming" element={<CommingPage />} />
             <Route path="/follow" element={<Home />} />
             <Route path="/studio" element={<StudioPage />}>
-               <Route path="community" element={<CommunityTab />} />
+               <Route path="community" element={<Community />} />
                <Route path="community/write" element={<CommunityWritePage />} />
                <Route path="community/:id" element={<CommunityDetail />} />
             </Route>
