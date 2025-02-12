@@ -19,17 +19,15 @@ import SearchPage from './pages/list/SearchPage'
 import FollowPage from './pages/list/FollowPage'
 import CategoryPage from './pages/list/CategoryPage'
 
+import StudioPage from './pages/StudioPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
+import FindingPasswordPage from './pages/FindingPasswordPage'
 import Navber from './components/shared/Navber'
-import StudioPage from './pages/StudioPage'
-import CommunityPage from './pages/CommunityPage'
+import CommunityTab from './components/studio/CommunityTab'
 import CommunityWritePage from './pages/CommunityWritePage'
-import FundingDetailPage from './pages/FundingDetailPage'
 import FundingReview from './components/funding/FundingReview'
-import FundingTimeline from './components/funding/FundingTimeline'
-import FundingLayout from './components/funding/FundingLayout'
 import DesignGuide from './pages/DesignGuide'
 import RankingPage from './pages/RankingPage'
 import AdditionalSignupPage from './pages/AdditionalSignupPage'
@@ -43,6 +41,7 @@ function App() {
       '/commonsignup': true,
       '/studio': true,
    }
+
    const dontNeedNavber = pageName[location.pathname]
 
    const dispatch = useDispatch()
@@ -70,6 +69,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/commonsignup" element={<CommonSignupPage />} />
+            <Route path="/findingpassword" element={<FindingPasswordPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/category/:id" element={<CategoryPage />} />
             <Route path="/hot" element={<HotPage />} />
@@ -78,14 +78,15 @@ function App() {
             <Route path="/comming" element={<CommingPage />} />
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/studio" element={<StudioPage />} />
-            <Route path="commu" element={<CommunityPage />} />
+            {/* <Route path="commu" element={<CommunityPage />} /> */}
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />
-            <Route path="/funding" element={<FundingLayout />}>
-               <Route path="detail" element={<FundingDetailPage />} />
-               <Route path="timeline" element={<FundingTimeline />} />
-               <Route path="review" element={<FundingReview />} />
-            </Route>
+
+            {/* <Route path="/funding" element={<FundingLayout />}> */}
+            {/* <Route path="detail" element={<FundingOverview />} /> */}
+            {/* <Route path="timeline" element={<FundingTimeline />} /> */}
+            {/* <Route path="review" element={<FundingReview />} />
+            </Route> */}
          </Routes>
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기

@@ -1,10 +1,10 @@
 import { Box, Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import CommunityList from '../components/community/CommunityList'
-import CommunityDetail from '../components/community/CommunityDetail'
+import CommunityList from '../../components/community/CommunityList'
+import CommunityDetail from '../../components/community/CommunityDetail'
 
-const CommunityPage = () => {
+const CommunityTab = () => {
    const navigate = useNavigate()
    const userRole = 'creator' // 예제에서는 하드코딩
 
@@ -72,4 +72,4 @@ const CommunityPage = () => {
    )
 }
 
-export default CommunityPage
+export default CommunityTab
