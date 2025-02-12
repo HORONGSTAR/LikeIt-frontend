@@ -143,7 +143,9 @@ const CommunityDetail = ({ onBack }) => {
 
    return (
       <>
-         {community && (
+         {!community ? (
+            <LoadingBox />
+         ) : (
             <Card sx={{ p: 3, boxShadow: 'none', border: '1px solid #ccc' }}>
                <CardContent sx={{ width: '100%' }}>
                   <Button onClick={onBack} sx={{ mb: 2 }}>
@@ -183,7 +185,7 @@ const CommunityDetail = ({ onBack }) => {
                      </Typography>
                   </Box>
 
-                  {/* 댓글 입력창을 항상 표시하도록 `loading` 블록 밖으로 이동 */}
+                  {/* 댓글 입력창 */}
                   <Box sx={{ display: 'flex', mt: 3 }}>
                      <TextField fullWidth placeholder="댓글을 입력하세요..." value={newComment} onChange={(e) => setNewComment(e.target.value)} variant="outlined" />
                      <Button variant="contained" sx={{ ml: 1 }} onClick={handleAddComment}>
@@ -195,69 +197,49 @@ const CommunityDetail = ({ onBack }) => {
                   {loading ? (
                      <LoadingBox />
                   ) : (
-                     <>
-                        {/* 댓글 목록 */}
-                        <Box sx={{ mt: 3 }}>
-                           {comments.length > 0 ? (
-                              comments.map((comment) => {
-                                 return (
-                                    // <p>{comment.id}</p>
-                                    <Box key={comment.id} sx={{ display: 'flex', alignItems: 'center', mb: 2, p: 2, border: '1px solid #ddd', borderRadius: 2 }}>
-                                       <Avatar src={comment.profile || '/images/default-profile.jpg'} sx={{ width: 32, height: 32, mr: 1 }} />
-                                       <Box sx={{ flex: 1 }}>
-                                          <Typography variant="subtitle2">{comment.User.name}</Typography>
-                                          <Typography variant="body2" color="text.secondary">
-                                             {format(new Date(comment.createdAt), 'yyyy년 M월 d일 HH시 mm분', { locale: ko })}
-                                          </Typography>
-                                          {editingCommentId === comment.id ? <TextField fullWidth value={editingComment} onChange={(e) => setEditingComment(e.target.value)} size="small" /> : <Typography variant="body1">{comment.comment}</Typography>}
-                                       </Box>
+                     <Box sx={{ mt: 3 }}>
+                        {comments.length > 0 ? (
+                           comments.map((comment) => (
+                              <Box key={comment.id} sx={{ display: 'flex', alignItems: 'center', mb: 2, p: 2, border: '1px solid #ddd', borderRadius: 2 }}>
+                                 <Avatar src={comment.profile || '/images/default-profile.jpg'} sx={{ width: 32, height: 32, mr: 1 }} />
+                                 <Box sx={{ flex: 1 }}>
+                                    <Typography variant="subtitle2">{comment.User?.name || '익명'}</Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                       {format(new Date(comment.createdAt), 'yyyy년 M월 d일 HH시 mm분', { locale: ko })}
+                                    </Typography>
+                                    {editingCommentId === comment.id ? <TextField fullWidth value={editingComment} onChange={(e) => setEditingComment(e.target.value)} size="small" /> : <Typography variant="body1">{comment.comment}</Typography>}
+                                 </Box>
 
-                                       {/* 수정 및 삭제 버튼 */}
-                                       {/* {comment.UserId === user.id && ( */}
-                                       <Box sx={{ display: 'flex', gap: 1 }}>
-                                          {editingCommentId === comment.id ? (
-                                             <>
-                                                <Button variant="contained" onClick={saveEdit} size="small">
-                                                   저장
-                                                </Button>
-                                                <Button variant="outlined" onClick={() => setEditingCommentId(null)} size="small">
-                                                   취소
-                                                </Button>
-                                             </>
-                                          ) : (
-                                             <>
-                                                <IconButton onClick={() => handleEdit(comment.id, comment.comment)}>
-                                                   <EditIcon />
-                                                </IconButton>
-                                                <IconButton onClick={() => handleDelete(comment.id)}>
-                                                   <DeleteIcon />
-                                                </IconButton>
-                                             </>
-                                          )}
-                                       </Box>
-                                       {/* )} */}
-
-                                       <Box>
-                                          <Button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>
-                                             이전
+                                 {/* 수정 및 삭제 버튼 */}
+                                 <Box sx={{ display: 'flex', gap: 1 }}>
+                                    {editingCommentId === comment.id ? (
+                                       <>
+                                          <Button variant="contained" onClick={saveEdit} size="small">
+                                             저장
                                           </Button>
-                                          <Typography>
-                                             {page} / {totalPages > 0 ? totalPages : 1}
-                                          </Typography>
-                                          <Button onClick={() => handlePageChange(page + 1)} disabled={page >= totalPages}>
-                                             다음
+                                          <Button variant="outlined" onClick={() => setEditingCommentId(null)} size="small">
+                                             취소
                                           </Button>
-                                       </Box>
-                                    </Box>
-                                 )
-                              })
-                           ) : (
-                              <Typography variant="body2" color="text.secondary">
-                                 댓글이 없습니다.
-                              </Typography>
-                           )}
-                        </Box>
-                     </>
+                                       </>
+                                    ) : (
+                                       <>
+                                          <IconButton onClick={() => handleEdit(comment.id, comment.comment)}>
+                                             <EditIcon />
+                                          </IconButton>
+                                          <IconButton onClick={() => handleDelete(comment.id)}>
+                                             <DeleteIcon />
+                                          </IconButton>
+                                       </>
+                                    )}
+                                 </Box>
+                              </Box>
+                           ))
+                        ) : (
+                           <Typography variant="body2" color="text.secondary">
+                              댓글이 없습니다.
+                           </Typography>
+                        )}
+                     </Box>
                   )}
                </CardContent>
             </Card>
