@@ -20,19 +20,21 @@ import DesignGuide from './pages/DesignGuide'
 import FundingLayout from './components/funding/FundingLayout'
 import FundingTimeline from './components/funding/FundingTimeline'
 import FundingOverview from './components/funding/FundingOverview'
-<<<<<<< HEAD
 import StudioLayout from './components/studio/StudioLayout'
 import CommunityDetail from './components/community/CommunityDetail'
 
 function App() {
    const location = useLocation()
-   const pageName = { '/login': true, '/signup': true, '/commonsignup': true, '/studio': true, '/studio/community': true, '/studio/community/write': true, '/studio/community/:id': true }
-=======
+   const pageName = {
+      '/login': true,
+      '/signup': true,
+      '/commonsignup': true,
+      '/studio': true,
+      '/studio/community': true,
+      '/studio/community/write': true,
+      '/studio/community/:id': true,
+   }
 
-function App() {
-   const location = useLocation()
-   const pageName = { '/login': true, '/signup': true, '/commonsignup': true, '/studio': true, '/studio/commu': true, '/studio/commu/write': true }
->>>>>>> 925cab51882d4442cd97212e1b6478e4370ce7dd
    const dontNeedNavber = pageName[location.pathname]
 
    return (
@@ -51,16 +53,10 @@ function App() {
             <Route path="/end" element={<EndPage />} />
             <Route path="/comming" element={<CommingPage />} />
             <Route path="/follow" element={<Home />} />
-<<<<<<< HEAD
             <Route path="/studio" element={<StudioLayout />}>
                <Route path="community" element={<CommunityTab />} />
                <Route path="community/write" element={<CommunityWritePage />} />
                <Route path="community/:id" element={<CommunityDetail />} />
-=======
-            <Route path="/studio" element={<StudioPage />}>
-               <Route path="commu" element={<CommunityTab />} />
-               <Route path="commu/write" element={<CommunityWritePage />} />
->>>>>>> 925cab51882d4442cd97212e1b6478e4370ce7dd
             </Route>
             <Route path="/funding" element={<FundingLayout />}>
                <Route path="detail" element={<FundingOverview />} />
