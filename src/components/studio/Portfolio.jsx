@@ -5,7 +5,6 @@ import { Timeline, TimelineSeparator, TimelineConnector, TimelineContent } from 
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem'
 import TimelineOppositeContent, { timelineOppositeContentClasses } from '@mui/lab/TimelineOppositeContent'
 import dayjs from 'dayjs'
-import { border } from '@mui/system'
 
 function Portfolio({ items }) {
    const createInfo = (

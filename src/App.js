@@ -24,7 +24,15 @@ import CommunityDetail from './components/community/CommunityDetail'
 
 function App() {
    const location = useLocation()
-   const pageName = { '/login': true, '/signup': true, '/commonsignup': true, '/studio': true, '/studio/community': true, '/studio/community/write': true, '/studio/community/:id': true }
+   const pageName = {
+      '/login': true,
+      '/signup': true,
+      '/commonsignup': true,
+      '/studio': true,
+      '/studio/community': true,
+      '/studio/community/write': true,
+      '/studio/community/:id': true,
+   }
 
    const dontNeedNavber = pageName[location.pathname]
 
