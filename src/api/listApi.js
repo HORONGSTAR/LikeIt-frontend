@@ -12,7 +12,7 @@ export const showProjects = async (data) => {
    }
 }
 
-// 프로젝트 목록 호출
+// 팔로우 스튜디오 호출
 export const showFollowStudios = async (data) => {
    try {
       const { page, id } = data

@@ -1,8 +1,8 @@
 import { Card, CardMedia, Stack, Typography, Button, Chip, Box } from '@mui/material'
 import { Favorite } from '@mui/icons-material'
-import { Stack2, Ellipsis } from '../../styles/BaseStyles'
+import { Stack2, Ellipsis, ModalBox } from '../../styles/BaseStyles'
 import { setDDay } from '../../util/changeDate'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const BasicCard = ({ imgUrl, children, cardEf }) => {
    const cardSx = {
@@ -67,12 +67,37 @@ export const ProjectCard = ({ project }) => {
    )
 }
 
-export const AdminCard = ({ project }) => {
+export const AdminCard = ({ project, adminFunc }) => {
+   const [denyMsg, setDenyMsg] = useState('')
+   const [ImgFile, setImgFile] = useState(null)
+   const [ImgUrl, setImgUrl] = useState('')
    const date = setDDay(project.endDate)
+
+   const handleImgChange = useCallback((e) => {
+      const file = e.target.files[0]
+      if (!file) return
+
+      setImgFile(file)
+
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = (event) => {
+         setImgUrl(event.target.result)
+      }
+   }, [])
+
    let proposalStatus = ''
-   if (project.proposalStatus === 'COMPLETE') proposalStatus = '승인완료'
-   else if (project.proposalStatus === 'REVIEW_REQ') proposalStatus = '승인대기중'
-   else if (project.proposalStatus === 'DENIED') proposalStatus = '승인거부'
+   let proposalColor = ''
+   if (project.proposalStatus === 'COMPLETE') {
+      proposalStatus = '승인완료'
+      proposalColor = 'green'
+   } else if (project.proposalStatus === 'REVIEW_REQ') {
+      proposalStatus = '승인대기중'
+      proposalColor = 'outlined'
+   } else if (project.proposalStatus === 'DENIED') {
+      proposalStatus = '승인거부'
+      proposalColor = 'yellow'
+   }
 
    const cententSx = {
       title: {
@@ -101,11 +126,58 @@ export const AdminCard = ({ project }) => {
             </Typography>
          </Ellipsis>
          <Stack2 mt={{ sm: 1, xs: 0.5 }}>
-            <Chip label={proposalStatus} />
+            <Chip variant={proposalColor} label={proposalStatus} />
             <Stack2 ml="auto" alignItems="end">
                <Favorite color="yellow" sx={cententSx.favorite} />
                <Typography sx={cententSx.percent}>{project.rate}%</Typography>
             </Stack2>
+         </Stack2>
+         <Stack2 mt={{ sm: 1, xs: 0.5 }}>
+            {proposalStatus === '승인대기중' && (
+               <>
+                  <ModalBox openBtn={<Chip variant="outlined" sx={{ marginRight: '8px', cursor: 'pointer' }} label={'승인허가'} />} closeBtn>
+                     <Typography>이 프로젝트의 펀딩을 승인하시겠습니까?</Typography>
+                     <Button variant="outlined" onClick={() => adminFunc.proposalPass(project.id)}>
+                        승인허가
+                     </Button>
+                  </ModalBox>
+                  <ModalBox openBtn={<Chip variant="outlined" sx={{ marginRight: '8px', cursor: 'pointer' }} label={'승인거부'} />} closeBtn>
+                     <Typography>이 프로젝트의 펀딩을 거부하시겠습니까?</Typography>
+                     <textarea placeholder="펀딩을 허가하지 않는 이유를 작성해주세요" style={{ width: '240px' }} value={denyMsg} onChange={(e) => setDenyMsg(e.target.value)}></textarea>
+                     <br />
+                     <Button variant="outlined" onClick={() => adminFunc.proposalDeny(project.id, denyMsg)}>
+                        승인거부
+                     </Button>
+                  </ModalBox>
+               </>
+            )}
+            {proposalStatus === '승인완료' && !project.bannerId && (
+               <ModalBox openBtn={<Chip variant="outlined" sx={{ marginRight: '8px', cursor: 'pointer' }} label={'홈 배너노출 등록'} />} closeBtn>
+                  <Typography>배너 등록을 진행하시겠습니까</Typography>
+                  {ImgUrl && <img src={ImgUrl} alt="업로드 이미지 미리보기" style={{ height: '200px' }} />}
+                  <input type="file" onChange={handleImgChange} name="banner" />
+                  <Button
+                     variant="outlined"
+                     onClick={() => {
+                        if (!ImgFile) return
+                        const formData = new FormData()
+                        formData.append('id', project.id)
+                        formData.append('banner', ImgFile)
+                        adminFunc.bannerReg(formData)
+                     }}
+                  >
+                     등록
+                  </Button>
+               </ModalBox>
+            )}
+            {proposalStatus === '승인완료' && project.bannerId && (
+               <ModalBox openBtn={<Chip variant="outlined" sx={{ marginRight: '8px', cursor: 'pointer' }} label={'홈 배너노출 해제'} />} closeBtn>
+                  <Typography>배너 해제를 진행하시겠습니까</Typography>
+                  <Button variant="outlined" onClick={() => adminFunc.bannerDel(project.bannerId)}>
+                     해제
+                  </Button>
+               </ModalBox>
+            )}
          </Stack2>
       </BasicCard>
    )
@@ -137,12 +209,7 @@ export const CommingCard = ({ project }) => {
             <Typography color="orenge" variant="caption">
                {project.userCount}명 알림 신청 중
             </Typography>
-            <Button
-               fullWidth
-               variant="outlined"
-               sx={{ p: 0, m: 0 }}
-               startIcon={<Box component="img" src="/images/icon/bell.svg" alt="알림버튼" sx={{ height: 12 }} />}
-            >
+            <Button fullWidth variant="outlined" sx={{ p: 0, m: 0 }} startIcon={<Box component="img" src="/images/icon/bell.svg" alt="알림버튼" sx={{ height: 12 }} />}>
                알림 신청하기
             </Button>
          </Stack2>

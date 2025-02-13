@@ -53,7 +53,7 @@ function Login() {
             </Stack2>
             <Stack2 spacing={1}>
                <Typography variant="body2">비밀번호를 잊으셨나요?</Typography>
-               <TextLink variant="body2" color="orenge" to="/">
+               <TextLink variant="body2" color="orenge" to="/findingpassword">
                   비밀번호 재설정
                </TextLink>
             </Stack2>

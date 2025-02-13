@@ -1,18 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import {
-   Typography,
-   Modal,
-   Box,
-   IconButton,
-   Stack,
-   CircularProgress,
-   Dialog,
-   DialogContent,
-   DialogTitle,
-   Container,
-   Link as MuiLink,
-} from '@mui/material'
+import { Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, DialogContent, DialogTitle, Container, Link as MuiLink } from '@mui/material'
 import { Close, PlayArrowRounded } from '@mui/icons-material'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -80,7 +68,7 @@ export const ModalBox = ({ children, openBtn, closeBtn }) => {
                   top: '50%',
                   left: '50%',
                   transform: 'translate(-50%, -50%)',
-                  width: 320,
+                  minWidth: 320,
                   bgcolor: 'background.paper',
                   borderRadius: 1,
                   boxShadow: 24,
