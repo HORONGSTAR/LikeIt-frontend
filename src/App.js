@@ -40,6 +40,7 @@ function App() {
       '/signup': true,
       '/commonsignup': true,
       '/studio': true,
+      '/findingpassword': true,
    }
 
    const dontNeedNavber = pageName[location.pathname]

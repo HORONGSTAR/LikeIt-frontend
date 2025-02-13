@@ -55,3 +55,14 @@ export const checkAuthStatus = async () => {
       throw error
    }
 }
+
+//임시비번 설정 및 보내주기
+export const setTempPassword = async (email) => {
+   try {
+      const response = await likeItApi.post('/auth/setpassword', email)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
