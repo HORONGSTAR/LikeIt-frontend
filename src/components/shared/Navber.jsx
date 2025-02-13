@@ -7,7 +7,7 @@ import AccountMenu from './AccountMenu'
 import SearchBar from './Searchbar'
 import { Stack } from '@mui/material'
 
-function Navber({ isAuthenticated }) {
+function Navber({ isAuthenticated, user }) {
    const [open, setOpen] = useState(false)
 
    const navMeueItems = [
@@ -57,7 +57,13 @@ function Navber({ isAuthenticated }) {
                            <SearchBar />
                         </ModalBox>
                      </IconButton>
-                     {isAuthenticated ? <Button variant="contained">로그인</Button> : <AccountMenu items={accountMeunItems} />}
+                     {!isAuthenticated ? (
+                        <Link to="/login">
+                           <Button variant="contained">로그인</Button>
+                        </Link>
+                     ) : (
+                        <AccountMenu items={accountMeunItems} />
+                     )}
                   </Stack2>
                </Stack2>
                <Stack2 my={2}>
@@ -73,7 +79,13 @@ function Navber({ isAuthenticated }) {
                         {item.page}
                      </Typography>
                   ))}
-                  <Box sx={{ ml: 'auto', width: breakpoint.width, display: breakpoint.desktop }}>
+                  <Box
+                     sx={{
+                        ml: 'auto',
+                        width: breakpoint.width,
+                        display: breakpoint.desktop,
+                     }}
+                  >
                      <SearchBar />
                   </Box>
                </Stack2>

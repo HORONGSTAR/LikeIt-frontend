@@ -5,6 +5,8 @@ import indexReducer from '../features/indexSlice'
 import communityReducer from '../features/communitySlice'
 import commentReducer from '../features/commentSlice'
 import studioReducer from '../features/studioSlice'
+import rankReducer from '../features/rankSlice'
+import adminReducer from '../features/adminSlice'
 
 const store = configureStore({
    reducer: {
@@ -14,6 +16,8 @@ const store = configureStore({
       community: communityReducer,
       comments: commentReducer,
       studio: studioReducer,
+      rank: rankReducer,
+      admin: adminReducer,
    },
 })
 

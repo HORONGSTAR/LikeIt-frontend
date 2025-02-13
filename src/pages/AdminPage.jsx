@@ -1,35 +1,69 @@
-import { CommingCard } from '../../components/ui/Cards'
+import { AdminCard } from '../components/ui/Cards'
 import { Grid2 } from '@mui/material'
 import { Box, Divider, Chip } from '@mui/material'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchShowProjectsThunk } from '../../features/listSlice'
-import { Main, LoadingBox } from '../../styles/BaseStyles'
+import { bannerDelThunk, bannerRegThunk, fetchShowAdminProjectsThunk, proposalDenyThunk, proposalPassThunk } from '../features/adminSlice'
+import { LoadingBox, Main } from '../styles/BaseStyles'
 
-const CommingPage = () => {
+function AdminPage() {
    const dispatch = useDispatch()
-   const { projects, count, loading, error } = useSelector((state) => state.list)
+   const { projects, count, loading, error } = useSelector((state) => state.admin)
    const [page, setPage] = useState(1)
    const [allCards, setAllCards] = useState([])
    const [loadingCount, setLoadingCount] = useState(8)
    const [scrollPosition, setScrollPosition] = useState(0)
 
    useEffect(() => {
-      dispatch(fetchShowProjectsThunk({ page, limit: 8, type: 'comming' }))
+      dispatch(fetchShowAdminProjectsThunk(page))
    }, [dispatch, page])
 
+   const bannerReg = useCallback(
+      (id) => {
+         dispatch(bannerRegThunk(id))
+      },
+      [dispatch]
+   )
+   const bannerDel = useCallback(
+      (id) => {
+         dispatch(bannerDelThunk(id))
+      },
+      [dispatch]
+   )
+   const proposalPass = useCallback(
+      (id) => {
+         dispatch(proposalPassThunk(id))
+      },
+      [dispatch]
+   )
+   const proposalDeny = useCallback(
+      (id, denyMsg) => {
+         dispatch(proposalDenyThunk({ id, denyMsg }))
+      },
+      [dispatch]
+   )
+
+   const adminFunc = {
+      bannerReg,
+      bannerDel,
+      proposalPass,
+      proposalDeny,
+   }
+
+   // 리스트 호출
    useEffect(() => {
       const newCards = []
       let cardCount = 0
       let row = []
 
-      if (projects && projects.comming) {
-         projects.comming.forEach((project, index) => {
+      if (projects) {
+         projects.forEach((project, index) => {
             let totalOrderPrice = 0
             if (project.totalOrderPrice) totalOrderPrice = project.totalOrderPrice
             let rate = Math.floor((totalOrderPrice / project.goal) * 100)
-            const projectData = {
+            let projectData = {
+               id: project.id,
                studioName: project.Studio.name,
                title: project.title,
                intro: project.intro,
@@ -39,16 +73,18 @@ const CommingPage = () => {
                endDate: project.endDate,
                userCount: project.userCount,
                rate,
+               proposalStatus: project.proposalStatus,
             }
+            if (project.BannerProject) projectData.bannerId = project.BannerProject.id
             cardCount++
             row.push(
                <Grid2 key={project.id} size={{ md: 3, sm: 6, xs: 12 }}>
-                  <CommingCard key={project.id} project={projectData} />
+                  <AdminCard key={project.id} project={projectData} adminFunc={adminFunc} />
                </Grid2>
             )
 
             // 4개마다 새로운 row로 묶기
-            if (cardCount % 4 === 0 || index === projects.comming.length - 1) {
+            if (cardCount % 4 === 0 || index === projects.length - 1) {
                newCards.push(
                   <Grid2 key={project.id} container columnSpacing={1.5} rowSpacing={{ sm: 3, xs: 1.5 }}>
                      {row}
@@ -63,7 +99,7 @@ const CommingPage = () => {
             window.scrollTo(0, scrollPosition)
          }, 0)
       }
-   }, [projects.comming])
+   }, [projects])
 
    const loadMoreProjects = () => {
       setScrollPosition(window.scrollY)
@@ -81,6 +117,9 @@ const CommingPage = () => {
 
    return (
       <Main>
+         <Box m={1} p={1} sx={{ border: '1px solid silver', borderRadius: '4px' }}>
+            승인여부
+         </Box>
          {count ? (
             <>
                <p style={{ margin: '10px 0' }}>{count}개의 프로젝트가 있습니다.</p>
@@ -96,4 +135,4 @@ const CommingPage = () => {
    )
 }
 
-export default CommingPage
+export default AdminPage

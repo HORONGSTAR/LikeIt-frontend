@@ -1,6 +1,8 @@
 import { Box, Tooltip, Menu, MenuItem, IconButton, Avatar } from '@mui/material'
-import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useCallback, useState } from 'react'
+import { logoutUserThunk } from '../../features/authSlice'
+import { useDispatch } from 'react-redux'
 
 function AccountMenu({ items }) {
    const [anchorEl, setAnchorEl] = useState(null)
@@ -12,16 +14,24 @@ function AccountMenu({ items }) {
       setAnchorEl(null)
    }
 
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+
+   const handleLogout = useCallback(() => {
+      dispatch(logoutUserThunk())
+         .unwrap()
+         .then(() => {
+            navigate('/')
+         })
+         .catch((error) => {
+            alert(error)
+         })
+   }, [dispatch, navigate])
+
    return (
       <>
          <Tooltip title="내 계정">
-            <IconButton
-               onClick={handleClick}
-               size="small"
-               aria-controls={userOpen ? 'account-menu' : undefined}
-               aria-haspopup="true"
-               aria-expanded={userOpen ? 'true' : undefined}
-            >
+            <IconButton onClick={handleClick} size="small" aria-controls={userOpen ? 'account-menu' : undefined} aria-haspopup="true" aria-expanded={userOpen ? 'true' : undefined}>
                <Avatar sx={{ width: 32, height: 32 }} src={process.env.REACT_APP_API_URL + ''} />
             </IconButton>
          </Tooltip>
@@ -68,7 +78,7 @@ function AccountMenu({ items }) {
                   {item.page}
                </MenuItem>
             ))}
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={handleLogout}>
                <Box component="img" src="images/icon/logout.svg" sx={{ width: 12, mr: 1 }} />
                로그아웃
             </MenuItem>

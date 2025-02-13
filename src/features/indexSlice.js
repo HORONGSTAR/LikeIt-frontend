@@ -10,12 +10,12 @@ export const fetchShowBannerThunk = createAsyncThunk('index/fetchShowBanner', as
       return rejectWithValue(error.response?.data?.message || '배너 불러오기 실패')
    }
 })
+
 const indexSlice = createSlice({
    name: 'index',
    initialState: {
       banners: [],
       loading: false,
-      pagination: null,
       error: null,
    },
    reducers: {},

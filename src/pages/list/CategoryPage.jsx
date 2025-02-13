@@ -1,4 +1,4 @@
-import { CommingCard } from '../../components/ui/Cards'
+import { ProjectCard } from '../../components/ui/Cards'
 import { Grid2 } from '@mui/material'
 import { Box, Divider, Chip } from '@mui/material'
 
@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchShowProjectsThunk } from '../../features/listSlice'
 import { Main, LoadingBox } from '../../styles/BaseStyles'
+import { useParams } from 'react-router-dom'
 
-const CommingPage = () => {
+const CategoryPage = () => {
    const dispatch = useDispatch()
    const { projects, count, loading, error } = useSelector((state) => state.list)
    const [page, setPage] = useState(1)
@@ -15,17 +16,19 @@ const CommingPage = () => {
    const [loadingCount, setLoadingCount] = useState(8)
    const [scrollPosition, setScrollPosition] = useState(0)
 
+   const categoryId = useParams().id
+
    useEffect(() => {
-      dispatch(fetchShowProjectsThunk({ page, limit: 8, type: 'comming' }))
-   }, [dispatch, page])
+      dispatch(fetchShowProjectsThunk({ page, limit: 8, type: 'new', categoryId }))
+   }, [dispatch, page, categoryId])
 
    useEffect(() => {
       const newCards = []
       let cardCount = 0
       let row = []
 
-      if (projects && projects.comming) {
-         projects.comming.forEach((project, index) => {
+      if (projects && projects.new) {
+         projects.new.forEach((project, index) => {
             let totalOrderPrice = 0
             if (project.totalOrderPrice) totalOrderPrice = project.totalOrderPrice
             let rate = Math.floor((totalOrderPrice / project.goal) * 100)
@@ -43,12 +46,12 @@ const CommingPage = () => {
             cardCount++
             row.push(
                <Grid2 key={project.id} size={{ md: 3, sm: 6, xs: 12 }}>
-                  <CommingCard key={project.id} project={projectData} />
+                  <ProjectCard key={project.id} project={projectData} />
                </Grid2>
             )
 
             // 4개마다 새로운 row로 묶기
-            if (cardCount % 4 === 0 || index === projects.comming.length - 1) {
+            if (cardCount % 4 === 0 || index === projects.new.length - 1) {
                newCards.push(
                   <Grid2 key={project.id} container columnSpacing={1.5} rowSpacing={{ sm: 3, xs: 1.5 }}>
                      {row}
@@ -63,7 +66,7 @@ const CommingPage = () => {
             window.scrollTo(0, scrollPosition)
          }, 0)
       }
-   }, [projects.comming])
+   }, [projects.new])
 
    const loadMoreProjects = () => {
       setScrollPosition(window.scrollY)
@@ -96,4 +99,4 @@ const CommingPage = () => {
    )
 }
 
-export default CommingPage
+export default CategoryPage
