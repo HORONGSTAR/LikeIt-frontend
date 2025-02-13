@@ -4,6 +4,7 @@ import authReducer from '../features/authSlice'
 import indexReducer from '../features/indexSlice'
 import studioReducer from '../features/studioSlice'
 import rankReducer from '../features/rankSlice'
+import adminReducer from '../features/adminSlice'
 
 const store = configureStore({
    reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
       index: indexReducer,
       studio: studioReducer,
       rank: rankReducer,
+      admin: adminReducer,
    },
 })
 
