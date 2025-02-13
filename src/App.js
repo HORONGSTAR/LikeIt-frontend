@@ -19,7 +19,6 @@ import SearchPage from './pages/list/SearchPage'
 import FollowPage from './pages/list/FollowPage'
 import CategoryPage from './pages/list/CategoryPage'
 
-import StudioPage from './pages/StudioPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
