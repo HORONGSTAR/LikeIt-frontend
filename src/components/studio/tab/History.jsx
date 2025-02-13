@@ -1,6 +1,6 @@
 import { Box, Stack, Grid2 } from '@mui/material'
-import { Stack2 } from '../../styles/BaseStyles'
-import { HistoryCard } from '../ui/Cards'
+import { Stack2 } from '../../../styles/BaseStyles'
+import { HistoryCard } from '../../ui/Cards'
 
 function History({ items }) {
    return (

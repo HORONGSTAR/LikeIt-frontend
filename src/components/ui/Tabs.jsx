@@ -22,7 +22,7 @@ export const Tabs = ({ tabItems = [] }) => {
                </TabList>
             </Box>
             {tabItems.map((item) => (
-               <TabPanel key={'page' + item.label} value={item.label}>
+               <TabPanel sx={{ p: 1.5 }} key={'page' + item.label} value={item.label}>
                   {item.page}
                </TabPanel>
             ))}

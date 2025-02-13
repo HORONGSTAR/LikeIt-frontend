@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { showCommunities, getCommunityById, createCommunity, updateCommunity, deleteCommunity } from '../api/communityApi'
 
-// 특정 글 조회
 export const fetchCommunityByIdThunk = createAsyncThunk('community/fetchCommunityById', async (id, { rejectWithValue }) => {
    try {
       const response = await getCommunityById(id)
@@ -11,8 +10,7 @@ export const fetchCommunityByIdThunk = createAsyncThunk('community/fetchCommunit
    }
 })
 
-// 커뮤니티 글 목록 조회
-export const fetchShowCommunitiesThunk = createAsyncThunk('community/fetchShowCommunities', async (data, { rejectWithValue }) => {
+export const fetchCommunitiesThunk = createAsyncThunk('community/fetchCommunities', async (data, { rejectWithValue }) => {
    try {
       const response = await showCommunities(data)
       return response.data
@@ -21,7 +19,6 @@ export const fetchShowCommunitiesThunk = createAsyncThunk('community/fetchShowCo
    }
 })
 
-// 커뮤니티 글 등록
 export const createCommunityThunk = createAsyncThunk('community/createCommunity', async (communityData, { rejectWithValue }) => {
    try {
       const response = await createCommunity(communityData)
@@ -31,7 +28,6 @@ export const createCommunityThunk = createAsyncThunk('community/createCommunity'
    }
 })
 
-// 커뮤니티 글 수정
 export const updateCommunityThunk = createAsyncThunk('community/updateCommunity', async ({ id, communityData }, { rejectWithValue }) => {
    try {
       const response = await updateCommunity(id, communityData)
@@ -41,11 +37,9 @@ export const updateCommunityThunk = createAsyncThunk('community/updateCommunity'
    }
 })
 
-// 커뮤니티 글 삭제
 export const deleteCommunityThunk = createAsyncThunk('community/deleteCommunity', async (id, { rejectWithValue }) => {
    try {
       await deleteCommunity(id)
-      return id // 삭제된 커뮤니티 ID만 반환
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '커뮤니티 글 삭제 실패')
    }
@@ -55,7 +49,7 @@ const communitySlice = createSlice({
    name: 'community',
    initialState: {
       communities: [],
-      community: {},
+      community: null,
       loading: false,
       error: null,
    },
@@ -64,16 +58,16 @@ const communitySlice = createSlice({
    extraReducers: (builder) => {
       builder
          // 커뮤니티 목록 가져오기
-         .addCase(fetchShowCommunitiesThunk.pending, (state) => {
+         .addCase(fetchCommunitiesThunk.pending, (state) => {
             state.loading = true
             state.error = null
          })
-         .addCase(fetchShowCommunitiesThunk.fulfilled, (state, action) => {
+         .addCase(fetchCommunitiesThunk.fulfilled, (state, action) => {
             state.loading = false
             state.communities = action.payload.communities
             state.error = null
          })
-         .addCase(fetchShowCommunitiesThunk.rejected, (state, action) => {
+         .addCase(fetchCommunitiesThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

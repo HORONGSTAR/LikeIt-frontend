@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { createCommentApi, updateComment, deleteComment, getComments } from '../api/communityApi'
+import { createComment, updateComment, deleteComment, getComments } from '../api/commentApi'
 
 // 댓글 가져오기
 export const fetchCommentsThunk = createAsyncThunk('comments/fetchComments', async ({ communityId, page = 1 }, { rejectWithValue }) => {
@@ -13,7 +13,7 @@ export const fetchCommentsThunk = createAsyncThunk('comments/fetchComments', asy
 // 댓글 등록
 export const createCommentThunk = createAsyncThunk('comments/createComment', async ({ communityId, comment }, { rejectWithValue }) => {
    try {
-      return await createCommentApi(communityId, comment)
+      return await createComment(communityId, comment)
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '댓글 등록 실패')
    }
@@ -41,7 +41,7 @@ const commentSlice = createSlice({
    name: 'comments',
    initialState: {
       comments: [],
-      totalComments: 0, // 댓글 수
+      pagination: null,
       loading: false,
       error: null,
    },
@@ -50,30 +50,46 @@ const commentSlice = createSlice({
       builder
          .addCase(fetchCommentsThunk.pending, (state) => {
             state.loading = true
-            state.error = null
          })
          .addCase(fetchCommentsThunk.fulfilled, (state, action) => {
             state.loading = false
-            state.comments = action.payload.comments // 댓글 리스트
-            state.totalComments = action.payload.totalComments || action.payload.comments.length // 댓글 수 업데이트
+            state.comments = action.payload.comments
+            state.pagination = action.payload.pagination
          })
          .addCase(fetchCommentsThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })
-         .addCase(createCommentThunk.fulfilled, (state, action) => {
-            state.comments.push(action.payload)
-            state.totalComments += 1 // 댓글 수 증가
+         .addCase(createCommentThunk.pending, (state) => {
+            state.loading = true
+         })
+         .addCase(createCommentThunk.fulfilled, (state) => {
+            state.loading = false
+         })
+         .addCase(createCommentThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+         .addCase(updateCommentThunk.pending, (state) => {
+            state.loading = true
          })
          .addCase(updateCommentThunk.fulfilled, (state, action) => {
-            const index = state.comments.findIndex((comment) => comment.id === action.payload.id)
-            if (index !== -1) {
-               state.comments[index] = action.payload
-            }
+            state.loading = false
+            state.comments = action.payload.comments
          })
-         .addCase(deleteCommentThunk.fulfilled, (state, action) => {
-            state.comments = state.comments.filter((comment) => comment.id !== action.payload)
-            state.totalComments -= 1 // 댓글 수 감소
+         .addCase(updateCommentThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+         .addCase(deleteCommentThunk.pending, (state) => {
+            state.loading = true
+         })
+         .addCase(deleteCommentThunk.fulfilled, (state) => {
+            state.loading = false
+         })
+         .addCase(deleteCommentThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
          })
    },
 })

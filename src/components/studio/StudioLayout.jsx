@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { fetchStudioThunk } from '../../features/studioSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, CardContent, CardMedia, Typography, Button, Divider } from '@mui/material'
-import StudioTab from './StudioTab'
+import StudioTab from './tab/StudioTab'
 import { Stack2, LoadingBox } from '../../styles/BaseStyles'
 
 const StudioLayout = () => {
@@ -42,11 +42,11 @@ const StudioLayout = () => {
                         <Typography>
                            달성 프로젝트 <Spen>3건</Spen>
                         </Typography>
-                        <Divider orientation="vertical" variant="middle" flexItem />
+                        <Divider orientation="vertical" flexItem />
                         <Typography>
                            구독자 수 <Spen>82명</Spen>
                         </Typography>
-                        <Divider orientation="vertical" variant="middle" flexItem />
+                        <Divider orientation="vertical" flexItem />
                         <Typography>
                            최대 달성률 <Spen>1125%</Spen>
                         </Typography>

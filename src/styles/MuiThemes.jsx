@@ -42,6 +42,14 @@ export const theme = createTheme({
             },
          },
       },
+      MuiAccordion: {
+         styleOverrides: {
+            root: {
+               boxShadow: 'none',
+            },
+         },
+      },
+
       MuiOutlinedInput: {
          styleOverrides: {
             root: {

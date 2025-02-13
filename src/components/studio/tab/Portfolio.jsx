@@ -1,6 +1,6 @@
-import { Box, Stack, Avatar, Typography, Card, CardMedia, CardContent, Button } from '@mui/material'
-import { Stack2, Dot, Ellipsis } from '../../styles/BaseStyles'
-import { TabLink } from '../ui/Tabs'
+import { Box, Stack, Avatar, Typography, Card, CardMedia, CardContent, Button, Divider, Link } from '@mui/material'
+import { Stack2, Dot, Ellipsis } from '../../../styles/BaseStyles'
+import { TabLink } from '../../ui/Tabs'
 import { Timeline, TimelineSeparator, TimelineConnector, TimelineContent } from '@mui/lab'
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem'
 import TimelineOppositeContent, { timelineOppositeContentClasses } from '@mui/lab/TimelineOppositeContent'
@@ -103,12 +103,35 @@ function Portfolio({ items }) {
          ))}
       </Stack>
    )
+   const snsLink = {
+      X: { label: '트위터', icon: 'twitter.svg' },
+      YOUTUBE: { label: '유튜브', icon: 'youtube.svg' },
+      INSTAGRAM: { label: '인스타그램', icon: 'instagram.svg' },
+   }
+
    const contect = (
-      <Stack my={5}>
+      <Stack my={5} spacing={2}>
          <Dot float>
             <Typography variant="h4">문의처</Typography>
          </Dot>
-         {items.contects.map((contect) => contect)}
+         <Card variant="outlined" p={0}>
+            <CardContent sx={{ paddingBottom: '16px !important' }}>
+               <Stack2 sx={{ gap: '0 15px' }}>
+                  <Typography fontWeight={600}>스튜디오</Typography>
+                  <Typography>{items.contects.name}</Typography>
+                  <Divider orientation="vertical" flexItem />
+                  <Typography fontWeight={600}>SNS</Typography>
+                  {items.contects.sns.map((sns) => (
+                     <Link key={'contect' + sns.id} underline="none" target="_blank" href={sns.contents} rel="noopener noreferrer">
+                        <Stack2 spacing={0.5}>
+                           <Box component="img" sx={{ height: 16 }} src={`/images/icon/${snsLink[sns.type].icon}`} />
+                           <Typography color="grey">{snsLink[sns.type].label}</Typography>
+                        </Stack2>
+                     </Link>
+                  ))}
+               </Stack2>
+            </CardContent>
+         </Card>
       </Stack>
    )
 

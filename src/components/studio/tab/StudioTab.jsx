@@ -1,6 +1,4 @@
-import { Box, Stack } from '@mui/material'
-import { Stack2 } from '../../styles/BaseStyles'
-import { Tabs } from '../ui/Tabs'
+import { Tabs } from '../../ui/Tabs'
 import Portfolio from './Portfolio'
 import History from './History'
 import Community from './Community'
@@ -14,7 +12,7 @@ function StudioTab() {
          creators: studio.StudioCreators.map((creator) => creator.Creator),
          new: projects[0],
          projects: projects.filter((project) => project.projectStatus !== 'FUNDING_FAILED'),
-         contects: studio.StudioAccounts,
+         contects: { name: studio.name, sns: studio.StudioAccounts },
       },
       history: {
          projects: projects.filter((project) => project.projectStatus !== 'WAITING_FUNDING'),
