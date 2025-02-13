@@ -1,17 +1,16 @@
 import { AppBar, Container, Typography, Button, IconButton } from '@mui/material'
 import { Menu as MenuClose, MenuOpen } from '@mui/icons-material'
-import { Link, useParams } from 'react-router-dom'
+import { NavLink, Link, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import AccountMenu from './AccountMenu'
 import { Stack2 } from '../../styles/BaseStyles'
 
 function StudioNavber({ isAuthenticated, user }) {
-   const { studioId } = useParams()
    const [open, setOpen] = useState(false)
 
    const studioMenu = [
-      { page: '새 프로젝트 올리기', path: '/studio/create' },
-      { page: '모든 프로젝트', path: '/studio/all' },
+      { page: '새 프로젝트 올리기', path: '/protect/write' },
+      { page: '모든 프로젝트', path: '/protect/all' },
       { page: '창작자 관리', path: '/studio/member' },
    ]
 
@@ -33,19 +32,20 @@ function StudioNavber({ isAuthenticated, user }) {
          <AppBar position="static">
             <Container maxWidth="md">
                <Stack2 my={2}>
-                  {studioId ? (
-                     <Link to="/">
-                        <img src="images/logo.svg" alt="Like It!" />
-                     </Link>
-                  ) : (
-                     <Link to="/studio">
-                        <img src="images/logo-studio.svg" alt="Studio" />
-                     </Link>
-                  )}
+                  <Link to="/studio">
+                     <img src="/images/logo-studio.svg" alt="Studio" />
+                  </Link>
 
                   <Stack2 sx={{ display: breakpoint.desktop, ml: breakpoint.margin, alignItems: 'end', height: 32 }}>
                      {studioMenu.map((item) => (
-                        <Typography key={item.page} mr={breakpoint.margin}>
+                        <Typography
+                           key={item.page}
+                           fontWeight="500"
+                           component={NavLink}
+                           to={item.path}
+                           mr={breakpoint.margin}
+                           onClick={() => setOpen(false)}
+                        >
                            {item.page}
                         </Typography>
                      ))}

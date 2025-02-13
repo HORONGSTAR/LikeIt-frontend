@@ -54,7 +54,7 @@ export const LoadingBox = ({ heightValue }) => {
    )
 }
 
-export const ModalBox = ({ children, openBtn, closeBtn }) => {
+export const ModalBox = ({ children, openBtn, closeBtn, full }) => {
    const [open, setOpen] = useState(false)
 
    return (
@@ -68,13 +68,14 @@ export const ModalBox = ({ children, openBtn, closeBtn }) => {
                   top: '50%',
                   left: '50%',
                   transform: 'translate(-50%, -50%)',
+                  width: { sm: full ? 600 : 320, xs: '100%' },
                   minWidth: 320,
                   bgcolor: 'background.paper',
                   borderRadius: 1,
                   boxShadow: 24,
                   px: 2,
-                  py: 3,
-                  maxHeight: 600,
+                  py: 4,
+                  maxHeight: { sm: full ? '100%' : 600, xs: '100%' },
                   overflowY: 'auto',
                }}
             >
@@ -85,8 +86,8 @@ export const ModalBox = ({ children, openBtn, closeBtn }) => {
                   }}
                   sx={(theme) => ({
                      position: 'absolute',
-                     right: 8,
-                     top: 8,
+                     right: 0,
+                     top: 0,
                      color: theme.palette.grey[500],
                   })}
                >
@@ -148,7 +149,7 @@ export const Ellipsis = styled.div`
    display: -webkit-box;
    -webkit-line-clamp: ${(props) => props.$line || 1};
    -webkit-box-orient: vertical;
-   @media (max-width: 600px) {
+   @media (max-width: 500px) {
       -webkit-line-clamp: 1;
    }
 `
