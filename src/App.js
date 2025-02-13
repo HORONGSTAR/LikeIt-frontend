@@ -22,6 +22,7 @@ import FundingOverview from './components/funding/FundingOverview'
 import StudioPage from './pages/StudioPage'
 import CommunityDetail from './components/community/CommunityDetail'
 import StudioCreatePage from './pages/StudioCreatePage'
+import StudioEditPage from './pages/StudioEditPage'
 
 function App() {
    const location = useLocation()
@@ -31,6 +32,7 @@ function App() {
       '/commonsignup': true,
       '/studio': true,
       '/studio/create': true,
+      '/studio/edit': true,
    }
 
    const dontNeedNavber = pageName[location.pathname]
@@ -53,10 +55,10 @@ function App() {
             <Route path="/follow" element={<Home />} />
             <Route path="/studio" element={<StudioPage />} />
             <Route path="/studio/create" element={<StudioCreatePage />} />
+            <Route path="/studio/edit/:id" element={<StudioEditPage />} />
             <Route path="/studio/community" element={<Community />} />
             <Route path="/studio/community/write" element={<CommunityWritePage />} />
             <Route path="/studio/community/:id" element={<CommunityDetail />} />
-
             <Route path="/funding" element={<FundingLayout />}>
                <Route path="detail" element={<FundingOverview />} />
                <Route path="timeline" element={<FundingTimeline />} />

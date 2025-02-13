@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getStudio, createStudio } from '../api/studioApi'
+import { getStudio, createStudio, updateStudio, getStudioById } from '../api/studioApi'
 
 // 스튜디오 조회
 export const fetchStudioThunk = createAsyncThunk('studio/fetchStudioThunk', async (_, { rejectWithValue }) => {
@@ -18,6 +18,26 @@ export const createStudioThunk = createAsyncThunk('studio/createStudioThunk', as
       return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '스튜디오 생성 실패')
+   }
+})
+
+// 특정 스튜디오 조회
+export const fetchStudioByIdThunk = createAsyncThunk('studio/fetchStudioByIdThunk', async (studioId, { rejectWithValue }) => {
+   try {
+      const response = await getStudioById(studioId)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '스튜디오 불러오기 실패')
+   }
+})
+
+// 스튜디오 수정
+export const updateStudioThunk = createAsyncThunk('studio/updateStudioThunk', async ({ studioId, updatedData }, { rejectWithValue }) => {
+   try {
+      const response = await updateStudio(studioId, updatedData)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '스튜디오 수정 실패')
    }
 })
 
@@ -57,6 +77,32 @@ const studioSlice = createSlice({
             state.studio = action.payload
          })
          .addCase(createStudioThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+         // 특정 스튜디오 조회
+         .addCase(fetchStudioByIdThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(fetchStudioByIdThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.studio = action.payload
+         })
+         .addCase(fetchStudioByIdThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+         // 스튜디오 수정
+         .addCase(updateStudioThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(updateStudioThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.studio = action.payload.studio
+         })
+         .addCase(updateStudioThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

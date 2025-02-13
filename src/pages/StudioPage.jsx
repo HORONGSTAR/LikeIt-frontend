@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchStudioThunk } from '../features/studioSlice'
-import { useNavigate } from 'react-router-dom'
 
 import StudioNavber from '../components/shared/StudioNavber'
 import StudioLayout from '../components/studio/StudioLayout'
