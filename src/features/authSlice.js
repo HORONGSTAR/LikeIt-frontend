@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { loginUser, registerUser, googleRegisterUser, logoutUser, checkAuthStatus } from '../api/authApi'
+import { loginUser, registerUser, googleRegisterUser, logoutUser, checkAuthStatus, setTempPassword } from '../api/authApi'
 
 // 회원가입 thunk
 export const registerUserThunk = createAsyncThunk('auth/registerUser', async (userData, { rejectWithValue }) => {
@@ -55,6 +55,16 @@ export const checkAuthStatusThunk = createAsyncThunk('auth/checkAuthStatus', asy
       return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '상태 확인 실패')
+   }
+})
+
+//임시비번 설정 및 보내주기
+export const setTempPasswordThunk = createAsyncThunk('auth/setTempPassword', async (email, { rejectWithValue }) => {
+   try {
+      const response = await setTempPassword(email)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '임시 비번 설정 실패')
    }
 })
 
@@ -142,6 +152,19 @@ const authSlice = createSlice({
             state.error = action.payload
             state.isAuthenticated = false
             state.user = null
+         })
+      //임시비번 설정
+      builder
+         .addCase(setTempPasswordThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(setTempPasswordThunk.fulfilled, (state) => {
+            state.loading = false
+         })
+         .addCase(setTempPasswordThunk.rejected, (state, action) => {
+            state.loading = true
+            state.error = action.payload
          })
    },
 })
