@@ -12,7 +12,7 @@ const StudioLayout = () => {
       dispatch(fetchStudioThunk())
    }, [dispatch])
 
-   const { studio, lodding, erroe } = useSelector((state) => state.studio)
+   const { studio, lodding } = useSelector((state) => state.studio)
 
    if (lodding) return <LoadingBox />
 

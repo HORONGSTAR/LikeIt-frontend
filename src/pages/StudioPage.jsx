@@ -11,7 +11,6 @@ import { LoadingBox } from '../styles/BaseStyles'
 
 function StudioPage() {
    const dispatch = useDispatch()
-   const navigate = useNavigate()
    const { studio, loading } = useSelector((state) => state.studio)
    const { user } = useSelector((state) => state.auth)
 

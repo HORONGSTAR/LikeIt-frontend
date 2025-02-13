@@ -9,15 +9,14 @@ import InstagramIcon from '@mui/icons-material/Instagram'
 import YouTubeIcon from '@mui/icons-material/YouTube'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import { createStudioThunk } from '../features/studioSlice'
-import { useDispatch, useSelector } from 'react-redux'
-import { ErrorBox } from '../styles/BaseStyles'
+import { useDispatch } from 'react-redux'
 
 function StudioCreatePage() {
    const dispatch = useDispatch()
    const navigate = useNavigate()
 
    const [studioName, setStudioName] = useState('')
-   const [description, setDescription] = useState('')
+   const [intro, setIntro] = useState('')
    const [image, setImage] = useState(null)
    const [imageUrl, setImageUrl] = useState('')
    const [snsLinks, setSnsLinks] = useState([
@@ -40,7 +39,8 @@ function StudioCreatePage() {
 
       const studioData = {
          name: studioName,
-         description,
+         intro,
+         imgUrl: imageUrl,
          snsLinks: snsLinks.filter((sns) => sns.link.trim() !== ''), // SNS 링크가 비어있지 않은 항목만 전달
       }
 
@@ -169,7 +169,7 @@ function StudioCreatePage() {
                         스튜디오의 이름을 지어주세요. (최대 30자)
                      </Typography>
                      <Typography variant="body2" sx={{ color: '#666' }}>
-                        {description.length} / 30
+                        {studioName.length} / 30
                      </Typography>
                   </Box>
 
@@ -177,8 +177,8 @@ function StudioCreatePage() {
                   <Typography variant="body1">스튜디오 소개</Typography>
                   <textarea
                      maxLength="255"
-                     value={description}
-                     onChange={(e) => setDescription(e.target.value)}
+                     value={intro}
+                     onChange={(e) => setIntro(e.target.value)}
                      style={{
                         width: '100%',
                         padding: 10,
@@ -192,7 +192,7 @@ function StudioCreatePage() {
                         스튜디오를 소개해주세요. (최대 255자)
                      </Typography>
                      <Typography variant="body2" sx={{ color: '#666' }}>
-                        {description.length} / 255
+                        {intro.length} / 255
                      </Typography>
                   </Box>
 
@@ -261,7 +261,7 @@ function StudioCreatePage() {
                            },
                         }}
                         onClick={handleCreateStudio}
-                        disabled={!studioName.trim() || !description.trim()}
+                        disabled={!studioName.trim() || !intro.trim()}
                      >
                         만들기
                      </Button>
