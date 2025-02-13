@@ -6,15 +6,9 @@ import StudioTab from './tab/StudioTab'
 import { Stack2, LoadingBox } from '../../styles/BaseStyles'
 
 const StudioLayout = () => {
-   const dispatch = useDispatch()
+   const { studio, loading } = useSelector((state) => state.studio)
 
-   useEffect(() => {
-      dispatch(fetchStudioThunk())
-   }, [dispatch])
-
-   const { studio, lodding } = useSelector((state) => state.studio)
-
-   if (lodding) return <LoadingBox />
+   if (loading) return <LoadingBox />
 
    const Spen = (props) => <Typography component="span" color="green" {...props} />
 
@@ -23,7 +17,11 @@ const StudioLayout = () => {
          {studio && (
             <>
                <Card variant="none">
-                  <CardMedia sx={{ minWidth: 180, height: 180, borderRadius: '10px' }} image={process.env.REACT_APP_API_URL + '/studioImg/' + studio.imgUrl} alt="발레리나" />
+                  <CardMedia
+                     sx={{ minWidth: 180, height: 180, borderRadius: '10px' }}
+                     image={process.env.REACT_APP_API_URL + '/studioImg/' + studio.imgUrl}
+                     alt="발레리나"
+                  />
                   <CardContent sx={{ display: 'flex', flexDirection: 'column', py: 0 }}>
                      <Stack2 mb={1} alignItems="end">
                         <Typography variant="h2" fontWeight="bold">
