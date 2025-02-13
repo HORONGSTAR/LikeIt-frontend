@@ -11,20 +11,17 @@ import { LoadingBox } from '../styles/BaseStyles'
 function StudioPage() {
    const dispatch = useDispatch()
    const { studio, loading } = useSelector((state) => state.studio)
-   const { user } = useSelector((state) => state.auth)
 
    useEffect(() => {
-      if (user?.id) {
-         dispatch(fetchStudioThunk(user.id))
-      }
-   }, [dispatch, user])
+      dispatch(fetchStudioThunk())
+   }, [dispatch])
 
    if (loading) return <LoadingBox />
 
    return (
       <>
          <StudioNavber />
-         <Main>{studio ? <StudioLayout /> : <StudioCreate />}</Main>
+         <Main>{studio && studio ? <StudioLayout /> : <StudioCreate />}</Main>
       </>
    )
 }
