@@ -40,8 +40,8 @@ function StudioCreatePage() {
       const studioData = {
          name: studioName,
          intro,
-         imgUrl: imageUrl,
-         snsLinks: snsLinks.filter((sns) => sns.link.trim() !== ''), // SNS 링크가 비어있지 않은 항목만 전달
+         imgUrl: imageUrl, // 서버에서 반환한 URL을 저장
+         snsLinks: snsLinks.filter((sns) => sns.link.trim() !== ''), // SNS 링크 필터링
       }
 
       dispatch(createStudioThunk(studioData))
@@ -55,7 +55,6 @@ function StudioCreatePage() {
          })
    }
 
-   // 파일 업로드 핸들러
    const handleImageChange = (event) => {
       const file = event.target.files[0]
 

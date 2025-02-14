@@ -10,6 +10,7 @@ import YouTubeIcon from '@mui/icons-material/YouTube'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import { fetchStudioByIdThunk, updateStudioThunk } from '../features/studioSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { LoadingBox } from '../styles/BaseStyles'
 
 function StudioEditPage() {
    const { id } = useParams() // URL에서 studioId 가져오기
@@ -20,6 +21,7 @@ function StudioEditPage() {
    // 기존 데이터 세팅을 위한 State
    const [studioName, setStudioName] = useState('')
    const [intro, setIntro] = useState('')
+   const [file, setFile] = useState(null)
    const [image, setImage] = useState(null)
    const [imageUrl, setImageUrl] = useState('')
    const [snsLinks, setSnsLinks] = useState([
@@ -28,7 +30,7 @@ function StudioEditPage() {
       { platform: 'twitter', link: '' },
    ])
 
-   // ✅ 기존 스튜디오 데이터를 불러와서 입력 필드에 적용
+   // 기존 스튜디오 데이터를 불러와서 입력 필드에 적용
    useEffect(() => {
       dispatch(fetchStudioByIdThunk(id))
    }, [dispatch, id])
@@ -37,7 +39,7 @@ function StudioEditPage() {
       if (studio) {
          setStudioName(studio.name || '')
          setIntro(studio.intro || '')
-         setImageUrl(`${process.env.REACT_APP_API_URL}/uploads/studioImg/${studio.imgUrl}` || '')
+         setImageUrl(`${process.env.REACT_APP_API_URL}${studio.imgUrl}`)
          setSnsLinks(
             studio.snsLinks || [
                { platform: 'instagram', link: '' },
@@ -55,48 +57,61 @@ function StudioEditPage() {
       setSnsLinks(newSnsLinks)
    }
 
-   // ✅ 수정 요청 API 호출
-   const handleUpdateStudio = () => {
-      if (!studioName.trim()) {
-         alert('스튜디오 이름을 입력해주세요.')
-         return
-      }
-
-      const updatedData = {
-         name: studioName,
-         intro,
-         imgUrl: imageUrl,
-         snsLinks: snsLinks.filter((sns) => sns.link.trim() !== ''), // 빈 링크 제거
-      }
-
-      dispatch(updateStudioThunk({ studioId: id, updatedData }))
-         .unwrap()
-         .then(() => {
-            alert('스튜디오 정보가 성공적으로 수정되었습니다!')
-            navigate('/studio') // 성공 시 스튜디오 페이지로 이동
-         })
-         .catch((err) => {
-            alert(`스튜디오 수정 실패: ${err}`)
-         })
-   }
-
-   // ✅ 파일 업로드 핸들러
+   // 이미지 변경
    const handleImageChange = (event) => {
       const file = event.target.files[0]
 
       if (file) {
+         // 파일 크기 제한 (10MB)
          if (file.size > 10 * 1024 * 1024) {
             alert('이미지 파일은 10MB 이하만 업로드 가능합니다.')
             return
          }
 
-         const newImageUrl = URL.createObjectURL(file)
+         // 파일 URL 생성 (미리보기)
+         const imageUrl = URL.createObjectURL(file)
          setImage(file)
-         setImageUrl(newImageUrl)
+         setImageUrl(imageUrl)
       }
    }
 
-   if (loading) return <p>로딩 중...</p>
+   // 스튜디오 수정
+   const handleUpdateStudio = async () => {
+      if (!studioName.trim()) {
+         alert('스튜디오 이름을 입력해주세요.')
+         return
+      }
+
+      const formData = new FormData()
+      formData.append('name', studioName)
+      formData.append('intro', intro)
+      formData.append('snsLinks', JSON.stringify(snsLinks))
+
+      if (image) {
+         formData.append('image', image) // 이미지 파일 추가
+      }
+
+      try {
+         const response = await fetch(`${process.env.REACT_APP_API_URL}/studio/${id}`, {
+            method: 'PUT',
+            body: formData,
+         })
+
+         const data = await response.json()
+         if (data.success) {
+            alert('스튜디오 정보가 성공적으로 수정되었습니다!')
+            dispatch(fetchStudioByIdThunk(id)) // Redux 상태 갱신 추가
+            setTimeout(() => navigate('/studio'), 500) // 0.5초 후 이동 (안정성 확보)
+         } else {
+            throw new Error(data.message)
+         }
+      } catch (error) {
+         console.error('스튜디오 수정 오류:', error)
+         alert('스튜디오 수정 중 오류가 발생했습니다.')
+      }
+   }
+
+   if (loading) return <LoadingBox />
 
    return (
       <>

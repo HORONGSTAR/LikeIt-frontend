@@ -37,7 +37,7 @@ export const updateStudio = async (studioId, updatedData) => {
 export const getStudioById = async (studioId) => {
    try {
       const response = await likeitApi.get(`/studio/${studioId}`)
-      return response.data
+      return response
    } catch (error) {
       console.error(`스튜디오 조회 오류: ${error.message}`)
       throw error
