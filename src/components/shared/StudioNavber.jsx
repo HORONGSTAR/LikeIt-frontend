@@ -9,7 +9,7 @@ function StudioNavber({ isAuthenticated, user }) {
    const [open, setOpen] = useState(false)
 
    const studioMenu = [
-      { page: '새 프로젝트 올리기', path: '/protect/write' },
+      { page: '새 프로젝트', path: '/protect/write' },
       { page: '모든 프로젝트', path: '/protect/all' },
       { page: '창작자 관리', path: '/studio/member' },
    ]

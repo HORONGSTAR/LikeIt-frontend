@@ -1,6 +1,18 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, DialogContent, DialogTitle, Container, Link as MuiLink } from '@mui/material'
+import {
+   Typography,
+   Modal,
+   Box,
+   IconButton,
+   Stack,
+   CircularProgress,
+   Dialog,
+   DialogContent,
+   DialogTitle,
+   Container,
+   Link as MuiLink,
+} from '@mui/material'
 import { Close, PlayArrowRounded } from '@mui/icons-material'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'

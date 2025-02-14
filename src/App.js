@@ -24,6 +24,7 @@ import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
 import FindingPasswordPage from './pages/FindingPasswordPage'
 import Navber from './components/shared/Navber'
+import Footer from './components/shared/Footer'
 import CommunityWritePage from './pages/CommunityWritePage'
 import FundingReview from './components/funding/FundingReview'
 import DesignGuide from './pages/DesignGuide'
@@ -40,19 +41,18 @@ import { checkAuthStatusThunk } from './features/authSlice'
 
 function App() {
    const location = useLocation()
+   const path = location.pathname.split('/')[1]
+
+   //path의 가장 첫번째 이름을 적으면 dontNeedNavber 적용됩니다.
    const pageName = {
-      '/login': true,
-      '/signup': true,
-      '/commonsignup': true,
-      '/studio': true,
-      '/protect/write': true,
-      '/community/write': true,
-      '/studio/create': true,
-      '/studio/edit': true,
-      '/findingpassword': true,
+      login: true,
+      signup: true,
+      commonsignup: true,
+      studio: true,
+      findingpassword: true,
    }
 
-   const dontNeedNavber = pageName[location.pathname]
+   const dontNeedNavber = pageName[path]
 
    const dispatch = useDispatch()
    const { isAuthenticated, user } = useSelector((state) => state.auth)
@@ -61,6 +61,7 @@ function App() {
       dispatch(checkAuthStatusThunk())
    }, [dispatch])
 
+   //path 경로 꼬임 이슈 예방 : params값이 있는 페이지는 같은 경로들 중 가장 아래에 둘 것.
    return (
       <>
          {!dontNeedNavber && <Navber isAuthenticated={isAuthenticated} user={user} />}
@@ -87,13 +88,14 @@ function App() {
             <Route path="/end" element={<EndPage />} />
             <Route path="/comming" element={<CommingPage />} />
             <Route path="/follow" element={<Home />} />
+
             <Route path="/studio" element={<StudioPage />} />
-            <Route path="/studio/:id" element={<StudioPage />} />
-            <Route path="/protect/write" element={<ProjectWritePage />} />
-            <Route path="/community/write'" element={<CommunityWritePage />} />
             <Route path="/studio/create" element={<StudioCreatePage />} />
             <Route path="/studio/edit/:id" element={<StudioEditPage />} />
             <Route path="/studio/community/write" element={<CommunityWritePage />} />
+            <Route path="/studio/protect/write" element={<ProjectWritePage />} />
+            <Route path="/studio/:id" element={<StudioPage />} />
+
             <Route path="/funding" element={<FundingLayout />}>
                <Route path="detail" element={<FundingOverview />} />
                <Route path="timeline" element={<FundingTimeline />} />
@@ -119,6 +121,7 @@ function App() {
                관리자 페이지
             </Button>
          )}
+         <Footer />
       </>
    )
 }
