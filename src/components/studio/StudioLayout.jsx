@@ -3,14 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Card, CardContent, CardMedia, Typography, Button, Divider } from '@mui/material'
 import StudioTab from './tab/StudioTab'
 import { useParams } from 'react-router-dom'
-import { Stack2, LoadingBox } from '../../styles/BaseStyles'
+import { Stack2 } from '../../styles/BaseStyles'
 
 const StudioLayout = () => {
-   const dispatch = useDispatch()
-
-   const { studio, loading } = useSelector((state) => state.studio)
-
-   if (loading) return <LoadingBox />
+   const { studio } = useSelector((state) => state.studio)
 
    const Spen = (props) => <Typography component="span" color="green" {...props} />
 

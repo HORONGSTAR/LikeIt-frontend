@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Grid2, Typography, Stack, Badge } from '@mui/material'
+import { Box, Button, TextField, Grid2, Typography, Stack, Divider } from '@mui/material'
 import { Dot, Stack2 } from '../../../styles/BaseStyles'
 import { ImageRounded } from '@mui/icons-material'
 import { useState, useCallback } from 'react'
@@ -11,13 +11,22 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ko'
 
 function SeleteDate(props) {
-   const { startDate, day, outsideCurrentMonth, ...other } = props
-   const isStart = startDate && dayjs(day).isSame(startDate, 'day')
+   const { startDate, endDate, day, outsideCurrentMonth, ...other } = props
+   const isCenter = dayjs(day).isAfter(startDate, 'day') && dayjs(day).isBefore(endDate, 'day')
+   const isStart = dayjs(day).isSame(startDate, 'day')
+   const isEnd = dayjs(day).isSame(endDate, 'day')
 
    return (
-      <Box>
+      <Box sx={{ background: isCenter && '#eee' }}>
          <PickersDay
-            sx={{ background: isStart && '#222', color: isStart && '#fff' }}
+            sx={{
+               background: isStart && '#222',
+               color: isStart && '#fff',
+               '&:hover': {
+                  color: '#fff',
+                  background: '#222',
+               },
+            }}
             {...other}
             outsideCurrentMonth={outsideCurrentMonth}
             day={day}
@@ -33,22 +42,31 @@ function ProjectInfoForm() {
    const [startDate, setStartDate] = useState(null)
    const [endDate, setEndDate] = useState(null)
 
-   const handleChange = (newDate) => {
-      if (!startDate || (startDate && endDate)) {
-         setStartDate(newDate)
-         setEndDate(null)
-      } else {
-         setEndDate(newDate.isAfter(startDate) ? newDate : startDate)
-         if (newDate.isBefore(startDate)) setStartDate(newDate)
-      }
-   }
+   const handleChange = useCallback(
+      (newDate) => {
+         if (!startDate || (startDate && endDate)) {
+            setStartDate(newDate)
+            setEndDate(null)
+         } else {
+            if (newDate.isBefore(startDate)) {
+               setEndDate(null)
+               setStartDate(newDate)
+            } else {
+               setEndDate(newDate)
+            }
+         }
+      },
+      [startDate, endDate]
+   )
 
    const DateRangePickers = (
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
          <Grid2 container alignItems="center">
             <Grid2 size={{ sm: 6, xs: 12 }}>
                <DateCalendar
+                  shouldDisableDate={(day) => day.isBefore(dayjs(), 'day')}
                   value={endDate || startDate}
+                  showDaysOutsideCurrentMonth
                   onChange={handleChange}
                   slots={{
                      day: SeleteDate,

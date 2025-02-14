@@ -43,7 +43,6 @@ function App() {
    const location = useLocation()
    const path = location.pathname.split('/')[1]
 
-   //path의 가장 첫번째 이름을 적으면 dontNeedNavber 적용됩니다.
    const pageName = {
       login: true,
       signup: true,
@@ -61,7 +60,6 @@ function App() {
       dispatch(checkAuthStatusThunk())
    }, [dispatch])
 
-   //path 경로 꼬임 이슈 예방 : params값이 있는 페이지는 같은 경로들 중 가장 아래에 둘 것.
    return (
       <>
          {!dontNeedNavber && <Navber isAuthenticated={isAuthenticated} user={user} />}
@@ -94,6 +92,8 @@ function App() {
             <Route path="/studio/edit/:id" element={<StudioEditPage />} />
             <Route path="/studio/community/write" element={<CommunityWritePage />} />
             <Route path="/studio/protect/write" element={<ProjectWritePage />} />
+            <Route path="/studio/protect/edit/:id" element={<ProjectWritePage />} />
+
             <Route path="/studio/:id" element={<StudioPage />} />
 
             <Route path="/funding" element={<FundingLayout />}>
@@ -103,7 +103,6 @@ function App() {
             </Route>
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/studio" element={<StudioPage />} />
-            {/* <Route path="commu" element={<CommunityPage />} /> */}
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />
 
