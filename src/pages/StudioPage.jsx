@@ -17,7 +17,7 @@ function StudioPage() {
    const handleFetchStudio = useCallback(() => {
       if (id) dispatch(fetchStudioByIdThunk(id))
       else dispatch(fetchStudioThunk())
-   }, [id])
+   }, [id, dispatch])
 
    useEffect(() => {
       handleFetchStudio()

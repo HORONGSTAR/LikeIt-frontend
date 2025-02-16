@@ -1,5 +1,16 @@
 import React, { useState } from 'react'
-import { Box, Button, TextField, Typography, Paper, FormControl, Select, MenuItem, Grid, Container } from '@mui/material'
+import {
+   Box,
+   Button,
+   TextField,
+   Typography,
+   Paper,
+   FormControl,
+   Select,
+   MenuItem,
+   Grid,
+   Container,
+} from '@mui/material'
 import StudioNavber from '../components/shared/StudioNavber'
 import LinkIcon from '@mui/icons-material/Link'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -76,7 +87,10 @@ function StudioCreatePage() {
       <>
          <StudioNavber />
 
-         <Container maxWidth="md" sx={{ mt: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+         <Container
+            maxWidth="md"
+            sx={{ mt: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}
+         >
             {/* 입력 폼 */}
             <Box sx={{ width: '100%', maxWidth: 500 }}>
                <Typography variant="h5" mb={2}>
@@ -101,7 +115,11 @@ function StudioCreatePage() {
                      }}
                   >
                      {imageUrl ? (
-                        <img src={imageUrl} alt="프로필 이미지" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <img
+                           src={imageUrl}
+                           alt="프로필 이미지"
+                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
                      ) : (
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                            <ImageIcon sx={{ fontSize: 40, color: '#aaa' }} />
@@ -187,7 +205,11 @@ function StudioCreatePage() {
                   <Grid container spacing={2} alignItems="center" sx={{ mb: 1 }} key={index}>
                      <Grid item xs={4}>
                         <FormControl fullWidth>
-                           <Select value={sns.platform} onChange={(e) => handleSnsChange(index, 'platform', e.target.value)} displayEmpty>
+                           <Select
+                              value={sns.platform}
+                              onChange={(e) => handleSnsChange(index, 'platform', e.target.value)}
+                              displayEmpty
+                           >
                               <MenuItem value="instagram">
                                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                     <InstagramIcon sx={{ color: '#D97400', mr: 1 }} />

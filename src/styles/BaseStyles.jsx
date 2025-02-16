@@ -11,11 +11,13 @@ import {
    DialogContent,
    DialogTitle,
    Container,
+   Button,
    Link as MuiLink,
 } from '@mui/material'
-import { Close, PlayArrowRounded } from '@mui/icons-material'
+import { Close, PlayArrowRounded, AddPhotoAlternate } from '@mui/icons-material'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useCallback } from 'react'
 
 export const Main = ({ children, spacing }) => {
    return (
@@ -31,13 +33,22 @@ export const SubTitle = ({ children, to }) => {
          <Typography variant="h4" component={Link} to={to}>
             {children}
          </Typography>
-         <PlayArrowRounded />
+         <PlayArrowRounded color="primary" />
       </Stack2>
    )
 }
 
 export const Dot = ({ children, both, float }) => {
-   const dotSx = { display: 'block', width: 5, height: 5, background: '#222', borderRadius: '50%', m: 1, position: float && 'absolute', left: -20 }
+   const dotSx = {
+      display: 'block',
+      width: 5,
+      height: 5,
+      background: '#222',
+      borderRadius: '50%',
+      m: 1,
+      position: float && 'absolute',
+      left: -20,
+   }
 
    return (
       <Box display={'flex'}>
@@ -150,6 +161,73 @@ export const ErrorBox = ({ error, open, setOpen }) => {
             </DialogContent>
          </Dialog>
       </>
+   )
+}
+
+export const ImgUploadBox = ({ setImgFile, children }) => {
+   const [imgUrl, setImgUrl] = useState('')
+
+   const handleImageChange = useCallback(
+      (e) => {
+         const file = e.target.files && e.target.files[0]
+         if (!file) return
+
+         setImgFile(file)
+         const reader = new FileReader()
+         reader.readAsDataURL(file)
+         reader.onload = (event) => {
+            setImgUrl(event.target.result)
+         }
+      },
+      [setImgFile]
+   )
+
+   return (
+      <Stack2 alignItems="end">
+         <Button
+            component="label"
+            sx={{
+               width: 150,
+               height: 150,
+               justifyContent: 'center',
+               overflow: 'hidden',
+               background: '#666',
+               p: 0,
+            }}
+            variant="contained"
+         >
+            <Stack
+               sx={{
+                  position: 'absolute',
+                  zIndex: 1,
+                  alignItems: 'center',
+                  borderRadius: 5,
+                  background: 'rgba(0,0,0,0.40)',
+                  p: 1,
+               }}
+            >
+               <AddPhotoAlternate />
+               사진 추가
+            </Stack>
+            <Box
+               component={imgUrl ? 'img' : 'div'}
+               src={imgUrl || null}
+               alt="프로필 이미지"
+               sx={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: 0.8,
+                  background: '#fff',
+                  zIndex: 0,
+               }}
+            />
+            <input type="file" accept="image/*" hidden onChange={handleImageChange} />
+         </Button>
+         <Typography variant="body2" sx={{ display: 'block', m: 1, color: 'grey' }}>
+            {children}
+         </Typography>
+      </Stack2>
    )
 }
 

@@ -23,6 +23,26 @@ a {
    color: #d97400 !important;
 }
 
-.css-jbxp4t-MuiPaper-root-MuiDrawer-paper {
-   position: relative !important;
+.MuiDayCalendar-weekContainer div div {
+   border-radius: 20px;
+   background: #dbe7d9;
+   width: 260%;
+   height: 100%;
+   position: absolute;
+   top: 0;
+   left: -30px;
+}
+
+.MuiDayCalendar-weekContainer div:first-child div {
+   position: absolute;
+   left: 0;
+   width: 200%;
+   background: #dbe7d9;
+}
+
+.MuiDayCalendar-weekContainer div:last-child div {
+   position: absolute;
+   right: 0;
+   width: 200%;
+   background: #dbe7d9;
 }
