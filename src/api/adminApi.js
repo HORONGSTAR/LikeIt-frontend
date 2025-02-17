@@ -1,9 +1,10 @@
 import likeitApi from './axiosApi'
 
 // 관리자용 목록 호출
-export const showAdminProjects = async (page) => {
+export const showAdminProjects = async (data) => {
    try {
-      const response = await likeitApi.get(`/admin?page=${page}`)
+      const { page, searchTerm = '', selectProposal = '', selectCategory = '', selectBanner = '' } = data
+      const response = await likeitApi.get(`/admin?page=${page}&searchTerm=${searchTerm}&selectProposal=${selectProposal}&selectCategory=${selectCategory}&selectBanner=${selectBanner}`)
       return response
    } catch (error) {
       console.error(`API Request 오류: ${error.message}`)

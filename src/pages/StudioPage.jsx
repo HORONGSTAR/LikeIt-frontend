@@ -1,22 +1,30 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchStudioByIdThunk, fetchStudioThunk } from '../features/studioSlice'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import StudioNavber from '../components/shared/StudioNavber'
 import StudioLayout from '../components/studio/StudioLayout'
-import StudioCreate from '../components/studio/StudioCreate'
-import { Main } from '../styles/BaseStyles'
-import { LoadingBox, ErrorBox } from '../styles/BaseStyles'
+import { Typography, Button, Box } from '@mui/material'
+import { LoadingBox, ErrorBox, Main } from '../styles/BaseStyles'
 
 function StudioPage() {
    const { id } = useParams()
    const [open, setOpen] = useState(false)
    const dispatch = useDispatch()
+   const navigate = useNavigate()
    const { studio, loading, error } = useSelector((state) => state.studio)
 
    const handleFetchStudio = useCallback(() => {
-      if (id) dispatch(fetchStudioByIdThunk(id))
-      else dispatch(fetchStudioThunk())
+      if (id)
+         dispatch(fetchStudioByIdThunk(id))
+            .unwrap()
+            .then()
+            .catch((err) => setOpen(true))
+      else
+         dispatch(fetchStudioThunk())
+            .unwrap()
+            .then()
+            .catch((err) => setOpen(true))
    }, [id, dispatch])
 
    useEffect(() => {
@@ -25,11 +33,30 @@ function StudioPage() {
 
    if (loading) return <LoadingBox />
 
+   const newStudio = (
+      <>
+         <Box>
+            <Typography variant="h4" sx={{ color: '#666', mt: 6, fontSize: '24px' }}>
+               스튜디오가 없습니다. 새로 만들까요?
+            </Typography>
+         </Box>
+
+         <Button variant="yellow" sx={{ color: 'white', height: '50px', fontSize: '24px' }} onClick={() => navigate('/studio/profile')}>
+            스튜디오 만들기
+         </Button>
+
+         <Box>
+            <img src="/images/142.png" alt="스튜디오 생성" style={{ width: '100%' }} />
+         </Box>
+      </>
+   )
+
    return (
       <>
          <StudioNavber />
-         <Main>{studio ? <StudioLayout /> : <StudioCreate />}</Main>
-         <ErrorBox error={error} />
+         <Main>{studio ? <StudioLayout /> : newStudio}</Main>
+
+         <ErrorBox error={error} open={open} setOpen={setOpen} />
       </>
    )
 }

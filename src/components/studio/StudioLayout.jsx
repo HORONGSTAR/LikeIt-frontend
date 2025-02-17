@@ -1,18 +1,13 @@
-import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Card, CardContent, CardMedia, Typography, Button, Divider } from '@mui/material'
 import StudioTab from './tab/StudioTab'
-import { useParams } from 'react-router-dom'
 import { Stack2 } from '../../styles/BaseStyles'
 
 const StudioLayout = () => {
    const { studio } = useSelector((state) => state.studio)
 
    const Spen = (props) => <Typography component="span" color="green" {...props} />
-
-   const imageUrl = studio?.imgUrl
-      ? `${process.env.REACT_APP_API_URL}${studio.imgUrl}` // DB에 저장된 imgUrl 사용
-      : '/default-image.png' // 기본 이미지 설정
+   const imageUrl = studio?.imgUrl ? process.env.REACT_APP_API_URL + '/studioImg/' + studio.imgUrl : '/default-image.png'
 
    return (
       <>
