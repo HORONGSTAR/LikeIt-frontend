@@ -1,30 +1,12 @@
 import './styles/common.css'
 import { Route, Routes, Link, useLocation } from 'react-router-dom'
 import { Button } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
-
-import RedirectLoginRoute from './components/auth/RedirectLoginRoute'
-import RedirectLogoutRoute from './components/auth/RedirectLogoutRoute'
-import AdminRoute from './components/auth/AdminRoute'
-
 import Home from './pages/Home'
-import AdminPage from './pages/AdminPage'
-
 import HotPage from './pages/list/HotPage'
-import NewPage from './pages/list/NewPage'
-import EndPage from './pages/list/EndPage'
-import CommingPage from './pages/list/CommingPage'
-import SearchPage from './pages/list/SearchPage'
-import FollowPage from './pages/list/FollowPage'
-import CategoryPage from './pages/list/CategoryPage'
-
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
-import FindingPasswordPage from './pages/FindingPasswordPage'
 import Navber from './components/shared/Navber'
-import Footer from './components/shared/Footer'
 import CommunityWritePage from './pages/CommunityWritePage'
 import FundingReview from './components/funding/FundingReview'
 import DesignGuide from './pages/DesignGuide'
@@ -40,50 +22,24 @@ import StudioProfilePage from './pages/StudioProfilePage'
 
 function App() {
    const location = useLocation()
-   const path = location.pathname.split('/')[1]
-
-   const pageName = {
-      login: true,
-      signup: true,
-      commonsignup: true,
-      studio: true,
-      findingpassword: true,
-   }
-
-   const dontNeedNavber = pageName[path]
-
-   const dispatch = useDispatch()
-   const { isAuthenticated, user } = useSelector((state) => state.auth)
-
-   useEffect(() => {
-      dispatch(checkAuthStatusThunk())
-   }, [dispatch])
+   const pageName = { '/login': true, '/signup': true, '/commonsignup': true, '/studio': true, '/studio/commu': true, '/studio/commu/write': true }
+   const dontNeedNavber = pageName[location.pathname]
 
    return (
       <>
-         {!dontNeedNavber && <Navber isAuthenticated={isAuthenticated} user={user} />}
+         {!dontNeedNavber && <Navber />}
          <Routes>
-            <Route
-               path="/admin"
-               element={
-                  <AdminRoute>
-                     <AdminPage />
-                  </AdminRoute>
-               }
-            />
             <Route path="/desinguide" element={<DesignGuide />} />
             <Route path="/" element={<Home />} />
-            <Route path="/rank" element={<RankingPage />} />
+            <Route path="/list/hot" element={<HotPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/commonsignup" element={<CommonSignupPage />} />
-            <Route path="/findingpassword" element={<FindingPasswordPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/category/:id" element={<CategoryPage />} />
-            <Route path="/hot" element={<HotPage />} />
-            <Route path="/new" element={<NewPage />} />
-            <Route path="/end" element={<EndPage />} />
-            <Route path="/comming" element={<CommingPage />} />
+            <Route path="/category/:id" element={<Home />} />
+            <Route path="/hot" element={<Home />} />
+            <Route path="/new" element={<Home />} />
+            <Route path="/end" element={<Home />} />
+            <Route path="/comming" element={<Home />} />
             <Route path="/follow" element={<Home />} />
 
             <Route path="/studio" element={<StudioPage />} />
@@ -113,12 +69,6 @@ function App() {
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기
          </Button>
-         {user && user.role === 'ADMIN' && (
-            <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 50 }} variant="contained" to="/admin">
-               관리자 페이지
-            </Button>
-         )}
-         <Footer />
       </>
    )
 }

@@ -1,0 +1,154 @@
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchCreatorsThunk, updateCreatorRoleThunk, addCreatorThunk } from '../features/creatorSlice'
+import { Card, Avatar, Typography, Checkbox, Button, Box, Modal, TextField } from '@mui/material'
+import StudioNavber from '../components/shared/StudioNavber'
+import { LoadingBox } from '../styles/BaseStyles'
+import { useParams } from 'react-router-dom'
+
+function MemberPage() {
+   const dispatch = useDispatch()
+   const { id } = useParams()
+   const selectedStudio = id || '1'
+   const { creators, loading, error } = useSelector((state) => state.creator)
+   const [open, setOpen] = useState(false)
+   const [name, setName] = useState('')
+
+   // 창작자 목록 불러오기
+   useEffect(() => {
+      dispatch(fetchCreatorsThunk(selectedStudio))
+   }, [dispatch])
+
+   // 모달 열고 닫기
+   const handleOpen = () => setOpen(true)
+   const handleClose = () => {
+      setName('')
+      setOpen(false)
+   }
+
+   // 닉네임 입력 핸들러
+   const handleNicknameChange = (e) => {
+      setName(e.target.value)
+   }
+
+   // 체크박스 변경 핸들러
+   const handleCheckboxChange = (creator, field, currentValue) => {
+      const newValue = currentValue === 'Y' ? 'N' : 'Y'
+
+      const creatorId = creator
+
+      if (!creatorId) {
+         console.error('creatorId가 없습니다.')
+         return
+      }
+
+      dispatch(updateCreatorRoleThunk({ id: creatorId, updatedData: { [field]: newValue } }))
+         .unwrap()
+         .then(() => {
+            dispatch(fetchCreatorsThunk())
+         })
+         .catch((error) => console.error('업데이트 실패:', error))
+   }
+
+   // 창작자 추가
+   const handleAddCreator = async () => {
+      if (!name.trim()) {
+         console.error('이름을 입력해주세요.')
+         return
+      }
+
+      if (!selectedStudio) {
+         console.error('스튜디오 ID가 유효하지 않습니다.')
+         return
+      }
+
+      try {
+         const newCreator = {
+            name,
+            role: 'TEAMMATE',
+            studioId: selectedStudio,
+         }
+
+         await dispatch(addCreatorThunk(newCreator)).unwrap()
+      } catch (error) {
+         console.error('창작자 추가 실패:', error?.message || error)
+      } finally {
+         dispatch(fetchCreatorsThunk(selectedStudio))
+         handleClose()
+      }
+   }
+
+   return (
+      <>
+         <StudioNavber />
+         <Box sx={{ width: '60%', margin: 'auto', padding: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+               <Typography variant="h5">창작자 관리</Typography>
+               <Button variant="contained" color="warning" sx={{ ml: 2 }} onClick={handleOpen}>
+                  추가
+               </Button>
+            </Box>
+
+            {/* 데이터 로딩 중 */}
+            {loading && <LoadingBox />}
+
+            {/* 에러 발생 시 */}
+            {error && <Typography color="error">{error}</Typography>}
+
+            {/* 창작자 목록 표시 */}
+            {!loading &&
+               !error &&
+               creators.map((creator, index) => (
+                  <Card key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: 2, padding: 2 }}>
+                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: 2 }}>
+                        <Avatar sx={{ width: 128, height: 128 }} src={creator?.Creator?.User?.imgUrl ? `${process.env.REACT_APP_API_URL}/userImg/${creator.Creator.User.imgUrl}` : `${process.env.REACT_APP_API_URL}/userImg/default_profile.png`} />
+
+                        <Typography variant="body2" sx={{ marginTop: 1 }}>
+                           {creator.role === 'LEADER' ? `대표 ${creator.Creator?.User?.name || '이름 없음'}` : creator.Creator?.User?.name || '이름 없음'}
+                        </Typography>
+                     </Box>
+
+                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', ml: 2 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                           <Checkbox checked={creator.communityAdmin === 'Y'} onChange={() => handleCheckboxChange(creator.id, 'communityAdmin', creator.communityAdmin)} />
+                           <Typography variant="body2">글쓰기 권한</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                           <Checkbox checked={creator.spaceAdmin === 'Y'} onChange={() => handleCheckboxChange(creator.id, 'spaceAdmin', creator.spaceAdmin)} />
+                           <Typography variant="body2">스페이스 권한</Typography>
+                        </Box>
+                     </Box>
+                  </Card>
+               ))}
+         </Box>
+
+         {/* 창작자 추가 모달 */}
+         <Modal open={open} onClose={handleClose} aria-labelledby="add-creator-modal">
+            <Box
+               sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: 400,
+                  bgcolor: 'background.paper',
+                  boxShadow: 24,
+                  p: 4,
+                  borderRadius: 2,
+                  textAlign: 'center',
+               }}
+            >
+               <Typography variant="h6" id="add-creator-modal" gutterBottom>
+                  스튜디오에 창작자를 추가하시겠어요?
+               </Typography>
+               <TextField fullWidth variant="outlined" placeholder="닉네임을 입력해주세요." value={name} onChange={handleNicknameChange} sx={{ my: 2 }} />
+               <Button variant="contained" color="warning" fullWidth onClick={handleAddCreator}>
+                  추가
+               </Button>
+            </Box>
+         </Modal>
+      </>
+   )
+}
+
+export default MemberPage
