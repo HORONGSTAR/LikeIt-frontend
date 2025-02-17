@@ -19,6 +19,7 @@ import RankingPage from './pages/RankingPage'
 import AdditionalSignupPage from './pages/AdditionalSignupPage'
 import { checkAuthStatusThunk } from './features/authSlice'
 import StudioProfilePage from './pages/StudioProfilePage'
+import MyPage from './pages/MyPage'
 
 function App() {
    const location = useLocation()
@@ -40,6 +41,14 @@ function App() {
             <Route path="/new" element={<Home />} />
             <Route path="/end" element={<Home />} />
             <Route path="/comming" element={<Home />} />
+            <Route path="/findingpassword" element={<FindingPasswordPage />} />
+            <Route path="/my" element={<MyPage />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/category/:id" element={<CategoryPage />} />
+            <Route path="/hot" element={<HotPage />} />
+            <Route path="/new" element={<NewPage />} />
+            <Route path="/end" element={<EndPage />} />
+            <Route path="/comming" element={<CommingPage />} />
             <Route path="/follow" element={<Home />} />
 
             <Route path="/studio" element={<StudioPage />} />

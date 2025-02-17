@@ -16,6 +16,9 @@ import {
 } from '@mui/material'
 import { Close, PlayArrowRounded, AddPhotoAlternate } from '@mui/icons-material'
 import { useState } from 'react'
+import { Button, Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, DialogContent, DialogTitle, Container, Link as MuiLink } from '@mui/material'
+import { Close, PlayArrowRounded, AddPhotoAlternate } from '@mui/icons-material'
+import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { useCallback } from 'react'
 
