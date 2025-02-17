@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { loginUser, registerUser, googleRegisterUser, logoutUser, checkAuthStatus, setTempPassword } from '../api/authApi'
+import { loginUser, registerUser, googleRegisterUser, logoutUser, checkAuthStatus, setTempPassword, changeEmail, changePassword } from '../api/authApi'
 
 // 회원가입 thunk
 export const registerUserThunk = createAsyncThunk('auth/registerUser', async (userData, { rejectWithValue }) => {
@@ -68,6 +68,26 @@ export const setTempPasswordThunk = createAsyncThunk('auth/setTempPassword', asy
    }
 })
 
+//이메일 바꾸기
+export const changeEmailThunk = createAsyncThunk('auth/changeEmail', async (email, { rejectWithValue }) => {
+   try {
+      const response = await changeEmail(email)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '이메일 변경 실패')
+   }
+})
+
+//비밀번호 바꾸기
+export const changePasswordThunk = createAsyncThunk('auth/changePassword', async (password, { rejectWithValue }) => {
+   try {
+      const response = await changePassword(password)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '비밀번호 변경 실패')
+   }
+})
+
 const authSlice = createSlice({
    name: 'auth',
    initialState: {
@@ -103,7 +123,7 @@ const authSlice = createSlice({
             state.user = action.payload
          })
          .addCase(googleRegisterUserThunk.rejected, (state, action) => {
-            state.loading = true
+            state.loading = false
             state.error = action.payload
          })
       //로그인
@@ -133,7 +153,7 @@ const authSlice = createSlice({
             state.user = null //로그아웃 후 유저정보 초기화
          })
          .addCase(logoutUserThunk.rejected, (state, action) => {
-            state.loading = true
+            state.loading = false
             state.error = action.payload
          })
       //로그인 상태 확인
@@ -148,7 +168,7 @@ const authSlice = createSlice({
             state.user = action.payload.user || null
          })
          .addCase(checkAuthStatusThunk.rejected, (state, action) => {
-            state.loading = true
+            state.loading = false
             state.error = action.payload
             state.isAuthenticated = false
             state.user = null
@@ -163,7 +183,35 @@ const authSlice = createSlice({
             state.loading = false
          })
          .addCase(setTempPasswordThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+      //이메일 변경
+      builder
+         .addCase(changeEmailThunk.pending, (state) => {
             state.loading = true
+            state.error = null
+         })
+         .addCase(changeEmailThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.user = action.payload.user || null
+         })
+         .addCase(changeEmailThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+      //비밀번호 변경
+      builder
+         .addCase(changePasswordThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(changePasswordThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.user = action.payload.user || null
+         })
+         .addCase(changePasswordThunk.rejected, (state, action) => {
+            state.loading = false
             state.error = action.payload
          })
    },

@@ -4,14 +4,15 @@ import { loginUserThunk } from '../../features/authSlice'
 import { TextField, Button, Typography, Stack, Divider } from '@mui/material'
 import { Stack2, TextLink, Dot } from '../../styles/BaseStyles'
 import { useNavigate } from 'react-router-dom'
+import { ErrorBox, LoadingBox } from '../../styles/BaseStyles'
 
 function Login() {
    const [email, setEmail] = useState('')
    const [password, setPassword] = useState('')
    const dispatch = useDispatch()
    const navigate = useNavigate()
-
-   // const { loading, error } = useSelector((state) => state.auth)
+   const { loading, error } = useSelector((state) => state.auth)
+   const [open, setOpen] = useState(false)
 
    const handleLogin = useCallback(
       (e) => {
@@ -23,11 +24,16 @@ function Login() {
                .catch((error) => {
                   console.error('로그인실패:', error)
                   alert(error)
+                  // setOpen(true)
                })
          }
       },
       [dispatch, navigate, email, password]
    )
+
+   if (loading) return <LoadingBox />
+
+   // if (error) return <ErrorBox error={error} open={open} setOpen={setOpen} />
 
    return (
       <Stack width={300} spacing={2}>
