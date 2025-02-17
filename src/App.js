@@ -33,12 +33,10 @@ import FundingTimeline from './components/funding/FundingTimeline'
 import FundingOverview from './components/funding/FundingOverview'
 import StudioPage from './pages/StudioPage'
 import ProjectWritePage from './pages/ProjectWritePage'
-import StudioEditPage from './pages/StudioEditPage'
-import StudioCreatePage from './pages/StudioCreatePage'
 import RankingPage from './pages/RankingPage'
 import AdditionalSignupPage from './pages/AdditionalSignupPage'
 import { checkAuthStatusThunk } from './features/authSlice'
-import StudioCreate from './components/studio/StudioCreate'
+import StudioProfilePage from './pages/StudioProfilePage'
 
 function App() {
    const location = useLocation()
@@ -89,11 +87,11 @@ function App() {
             <Route path="/follow" element={<Home />} />
 
             <Route path="/studio" element={<StudioPage />} />
-            <Route path="/studio/create" element={<StudioCreate />} />
-            <Route path="/studio/edit/:id" element={<StudioEditPage />} />
             <Route path="/studio/community/write" element={<CommunityWritePage />} />
             <Route path="/studio/project/write" element={<ProjectWritePage />} />
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
+            <Route path="/studio/profile" element={<StudioProfilePage />} />
+            <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
 
             <Route path="/studio/:id" element={<StudioPage />} />
 
@@ -103,7 +101,6 @@ function App() {
                <Route path="review" element={<FundingReview />} />
             </Route>
             <Route path="/follow" element={<FollowPage />} />
-            <Route path="/studio" element={<StudioPage />} />
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />
 
@@ -113,12 +110,7 @@ function App() {
             {/* <Route path="review" element={<FundingReview />} />
             </Route> */}
          </Routes>
-         <Button
-            component={Link}
-            sx={{ position: 'fixed', right: 10, bottom: 10 }}
-            variant="contained"
-            to="/desinguide"
-         >
+         <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기
          </Button>
          {user && user.role === 'ADMIN' && (

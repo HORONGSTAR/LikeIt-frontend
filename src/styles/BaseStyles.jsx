@@ -21,7 +21,7 @@ import { useCallback } from 'react'
 
 export const Main = ({ children, spacing }) => {
    return (
-      <Container maxWidth="md">
+      <Container maxWidth="md" sx={{ pb: 10 }}>
          <Stack spacing={spacing || 2}>{children}</Stack>
       </Container>
    )
@@ -164,9 +164,7 @@ export const ErrorBox = ({ error, open, setOpen }) => {
    )
 }
 
-export const ImgUploadBox = ({ setImgFile, children }) => {
-   const [imgUrl, setImgUrl] = useState('')
-
+export const ImgUploadBox = ({ setImgFile, imgUrl, setImgUrl, children }) => {
    const handleImageChange = useCallback(
       (e) => {
          const file = e.target.files && e.target.files[0]

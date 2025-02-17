@@ -14,7 +14,12 @@ export const getStudio = async () => {
 // 스튜디오 생성
 export const createStudio = async (studioData) => {
    try {
-      const response = await likeitApi.post('/studio', studioData)
+      const config = {
+         headers: {
+            'Content-Type': 'multipart/form-data',
+         },
+      }
+      const response = await likeitApi.post('/studio', studioData, config)
       return response.data
    } catch (error) {
       console.error(`스튜디오 생성 오류: ${error.message}`)
@@ -23,9 +28,14 @@ export const createStudio = async (studioData) => {
 }
 
 // 스튜디오 수정
-export const updateStudio = async (studioId, updatedData) => {
+export const updateStudio = async (studioId, studioData) => {
    try {
-      const response = await likeitApi.put(`/studio/${studioId}`, updatedData)
+      const config = {
+         headers: {
+            'Content-Type': 'multipart/form-data',
+         },
+      }
+      const response = await likeitApi.put(`/studio/${studioId}`, studioData, config)
       return response.data
    } catch (error) {
       console.error(`스튜디오 수정 오류: ${error.message}`)
