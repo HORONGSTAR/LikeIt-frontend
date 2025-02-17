@@ -2,9 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { bannerDel, bannerReg, proposalPass, proposalDeny, showAdminProjects } from '../api/adminApi'
 
 // 관리자용 목록 호출
-export const fetchShowAdminProjectsThunk = createAsyncThunk('admin/fetchShowAdminProjects', async (page, { rejectWithValue }) => {
+export const fetchShowAdminProjectsThunk = createAsyncThunk('admin/fetchShowAdminProjects', async (data, { rejectWithValue }) => {
    try {
-      const response = await showAdminProjects(page)
+      const response = await showAdminProjects(data)
       return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '관리자용 목록 불러오기 실패')

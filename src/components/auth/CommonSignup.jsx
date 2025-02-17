@@ -6,6 +6,7 @@ import { Google as GoogleIcon } from '@mui/icons-material'
 import { styled } from '@mui/system'
 import { registerUserThunk } from '../../features/authSlice'
 import Navber from '../../components/shared/Navber'
+import { ErrorBox, LoadingBox } from '../../styles/BaseStyles'
 
 const Root = styled(Box)({
    display: 'flex',
@@ -49,6 +50,7 @@ const CommonSignup = () => {
    const [confirmPassword, setConfirmPassword] = useState('')
    const [isSignupComplete, setIsSignupComplete] = useState(false) // 회원가입 완료 상태 추가
    const dispatch = useDispatch()
+   const { loading, error } = useSelector((state) => state.auth)
 
    const validatePhone = (phone) => {
       const phoneRegex1 = /^\d{11}$/ //true로 반환돼야 좋은거 - 길이 11인지 확인
@@ -101,6 +103,10 @@ const CommonSignup = () => {
             alert(error)
          })
    }, [dispatch, email, phone, nickname, password, confirmPassword])
+
+   if (loading) return <LoadingBox />
+
+   if (error) return <ErrorBox error={error} />
 
    //회원가입이 완료 되었을 때
    if (isSignupComplete) {

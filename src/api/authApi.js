@@ -66,3 +66,25 @@ export const setTempPassword = async (email) => {
       throw error
    }
 }
+
+//이메일 바꾸기
+export const changeEmail = async (email) => {
+   try {
+      const response = await likeItApi.put('/auth/changeemail', email)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+//비밀번호 바꾸기
+export const changePassword = async (password) => {
+   try {
+      const response = await likeItApi.put('/auth/changepassword', password)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}

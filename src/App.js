@@ -37,6 +37,7 @@ import StudioCreatePage from './pages/StudioCreatePage'
 import RankingPage from './pages/RankingPage'
 import AdditionalSignupPage from './pages/AdditionalSignupPage'
 import { checkAuthStatusThunk } from './features/authSlice'
+import MyPage from './pages/MyPage'
 
 function App() {
    const location = useLocation()
@@ -80,6 +81,7 @@ function App() {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/commonsignup" element={<CommonSignupPage />} />
             <Route path="/findingpassword" element={<FindingPasswordPage />} />
+            <Route path="/my" element={<MyPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/category/:id" element={<CategoryPage />} />
             <Route path="/hot" element={<HotPage />} />
