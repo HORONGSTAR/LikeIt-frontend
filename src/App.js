@@ -39,6 +39,7 @@ import RankingPage from './pages/RankingPage'
 import AdditionalSignupPage from './pages/AdditionalSignupPage'
 import { checkAuthStatusThunk } from './features/authSlice'
 import StudioCreate from './components/studio/StudioCreate'
+import MemberPage from './pages/MemberPage'
 
 function App() {
    const location = useLocation()
@@ -94,6 +95,7 @@ function App() {
             <Route path="/studio/community/write" element={<CommunityWritePage />} />
             <Route path="/studio/project/write" element={<ProjectWritePage />} />
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
+            <Route path="/studio/member" element={<MemberPage />} />
 
             <Route path="/studio/:id" element={<StudioPage />} />
 
@@ -113,12 +115,7 @@ function App() {
             {/* <Route path="review" element={<FundingReview />} />
             </Route> */}
          </Routes>
-         <Button
-            component={Link}
-            sx={{ position: 'fixed', right: 10, bottom: 10 }}
-            variant="contained"
-            to="/desinguide"
-         >
+         <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기
          </Button>
          {user && user.role === 'ADMIN' && (

@@ -9,8 +9,8 @@ function StudioNavber({ isAuthenticated, user }) {
    const [open, setOpen] = useState(false)
 
    const studioMenu = [
-      { page: '새 프로젝트', path: '/studio/protect/write' },
-      { page: '모든 프로젝트', path: '/studio/protect/all' },
+      { page: '새 프로젝트', path: '/studio/project/write' },
+      { page: '모든 프로젝트', path: '/studio/project/all' },
       { page: '창작자 관리', path: '/studio/member' },
    ]
 
@@ -38,14 +38,7 @@ function StudioNavber({ isAuthenticated, user }) {
 
                   <Stack2 sx={{ display: breakpoint.desktop, ml: breakpoint.margin, alignItems: 'end', height: 32 }}>
                      {studioMenu.map((item) => (
-                        <Typography
-                           key={item.page}
-                           fontWeight="500"
-                           component={NavLink}
-                           to={item.path}
-                           mr={breakpoint.margin}
-                           onClick={() => setOpen(false)}
-                        >
+                        <Typography key={item.page} fontWeight="500" component={NavLink} to={item.path} mr={breakpoint.margin} onClick={() => setOpen(false)}>
                            {item.page}
                         </Typography>
                      ))}

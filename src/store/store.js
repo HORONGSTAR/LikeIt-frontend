@@ -7,6 +7,7 @@ import commentReducer from '../features/commentSlice'
 import studioReducer from '../features/studioSlice'
 import rankReducer from '../features/rankSlice'
 import adminReducer from '../features/adminSlice'
+import creatorReducer from '../features/creatorSlice'
 
 const store = configureStore({
    reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
       studio: studioReducer,
       rank: rankReducer,
       admin: adminReducer,
+      creator: creatorReducer,
    },
 })
 
