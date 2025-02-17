@@ -32,3 +32,8 @@ export const addCreator = async ({ name, role, studioId }) => {
       throw error
    }
 }
+
+// 창작자 삭제
+export const deleteCreator = async (id) => {
+   return await likeitApi.delete(`/creator/${id}`)
+}
