@@ -1,6 +1,7 @@
 import { AdminCard } from '../components/ui/Cards'
-import { Grid2 } from '@mui/material'
-import { Box, Divider, Chip } from '@mui/material'
+import { Grid2, TextField, Typography } from '@mui/material'
+import { Box, Divider, Chip, FormControl, MenuItem, Select, IconButton } from '@mui/material'
+import { Search as SearchIcon } from '@mui/icons-material'
 
 import { useCallback, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -14,10 +15,45 @@ function AdminPage() {
    const [allCards, setAllCards] = useState([])
    const [loadingCount, setLoadingCount] = useState(8)
    const [scrollPosition, setScrollPosition] = useState(0)
+   const [selectProposal, setSelcetProposal] = useState('')
+   const [selectCategory, setSelcetCategory] = useState('')
+   const [selectBanner, setSelcetBanner] = useState('')
+   const [searchTerm, setSearchTerm] = useState('')
+   const [searchSubmit, setSearchSubmit] = useState(false) // 버튼 클릭 트리거 상태
+
+   // 검색어 변경 핸들러
+   const handleSearchChange = useCallback((event) => {
+      setSearchTerm(event.target.value)
+   }, [])
+
+   // 검색 버튼 클릭
+   const handleSearchSubmit = useCallback((event) => {
+      event.preventDefault()
+      setSearchSubmit((prev) => !prev) // 상태를 토글하여 useEffect를 실행
+      setPage(1) // 검색 시 페이지 초기화
+   }, [])
+
+   const handlekeyDown = (event) => {
+      if (event.key === 'Enter') {
+         handleSearchSubmit(event)
+      }
+   }
+
+   const handleProposalChange = (event) => {
+      setSelcetProposal(event.target.value)
+   }
+
+   const handleCategoryChange = (event) => {
+      setSelcetCategory(event.target.value)
+   }
+
+   const handleBannerChange = (event) => {
+      setSelcetBanner(event.target.value)
+   }
 
    useEffect(() => {
-      dispatch(fetchShowAdminProjectsThunk(page))
-   }, [dispatch, page])
+      dispatch(fetchShowAdminProjectsThunk({ page, searchTerm, selectProposal, selectCategory, selectBanner }))
+   }, [dispatch, page, searchSubmit])
 
    const bannerReg = useCallback(
       (id) => {
@@ -106,7 +142,6 @@ function AdminPage() {
       setLoadingCount(loadingCount + 8)
       setPage(page + 1) // 페이지 번호 증가
    }
-
    if (loading)
       return (
          <Main>
@@ -117,9 +152,74 @@ function AdminPage() {
 
    return (
       <Main>
-         <Box m={1} p={1} sx={{ border: '1px solid silver', borderRadius: '4px' }}>
-            승인여부
-         </Box>
+         <Grid2
+            container
+            m={1}
+            p={1}
+            sx={{
+               border: '1px solid silver',
+               borderRadius: '4px',
+               display: 'flex',
+               '& > .MuiGrid2-root': {
+                  padding: '4px',
+                  display: 'flex',
+                  justifyContent: {
+                     md: 'center',
+                     sm: 'left',
+                  },
+               },
+               '& > .MuiGrid2-root > .MuiTypography-root': {
+                  lineHeight: '42px',
+                  fontSize: '16px',
+                  minWidth: '68px',
+               },
+            }}
+         >
+            <Grid2 size={{ md: 3, sm: 6, xs: 12 }}>
+               <Typography>승인여부</Typography>
+               <FormControl sx={{ minWidth: '100px' }}>
+                  <Select value={selectProposal} onChange={handleProposalChange}>
+                     <MenuItem value="">전체</MenuItem>
+                     <MenuItem value="REVIEW_REQ">승인대기</MenuItem>
+                     <MenuItem value="COMPLETE">승인허가</MenuItem>
+                     <MenuItem value="DENIED">승인거부</MenuItem>
+                  </Select>
+               </FormControl>
+            </Grid2>
+            <Grid2 size={{ md: 3, sm: 6, xs: 12 }}>
+               <Typography>카테고리</Typography>
+               <FormControl sx={{ minWidth: '100px' }}>
+                  <Select value={selectCategory} onChange={handleCategoryChange}>
+                     <MenuItem value="">전체</MenuItem>
+                     <MenuItem value="1">푸드</MenuItem>
+                     <MenuItem value="2">반려동물</MenuItem>
+                     <MenuItem value="3">그림</MenuItem>
+                     <MenuItem value="4">도서</MenuItem>
+                     <MenuItem value="5">뷰티</MenuItem>
+                     <MenuItem value="6">의류</MenuItem>
+                     <MenuItem value="7">리빙</MenuItem>
+                     <MenuItem value="8">사진</MenuItem>
+                     <MenuItem value="9">공연</MenuItem>
+                  </Select>
+               </FormControl>
+            </Grid2>
+            <Grid2 size={{ md: 3, sm: 6, xs: 12 }}>
+               <Typography>배너등록</Typography>
+               <FormControl sx={{ minWidth: '100px' }}>
+                  <Select value={selectBanner} onChange={handleBannerChange}>
+                     <MenuItem value="">전체</MenuItem>
+                     <MenuItem value="BANNER">등록</MenuItem>
+                     <MenuItem value="NO_BANNER">미등록</MenuItem>
+                  </Select>
+               </FormControl>
+            </Grid2>
+            <Grid2 size={{ md: 3, sm: 6, xs: 12 }}>
+               <TextField variant="standard" onChange={handleSearchChange} onKeyDown={handlekeyDown} />
+               <IconButton type="submit" onClick={handleSearchSubmit}>
+                  <SearchIcon />
+               </IconButton>
+            </Grid2>
+         </Grid2>
          {count ? (
             <>
                <p style={{ margin: '10px 0' }}>{count}개의 프로젝트가 있습니다.</p>
