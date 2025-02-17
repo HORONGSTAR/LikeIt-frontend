@@ -1,27 +1,20 @@
-import { useEffect, useState } from 'react'
-import { fetchStudioThunk } from '../../features/studioSlice'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Card, CardContent, CardMedia, Typography, Button, Divider } from '@mui/material'
 import StudioTab from './tab/StudioTab'
-import { Stack2, LoadingBox } from '../../styles/BaseStyles'
+import { Stack2 } from '../../styles/BaseStyles'
 
 const StudioLayout = () => {
-   const { studio, loading } = useSelector((state) => state.studio)
-
-   if (loading) return <LoadingBox />
+   const { studio } = useSelector((state) => state.studio)
 
    const Spen = (props) => <Typography component="span" color="green" {...props} />
+   const imageUrl = studio?.imgUrl ? process.env.REACT_APP_API_URL + '/studioImg/' + studio.imgUrl : '/default-image.png'
 
    return (
       <>
          {studio && (
             <>
                <Card variant="none">
-                  <CardMedia
-                     sx={{ minWidth: 180, height: 180, borderRadius: '10px' }}
-                     image={process.env.REACT_APP_API_URL + '/studioImg/' + studio.imgUrl}
-                     alt="발레리나"
-                  />
+                  <CardMedia sx={{ minWidth: 180, height: 180, borderRadius: '10px' }} image={imageUrl} alt="스튜디오 프로필" />
                   <CardContent sx={{ display: 'flex', flexDirection: 'column', py: 0 }}>
                      <Stack2 mb={1} alignItems="end">
                         <Typography variant="h2" fontWeight="bold">

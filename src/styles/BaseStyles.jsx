@@ -1,13 +1,30 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import {
+   Typography,
+   Modal,
+   Box,
+   IconButton,
+   Stack,
+   CircularProgress,
+   Dialog,
+   DialogContent,
+   DialogTitle,
+   Container,
+   Button,
+   Link as MuiLink,
+} from '@mui/material'
+import { Close, PlayArrowRounded, AddPhotoAlternate } from '@mui/icons-material'
+import { useState } from 'react'
 import { Button, Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, DialogContent, DialogTitle, Container, Link as MuiLink } from '@mui/material'
 import { Close, PlayArrowRounded, AddPhotoAlternate } from '@mui/icons-material'
 import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import { useCallback } from 'react'
 
 export const Main = ({ children, spacing }) => {
    return (
-      <Container maxWidth="md">
+      <Container maxWidth="md" sx={{ pb: 10 }}>
          <Stack spacing={spacing || 2}>{children}</Stack>
       </Container>
    )
@@ -19,13 +36,22 @@ export const SubTitle = ({ children, to }) => {
          <Typography variant="h4" component={Link} to={to}>
             {children}
          </Typography>
-         <PlayArrowRounded />
+         <PlayArrowRounded color="primary" />
       </Stack2>
    )
 }
 
 export const Dot = ({ children, both, float }) => {
-   const dotSx = { display: 'block', width: 5, height: 5, background: '#222', borderRadius: '50%', m: 1, position: float && 'absolute', left: -20 }
+   const dotSx = {
+      display: 'block',
+      width: 5,
+      height: 5,
+      background: '#222',
+      borderRadius: '50%',
+      m: 1,
+      position: float && 'absolute',
+      left: -20,
+   }
 
    return (
       <Box display={'flex'}>
