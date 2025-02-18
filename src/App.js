@@ -43,6 +43,7 @@ import { checkAuthStatusThunk } from './features/authSlice'
 import MyPage from './pages/MyPage'
 
 import DesignGuide from './pages/DesignGuide'
+import MemberPage from './pages/MemberPage'
 
 function App() {
    const location = useLocation()
@@ -94,6 +95,7 @@ function App() {
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
             <Route path="/studio/profile" element={<StudioProfilePage />} />
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
+            <Route path="/studio/member" element={<MemberPage />} />
 
             <Route path="/studio/:id" element={<StudioPage />} />
 
