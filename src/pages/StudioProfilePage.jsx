@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react'
-import StudioNavber from '../components/shared/StudioNavber'
 import { useParams } from 'react-router-dom'
 import { fetchStudioByIdThunk, createStudioThunk, updateStudioThunk } from '../features/studioSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -38,7 +37,6 @@ function StudioProfilePage() {
 
    return (
       <>
-         <StudioNavber />
          <Main>
             <Typography variant="h4" color="orenge" py={3}>
                {id ? '스튜디오 프로필 수정하기' : '스튜디오 만들기'}
