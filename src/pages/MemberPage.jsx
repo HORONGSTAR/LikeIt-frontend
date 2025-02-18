@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCreatorsThunk, updateCreatorRoleThunk, addCreatorThunk, deleteCreatorThunk } from '../features/creatorSlice'
 import { Card, Avatar, Typography, Checkbox, Button, Box, Modal, TextField } from '@mui/material'
-import StudioNavber from '../components/shared/StudioNavber'
 import { LoadingBox } from '../styles/BaseStyles'
 import { useParams } from 'react-router-dom'
 
@@ -34,8 +33,7 @@ function MemberPage() {
    // 체크박스 변경 핸들러
    const handleCheckboxChange = (creator, field, currentValue) => {
       const newValue = currentValue === 'Y' ? 'N' : 'Y'
-
-      const creatorId = creator
+      const creatorId = creator.id
 
       if (!creatorId) {
          console.error('creatorId가 없습니다.')
@@ -45,7 +43,7 @@ function MemberPage() {
       dispatch(updateCreatorRoleThunk({ id: creatorId, updatedData: { [field]: newValue } }))
          .unwrap()
          .then(() => {
-            dispatch(fetchCreatorsThunk())
+            dispatch(fetchCreatorsThunk(selectedStudio))
          })
          .catch((error) => console.error('업데이트 실패:', error))
    }
@@ -90,7 +88,6 @@ function MemberPage() {
 
    return (
       <>
-         <StudioNavber />
          <Box maxWidth="md" sx={{ margin: 'auto' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
                <Typography variant="h5">창작자 관리</Typography>
@@ -133,11 +130,11 @@ function MemberPage() {
 
                      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', ml: 2 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                           <Checkbox checked={creator.communityAdmin === 'Y'} onChange={() => handleCheckboxChange(creator.id, 'communityAdmin', creator.communityAdmin)} color="yellow" />
+                           <Checkbox checked={creator.communityAdmin === 'Y'} onChange={() => handleCheckboxChange(creator, 'communityAdmin', creator.communityAdmin)} color="yellow" />
                            <Typography variant="body2">글쓰기 권한</Typography>
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                           <Checkbox checked={creator.spaceAdmin === 'Y'} onChange={() => handleCheckboxChange(creator.id, 'spaceAdmin', creator.spaceAdmin)} color="yellow" />
+                           <Checkbox checked={creator.spaceAdmin === 'Y'} onChange={() => handleCheckboxChange(creator, 'spaceAdmin', creator.spaceAdmin)} color="yellow" />
                            <Typography variant="body2">스페이스 권한</Typography>
                         </Box>
                      </Box>

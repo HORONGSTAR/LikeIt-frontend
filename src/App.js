@@ -37,13 +37,14 @@ import AdditionalSignupPage from './pages/AdditionalSignupPage'
 
 import StudioPage from './pages/StudioPage'
 import StudioProfilePage from './pages/StudioProfilePage'
-import CommunityWritePage from './pages/CommunityWritePage'
 import ProjectWritePage from './pages/ProjectWritePage'
 
 import { checkAuthStatusThunk } from './features/authSlice'
 import MyPage from './pages/MyPage'
 
 import DesignGuide from './pages/DesignGuide'
+import MemberPage from './pages/MemberPage'
+import CommunityForm from './components/studio/community/CommunityForm'
 
 function App() {
    const location = useLocation()
@@ -92,11 +93,11 @@ function App() {
             <Route path="/follow" element={<Home />} />
 
             <Route path="/studio" element={<StudioPage />} />
-            <Route path="/studio/community/write" element={<CommunityWritePage />} />
             <Route path="/studio/project/write" element={<ProjectWritePage />} />
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
             <Route path="/studio/profile" element={<StudioProfilePage />} />
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
+            <Route path="/studio/member" element={<MemberPage />} />
 
             <Route path="/studio/:id" element={<StudioPage />} />
 
@@ -107,7 +108,17 @@ function App() {
             </Route>
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
+<<<<<<< HEAD
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />
+=======
+            <Route path="/community/write" element={<CommunityForm />} />
+
+            {/* <Route path="/funding" element={<FundingLayout />}> */}
+            {/* <Route path="detail" element={<FundingOverview />} /> */}
+            {/* <Route path="timeline" element={<FundingTimeline />} /> */}
+            {/* <Route path="review" element={<FundingReview />} />
+            </Route> */}
+>>>>>>> 5f1b12a872ae0d62b3c6fe8440a9f2f86e76961d
          </Routes>
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기
