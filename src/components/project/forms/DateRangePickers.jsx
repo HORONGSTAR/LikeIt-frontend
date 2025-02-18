@@ -32,9 +32,9 @@ function SeleteDate(props) {
    )
 }
 
-function DateRangePickers({ setTerm }) {
-   const [start, setStart] = useState(null)
-   const [end, setEnd] = useState(null)
+function DateRangePickers({ setTerm, term = {} }) {
+   const [start, setStart] = useState(term.start)
+   const [end, setEnd] = useState(term.end)
    const isSetDate = useRef(false)
 
    const handleChange = useCallback(
@@ -67,6 +67,7 @@ function DateRangePickers({ setTerm }) {
          <Grid2 container columnSpacing={1} alignItems="center">
             <Grid2 size={{ md: 7, sm: 12 }}>
                <DateCalendar
+                  sx={{ width: 280, m: 0 }}
                   disableHighlightToday
                   shouldDisableDate={(day) => day.isBefore(dayjs(), 'day')}
                   value={end || start}
@@ -77,7 +78,7 @@ function DateRangePickers({ setTerm }) {
                />
             </Grid2>
 
-            <Grid2 size={{ md: 5, sm: 12 }} container justifyContent="center">
+            <Grid2 size={{ md: 5, sm: 12 }} container>
                <Stack spacing={2} sx={{ width: 300 }}>
                   <DateField label="펀딩 시작일" value={start} readOnly format="YYYY년 MM월 DD일" />
                   <DateField label="펀딩 마감일" value={end} readOnly format="YYYY년 MM월 DD일" />

@@ -63,7 +63,6 @@ export const theme = createTheme({
                '--AppBar-background': '#fff',
                '--AppBar-color': '#222',
                boxShadow: '0px 2px 4px rgba(0,0,0,0.25)',
-               marginBottom: 10,
             },
          },
       },

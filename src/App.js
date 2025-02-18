@@ -1,6 +1,6 @@
 import './styles/common.css'
 import { Route, Routes, Link, useLocation } from 'react-router-dom'
-import { Button } from '@mui/material'
+import { Button, Box } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 
@@ -12,6 +12,7 @@ import Home from './pages/Home'
 import AdminPage from './pages/AdminPage'
 import Navber from './components/shared/Navber'
 import StudioNavber from './components/shared/StudioNavber'
+import Footer from './components/shared/Footer'
 
 import HotPage from './pages/list/HotPage'
 import NewPage from './pages/list/NewPage'
@@ -46,15 +47,17 @@ import DesignGuide from './pages/DesignGuide'
 
 function App() {
    const location = useLocation()
-   const path = location.pathname.split('/')[1]
+   const path = location.pathname.split('/')
    const pageName = {
       login: true,
       signup: true,
       commonsignup: true,
       studio: <StudioNavber />,
+      '/studio/project/write': true,
    }
 
-   const dontNeedNavber = pageName[path]
+   const dontNeedNavber = pageName[path[1]]
+   const needBackground = pageName[location.pathname]
 
    const dispatch = useDispatch()
    const { isAuthenticated, user } = useSelector((state) => state.auth)
@@ -64,7 +67,7 @@ function App() {
    }, [dispatch])
 
    return (
-      <>
+      <Box sx={{ background: needBackground && '#eee' }}>
          {dontNeedNavber || <Navber isAuthenticated={isAuthenticated} user={user} />}
          <Routes>
             <Route path="/desinguide" element={<DesignGuide />} />
@@ -105,17 +108,12 @@ function App() {
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />
-
-            {/* <Route path="/funding" element={<FundingLayout />}> */}
-            {/* <Route path="detail" element={<FundingOverview />} /> */}
-            {/* <Route path="timeline" element={<FundingTimeline />} /> */}
-            {/* <Route path="review" element={<FundingReview />} />
-            </Route> */}
          </Routes>
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기
          </Button>
-      </>
+         <Footer></Footer>
+      </Box>
    )
 }
 export default App

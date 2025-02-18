@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom'
 
 export const Main = ({ children, spacing }) => {
    return (
-      <Container maxWidth="md" sx={{ pb: 10 }}>
+      <Container maxWidth="md" sx={{ my: 4, px: { sm: 2, xs: 0.5 }, py: 2, background: '#fff', borderRadius: 3 }}>
          <Stack spacing={spacing || 2}>{children}</Stack>
       </Container>
    )
@@ -176,7 +176,7 @@ export const ImgUploadBox = ({ setImgFile, imgUrl, setImgUrl, children }) => {
             setImgUrl(event.target.result)
          }
       },
-      [setImgFile]
+      [setImgFile, setImgUrl]
    )
 
    return (
@@ -219,7 +219,9 @@ export const ImgUploadBox = ({ setImgFile, imgUrl, setImgUrl, children }) => {
                   zIndex: 0,
                }}
             />
-            <input type="file" accept="image/*" hidden onChange={handleImageChange} />
+            <Box display="none">
+               <input type="file" accept="image/*" onChange={handleImageChange} />
+            </Box>
          </Button>
          <Typography variant="body2" sx={{ display: 'block', m: 1, color: 'grey' }}>
             {children}

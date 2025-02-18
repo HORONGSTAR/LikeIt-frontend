@@ -35,7 +35,7 @@ export const updateProject = async (projectId, projectData) => {
 // 특정 프로젝트 조회
 export const getProjectById = async (projectId) => {
    try {
-      const response = await likeitApi.get(`/studio/${projectId}`)
+      const response = await likeitApi.get(`/project/${projectId}`)
       return response
    } catch (error) {
       console.error(`프로젝트 조회 오류: ${error.message}`)

@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Box, Tab, Chip, Stack } from '@mui/material'
+import { Box, Tab, Chip, Stack, Stepper, Step, StepButton, StepConnector } from '@mui/material'
+
 import { TabContext, TabList, TabPanel } from '@mui/lab'
 import { Link, Element } from 'react-scroll'
 import { Stack2 } from '../../styles/BaseStyles'
@@ -15,7 +16,7 @@ export const Tabs = ({ tabItems = [] }) => {
       <Box sx={{ width: '100%', typography: 'body1' }}>
          <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-               <TabList onChange={handleChange} aria-label="lab API tabs example">
+               <TabList onChange={handleChange} aria-label="tabs">
                   {tabItems.map((item) => (
                      <Tab key={'label' + item.label} label={item.label} value={item.label} />
                   ))}
@@ -49,5 +50,38 @@ export const TabLink = ({ links = [] }) => {
             </Element>
          ))}
       </Stack>
+   )
+}
+
+export const StepperTabs = ({ tabItems = [], completed = {} }) => {
+   const [value, setValue] = useState(tabItems[0]?.label)
+   const [activeStep, setActiveStep] = useState(0)
+
+   const handleStep = (step) => () => {
+      setActiveStep(step)
+      setValue(tabItems[step].label)
+   }
+
+   return (
+      <Box sx={{ width: '100%', typography: 'body1' }}>
+         <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', py: 3 }}>
+               <Stepper nonLinear activeStep={activeStep} alternativeLabel connector={<StepConnector sx={{ top: 0 }} />}>
+                  {tabItems.map((item, index) => (
+                     <Step key={'label' + item.label} completed={completed[index]}>
+                        <StepButton sx={{ display: 'inline-block', py: 1.2 }} color="inherit" onClick={handleStep(index)}>
+                           {item.label}
+                        </StepButton>
+                     </Step>
+                  ))}
+               </Stepper>
+            </Box>
+            {tabItems.map((item) => (
+               <TabPanel sx={{ p: 1.5 }} key={'page' + item.label} value={item.label}>
+                  {item.page}
+               </TabPanel>
+            ))}
+         </TabContext>
+      </Box>
    )
 }

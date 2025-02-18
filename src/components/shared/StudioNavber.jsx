@@ -38,7 +38,14 @@ function StudioNavber({ isAuthenticated, user }) {
 
                   <Stack2 sx={{ display: breakpoint.desktop, ml: breakpoint.margin, alignItems: 'end', height: 32 }}>
                      {studioMenu.map((item) => (
-                        <Typography key={item.page} fontWeight="500" component={NavLink} to={item.path} mr={breakpoint.margin} onClick={() => setOpen(false)}>
+                        <Typography
+                           key={item.page}
+                           fontWeight="500"
+                           component={NavLink}
+                           to={item.path}
+                           mr={breakpoint.margin}
+                           onClick={() => setOpen(false)}
+                        >
                            {item.page}
                         </Typography>
                      ))}
@@ -52,7 +59,14 @@ function StudioNavber({ isAuthenticated, user }) {
                </Stack2>
                <Stack2 sx={{ flexWrap: 'wrap', my: 2, display: open ? 'flex' : 'none', gap: 2 }}>
                   {studioMenu.map((item) => (
-                     <Typography key={item.page} fontWeight="500">
+                     <Typography
+                        key={item.page}
+                        fontWeight="500"
+                        component={NavLink}
+                        to={item.path}
+                        mr={breakpoint.margin}
+                        onClick={() => setOpen(false)}
+                     >
                         {item.page}
                      </Typography>
                   ))}

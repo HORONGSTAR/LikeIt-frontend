@@ -42,7 +42,7 @@ a {
 
 .MuiDayCalendar-weekContainer div:last-child div {
    position: absolute;
-   right: 0;
+   left: -40px;
    width: 200%;
    background: #dbe7d9;
 }
