@@ -1,34 +1,71 @@
 import './styles/common.css'
 import { Route, Routes, Link, useLocation } from 'react-router-dom'
 import { Button } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+
+import RedirectLoginRoute from './components/auth/RedirectLoginRoute'
+import RedirectLogoutRoute from './components/auth/RedirectLogoutRoute'
+import AdminRoute from './components/auth/AdminRoute'
+
 import Home from './pages/Home'
+import AdminPage from './pages/AdminPage'
+import Navber from './components/shared/Navber'
+import StudioNavber from './components/shared/StudioNavber'
+
 import HotPage from './pages/list/HotPage'
+import NewPage from './pages/list/NewPage'
+import EndPage from './pages/list/EndPage'
+import CommingPage from './pages/list/CommingPage'
+import SearchPage from './pages/list/SearchPage'
+import FollowPage from './pages/list/FollowPage'
+import CategoryPage from './pages/list/CategoryPage'
+
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
-import Navber from './components/shared/Navber'
-import CommunityWritePage from './pages/CommunityWritePage'
+import FindingPasswordPage from './pages/FindingPasswordPage'
+
 import FundingReview from './components/funding/FundingReview'
-import DesignGuide from './pages/DesignGuide'
 import FundingLayout from './components/funding/FundingLayout'
 import FundingTimeline from './components/funding/FundingTimeline'
 import FundingOverview from './components/funding/FundingOverview'
-import StudioPage from './pages/StudioPage'
-import ProjectWritePage from './pages/ProjectWritePage'
+
 import RankingPage from './pages/RankingPage'
 import AdditionalSignupPage from './pages/AdditionalSignupPage'
-import { checkAuthStatusThunk } from './features/authSlice'
+
+import StudioPage from './pages/StudioPage'
 import StudioProfilePage from './pages/StudioProfilePage'
+import CommunityWritePage from './pages/CommunityWritePage'
+import ProjectWritePage from './pages/ProjectWritePage'
+
+import { checkAuthStatusThunk } from './features/authSlice'
 import MyPage from './pages/MyPage'
+
+import DesignGuide from './pages/DesignGuide'
 
 function App() {
    const location = useLocation()
-   const pageName = { '/login': true, '/signup': true, '/commonsignup': true, '/studio': true, '/studio/commu': true, '/studio/commu/write': true }
-   const dontNeedNavber = pageName[location.pathname]
+   const path = location.pathname.split('/')[1]
+   const pageName = {
+      login: true,
+      signup: true,
+      commonsignup: true,
+      studio: <StudioNavber />,
+   }
+
+   const dontNeedNavber = pageName[path]
+
+   const dispatch = useDispatch()
+   const { isAuthenticated, user } = useSelector((state) => state.auth)
+
+   useEffect(() => {
+      dispatch(checkAuthStatusThunk())
+   }, [dispatch])
 
    return (
       <>
-         {!dontNeedNavber && <Navber />}
+         {dontNeedNavber || <Navber isAuthenticated={isAuthenticated} user={user} />}
          <Routes>
             <Route path="/desinguide" element={<DesignGuide />} />
             <Route path="/" element={<Home />} />

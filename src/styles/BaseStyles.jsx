@@ -2,12 +2,8 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, DialogContent, DialogTitle, Container, Button, Link as MuiLink } from '@mui/material'
 import { Close, PlayArrowRounded, AddPhotoAlternate } from '@mui/icons-material'
-import { useState } from 'react'
-import { Button, Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, DialogContent, DialogTitle, Container, Link as MuiLink } from '@mui/material'
-import { Close, PlayArrowRounded, AddPhotoAlternate } from '@mui/icons-material'
 import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { useCallback } from 'react'
 
 export const Main = ({ children, spacing }) => {
    return (
