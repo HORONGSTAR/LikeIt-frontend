@@ -36,7 +36,6 @@ import AdditionalSignupPage from './pages/AdditionalSignupPage'
 
 import StudioPage from './pages/StudioPage'
 import StudioProfilePage from './pages/StudioProfilePage'
-import CommunityWritePage from './pages/CommunityWritePage'
 import ProjectWritePage from './pages/ProjectWritePage'
 
 import { checkAuthStatusThunk } from './features/authSlice'
@@ -44,6 +43,7 @@ import MyPage from './pages/MyPage'
 
 import DesignGuide from './pages/DesignGuide'
 import MemberPage from './pages/MemberPage'
+import CommunityForm from './components/studio/community/CommunityForm'
 
 function App() {
    const location = useLocation()
@@ -90,7 +90,6 @@ function App() {
             <Route path="/follow" element={<Home />} />
 
             <Route path="/studio" element={<StudioPage />} />
-            <Route path="/studio/community/write" element={<CommunityWritePage />} />
             <Route path="/studio/project/write" element={<ProjectWritePage />} />
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
             <Route path="/studio/profile" element={<StudioProfilePage />} />
@@ -106,7 +105,7 @@ function App() {
             </Route>
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
-            <Route path="/studio/commu/write" element={<CommunityWritePage />} />
+            <Route path="/community/write" element={<CommunityForm />} />
 
             {/* <Route path="/funding" element={<FundingLayout />}> */}
             {/* <Route path="detail" element={<FundingOverview />} /> */}

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchStudioByIdThunk, fetchStudioThunk } from '../features/studioSlice'
 import { useParams, useNavigate } from 'react-router-dom'
-import StudioNavber from '../components/shared/StudioNavber'
 import StudioLayout from '../components/studio/StudioLayout'
 import { Typography, Button, Box } from '@mui/material'
 import { LoadingBox, ErrorBox, Main } from '../styles/BaseStyles'
@@ -36,7 +35,7 @@ function StudioPage() {
    const newStudio = (
       <>
          <Box>
-            <Typography variant="h4" sx={{ color: '#666', mt: 6, fontSize: '24px' }}>
+            <Typography variant="h4" sx={{ color: '#666', mt: 6, fontSize: '24px', textAlign: 'center' }}>
                스튜디오가 없습니다. 새로 만들까요?
             </Typography>
          </Box>
@@ -53,7 +52,6 @@ function StudioPage() {
 
    return (
       <>
-         <StudioNavber />
          <Main>{studio ? <StudioLayout /> : newStudio}</Main>
 
          <ErrorBox error={error} open={open} setOpen={setOpen} />

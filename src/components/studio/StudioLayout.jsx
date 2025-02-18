@@ -2,9 +2,13 @@ import { useSelector } from 'react-redux'
 import { Card, CardContent, CardMedia, Typography, Button, Divider } from '@mui/material'
 import StudioTab from './tab/StudioTab'
 import { Stack2 } from '../../styles/BaseStyles'
+import MicIcon from '@mui/icons-material/Mic'
 
 const StudioLayout = () => {
    const { studio } = useSelector((state) => state.studio)
+   const { user } = useSelector((state) => state.auth)
+
+   const isCreator = studio?.StudioCreators?.some((creator) => creator.Creator?.User?.id === user?.id)
 
    const Spen = (props) => <Typography component="span" color="green" {...props} />
    const imageUrl = studio?.imgUrl ? process.env.REACT_APP_API_URL + '/studioImg/' + studio.imgUrl : '/default-image.png'
@@ -16,11 +20,12 @@ const StudioLayout = () => {
                <Card variant="none">
                   <CardMedia sx={{ minWidth: 180, height: 180, borderRadius: '10px' }} image={imageUrl} alt="스튜디오 프로필" />
                   <CardContent sx={{ display: 'flex', flexDirection: 'column', py: 0 }}>
-                     <Stack2 mb={1} alignItems="end">
+                     <Stack2 mb={1} alignItems="center">
                         <Typography variant="h2" fontWeight="bold">
                            {studio.name}
                         </Typography>
-                        <Button variant="contained">구독</Button>
+
+                        {isCreator ? <Button sx={{ background: 'linear-gradient(to right, #4ACBCF, #A57EFF)', color: '#fff', p: 1 }}>{<MicIcon sx={{ fontSize: '20px' }} />}스페이스</Button> : <Button variant="contained">구독</Button>}
                      </Stack2>
                      <Typography color="grey" variant="body2" sx={{ whiteSpace: 'pre-line', flexGrow: 1 }}>
                         {studio.intro}
