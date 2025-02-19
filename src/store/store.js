@@ -8,6 +8,7 @@ import studioReducer from '../features/studioSlice'
 import rankReducer from '../features/rankSlice'
 import adminReducer from '../features/adminSlice'
 import pageReducer from '../features/pageSlice'
+import fundingReducer from '../features/fundingSlice'
 
 const store = configureStore({
    reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
       rank: rankReducer,
       admin: adminReducer,
       page: pageReducer,
+      funding: fundingReducer,
    },
 })
 

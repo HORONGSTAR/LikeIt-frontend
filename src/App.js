@@ -25,11 +25,7 @@ import CommonSignupPage from './pages/CommonSignupPage'
 import FindingPasswordPage from './pages/FindingPasswordPage'
 import Navber from './components/shared/Navber'
 import CommunityWritePage from './pages/CommunityWritePage'
-import FundingReview from './components/funding/FundingReview'
 import DesignGuide from './pages/DesignGuide'
-import FundingLayout from './components/funding/FundingLayout'
-import FundingTimeline from './components/funding/FundingTimeline'
-import FundingOverview from './components/funding/FundingOverview'
 import StudioPage from './pages/StudioPage'
 import ProjectWritePage from './pages/ProjectWritePage'
 import StudioEditPage from './pages/StudioEditPage'
@@ -38,6 +34,7 @@ import RankingPage from './pages/RankingPage'
 import AdditionalSignupPage from './pages/AdditionalSignupPage'
 import { checkAuthStatusThunk } from './features/authSlice'
 import MyPage from './pages/MyPage'
+import FundingDetailPage from './pages/FundingDetailPage'
 
 function App() {
    const location = useLocation()
@@ -88,7 +85,6 @@ function App() {
             <Route path="/new" element={<NewPage />} />
             <Route path="/end" element={<EndPage />} />
             <Route path="/comming" element={<CommingPage />} />
-            <Route path="/follow" element={<Home />} />
             <Route path="/studio" element={<StudioPage />} />
             <Route path="/studio/:id" element={<StudioPage />} />
             <Route path="/protect/write" element={<ProjectWritePage />} />
@@ -96,22 +92,14 @@ function App() {
             <Route path="/studio/create" element={<StudioCreatePage />} />
             <Route path="/studio/edit/:id" element={<StudioEditPage />} />
             <Route path="/studio/community/write" element={<CommunityWritePage />} />
-            <Route path="/funding" element={<FundingLayout />}>
-               <Route path="detail" element={<FundingOverview />} />
-               <Route path="timeline" element={<FundingTimeline />} />
-               <Route path="review" element={<FundingReview />} />
-            </Route>
+
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/studio" element={<StudioPage />} />
             {/* <Route path="commu" element={<CommunityPage />} /> */}
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />
 
-            {/* <Route path="/funding" element={<FundingLayout />}> */}
-            {/* <Route path="detail" element={<FundingOverview />} /> */}
-            {/* <Route path="timeline" element={<FundingTimeline />} /> */}
-            {/* <Route path="review" element={<FundingReview />} />
-            </Route> */}
+            <Route path="/funding/:id" element={<FundingDetailPage />} />
          </Routes>
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기

@@ -2,17 +2,25 @@ import { ProjectCard, CommingCard } from '../ui/Cards'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { fetchShowProjectsThunk } from '../../features/listSlice'
+import { fetchShowProjectsThunk, noticeRegThunk, noticeDelThunk } from '../../features/listSlice'
 import { Grid2 } from '@mui/material'
 import { LoadingBox, SubTitle } from '../../styles/BaseStyles'
 
 function HomeProjects() {
    const dispatch = useDispatch()
    const { projects, loading, error } = useSelector((state) => state.list)
+   const { isAuthenticated } = useSelector((state) => state.auth)
 
    useEffect(() => {
       dispatch(fetchShowProjectsThunk({ type: 'all' }))
    }, [dispatch])
+
+   const noticeReg = (id) => {
+      dispatch(noticeRegThunk(id))
+   }
+   const noticeDel = (id) => {
+      dispatch(noticeDelThunk(id))
+   }
 
    const showCards = (type) => {
       let cards = []
@@ -23,6 +31,7 @@ function HomeProjects() {
                if (project.totalOrderPrice) totalOrderPrice = project.totalOrderPrice
                let rate = Math.floor((totalOrderPrice / project.goal) * 100)
                const projectData = {
+                  id: project.id,
                   studioName: project.Studio.name,
                   title: project.title,
                   intro: project.intro,
@@ -31,7 +40,11 @@ function HomeProjects() {
                   startDate: project.startDate,
                   endDate: project.endDate,
                   userCount: project.userCount,
+                  isFavorite: project.isFavorite,
                   rate,
+                  noticeReg,
+                  noticeDel,
+                  isAuthenticated,
                }
                if (type === 'comming')
                   return (
