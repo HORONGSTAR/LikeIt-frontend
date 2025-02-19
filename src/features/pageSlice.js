@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { getProfile, updateProfile } from '../api/pageApi'
 
+
 // 내 프로필 정보 가져오기
 export const getProfileThunk = createAsyncThunk('page/getProfile', async (_, { rejectWithValue }) => {
    try {

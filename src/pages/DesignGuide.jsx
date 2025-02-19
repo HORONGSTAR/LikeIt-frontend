@@ -49,20 +49,28 @@ function DesignGuide() {
 
    const main = (
       <Memo component={'Main'} props={'children, spacing'}>
-         페이지는 기본적으로 Main 컴포넌트로 감싸는 것을 기본으로 합니다. 이 페이지도 Main으로 랩핑한 상태입니다. 간격은 spaching으로 조절할 수 있지만, 어지간한 경우는 기본 설정으로 충분합니다. Main의 children은 margin이 안 먹힐 수 있으므로 여백을 추가로 주고 싶다면 padding을 사용해주세요.
-         children을 가로로 나열하고 싶다면 아래의 Stack2를 사용하길 권장합니다.
+         페이지는 기본적으로 Main 컴포넌트로 감싸는 것을 기본으로 합니다. 이 페이지도 Main으로 랩핑한 상태입니다. 간격은
+         spaching으로 조절할 수 있지만, 어지간한 경우는 기본 설정으로 충분합니다. Main의 children은 margin이 안 먹힐 수
+         있으므로 여백을 추가로 주고 싶다면 padding을 사용해주세요. children을 가로로 나열하고 싶다면 아래의 Stack2를
+         사용하길 권장합니다.
       </Memo>
    )
    const tab = (
       <Memo component={'Tabs'} props={'tabItems=[{label:탭라벨이름, page:탭으로 이동할 컴포넌트}]'}>
-         탭의 예시는 현재 페이지에서 확인할 수 있습니다. props의 형식대로 채우면 자동으로 탭과 라벨을 매칭합니다. 어떻게 사용하는지 감이 잘 안오면 DesignGuide.jsx에서 찾아보세요!
-         <Typography color="green">⚠탭 내부에서 스크롤 이동하는 링크도 구현했습니다. 자세한 내용은 '제목 및 링크'에서 확인해주세요. </Typography>
+         탭의 예시는 현재 페이지에서 확인할 수 있습니다. props의 형식대로 채우면 자동으로 탭과 라벨을 매칭합니다. 어떻게
+         사용하는지 감이 잘 안오면 DesignGuide.jsx에서 찾아보세요!
+         <Typography color="green">
+            ⚠탭 내부에서 스크롤 이동하는 링크도 구현했습니다. 자세한 내용은 '제목 및 링크'에서 확인해주세요.{' '}
+         </Typography>
       </Memo>
    )
    const tablink = (
       <Memo component={'TabLink'} props={'links=[{name:칩 라벨(링크), section:링크로 이동할 컴포넌트}]'}>
-         탭 안에서 사용하는 스크롤 이동 링크입니다. '여러가지 틀' 탭 페이지에서 예시를 확인할 수 있습니다. 사용하려면 우선 탭에 들어갈 단락을 나눠서 탭링크로 전달하고, 그 탭링크를 탭페이지로 전달하는 방식으로 출력합니다. 사용법이 다소 복잡한 감이 있는데... 일단 만들어두긴 했습니다. 하나씩 적용하려면
-         번거롭긴 하니까요. 컴포넌트도 제이슨/리스트 적용이 되므로 컴포넌트 파일을 만들어놓고 넣어도 무방합니다.(다들 아시겠지만 노파심에 적어둠!) DesignGuide.jsx에 주석으로 만드는 순서를 적어놨으니 참고 바랍니다.
+         탭 안에서 사용하는 스크롤 이동 링크입니다. '여러가지 틀' 탭 페이지에서 예시를 확인할 수 있습니다. 사용하려면
+         우선 탭에 들어갈 단락을 나눠서 탭링크로 전달하고, 그 탭링크를 탭페이지로 전달하는 방식으로 출력합니다. 사용법이
+         다소 복잡한 감이 있는데... 일단 만들어두긴 했습니다. 하나씩 적용하려면 번거롭긴 하니까요. 컴포넌트도
+         제이슨/리스트 적용이 되므로 컴포넌트 파일을 만들어놓고 넣어도 무방합니다.(다들 아시겠지만 노파심에 적어둠!)
+         DesignGuide.jsx에 주석으로 만드는 순서를 적어놨으니 참고 바랍니다.
       </Memo>
    )
    const stack2 = (
@@ -72,7 +80,8 @@ function DesignGuide() {
             <Chip label={'Stack2 안에 들어있는 칩2'} />
          </Stack2>
          <Memo component={'Stack2'} props={'mui Stack props'}>
-            기존 Mui의 Stack컴포넌트에서 기본 direction을 row로 변경했습니다. Stack에서 사용하던 props를 동일하게 사용할 수 있습니다. alignItems는 기본적으로 center입니다.
+            기존 Mui의 Stack컴포넌트에서 기본 direction을 row로 변경했습니다. Stack에서 사용하던 props를 동일하게 사용할
+            수 있습니다. alignItems는 기본적으로 center입니다.
          </Memo>
       </>
    )
@@ -89,7 +98,9 @@ function DesignGuide() {
          </ModalBox>
 
          <Memo component={'ModalBox'} props={'openBtn, closeBtn, children'}>
-            children으로 내용이나 컴포넌트를 전달합니다. props로 closeBtn을 추가하면 닫기 버튼이 생기고, 버튼을 눌러서만 닫을 수 있습니다. 안에 버튼을 넣어서 submit할수도 있습니다만, 자동으로 모달창이 꺼지진 않기 때문에 사용하실거면 submit후 새로고침을 하도록 처리해주세요.
+            children으로 내용이나 컴포넌트를 전달합니다. props로 closeBtn을 추가하면 닫기 버튼이 생기고, 버튼을 눌러서만
+            닫을 수 있습니다. 안에 버튼을 넣어서 submit할수도 있습니다만, 자동으로 모달창이 꺼지진 않기 때문에
+            사용하실거면 submit후 새로고침을 하도록 처리해주세요.
          </Memo>
 
          <ModifiedModalBox openBtn={<Button variant="outlined">수정된 모달</Button>} closeBtn>
@@ -130,7 +141,9 @@ function DesignGuide() {
             </Grid2>
          </Grid2>
          <Memo component={'BasicCard'} props={'imgUrl, children, cardEf'}>
-            모든 카드의 뼈대입니다. 카드는 Mui의 Grid2와 함께 사용합니다. Grid2 size는 md: 3, sm: 6, xs: 12 을 기본으로 합니다. 필요한 카드는 대부분 만들어뒀기 때문에 특별히 사용할 일은 없을 겁니다. imgUrl을 넣는 부분만 수정해서 사용하시면 됩니다. 반응형 작업은 모두 마친 상태입니다.
+            모든 카드의 뼈대입니다. 카드는 Mui의 Grid2와 함께 사용합니다. Grid2 size는 md: 3, sm: 6, xs: 12 을 기본으로
+            합니다. 필요한 카드는 대부분 만들어뒀기 때문에 특별히 사용할 일은 없을 겁니다. imgUrl을 넣는 부분만 수정해서
+            사용하시면 됩니다. 반응형 작업은 모두 마친 상태입니다.
          </Memo>
          <Grid2 container columnSpacing={1.5} rowSpacing={{ sm: 3, xs: 1.5 }}>
             <Grid2 size={{ md: 3, sm: 6, xs: 12 }}>
@@ -146,7 +159,8 @@ function DesignGuide() {
             </Grid2>
          </Grid2>
          <Memo component={'HistoryCard'} props={'project'}>
-            스튜디오 페이지에서 사용하는 프로젝트 카드입니다. 프로젝트 상태에 따라 칩이 바뀌고 카드에 보정 필터를 추가합니다.
+            스튜디오 페이지에서 사용하는 프로젝트 카드입니다. 프로젝트 상태에 따라 칩이 바뀌고 카드에 보정 필터를
+            추가합니다.
          </Memo>
          <Grid2 container columnSpacing={1.5} rowSpacing={{ sm: 3, xs: 1.5 }}>
             <Grid2 size={{ md: 3, sm: 6, xs: 12 }}>
@@ -193,7 +207,9 @@ function DesignGuide() {
          <Button variant="yellow">yellow</Button>
          <Button variant="green">green</Button>
          <Memo component={'Button'} props={'mui Button props(add variant : yellow, green)'}>
-            Mui 테마에서 커스텀을 마친 버튼들입니다. 따라서 그냥 Mui라이브러리에서 임포트해서 쓰면 됩니다. variant에 yellow와 green을 추가했으므로 값만 넣어서 색상을 바꾸시면 됩니다. 간혹 피그마에 노란바탕에 하얀 글씨로 써있는 버튼이 있는데, 그런 버튼도 여기의 옐로 버튼으로 통일해주세요.
+            Mui 테마에서 커스텀을 마친 버튼들입니다. 따라서 그냥 Mui라이브러리에서 임포트해서 쓰면 됩니다. variant에
+            yellow와 green을 추가했으므로 값만 넣어서 색상을 바꾸시면 됩니다. 간혹 피그마에 노란바탕에 하얀 글씨로
+            써있는 버튼이 있는데, 그런 버튼도 여기의 옐로 버튼으로 통일해주세요.
          </Memo>
          <Stack2>
             <Chip label="grey" variant="grey" />
@@ -204,7 +220,8 @@ function DesignGuide() {
          </Stack2>
 
          <Memo component={'Chip'} props={'mui Button props(add variant : yellow, green, grey)'}>
-            Mui 테마에서 커스텀을 마친 칩들입니다. 버튼과 마찬가지로 그냥 Mui라이브러리에서 임포트해서 쓰면 됩니다. variant에 yellow와 green 그리고 grey을 추가했으므로 값만 넣어서 색상을 바꾸시면 됩니다.
+            Mui 테마에서 커스텀을 마친 칩들입니다. 버튼과 마찬가지로 그냥 Mui라이브러리에서 임포트해서 쓰면 됩니다.
+            variant에 yellow와 green 그리고 grey을 추가했으므로 값만 넣어서 색상을 바꾸시면 됩니다.
          </Memo>
       </>
    )
@@ -223,7 +240,8 @@ function DesignGuide() {
          </Button>
          <ErrorBox error={'이부분에 에러메세지를 넣으면 출력합니다.'} open={open} setOpen={setOpen} />
          <Memo component={'ErrorBox'} props={'error, open, setOpen'}>
-            필요한 페이지에 useState를 추가해서 open값과 setOpen함수를 준비해주세요. 에러 메세지창을 출력하는 때에 setOpen에 true값을 주면 에러 메세지창이 열립니다.
+            필요한 페이지에 useState를 추가해서 open값과 setOpen함수를 준비해주세요. 에러 메세지창을 출력하는 때에
+            setOpen에 true값을 주면 에러 메세지창이 열립니다.
          </Memo>
       </>
    )
@@ -233,7 +251,9 @@ function DesignGuide() {
          <Typography color="green">green</Typography>
          <Typography color="orenge">orenge</Typography>
          <Memo component={'mui palette'} props={'color'}>
-            저희가 자주 사용하는 노랑, 초록, 주황색도 테마로 추가해뒀습니다. color props 에 'yellow', 'green', 'orenge'를 입력하면 해당 컬러가 입혀집니다. 단, props가 아닌 sx에서 color를 사용할경우 기존 css컬러가 입혀지므로 주의 바랍니다.
+            저희가 자주 사용하는 노랑, 초록, 주황색도 테마로 추가해뒀습니다. color props 에 'yellow', 'green',
+            'orenge'를 입력하면 해당 컬러가 입혀집니다. 단, props가 아닌 sx에서 color를 사용할경우 기존 css컬러가
+            입혀지므로 주의 바랍니다.
          </Memo>
          <Typography variant="h1">h1</Typography>
          <Typography variant="h2">h2</Typography>
@@ -245,8 +265,9 @@ function DesignGuide() {
          <Typography variant="body2">body2</Typography>
          <Typography variant="caption">caption</Typography>
          <Memo component={'Typography'} props={'mui Typography props'}>
-            mui의 Typography 컴포넌트를 테마 커스텀해둔 상태입니다. 보통 소제목은 h4이하로 사용하면 무난합니다. 본문이 되는 텍스트는 반드시 body1(기본)이나 body2로 앉혀주세요. mui자체에 반응형 계산이 같이 되어있어서 모바일 화면으로 전환시 글씨가 미세하게 작아집니다.(이것도 아시겠지만 일단 노파심에
-            적어둠!)
+            mui의 Typography 컴포넌트를 테마 커스텀해둔 상태입니다. 보통 소제목은 h4이하로 사용하면 무난합니다. 본문이
+            되는 텍스트는 반드시 body1(기본)이나 body2로 앉혀주세요. mui자체에 반응형 계산이 같이 되어있어서 모바일
+            화면으로 전환시 글씨가 미세하게 작아집니다.(이것도 아시겠지만 일단 노파심에 적어둠!)
          </Memo>
       </>
    )
