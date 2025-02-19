@@ -1,44 +1,63 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchCommunitiesThunk } from '../../../features/communitySlice'
-import { Typography, Card, CardContent, Avatar, Stack, Divider } from '@mui/material'
-import { LoadingBox, ErrorBox, Stack2, ModalBox, Ellipsis } from '../../../styles/BaseStyles'
-
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { Typography, Card, Avatar, Stack, Box, Button } from '@mui/material'
+import { LoadingBox, ErrorBox, Stack2 } from '../../../styles/BaseStyles'
 import dayjs from 'dayjs'
-import CommuComment from '../community/CommuComment'
+import { useNavigate } from 'react-router-dom'
 
 const CommuList = ({ setOpen }) => {
-   const { communities, community, loading, error } = useSelector((state) => state.community)
+   const navigate = useNavigate()
+   const { communities, loading, error } = useSelector((state) => state.community)
+   const { studio } = useSelector((state) => state.studio)
 
    if (loading) return <LoadingBox />
    if (error) return <ErrorBox />
 
+   const filteredCommunities =
+      studio?.id && communities
+         ? communities.filter((community) => {
+              return community.studioId === studio.id
+           })
+         : []
+
    return (
       <>
-         {communities.length > 0 ? (
-            communities.map((community) => (
-               <Card
-                  key={'community' + community.id}
-                  sx={{ flexDirection: 'column', mb: 1 }}
-                  variant="outlined"
-                  onClick={() => setOpen(community.id)}
-               >
+         {filteredCommunities.length > 0 ? (
+            filteredCommunities.map((community) => (
+               <Card key={'community' + community.id} sx={{ flexDirection: 'column', mb: 1 }} variant="outlined" onClick={() => setOpen(community.id)}>
                   <Stack spacing={1} sx={{ px: { sm: 2, xs: 1 }, py: 1 }}>
                      <Stack2>
-                        <Typography variant="h5">{community.title}</Typography>
+                        <Typography variant="h5" sx={{ cursor: 'pointer' }}>
+                           {community.title}
+                        </Typography>
                         <Typography color="grey" fontWeight={300} ml="auto">
                            {dayjs(community.createdAt).format('YYYY.MM.DD')}
                         </Typography>
                      </Stack2>
                      <Stack2>
-                        <Avatar src={community.User.imgUrl || '/images/default-profile.jpg'} sx={{ width: 18, height: 18, mr: 0.4 }} />
-                        <Typography>{community.User.name || '닉네임 없음'}</Typography>
+                        <Avatar src={community.User?.imgUrl || '/images/default-profile.jpg'} sx={{ width: 18, height: 18, mr: 0.4 }} />
+                        <Typography>{community.User?.name || '닉네임 없음'}</Typography>
                      </Stack2>
                   </Stack>
                </Card>
             ))
          ) : (
-            <>등록된 글이 없습니다.</>
+            <Box
+               sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  mt: 2,
+                  alignItems: 'center',
+                  justifyItems: 'center',
+               }}
+            >
+               <Typography color="grey" variant="h4" mb={1}>
+                  글이 없습니다. 글을 작성할까요?
+               </Typography>
+               <Button variant="yellow" sx={{ color: '#fff', fontSize: '20px', borderRadius: '5px', px: 4 }} onClick={() => navigate('/community/write')}>
+                  글쓰기
+               </Button>
+            </Box>
          )}
       </>
    )

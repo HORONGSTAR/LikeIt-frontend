@@ -31,7 +31,13 @@ function AccountMenu({ items }) {
    return (
       <>
          <Tooltip title="내 계정">
-            <IconButton onClick={handleClick} size="small" aria-controls={userOpen ? 'account-menu' : undefined} aria-haspopup="true" aria-expanded={userOpen ? 'true' : undefined}>
+            <IconButton
+               onClick={handleClick}
+               size="small"
+               aria-controls={userOpen ? 'account-menu' : undefined}
+               aria-haspopup="true"
+               aria-expanded={userOpen ? 'true' : undefined}
+            >
                <Avatar sx={{ width: 32, height: 32 }} src={process.env.REACT_APP_API_URL + ''} />
             </IconButton>
          </Tooltip>
@@ -74,12 +80,12 @@ function AccountMenu({ items }) {
          >
             {items.map((item) => (
                <MenuItem key={item.page} component={Link} to={item.path} onClick={handleClose}>
-                  <Box component="img" src={`images/icon/${item.icon}.svg`} sx={{ width: 12, mr: 1 }} />
+                  <Box component="img" src={`/images/icon/${item.icon}.svg`} sx={{ width: 12, mr: 1 }} />
                   {item.page}
                </MenuItem>
             ))}
             <MenuItem onClick={handleLogout}>
-               <Box component="img" src="images/icon/logout.svg" sx={{ width: 12, mr: 1 }} />
+               <Box component="img" src="/images/icon/logout.svg" sx={{ width: 12, mr: 1 }} />
                로그아웃
             </MenuItem>
          </Menu>
