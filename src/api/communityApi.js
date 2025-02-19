@@ -42,7 +42,12 @@ export const createCommunity = async (communityData) => {
 // 커뮤니티 글 수정
 export const updateCommunity = async (id, communityData) => {
    try {
-      const response = await likeitApi.put(`/community/${id}`, communityData)
+      const config = {
+         headers: {
+            'Content-Type': 'multipart/form-data',
+         },
+      }
+      const response = await likeitApi.put(`/community/${id}`, communityData, config)
       return response.data
    } catch (error) {
       console.error('커뮤니티 글 수정 실패:', error.response?.data?.message || error.message)

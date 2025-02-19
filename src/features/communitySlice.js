@@ -31,7 +31,7 @@ export const createCommunityThunk = createAsyncThunk('community/createCommunity'
 export const updateCommunityThunk = createAsyncThunk('community/updateCommunity', async ({ id, communityData }, { rejectWithValue }) => {
    try {
       const response = await updateCommunity(id, communityData)
-      return response.data.community
+      return response.community
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '커뮤니티 글 수정 실패')
    }

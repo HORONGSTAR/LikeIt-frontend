@@ -161,7 +161,7 @@ function StudioForm({ onSubmit, initVals = {} }) {
             <Button variant="contained" color="orenge" size="large" onClick={handleSubmit}>
                등록하기
             </Button>
-            <Button variant="outlined" color="orenge" size="large">
+            <Button variant="outlined" color="orenge" size="large" onClick={() => navigate(`/studio/${initVals?.id || ''}`)}>
                취소
             </Button>
          </Stack2>
