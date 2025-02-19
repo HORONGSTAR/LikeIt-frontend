@@ -16,6 +16,7 @@ import {
    Link as MuiLink,
 } from '@mui/material'
 import { Close, PlayArrowRounded, AddPhotoAlternate, AddCircle } from '@mui/icons-material'
+
 import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -111,6 +112,94 @@ export const ModalBox = ({ children, openBtn, closeBtn, full }) => {
                      position: 'absolute',
                      right: 0,
                      top: 0,
+                     color: theme.palette.grey[500],
+                  })}
+               >
+                  <Close />
+               </IconButton>
+               {children}
+            </Box>
+         </Modal>
+      </>
+   )
+}
+
+// export const ModifiedModalBox = ({ children, openBtn, closeBtn }) => {
+//    const [open, setOpen] = useState(false)
+
+//    return (
+//       <>
+//          <Button variant="outlined" onClick={() => setOpen(true)}>
+//             {openBtn}
+//          </Button>
+//          <Modal open={open} onClose={() => closeBtn || setOpen(false)}>
+//             <Box
+//                sx={{
+//                   position: 'absolute',
+//                   boxSizing: 'border-box',
+//                   top: '50%',
+//                   left: '50%',
+//                   transform: 'translate(-50%, -50%)',
+//                   minWidth: 320,
+//                   bgcolor: 'background.paper',
+//                   borderRadius: 1,
+//                   boxShadow: 24,
+//                   px: 2,
+//                   py: 3,
+//                   maxHeight: 600,
+//                   overflowY: 'auto',
+//                }}
+//             >
+//                <IconButton
+//                   aria-label="close"
+//                   onClick={() => setOpen(false)}
+//                   sx={(theme) => ({
+//                      position: 'absolute',
+//                      right: 8,
+//                      top: 8,
+//                      color: theme.palette.grey[500],
+//                   })}
+//                >
+//                   <Close />
+//                </IconButton>
+//                {children}
+//             </Box>
+//          </Modal>
+//       </>
+//    )
+// }
+
+export const ModifiedModalBox = ({ children, openBtn, closeBtn }) => {
+   const [open, setOpen] = useState(false)
+
+   return (
+      <>
+         {React.cloneElement(openBtn, { onClick: () => setOpen(true) })}
+         <Modal open={open} onClose={() => closeBtn || setOpen(false)}>
+            <Box
+               sx={{
+                  position: 'absolute',
+                  boxSizing: 'border-box',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  minWidth: 320,
+                  bgcolor: 'background.paper',
+                  borderRadius: 1,
+                  boxShadow: 24,
+                  px: 2,
+                  py: 3,
+                  maxHeight: 600,
+                  overflowY: 'auto',
+               }}
+            >
+               <IconButton
+                  aria-label="close"
+                  onClick={() => setOpen(false)}
+                  sx={(theme) => ({
+                     position: 'absolute',
+                     right: 8,
+                     top: 8,
                      color: theme.palette.grey[500],
                   })}
                >

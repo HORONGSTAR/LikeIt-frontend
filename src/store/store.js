@@ -7,6 +7,8 @@ import commentReducer from '../features/commentSlice'
 import studioReducer from '../features/studioSlice'
 import rankReducer from '../features/rankSlice'
 import adminReducer from '../features/adminSlice'
+import pageReducer from '../features/pageSlice'
+import fundingReducer from '../features/fundingSlice'
 import creatorReducer from '../features/creatorSlice'
 import pageReducer from '../features/pageSlice'
 import projectReducer from '../features/projectSlice'
@@ -22,10 +24,11 @@ const store = configureStore({
       studio: studioReducer,
       rank: rankReducer,
       admin: adminReducer,
-      creator: creatorReducer,
       page: pageReducer,
       project: projectReducer,
       reward: rewardReducer,
+      funding: fundingReducer,
+      creator: creatorReducer,
    },
 })
 
