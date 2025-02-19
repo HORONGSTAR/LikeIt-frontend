@@ -26,6 +26,11 @@ import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
 import FindingPasswordPage from './pages/FindingPasswordPage'
 
+import CommunityWritePage from './pages/CommunityWritePage'
+import StudioPage from './pages/StudioPage'
+import StudioEditPage from './pages/StudioEditPage'
+import StudioCreatePage from './pages/StudioCreatePage'
+
 import FundingReview from './components/funding/FundingReview'
 import FundingLayout from './components/funding/FundingLayout'
 import FundingTimeline from './components/funding/FundingTimeline'
@@ -41,6 +46,7 @@ import ProjectWritePage from './pages/ProjectWritePage'
 
 import { checkAuthStatusThunk } from './features/authSlice'
 import MyPage from './pages/MyPage'
+import FundingDetailPage from './pages/FundingDetailPage'
 
 import DesignGuide from './pages/DesignGuide'
 
@@ -90,6 +96,7 @@ function App() {
 
             <Route path="/studio" element={<StudioPage />} />
             <Route path="/studio/community/write" element={<CommunityWritePage />} />
+
             <Route path="/studio/project/write" element={<ProjectWritePage />} />
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
             <Route path="/studio/profile" element={<StudioProfilePage />} />
@@ -102,15 +109,11 @@ function App() {
                <Route path="timeline" element={<FundingTimeline />} />
                <Route path="review" element={<FundingReview />} />
             </Route>
-            <Route path="/follow" element={<FollowPage />} />
+         
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />
 
-            {/* <Route path="/funding" element={<FundingLayout />}> */}
-            {/* <Route path="detail" element={<FundingOverview />} /> */}
-            {/* <Route path="timeline" element={<FundingTimeline />} /> */}
-            {/* <Route path="review" element={<FundingReview />} />
-            </Route> */}
+            <Route path="/funding/:id" element={<FundingDetailPage />} />
          </Routes>
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기

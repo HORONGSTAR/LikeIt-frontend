@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchShowBannerThunk } from '../../features/indexSlice'
 import { Box } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 function Banner() {
    const dispatch = useDispatch()
@@ -21,7 +22,9 @@ function Banner() {
       return banners.map((banner) => {
          return (
             <SwiperSlide key={banner.imgUrl}>
-               <img src={process.env.REACT_APP_API_URL + '/bannerProject' + banner.imgUrl} alt="배너 프로젝트" width="100%" />
+               <Link to={`/funding/${banner.projectId}`}>
+                  <img src={process.env.REACT_APP_API_URL + '/bannerProject' + banner.imgUrl} alt="배너 프로젝트" width="100%" />
+               </Link>
             </SwiperSlide>
          )
       })

@@ -23,3 +23,25 @@ export const showFollowStudios = async (data) => {
       throw error
    }
 }
+
+// 공개 예정 프로젝트 알림신청
+export const noticeReg = async (id) => {
+   try {
+      const response = await likeitApi.post(`/list/notice/reg/${id}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+// 공개 예정 프로젝트 알림해제
+export const noticeDel = async (id) => {
+   try {
+      const response = await likeitApi.delete(`/list/notice/del/${id}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}

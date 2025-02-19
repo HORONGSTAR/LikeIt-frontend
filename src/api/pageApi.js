@@ -10,3 +10,19 @@ export const getProfile = async () => {
       throw error
    }
 }
+
+export const updateProfile = async (profileData) => {
+   try {
+      const config = {
+         headers: {
+            'Content-Type': 'multipart/form-data',
+         },
+      }
+
+      const response = await likeItApi.put('/page/profile', profileData, config)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
