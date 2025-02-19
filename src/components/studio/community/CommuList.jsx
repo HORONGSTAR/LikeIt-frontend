@@ -13,7 +13,12 @@ const CommuList = ({ setOpen }) => {
    if (loading) return <LoadingBox />
    if (error) return <ErrorBox />
 
-   const filteredCommunities = communities.filter((community) => community.studioId === studio.id)
+   const filteredCommunities =
+      studio?.id && communities
+         ? communities.filter((community) => {
+              return community.studioId === studio.id
+           })
+         : []
 
    return (
       <>
