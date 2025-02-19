@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getProfile } from '../api/pageApi'
+import { getProfile, updateProfile } from '../api/pageApi'
 
 // 내 프로필 정보 가져오기
 export const getProfileThunk = createAsyncThunk('page/getProfile', async (_, { rejectWithValue }) => {
@@ -8,6 +8,16 @@ export const getProfileThunk = createAsyncThunk('page/getProfile', async (_, { r
       return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '프로필 정보 불러오기 실패')
+   }
+})
+
+//내 프로필 정보 변경
+export const updateProfileThunk = createAsyncThunk('page/updateProfile', async (data, { rejectWithValue }) => {
+   try {
+      const response = await updateProfile(data)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '프로필정보 변경 실패')
    }
 })
 
@@ -31,6 +41,19 @@ const pageSlice = createSlice({
             state.user = action.payload.user
          })
          .addCase(getProfileThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+      builder
+         .addCase(updateProfileThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(updateProfileThunk.fulfilled, (state, action) => {
+            state.loading = false
+            // state.user = action.payload.user
+         })
+         .addCase(updateProfileThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })
