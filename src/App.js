@@ -108,17 +108,7 @@ function App() {
             </Route>
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
-<<<<<<< HEAD
-            <Route path="/studio/commu/write" element={<CommunityWritePage />} />
-=======
             <Route path="/community/write" element={<CommunityForm />} />
-
-            {/* <Route path="/funding" element={<FundingLayout />}> */}
-            {/* <Route path="detail" element={<FundingOverview />} /> */}
-            {/* <Route path="timeline" element={<FundingTimeline />} /> */}
-            {/* <Route path="review" element={<FundingReview />} />
-            </Route> */}
->>>>>>> 5f1b12a872ae0d62b3c6fe8440a9f2f86e76961d
          </Routes>
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기
