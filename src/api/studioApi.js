@@ -20,7 +20,7 @@ export const createStudio = async (studioData) => {
          },
       }
       const response = await likeitApi.post('/studio', studioData, config)
-      return response.data
+      return response
    } catch (error) {
       console.error(`스튜디오 생성 오류: ${error.message}`)
       throw error
@@ -36,7 +36,7 @@ export const updateStudio = async (studioId, studioData) => {
          },
       }
       const response = await likeitApi.put(`/studio/${studioId}`, studioData, config)
-      return response.data
+      return response
    } catch (error) {
       console.error(`스튜디오 수정 오류: ${error.message}`)
       throw error

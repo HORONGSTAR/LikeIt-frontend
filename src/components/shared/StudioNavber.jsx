@@ -9,7 +9,7 @@ function StudioNavber({ isAuthenticated, user }) {
    const [open, setOpen] = useState(false)
 
    const studioMenu = [
-      { page: '새 프로젝트', path: '/studio/project/write' },
+      { page: '새 프로젝트', path: '/studio/project/create' },
       { page: '모든 프로젝트', path: '/studio/project/all' },
       { page: '창작자 관리', path: '/studio/member' },
    ]
@@ -33,7 +33,7 @@ function StudioNavber({ isAuthenticated, user }) {
             <Container maxWidth="md">
                <Stack2 my={2}>
                   <Link to="/studio">
-                     <img src="/images/logo-studio.svg" alt="Studio" />
+                     <img src="/images/logoStudio.svg" alt="Studio" />
                   </Link>
 
                   <Stack2 sx={{ display: breakpoint.desktop, ml: breakpoint.margin, alignItems: 'end', height: 32 }}>

@@ -93,7 +93,7 @@ function App() {
             <Route path="/follow" element={<Home />} />
 
             <Route path="/studio" element={<StudioPage />} />
-            <Route path="/studio/project/write" element={<ProjectWritePage />} />
+            <Route path="/studio/project/create" element={<ProjectWritePage />} />
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
             <Route path="/studio/profile" element={<StudioProfilePage />} />
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />

@@ -1,7 +1,21 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, DialogContent, DialogTitle, Container, Button, Link as MuiLink } from '@mui/material'
-import { Close, PlayArrowRounded, AddPhotoAlternate } from '@mui/icons-material'
+import {
+   Typography,
+   Modal,
+   Box,
+   IconButton,
+   Stack,
+   CircularProgress,
+   Dialog,
+   DialogContent,
+   DialogTitle,
+   Container,
+   Button,
+   Chip,
+   Link as MuiLink,
+} from '@mui/material'
+import { Close, PlayArrowRounded, AddPhotoAlternate, AddCircle } from '@mui/icons-material'
 import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -215,6 +229,10 @@ export const ImgUploadBox = ({ setImgFile, imgUrl, setImgUrl, children }) => {
          </Typography>
       </Stack2>
    )
+}
+
+export const AddButton = ({ handleAddItem, label }) => {
+   return <Chip sx={{ height: 40 }} icon={<AddCircle fontSize="small" />} variant="grey" onClick={handleAddItem} label={label} />
 }
 
 export const Ellipsis = styled.div`

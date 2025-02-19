@@ -1,7 +1,6 @@
 import { TextField, Button } from '@mui/material'
 import { ImgUploadBox, Stack2 } from '../../../styles/BaseStyles'
 import { FormGrid } from '../../ui/FormGrid'
-import { isBlank } from '../../../util/isBlank'
 import { useCallback, useState } from 'react'
 import DateRangePickers from './DateRangePickers'
 import dayjs from 'dayjs'
@@ -12,11 +11,8 @@ function ProjectInfoForm({ onSubmit, initVals = {} }) {
    const [title, setTitle] = useState(initVals.title)
    const [intro, setIntro] = useState(initVals.intro)
    const [term, setTerm] = useState({ start: dayjs(initVals.start), end: dayjs(initVals.end) })
-   const { start, end } = term
 
    const handleSaveData = useCallback(() => {
-      if (isBlank([imgUrl, title, intro, start, end])) return alert('양식을 모두 채워주세요')
-
       const formData = new FormData()
       if (imgFile) {
          const encodedFile = new File([imgFile], encodeURIComponent(imgFile.name), {
@@ -26,11 +22,11 @@ function ProjectInfoForm({ onSubmit, initVals = {} }) {
       }
       formData.append('title', title)
       formData.append('intro', intro)
-      formData.append('startDate', start)
-      formData.append('endDate', end)
+      formData.append('startDate', term.start)
+      formData.append('endDate', term.end)
 
       onSubmit(formData)
-   }, [onSubmit, imgUrl, imgFile, title, intro, start, end])
+   }, [onSubmit, imgUrl, imgFile, title, intro, term])
 
    const formItems = [
       {

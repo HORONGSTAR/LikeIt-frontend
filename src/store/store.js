@@ -10,6 +10,7 @@ import adminReducer from '../features/adminSlice'
 import creatorReducer from '../features/creatorSlice'
 import pageReducer from '../features/pageSlice'
 import projectReducer from '../features/projectSlice'
+import rewardReducer from '../features/rewardSlice'
 
 const store = configureStore({
    reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
       creator: creatorReducer,
       page: pageReducer,
       project: projectReducer,
+      reward: rewardReducer,
    },
 })
 

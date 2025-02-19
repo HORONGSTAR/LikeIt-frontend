@@ -46,3 +46,34 @@ a {
    width: 200%;
    background: #dbe7d9;
 }
+
+.project-write-img {
+   width: 80px;
+   display: inline-block;
+   animation: rotateEgg 4s infinite ease-in-out;
+   transform-origin: 50% 75%;
+}
+
+@keyframes rotateEgg {
+   0% {
+      transform: rotate(-20deg);
+   }
+   40% {
+      transform: rotate(20deg);
+   }
+   75% {
+      transform: rotate(-10deg);
+   }
+   80% {
+      transform: rotate(15deg);
+   }
+   85% {
+      transform: rotate(-20deg);
+   }
+   90% {
+      transform: rotate(20deg);
+   }
+   100% {
+      transform: rotate(-20deg);
+   }
+}

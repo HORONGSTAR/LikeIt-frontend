@@ -74,7 +74,7 @@ const studioSlice = createSlice({
          })
          .addCase(createStudioThunk.fulfilled, (state, action) => {
             state.loading = false
-            state.studio = action.payload
+            state.studio = action.payload.studio
          })
          .addCase(createStudioThunk.rejected, (state, action) => {
             state.loading = false

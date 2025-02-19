@@ -1,52 +1,55 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import ProjectInfoForm from './forms/ProjectInfoForm'
 import ProjectDetailForm from './forms/ProjectDetailForm'
 import ProjectRewardForm from './forms/ProjectRewardForm'
 import ProjectBudgetForm from './forms/ProjectBudgetForm'
 import { StepperTabs } from '../ui/Tabs'
+import { useSelector } from 'react-redux'
 
-function ProjectFormTab({ project = {}, onSubmit }) {
-   const [infoVals, setInfoVals] = useState({
+function ProjectFormTab({ onSubmit, step }) {
+   const { project } = useSelector((state) => state.project)
+
+   const infoVals = {
       imgFile: null,
       imgUrl: project?.imgUrl ? process.env.REACT_APP_API_URL + '/projectImg/' + project.imgUrl : '',
       title: project?.title || '',
       intro: project?.intro || '',
       start: project?.startDate || null,
       end: project?.endDate || null,
-   })
+   }
 
-   const [detailVals, setDetailVals] = useState({
+   const detailVals = {
       contents: project?.contents || '',
       products: project?.RewardProducts || [],
       schedule: project?.schedule || '',
-   })
-   const [rewardVals, setRewardVals] = useState({
-      rewards: project?.Rewards || [],
-   })
-   const [budgetVals, setBudgetVals] = useState({
+   }
+
+   const rewardVals = { rewards: project?.Rewards || [] }
+
+   const budgetVals = {
       goal: project?.goal || 0,
       projectBudget: project?.ProjectBudgets || [],
       creatorBudget: project?.CreatorBudgets || [],
-   })
+   }
 
    const saveInfoData = useCallback((date) => {
       onSubmit(date)
-      setInfoVals(date)
+      step.current = 0
    }, [])
 
    const saveDetailData = useCallback((date) => {
       onSubmit(date)
-      setDetailVals(date)
+      step.current = 1
    }, [])
 
    const saveRewardData = useCallback((date) => {
       onSubmit(date)
-      setRewardVals(date)
+      step.current = 2
    }, [])
 
    const saveBudgetData = useCallback((date) => {
       onSubmit(date)
-      setBudgetVals(date)
+      step.current = 3
    }, [])
 
    const tabItems = [
@@ -67,7 +70,6 @@ function ProjectFormTab({ project = {}, onSubmit }) {
          page: <ProjectBudgetForm initVals={budgetVals} onSubmit={saveBudgetData} />,
       },
       {
-         step: '',
          label: '승인 요청',
          page: '',
       },
@@ -75,7 +77,7 @@ function ProjectFormTab({ project = {}, onSubmit }) {
 
    return (
       <>
-         <StepperTabs tabItems={tabItems} />
+         <StepperTabs tabItems={tabItems} step={step} />
       </>
    )
 }

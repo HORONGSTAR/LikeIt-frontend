@@ -53,18 +53,16 @@ export const TabLink = ({ links = [] }) => {
    )
 }
 
-export const StepperTabs = ({ tabItems = [], completed = {} }) => {
-   const [value, setValue] = useState(tabItems[0]?.label)
-   const [activeStep, setActiveStep] = useState(0)
+export const StepperTabs = ({ tabItems = [], completed = {}, step }) => {
+   const [activeStep, setActiveStep] = useState(step.current)
 
    const handleStep = (step) => () => {
       setActiveStep(step)
-      setValue(tabItems[step].label)
    }
 
    return (
       <Box sx={{ width: '100%', typography: 'body1' }}>
-         <TabContext value={value}>
+         <TabContext value={activeStep}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', py: 3 }}>
                <Stepper nonLinear activeStep={activeStep} alternativeLabel connector={<StepConnector sx={{ top: 0 }} />}>
                   {tabItems.map((item, index) => (
@@ -76,8 +74,8 @@ export const StepperTabs = ({ tabItems = [], completed = {} }) => {
                   ))}
                </Stepper>
             </Box>
-            {tabItems.map((item) => (
-               <TabPanel sx={{ p: 1.5 }} key={'page' + item.label} value={item.label}>
+            {tabItems.map((item, index) => (
+               <TabPanel sx={{ p: 1.5 }} key={'page' + item.label} value={index}>
                   {item.page}
                </TabPanel>
             ))}

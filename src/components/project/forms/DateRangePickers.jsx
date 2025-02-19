@@ -14,7 +14,7 @@ function SeleteDate(props) {
    const { start, end, day, outsideCurrentMonth, ...other } = props
 
    const daySx = {
-      [start]: {
+      [dayjs(start).format('YYMMDD')]: {
          color: '#fff',
          background: '#45843C',
          '&:hover': { color: '#fff', background: '#45843C' },
@@ -25,7 +25,7 @@ function SeleteDate(props) {
 
    return (
       <Box sx={{ position: 'relative' }}>
-         <PickersDay sx={{ zIndex: 1, ...daySx[day] }} {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+         <PickersDay sx={{ zIndex: 1, ...daySx[dayjs(day).format('YYMMDD')] }} {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
 
          {betweenSx && <Box />}
       </Box>

@@ -31,7 +31,7 @@ export const fetchProjectByIdThunk = createAsyncThunk('project/getProjectById', 
    }
 })
 
-const studioSlice = createSlice({
+const projectSlice = createSlice({
    name: 'project',
    initialState: {
       project: null,
@@ -61,8 +61,9 @@ const studioSlice = createSlice({
             state.loading = true
             state.error = null
          })
-         .addCase(updateProjectThunk.fulfilled, (state) => {
+         .addCase(updateProjectThunk.fulfilled, (state, action) => {
             state.loading = false
+            state.project = action.payload.project
          })
          .addCase(updateProjectThunk.rejected, (state, action) => {
             state.loading = false
@@ -84,4 +85,4 @@ const studioSlice = createSlice({
    },
 })
 
-export default studioSlice.reducer
+export default projectSlice.reducer

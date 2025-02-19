@@ -248,6 +248,7 @@ export const theme = createTheme({
                      props: { size: 'large' },
                      style: {
                         padding: '20px 48px',
+                        fontSize: 14,
                      },
                   },
                ],

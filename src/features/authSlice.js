@@ -1,5 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { loginUser, registerUser, googleRegisterUser, logoutUser, checkAuthStatus, setTempPassword, changeEmail, changePassword } from '../api/authApi'
+import {
+   loginUser,
+   registerUser,
+   googleRegisterUser,
+   logoutUser,
+   checkAuthStatus,
+   setTempPassword,
+   changeEmail,
+   changePassword,
+} from '../api/authApi'
 
 // 회원가입 thunk
 export const registerUserThunk = createAsyncThunk('auth/registerUser', async (userData, { rejectWithValue }) => {
