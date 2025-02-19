@@ -1,8 +1,9 @@
 import { Grid2, Box, Typography, Chip, Divider, Button } from '@mui/material'
-import { Main, SubTitle, Stack2, TextLink, Dot, ModalBox, LoadingBox, ErrorBox } from '../styles/BaseStyles'
+import { Main, SubTitle, Stack2, TextLink, Dot, ModalBox, ModifiedModalBox, LoadingBox, ErrorBox } from '../styles/BaseStyles'
 import { ProjectCard, CommingCard, HistoryCard, StudioCard, BasicCard } from '../components/ui/Cards'
 import { Tabs, TabLink } from '../components/ui/Tabs'
 import { useState } from 'react'
+import EditIcon from '@mui/icons-material/Edit'
 
 function DesignGuide() {
    const [open, setOpen] = useState(false)
@@ -86,8 +87,21 @@ function DesignGuide() {
             <Typography>내용안에 이벤트 버튼도 포함할 수 있습니다.</Typography>
             <Button variant="outlined"> 등록 </Button>
          </ModalBox>
+
          <Memo component={'ModalBox'} props={'openBtn, closeBtn, children'}>
             children으로 내용이나 컴포넌트를 전달합니다. props로 closeBtn을 추가하면 닫기 버튼이 생기고, 버튼을 눌러서만 닫을 수 있습니다. 안에 버튼을 넣어서 submit할수도 있습니다만, 자동으로 모달창이 꺼지진 않기 때문에 사용하실거면 submit후 새로고침을 하도록 처리해주세요.
+         </Memo>
+
+         <ModifiedModalBox openBtn={<Button variant="outlined">수정된 모달</Button>} closeBtn>
+            <Typography variant="h5">수정된 모달</Typography>
+            <Box sx={{ mt: 2 }}>
+               <Typography variant="h7">내용 쓰는 곳</Typography>
+               <Button variant="outlined">등록</Button>
+            </Box>
+         </ModifiedModalBox>
+
+         <Memo component={'ModifiedModalBox'} props={'openBtn, closeBtn, children'}>
+            기존에 만들어 주신 거 약간만 변형했습니다! 버튼 옆에 부분 눌려도 모달이 열리는 거랑 버튼 두개 겹친 부분 정리했습니다! 사용방법은 기존 거랑 똑같습니다! - 세빈
          </Memo>
       </>
    )
