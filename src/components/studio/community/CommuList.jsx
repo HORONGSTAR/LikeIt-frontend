@@ -27,7 +27,9 @@ const CommuList = ({ setOpen }) => {
                <Card key={'community' + community.id} sx={{ flexDirection: 'column', mb: 1 }} variant="outlined" onClick={() => setOpen(community.id)}>
                   <Stack spacing={1} sx={{ px: { sm: 2, xs: 1 }, py: 1 }}>
                      <Stack2>
-                        <Typography variant="h5">{community.title}</Typography>
+                        <Typography variant="h5" sx={{ cursor: 'pointer' }}>
+                           {community.title}
+                        </Typography>
                         <Typography color="grey" fontWeight={300} ml="auto">
                            {dayjs(community.createdAt).format('YYYY.MM.DD')}
                         </Typography>

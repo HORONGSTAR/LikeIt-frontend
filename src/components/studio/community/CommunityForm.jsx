@@ -126,7 +126,7 @@ function CommunityForm() {
             <Button variant="contained" color="primary" onClick={handlePostSubmit}>
                등록
             </Button>
-            <Button variant="outlined" onClick={() => navigate(`/studio`)}>
+            <Button variant="outlined" onClick={() => navigate(`/studio/${studioId}`)}>
                취소
             </Button>
          </Box>

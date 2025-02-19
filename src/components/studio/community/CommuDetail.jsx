@@ -1,15 +1,13 @@
-import { Box, Button, Card, CardContent, Typography, Avatar, Divider, Stack, IconButton } from '@mui/material'
+import { Box, Button, Card, CardContent, Typography, Avatar, Divider, Stack } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { LoadingBox, ErrorBox, Stack2, ModalBox } from '../../../styles/BaseStyles'
+import { LoadingBox, ErrorBox, Stack2 } from '../../../styles/BaseStyles'
 import { fetchCommunityByIdThunk } from '../../../features/communitySlice'
-import { Comment, CommentOutlined, FavoriteBorder, Favorite, Edit, Delete } from '@mui/icons-material'
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import CommuComment from './CommuComment'
 
 const CommuDetail = ({ setOpen, id }) => {
    const { community, loading, error } = useSelector((state) => state.community)
-   const [openComments, setOpenComments] = useState(false)
    const dispatch = useDispatch()
 
    useEffect(() => {
@@ -39,26 +37,17 @@ const CommuDetail = ({ setOpen, id }) => {
                <Divider />
                <CardContent>
                   {community.imgUrl && (
-                     <ModalBox
-                        full
-                        openBtn={
-                           <Box
-                              sx={{
-                                 height: { sm: 300, xs: 200 },
-                                 overflow: 'hidden',
-                                 display: 'flex',
-                                 alignItems: 'center',
-                                 borderRadius: 1,
-                                 cursor: 'pointer',
-                                 my: 1,
-                              }}
-                           >
-                              <Box component="img" src={process.env.REACT_APP_API_URL + '/studioImg/' + community.imgUrl} sx={{ width: '100%' }} />
-                           </Box>
-                        }
-                     >
-                        <Box component="img" src={process.env.REACT_APP_API_URL + '/studioImg/' + community.imgUrl} sx={{ width: '100%', borderRadius: 1 }} />
-                     </ModalBox>
+                     <Box
+                        component="img"
+                        src={process.env.REACT_APP_API_URL + community.imgUrl}
+                        alt="게시글 이미지"
+                        sx={{
+                           width: '100%',
+                           objectFit: 'contained',
+                           borderRadius: 1,
+                           my: 1,
+                        }}
+                     />
                   )}
                   <Typography>{community.contents}</Typography>
                </CardContent>
