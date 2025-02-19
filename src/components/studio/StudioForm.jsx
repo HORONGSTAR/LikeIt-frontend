@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 function StudioForm({ onSubmit, initVals = {} }) {
    const navigate = useNavigate()
    const [imgFile, setImgFile] = useState(null)
-   const [imgUrl, setImgUrl] = useState(initVals ? process.env.REACT_APP_API_URL + '/studioImg/' + initVals.imgUrl : '')
+   const [imgUrl, setImgUrl] = useState(initVals ? process.env.REACT_APP_API_URL + initVals.imgUrl : '')
    const [studioName, setStudioName] = useState(initVals?.name || '')
    const [intro, setIntro] = useState(initVals?.intro || '')
    const [snsLinks, setSnsLinks] = useState(initVals?.StudioAccounts || [])
@@ -75,14 +75,7 @@ function StudioForm({ onSubmit, initVals = {} }) {
 
    const inputName = (
       <Stack2 justifyContent="end">
-         <TextField
-            type="text"
-            fullWidth
-            inputProps={{ maxLength: 30 }}
-            value={studioName}
-            onChange={(e) => setStudioName(e.target.value)}
-            label="스튜디오의 이름을 지어주세요."
-         />
+         <TextField type="text" fullWidth inputProps={{ maxLength: 30 }} value={studioName} onChange={(e) => setStudioName(e.target.value)} label="스튜디오의 이름을 지어주세요." />
          <Typography color="grey" variant="caption">
             최대 30자 ( {studioName.length} / 30 )
          </Typography>
@@ -91,16 +84,7 @@ function StudioForm({ onSubmit, initVals = {} }) {
 
    const inputIntro = (
       <Stack2 justifyContent="end">
-         <TextField
-            variant="outlined"
-            fullWidth
-            inputProps={{ maxLength: 225 }}
-            value={intro}
-            rows={4}
-            multiline
-            onChange={(e) => setIntro(e.target.value)}
-            label="스튜디오를 소개해주세요."
-         />
+         <TextField variant="outlined" fullWidth inputProps={{ maxLength: 225 }} value={intro} rows={4} multiline onChange={(e) => setIntro(e.target.value)} label="스튜디오를 소개해주세요." />
          <Typography color="grey" variant="caption">
             최대 255자 ( {studioName.length} / 30 )
          </Typography>
@@ -148,15 +132,7 @@ function StudioForm({ onSubmit, initVals = {} }) {
                </Stack2>
             </Stack2>
          ))}
-         {snsLinks.length < 3 && (
-            <Chip
-               sx={{ height: 40 }}
-               icon={<AddCircle fontSize="small" />}
-               variant="grey"
-               onClick={handleAddSns}
-               label={`SNS 계정 추가하기 (${snsLinks.length}/3)`}
-            />
-         )}
+         {snsLinks.length < 3 && <Chip sx={{ height: 40 }} icon={<AddCircle fontSize="small" />} variant="grey" onClick={handleAddSns} label={`SNS 계정 추가하기 (${snsLinks.length}/3)`} />}
       </Stack>
    )
 
@@ -174,7 +150,7 @@ function StudioForm({ onSubmit, initVals = {} }) {
             <Button variant="contained" color="orenge" size="large" onClick={handleSubmit}>
                등록하기
             </Button>
-            <Button variant="outlined" color="orenge" size="large">
+            <Button variant="outlined" color="orenge" size="large" onClick={() => navigate(`/studio/${initVals?.id || ''}`)}>
                취소
             </Button>
          </Stack2>
