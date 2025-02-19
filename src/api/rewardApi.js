@@ -8,7 +8,7 @@ export const createRewardProduct = async (projectId, productData) => {
             'Content-Type': 'multipart/form-data',
          },
       }
-      const response = await likeitApi.post(`/reward/product/${projectId}`, productData, config)
+      const response = await likeitApi.post(`/project/reward/product/${projectId}`, productData, config)
 
       return response
    } catch (error) {
@@ -25,7 +25,7 @@ export const updateRewardProduct = async (productId, productData) => {
             'Content-Type': 'multipart/form-data',
          },
       }
-      const response = await likeitApi.put(`/reward/product/${productId}`, productData, config)
+      const response = await likeitApi.put(`/project/reward/product/${productId}`, productData, config)
       return response
    } catch (error) {
       console.error(`선물 구성품 수정 오류: ${error.message}`)
