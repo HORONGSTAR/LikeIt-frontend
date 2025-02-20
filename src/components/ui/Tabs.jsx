@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Box, Tab, Chip, Stack, Stepper, Step, StepButton, StepConnector } from '@mui/material'
+import { Box, Tab, Chip, Stack, Stepper, Step, StepButton, StepConnector, Typography } from '@mui/material'
 
 import { TabContext, TabList, TabPanel } from '@mui/lab'
 import { Link, Element } from 'react-scroll'
@@ -67,7 +67,7 @@ export const StepperTabs = ({ tabItems = [], completed = {}, step }) => {
                <Stepper nonLinear activeStep={activeStep} alternativeLabel connector={<StepConnector sx={{ top: 0 }} />}>
                   {tabItems.map((item, index) => (
                      <Step key={'label' + item.label} completed={completed[index]}>
-                        <StepButton sx={{ display: 'inline-block', py: 1.2 }} color="inherit" onClick={handleStep(index)}>
+                        <StepButton sx={{ display: 'inline-block', py: 1.2, wordBreak: 'keep-all' }} color="inherit" onClick={handleStep(index)}>
                            {item.label}
                         </StepButton>
                      </Step>
@@ -75,7 +75,7 @@ export const StepperTabs = ({ tabItems = [], completed = {}, step }) => {
                </Stepper>
             </Box>
             {tabItems.map((item, index) => (
-               <TabPanel sx={{ p: 1.5 }} key={'page' + item.label} value={index}>
+               <TabPanel sx={{ px: 1.5, py: 6 }} key={'page' + item.label} value={index}>
                   {item.page}
                </TabPanel>
             ))}

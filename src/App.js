@@ -54,11 +54,11 @@ function App() {
       signup: true,
       commonsignup: true,
       studio: <StudioNavber />,
-      '/studio/project/write': true,
+      project: true,
    }
 
    const dontNeedNavber = pageName[path[1]]
-   const needBackground = pageName[location.pathname]
+   const needBackground = pageName[path[2]]
 
    const dispatch = useDispatch()
    const { isAuthenticated, user } = useSelector((state) => state.auth)

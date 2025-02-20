@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import ProjectInfoForm from './forms/ProjectInfoForm'
 import ProjectDetailForm from './forms/ProjectDetailForm'
 import ProjectRewardForm from './forms/ProjectRewardForm'
@@ -24,7 +24,9 @@ function ProjectFormTab({ onSubmit, step }) {
       schedule: project?.schedule || '',
    }
 
-   const rewardVals = { rewards: project?.Rewards || [] }
+   const rewardVals = {
+      rewards: project?.Rewards || [],
+   }
 
    const budgetVals = {
       goal: project?.goal || 0,
@@ -54,7 +56,7 @@ function ProjectFormTab({ onSubmit, step }) {
 
    const tabItems = [
       {
-         label: '기본정보',
+         label: '기본 정보',
          page: <ProjectInfoForm initVals={infoVals} onSubmit={saveInfoData} />,
       },
       {
@@ -63,10 +65,10 @@ function ProjectFormTab({ onSubmit, step }) {
       },
       {
          label: '리워드 구성',
-         page: <ProjectRewardForm initVals={rewardVals} onSubmit={saveRewardData} />,
+         page: <ProjectRewardForm initVals={rewardVals.rewards} products={detailVals.products} onSubmit={saveRewardData} />,
       },
       {
-         label: '예산계획',
+         label: '예산 계획',
          page: <ProjectBudgetForm initVals={budgetVals} onSubmit={saveBudgetData} />,
       },
       {

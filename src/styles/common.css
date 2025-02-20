@@ -54,6 +54,13 @@ a {
    transform-origin: 50% 75%;
 }
 
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+}
+
 @keyframes rotateEgg {
    0% {
       transform: rotate(-20deg);
