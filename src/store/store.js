@@ -10,7 +10,6 @@ import adminReducer from '../features/adminSlice'
 import pageReducer from '../features/pageSlice'
 import fundingReducer from '../features/fundingSlice'
 import creatorReducer from '../features/creatorSlice'
-import pageReducer from '../features/pageSlice'
 import projectReducer from '../features/projectSlice'
 import rewardReducer from '../features/rewardSlice'
 

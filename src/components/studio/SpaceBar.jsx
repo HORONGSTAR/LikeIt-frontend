@@ -2,6 +2,7 @@ import { Box, Typography, Avatar, AvatarGroup, Divider, Chip } from '@mui/materi
 import { Stack2 } from '../../styles/BaseStyles'
 import SpaceBox from './SpaceBox'
 import { useState } from 'react'
+import MicIcon from '@mui/icons-material/Mic'
 
 function SpaceBar({ studio }) {
    const users = [
@@ -28,14 +29,10 @@ function SpaceBar({ studio }) {
             color: '#fff',
          }}
       >
-         <Typography>가트발레단의 스페이스</Typography>
-         <Box
-            sx={{
-               height: '1px',
-               background: '#fff',
-               minWidth: 10,
-            }}
-         />
+         <Box sx={{ display: 'flex', alignItems: 'center', mx: 1 }}>
+            <MicIcon />
+            <Typography>가트발레단의 스페이스</Typography>
+         </Box>
 
          {open ? (
             <>
