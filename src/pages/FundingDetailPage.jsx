@@ -53,7 +53,7 @@ const FundingDetailPage = () => {
          <Main>
             <Box sx={{ maxWidth: '1000px', margin: 'auto', mt: 5 }}>
                {/* 제목 */}
-               <Typography variant="h4" fontWeight="bold" sx={{ mb: 3, textAlign: 'center' }}>
+               <Typography p={1} variant="h2" fontWeight="bold" sx={{ mb: 3, textAlign: 'center' }}>
                   {project.title}
                </Typography>
 
@@ -118,10 +118,10 @@ const FundingDetailPage = () => {
                      <FundingOverview funding={funding} />
                   </TabPanel>
                   <TabPanel value="2">
-                     <FundingTimeline />
+                     <FundingTimeline funding={funding} />
                   </TabPanel>
                   <TabPanel value="3">
-                     <FundingReview />
+                     <FundingReview funding={funding} />
                   </TabPanel>
                </TabContext>
             </Box>

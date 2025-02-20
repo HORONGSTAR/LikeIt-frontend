@@ -1,9 +1,20 @@
-import { Box, Grid2, Typography } from '@mui/material'
+import { Box, Grid2, IconButton, Typography } from '@mui/material'
 import { SubTitle } from '../../styles/BaseStyles'
 import { TabLink } from '../../components/ui/Tabs'
+import { useState } from 'react'
+import { AddCircle, RemoveCircle } from '@mui/icons-material'
 
 function FundingOverview({ funding }) {
-   const showRewards = () => {
+   const [rewardBasket, setRewardBasket] = useState({})
+   const plusReward = (rid) => {
+      setRewardBasket((prevData) => ({ ...prevData, [rid]: prevData[rid] + 1 }))
+   }
+   const minusReward = (rid) => {
+      if (0 > rewardBasket[rid] - 1) return
+      setRewardBasket((prevData) => ({ ...prevData, [rid]: prevData[rid] - 1 }))
+   }
+
+   const showProduct = () => {
       const productSet = new Set()
       let productInfo = []
 
@@ -80,6 +91,51 @@ function FundingOverview({ funding }) {
       ))
    }
 
+   const showReward = () => {
+      return (
+         <>
+            {funding.Rewards.map((reward) => {
+               const rid = reward.id
+               if (!rewardBasket[rid]) rewardBasket[rid] = 0
+               return (
+                  <Box key={reward.id} sx={{ border: '1px solid #dddddd', borderRadius: '5px' }} p={2} m={1}>
+                     <Typography variant="h5">{reward.price.toLocaleString()}원</Typography>
+                     <Typography variant="body2">{reward.name}</Typography>
+                     <Typography variant="body2">{reward.contents}</Typography>
+                     {reward.RewardProducts.map((product) => {
+                        return (
+                           <Typography key={product.id}>
+                              {product.title} x{product.RewardProductRelation.stock}
+                           </Typography>
+                        )
+                     })}
+                     <Typography>{reward.stock}개 남음</Typography>
+                     <Box
+                        sx={{
+                           display: 'flex',
+                        }}
+                     >
+                        <IconButton sx={{ pl: 0 }} onClick={() => minusReward(rid)}>
+                           <RemoveCircle color="primary" />
+                        </IconButton>
+                        <Typography
+                           sx={{
+                              lineHeight: '40px',
+                           }}
+                        >
+                           {rewardBasket[rid]}
+                        </Typography>
+                        <IconButton onClick={() => plusReward(rid)}>
+                           <AddCircle color="primary" />
+                        </IconButton>
+                     </Box>
+                  </Box>
+               )
+            })}
+         </>
+      )
+   }
+
    const content = (
       <div className="line">
          <SubTitle>프로젝트 소개</SubTitle>
@@ -90,7 +146,7 @@ function FundingOverview({ funding }) {
    const gift = (
       <div className="line">
          <SubTitle>선물 소개</SubTitle>
-         {showRewards()}
+         {showProduct()}
       </div>
    )
 
@@ -155,7 +211,8 @@ function FundingOverview({ funding }) {
             <TabLink links={tablinks}></TabLink>
          </Grid2>
          <Grid2 size={{ sm: 3, xs: 12 }}>
-            <p>리워드영역</p>
+            <Typography sx={{ textAlign: 'center' }}>리워드 선택</Typography>
+            {showReward()}
          </Grid2>
       </Grid2>
    )
