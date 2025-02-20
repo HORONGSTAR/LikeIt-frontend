@@ -3,6 +3,7 @@ import { Favorite, Create, Delete } from '@mui/icons-material'
 import { Stack2, Ellipsis, ModalBox } from '../../styles/BaseStyles'
 import { setDDay } from '../../util/changeDate'
 import { useCallback, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export const BasicCard = ({ imgUrl, children, cardEf }) => {
    const cardSx = {
@@ -46,24 +47,26 @@ export const ProjectCard = ({ project }) => {
    }
 
    return (
-      <BasicCard imgUrl={project.imgUrl}>
-         <Typography variant="caption">BY.{project.studioName}</Typography>
-         <Ellipsis $line={2}>
-            <Typography sx={cententSx.title}>{project.title}</Typography>
-         </Ellipsis>
-         <Ellipsis>
-            <Typography variant="body2" color="grey">
-               {project.intro}
-            </Typography>
-         </Ellipsis>
-         <Stack2 mt={{ sm: 1, xs: 0.5 }}>
-            <Chip variant={date > 3 ? 'grey' : 'green'} label={date + '일 남음'} />
-            <Stack2 ml="auto" alignItems="end">
-               <Favorite color="yellow" sx={cententSx.favorite} />
-               <Typography sx={cententSx.percent}>{project.rate}%</Typography>
+      <Link to={`/funding/${project.id}`}>
+         <BasicCard imgUrl={project.imgUrl}>
+            <Typography variant="caption">BY.{project.studioName}</Typography>
+            <Ellipsis $line={2}>
+               <Typography sx={cententSx.title}>{project.title}</Typography>
+            </Ellipsis>
+            <Ellipsis>
+               <Typography variant="body2" color="grey">
+                  {project.intro}
+               </Typography>
+            </Ellipsis>
+            <Stack2 mt={{ sm: 1, xs: 0.5 }}>
+               <Chip variant={date > 3 ? 'grey' : 'green'} label={date + '일 남음'} />
+               <Stack2 ml="auto" alignItems="end">
+                  <Favorite color="yellow" sx={cententSx.favorite} />
+                  <Typography sx={cententSx.percent}>{project.rate}%</Typography>
+               </Stack2>
             </Stack2>
-         </Stack2>
-      </BasicCard>
+         </BasicCard>
+      </Link>
    )
 }
 
@@ -118,7 +121,9 @@ export const AdminCard = ({ project, adminFunc }) => {
       <BasicCard imgUrl={project.imgUrl}>
          <Typography variant="caption">BY.{project.studioName}</Typography>
          <Ellipsis $line={2}>
-            <Typography sx={cententSx.title}>{project.title}</Typography>
+            <Link to={`/funding/${project.id}`}>
+               <Typography sx={cententSx.title}>{project.title}</Typography>
+            </Link>
          </Ellipsis>
          <Ellipsis>
             <Typography variant="body2" color="grey">
@@ -200,6 +205,7 @@ export const CommingCard = ({ project }) => {
    }
 
    return (
+<<<<<<< HEAD
       <BasicCard imgUrl={project.imgUrl}>
          <Typography variant="caption">BY.{project.studioName}</Typography>
          <Ellipsis $line={2}>
@@ -224,6 +230,55 @@ export const CommingCard = ({ project }) => {
             </Button>
          </Stack2>
       </BasicCard>
+=======
+      <Link to={`/funding/${project.id}`}>
+         <BasicCard imgUrl={project.imgUrl}>
+            <Typography variant="caption">BY.{project.studioName}</Typography>
+            <Ellipsis $line={2}>
+               <Typography sx={cententSx.title}>{project.title}</Typography>
+            </Ellipsis>
+            <Ellipsis>
+               <Typography variant="body2" color="grey" sx={cententSx.intro}>
+                  {project.intro}
+               </Typography>
+            </Ellipsis>
+            <Stack2 mt={{ sm: 1, xs: 0.5 }}>
+               <Typography color="orenge" variant="caption">
+                  {project.userCount}명 알림 신청 중
+               </Typography>
+               {project.isFavorite ? (
+                  <Button
+                     fullWidth
+                     variant="contained"
+                     sx={{ p: 0, m: 0 }}
+                     onClick={(e) => {
+                        e.preventDefault()
+                        project.isFavorite = !project.isFavorite
+                        project.noticeDel(project.id)
+                     }}
+                     startIcon={<Box component="img" src="/images/icon/bell.svg" alt="알림버튼" sx={{ height: 12, filter: 'grayscale(100%) brightness(1000%)' }} />}
+                  >
+                     알림 신청중
+                  </Button>
+               ) : (
+                  <Button
+                     fullWidth
+                     variant="outlined"
+                     sx={{ p: 0, m: 0 }}
+                     onClick={(e) => {
+                        e.preventDefault()
+                        project.isFavorite = !project.isFavorite
+                        project.isAuthenticated ? project.noticeReg(project.id) : (window.location.href = '/login')
+                     }}
+                     startIcon={<Box component="img" src="/images/icon/bell.svg" alt="알림버튼" sx={{ height: 12 }} />}
+                  >
+                     알림 신청하기
+                  </Button>
+               )}
+            </Stack2>
+         </BasicCard>
+      </Link>
+>>>>>>> 0a4a220710effe75dcaaeec4489431fb62a05ee1
    )
 }
 

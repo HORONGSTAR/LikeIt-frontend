@@ -4,7 +4,7 @@ import { Box, Divider, Chip } from '@mui/material'
 
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchShowProjectsThunk } from '../../features/listSlice'
+import { fetchShowProjectsThunk, noticeRegThunk, noticeDelThunk } from '../../features/listSlice'
 import { Main, LoadingBox } from '../../styles/BaseStyles'
 
 const CommingPage = () => {
@@ -19,6 +19,15 @@ const CommingPage = () => {
       dispatch(fetchShowProjectsThunk({ page, limit: 8, type: 'comming' }))
    }, [dispatch, page])
 
+   const { isAuthenticated } = useSelector((state) => state.auth)
+
+   const noticeReg = (id) => {
+      dispatch(noticeRegThunk(id))
+   }
+   const noticeDel = (id) => {
+      dispatch(noticeDelThunk(id))
+   }
+
    useEffect(() => {
       const newCards = []
       let cardCount = 0
@@ -30,6 +39,7 @@ const CommingPage = () => {
             if (project.totalOrderPrice) totalOrderPrice = project.totalOrderPrice
             let rate = Math.floor((totalOrderPrice / project.goal) * 100)
             const projectData = {
+               id: project.id,
                studioName: project.Studio.name,
                title: project.title,
                intro: project.intro,
@@ -38,7 +48,11 @@ const CommingPage = () => {
                startDate: project.startDate,
                endDate: project.endDate,
                userCount: project.userCount,
+               isFavorite: project.isFavorite,
                rate,
+               noticeReg,
+               noticeDel,
+               isAuthenticated,
             }
             cardCount++
             row.push(

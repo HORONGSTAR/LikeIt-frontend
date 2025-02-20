@@ -33,6 +33,7 @@ const CategoryPage = () => {
             if (project.totalOrderPrice) totalOrderPrice = project.totalOrderPrice
             let rate = Math.floor((totalOrderPrice / project.goal) * 100)
             const projectData = {
+               id: project.id,
                studioName: project.Studio.name,
                title: project.title,
                intro: project.intro,

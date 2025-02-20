@@ -1,94 +1,132 @@
-import React from 'react'
-import { Box, Typography, Avatar, Button, Grid, Card, CardMedia, CardContent } from '@mui/material'
-import BasicTabs from '../components/mui/Tabs'
-import { useNavigate, useLocation } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Box, Typography, Avatar, Button, Grid2, Card, CardMedia, CardContent, Tab } from '@mui/material'
+import { TabContext, TabList, TabPanel } from '@mui/lab'
+import { useNavigate, useLocation, useParams } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchFundingThunk } from '../features/fundingSlice'
 import FundingOverview from '../components/funding/FundingOverview'
+import FundingTimeline from '../components/funding/FundingTimeline'
+import FundingReview from '../components/funding/FundingReview'
+import { Main } from '../styles/BaseStyles'
+import dayjs from 'dayjs'
 
 const FundingDetailPage = () => {
    const navigate = useNavigate()
    const location = useLocation()
+   const dispatch = useDispatch()
+   const { id } = useParams()
+   const { funding, loading, error } = useSelector((state) => state.funding)
+   const [project, setProject] = useState(null)
 
-   const tabs = [
-      { label: '프로젝트 소개', path: '/funding/detail' },
-      { label: '진행 소식', path: '/funding/timeline' },
-      { label: '후기', path: '/funding/review' },
-   ]
-
-   const project = {
-      image: '/images/chocolate.jpg', // 대표 이미지
-      title: '[발렌타인데이] 사랑을 전하는 초코볼', // 프로젝트 제목
-      creator: {
-         name: '꿈빛 파티세리',
-         profileImage: 'https://source.unsplash.com/100x100/?chef', // 창작자 프로필 이미지
-         subscribers: 120,
-      },
-      fundedAmount: 2779500, // 현재 모금 금액
-      targetAmount: 500000, // 목표 금액
-      startDate: '2025.01.21',
-      endDate: '2025.02.02',
+   const [tabValue, setTabValue] = useState('1')
+   const handleTabChange = (event, newTabValue) => {
+      setTabValue(newTabValue)
    }
 
+   const formatDate = (date) => {
+      return dayjs(date).format('YYYY-MM-DD')
+   }
+
+   useEffect(() => {
+      dispatch(fetchFundingThunk(id))
+   }, [dispatch, id])
+
+   useEffect(() => {
+      if (!funding) return
+      setProject({
+         image: process.env.REACT_APP_API_URL + '/projectImg' + funding.imgUrl,
+         title: funding.title,
+         creator: {
+            name: funding.Studio.name,
+            profileImage: process.env.REACT_APP_API_URL + '/studioImg' + funding.Studio.imgUrl, // 창작자 프로필 이미지
+            subscribers: funding.Studio.subscribers || 0,
+         },
+         fundedAmount: Number(funding.totalOrderPrice), // 현재 모금 금액
+         targetAmount: funding.goal,
+         startDate: formatDate(funding.startDate),
+         endDate: formatDate(funding.enddate),
+      })
+   }, [funding])
+
    return (
-      <Box sx={{ maxWidth: '1000px', margin: 'auto', mt: 5 }}>
-         {/* 제목 */}
-         <Typography variant="h4" fontWeight="bold" sx={{ mb: 3, textAlign: 'center' }}>
-            {project.title}
-         </Typography>
+      project && (
+         <Main>
+            <Box sx={{ maxWidth: '1000px', margin: 'auto', mt: 5 }}>
+               {/* 제목 */}
+               <Typography variant="h4" fontWeight="bold" sx={{ mb: 3, textAlign: 'center' }}>
+                  {project.title}
+               </Typography>
 
-         {/* 이미지 & 정보 배치 */}
-         <Grid container spacing={4} alignItems="center" justifyContent="flex-start">
-            {/* 왼쪽 - 대표 이미지 */}
-            <Grid item xs={12} md={6}>
-               <Card sx={{ boxShadow: 'none' }}>
-                  <CardMedia component="img" image={project.image} alt="프로젝트 이미지" sx={{ width: '100%', borderRadius: 2 }} />
-               </Card>
-            </Grid>
+               {/* 이미지 & 정보 배치 */}
+               <Grid2 container spacing={4} alignItems="center" justifyContent="flex-start">
+                  {/* 왼쪽 - 대표 이미지 */}
+                  <Grid2 size={{ xs: 12, md: 6 }}>
+                     <Card sx={{ boxShadow: 'none' }}>
+                        <CardMedia component="img" image={project.image} alt="프로젝트 이미지" sx={{ width: '100%', borderRadius: 2 }} />
+                     </Card>
+                  </Grid2>
 
-            {/* 오른쪽 - 프로젝트 정보 */}
-            <Grid item xs={12} md={6}>
-               <Card sx={{ p: 1, boxShadow: 'none' }}>
-                  <CardContent sx={{ textAlign: 'left' }}>
-                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                        <Avatar src={project.creator.profileImage} sx={{ width: 50, height: 50, mr: 2 }} />
-                        <Box>
-                           <Typography variant="subtitle1" fontWeight="bold">
-                              {project.creator.name}
+                  {/* 오른쪽 - 프로젝트 정보 */}
+                  <Grid2 size={{ xs: 12, md: 6 }}>
+                     <Card sx={{ p: 1, boxShadow: 'none' }}>
+                        <CardContent sx={{ textAlign: 'left' }}>
+                           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                              <Avatar src={project.creator.profileImage} sx={{ width: 50, height: 50, mr: 2 }} />
+                              <Box>
+                                 <Typography variant="subtitle1" fontWeight="bold">
+                                    {project.creator.name}
+                                 </Typography>
+                                 <Typography variant="body2" color="text.secondary">
+                                    구독자 수 {project.creator.subscribers}명
+                                 </Typography>
+                              </Box>
+                           </Box>
+
+                           <Typography variant="h5" fontWeight="bold" color="primary">
+                              {project.fundedAmount.toLocaleString('ko-KR')}원{' '}
+                              <Typography component="span" variant="h6" color="text.secondary">
+                                 {Math.round((project.fundedAmount / project.targetAmount) * 100)}%
+                              </Typography>
                            </Typography>
-                           <Typography variant="body2" color="text.secondary">
-                              구독자 수 {project.creator.subscribers}명
+
+                           <Typography color="text.secondary" sx={{ mt: 1 }}>
+                              목표 금액: {project.targetAmount.toLocaleString()}원
                            </Typography>
-                        </Box>
-                     </Box>
 
-                     <Typography variant="h5" fontWeight="bold" color="primary">
-                        {project.fundedAmount.toLocaleString()}원{' '}
-                        <Typography component="span" variant="h6" color="text.secondary">
-                           {Math.round((project.fundedAmount / project.targetAmount) * 100)}%
-                        </Typography>
-                     </Typography>
+                           <Typography color="text.secondary">
+                              펀딩 기간: {project.startDate} ~ {project.endDate}
+                           </Typography>
 
-                     <Typography color="text.secondary" sx={{ mt: 1 }}>
-                        목표 금액: {project.targetAmount.toLocaleString()}원
-                     </Typography>
-
-                     <Typography color="text.secondary">
-                        펀딩 기간: {project.startDate} ~ {project.endDate}
-                     </Typography>
-
-                     <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem' }}>
-                        후원하기
-                     </Button>
-                  </CardContent>
-               </Card>
-            </Grid>
-         </Grid>
-
-         {/* 공통 탭 네비게이션 */}
-         <BasicTabs tabs={tabs} currentPath={location.pathname} onChange={(path) => navigate(path)} />
-
-         {/* 현재 탭에 따라 다른 페이지로 이동 */}
-         {location.pathname === '/funding/detail' && <FundingOverview />}
-      </Box>
+                           <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
+                              후원하기
+                           </Button>
+                        </CardContent>
+                     </Card>
+                  </Grid2>
+               </Grid2>
+            </Box>
+            <Box sx={{ width: '100%', typography: 'body1' }}>
+               <TabContext value={tabValue}>
+                  <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                     <TabList onChange={handleTabChange} aria-label="lab API tabs example">
+                        <Tab label="프로젝트 소개" value="1" />
+                        <Tab label="진행 소식" value="2" />
+                        <Tab label="후기" value="3" />
+                     </TabList>
+                  </Box>
+                  <TabPanel value="1">
+                     <FundingOverview funding={funding} />
+                  </TabPanel>
+                  <TabPanel value="2">
+                     <FundingTimeline />
+                  </TabPanel>
+                  <TabPanel value="3">
+                     <FundingReview />
+                  </TabPanel>
+               </TabContext>
+            </Box>
+         </Main>
+      )
    )
 }
 
