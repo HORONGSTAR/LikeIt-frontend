@@ -14,7 +14,7 @@ function StudioForm({ onSubmit, initVals = {} }) {
    const dispatch = useDispatch()
    const { studio } = useSelector((state) => state.studio)
    const [imgFile, setImgFile] = useState(null)
-   const [imgUrl, setImgUrl] = useState(initVals?.imgUrl ? `${process.env.REACT_APP_API_URL}${initVals.imgUrl}` : '')
+   const [imgUrl, setImgUrl] = useState(initVals?.imgUrl ? process.env.REACT_APP_API_URL + '/studioImg/' + initVals.imgUrl : '')
    const [studioName, setStudioName] = useState(initVals?.name || '')
    const [intro, setIntro] = useState(initVals?.intro || '')
    const [snsLinks, setSnsLinks] = useState(initVals?.StudioAccounts || [])
