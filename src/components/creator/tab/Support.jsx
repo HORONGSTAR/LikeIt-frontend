@@ -1,30 +1,58 @@
 import { Typography, Stack, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, Box } from '@mui/material'
-import { TabLink } from '../../ui/Tabs'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchOrdersThunk } from '../../../features/orderSlice'
+import { LoadingBox } from '../../../styles/BaseStyles'
+import { useParams } from 'react-router-dom'
 
 function Support() {
+   const dispatch = useDispatch()
+   const { orders, giftStatistics, loading } = useSelector((state) => state.order)
    const [activeTab, setActiveTab] = useState('supporter')
+   const { projectId } = useParams()
+   const { totalSupporters } = useSelector((state) => state.order)
 
-   // 샘플 후원자 데이터
-   const supporterData = [
-      { name: '박밸', gift: '발렌타인데이 초코볼 세트 배송', amount: '26,000원', date: '2021/11/14 23:57', status: '결제 완료', delivery: '배송 완료' },
-      { name: '조나운', gift: '발렌타인데이 초코볼 세트 배송', amount: '26,000원', date: '2021/11/14 23:57', status: '결제 실패', delivery: '배송 보류' },
-      { name: '강인우', gift: '발렌타인데이 초코볼 세트 배송', amount: '26,000원', date: '2021/11/14 23:57', status: '결제 시도 중', delivery: '배송 대기' },
-      { name: '강인우', gift: '발렌타인데이 초코볼 세트 배송', amount: '26,000원', date: '2021/11/14 23:57', status: '결제 완료', delivery: '배송 완료' },
-   ]
+   // 프로젝트 ID가 없으면 3으로 설정(테스트용)
+   const currentProjectId = projectId || 3
 
-   // 샘플 선물 통계 데이터
-   const giftStatistics = [
-      { name: '발렌타인데이 초코볼 set', count: '30명이 선택' },
-      { name: '발렌타인데이 초코볼 set (x 2)', count: '10명이 선택' },
-   ]
+   useEffect(() => {
+      dispatch(fetchOrdersThunk(currentProjectId))
+   }, [dispatch, currentProjectId])
 
-   // 샘플 구성품 항목별 합계 데이터
-   const itemStatistics = [
-      { name: '다크 초코볼', count: '250개' },
-      { name: '밀크 초코볼', count: '200개' },
-      { name: '개별 포장 + 상자', count: '50개' },
-   ]
+   const getStatusColor = (status) => {
+      switch (status) {
+         case 'FUNDING_COMPLETE_PAID':
+            return '#80CD75'
+         case 'FUNDING_COMPLETE_NOT_PAID':
+            return '#C84137'
+         case 'DELIVERY_WAITING':
+            return '#ECBD00'
+         default:
+            return '#ECBD00'
+      }
+   }
+
+   const getPaymentStatus = (status) => {
+      switch (status) {
+         case 'FUNDING_COMPLETE_PAID':
+            return '결제 완료'
+         case 'FUNDING_COMPLETE_NOT_PAID':
+            return '결제 실패'
+         case 'ON_FUNDING':
+         default:
+            return '결제 시도 중'
+      }
+   }
+
+   const getDeliveryStatus = (order) => {
+      if (order.orderStatus === 'FUNDING_COMPLETE_NOT_PAID') {
+         return { label: '배송 보류', backgroundColor: '#EEE', color: '#666' }
+      }
+      if (!order.bill) {
+         return { label: '배송 대기', backgroundColor: '#FFE29A', color: '#B25F00' }
+      }
+      return { label: '배송 완료', backgroundColor: '#DBE7D9', color: '#45843C' }
+   }
 
    const Dot = ({ color }) => {
       return (
@@ -41,35 +69,14 @@ function Support() {
       )
    }
 
-   const getStatusColor = (status) => {
-      switch (status) {
-         case '결제 완료':
-            return '#80CD75'
-         case '결제 실패':
-            return '#C84137'
-         case '결제 시도 중':
-            return '#ECBD00'
-         default:
-            return '#666'
-      }
-   }
-
-   const getDeliveryVariant = (status) => {
-      switch (status) {
-         case '배송 완료':
-            return 'green'
-         case '배송 대기':
-            return 'yellow'
-         default:
-            return 'grey'
-      }
-   }
+   if (!orders || !giftStatistics) return <LoadingBox />
+   if (loading) return <LoadingBox />
 
    const supporter = (
       <Stack spacing={1}>
          <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography variant="h5" p={1}>
-               후원자 {supporterData.length}명
+               후원자 {totalSupporters}명
             </Typography>
             <Stack direction="row" spacing={1}>
                <Button variant="outlined">운송장 입력</Button>
@@ -90,20 +97,36 @@ function Support() {
                   </TableRow>
                </TableHead>
                <TableBody>
-                  {supporterData.map((row, index) => (
-                     <TableRow key={index} sx={{ borderBottom: index === supporterData.length - 1 ? 'none' : '1px solid #ddd' }}>
-                        <TableCell sx={{ borderBottom: 'none' }}>{row.name}</TableCell>
-                        <TableCell sx={{ borderBottom: 'none' }}>{row.gift}</TableCell>
-                        <TableCell sx={{ borderBottom: 'none' }}>{row.amount}</TableCell>
-                        <TableCell sx={{ borderBottom: 'none' }}>{row.date}</TableCell>
+                  {orders.map((order, index) => (
+                     <TableRow key={index} sx={{ borderBottom: index === orders.length - 1 ? 'none' : '1px solid #ddd' }}>
+                        <TableCell sx={{ borderBottom: 'none' }}>{order.User.name}</TableCell>
+                        <TableCell
+                           sx={{
+                              borderBottom: 'none',
+                              maxWidth: '150px',
+                              whiteSpace: 'nowrap',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                           }}
+                        >
+                           {order.Reward.name}
+                        </TableCell>
+
+                        <TableCell sx={{ borderBottom: 'none' }}>{order.orderPrice.toLocaleString()}원</TableCell>
+                        <TableCell sx={{ borderBottom: 'none' }}>
+                           {new Date(order.createdAt).toLocaleDateString('ko-KR').replace(/\. /g, '/').slice(0, -1)} {new Date(order.createdAt).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                        </TableCell>
                         <TableCell sx={{ borderBottom: 'none' }}>
                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                              <Dot color={getStatusColor(row.status)} />
-                              <Typography>{row.status}</Typography>
+                              <Dot color={getStatusColor(order.orderStatus)} />
+                              <Typography variant="body2">{getPaymentStatus(order.orderStatus)}</Typography>
                            </Box>
                         </TableCell>
                         <TableCell sx={{ borderBottom: 'none' }}>
-                           <Chip variant={getDeliveryVariant(row.delivery)} label={row.delivery} />
+                           {(() => {
+                              const { label, backgroundColor, color } = getDeliveryStatus(order)
+                              return <Chip label={label} sx={{ backgroundColor: backgroundColor, color: color }} />
+                           })()}
                         </TableCell>
                      </TableRow>
                   ))}
@@ -123,8 +146,8 @@ function Support() {
                <TableBody>
                   {giftStatistics.map((gift, index) => (
                      <TableRow key={index} sx={{ borderBottom: index === giftStatistics.length - 1 ? 'none' : '1px solid #ddd' }}>
-                        <TableCell sx={{ borderBottom: 'none' }}>{gift.name}</TableCell>
-                        <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>{gift.count}</TableCell>
+                        <TableCell sx={{ borderBottom: 'none' }}>{gift.Reward.name}</TableCell>
+                        <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>{gift.unique_supporters}명이 선택</TableCell>
                      </TableRow>
                   ))}
                </TableBody>
@@ -137,10 +160,10 @@ function Support() {
          <TableContainer component={Paper} sx={{ boxShadow: 'none', border: '1px solid #ccc' }}>
             <Table>
                <TableBody>
-                  {itemStatistics.map((item, index) => (
-                     <TableRow key={index} sx={{ borderBottom: index === itemStatistics.length - 1 ? 'none' : '1px solid #ddd' }}>
-                        <TableCell sx={{ borderBottom: 'none' }}>{item.name}</TableCell>
-                        <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>{item.count}</TableCell>
+                  {giftStatistics.map((gift, index) => (
+                     <TableRow key={index} sx={{ borderBottom: index === giftStatistics.length - 1 ? 'none' : '1px solid #ddd' }}>
+                        <TableCell sx={{ borderBottom: 'none' }}>에?</TableCell>
+                        <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>몇개</TableCell>
                      </TableRow>
                   ))}
                </TableBody>
