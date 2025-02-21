@@ -13,7 +13,7 @@ function FundingTimeline({ funding }) {
    const [nowTimeline, setNowTimeline] = useState(0)
    const [comment, setComment] = useState('')
 
-   const { count, timelines, timeline, loading, error } = useSelector((state) => state.funding)
+   const { timelineCount, timelines, timeline, loading, error } = useSelector((state) => state.funding)
    const { user } = useSelector((state) => state.auth)
 
    useEffect(() => {
@@ -95,7 +95,7 @@ function FundingTimeline({ funding }) {
 
    return (
       <>
-         {count ? (
+         {timelineCount ? (
             nowTimeline ? (
                timeline && (
                   <Box>
@@ -112,7 +112,7 @@ function FundingTimeline({ funding }) {
                      </Button>
                      {showComments()}
                      <Stack spacing={2}>
-                        <Pagination onChange={(e, value) => setCommentPage(value)} count={Math.ceil(timeline.ProjectTimelineComments.length / 10)} />
+                        <Pagination onChange={(e, value) => setCommentPage(value)} count={timeline.ProjectTimelineComments.length > 0 ? Math.ceil(timeline.ProjectTimelineComments.length / 10) : 1} />
                      </Stack>
                      <Box p={1}>
                         <TextField
@@ -139,7 +139,7 @@ function FundingTimeline({ funding }) {
                <>
                   {allTimelines}
                   <Box py={4}>
-                     <Divider>{loadingCount >= count ? <p style={{ textAlign: 'center', margin: '16px' }}>모든 프로젝트를 불러왔습니다</p> : <Chip onClick={loadMoreTimelines} label="더보기" />}</Divider>
+                     <Divider>{loadingCount >= timelineCount ? <p style={{ textAlign: 'center', margin: '16px' }}>모든 프로젝트를 불러왔습니다</p> : <Chip onClick={loadMoreTimelines} label="더보기" />}</Divider>
                   </Box>
                </>
             )

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getFunding, getTimeline, getTimelines, timelineCommentReg } from '../api/fundingApi'
+import { getFunding, getReviews, getTimeline, getTimelines, reviewRecommendDel, reviewRecommendReg, timelineCommentReg } from '../api/fundingApi'
 
 // 특정 펀딩 프로젝트 가져오기
 export const fetchFundingThunk = createAsyncThunk('funding/fetchFunding', async (id, { rejectWithValue }) => {
@@ -37,12 +37,43 @@ export const timelineCommentRegThunk = createAsyncThunk('funding/timelineComment
       return rejectWithValue(error.response?.data?.message || '타임라인 댓글 작성 실패')
    }
 })
+// 리뷰 호출
+export const fetchReviewsThunk = createAsyncThunk('funding/fetchReviews', async (data, { rejectWithValue }) => {
+   try {
+      const response = await getReviews(data)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '리뷰 목록 불러오기 실패')
+   }
+})
+
+// 리뷰 추천
+export const reviewRecommendRegThunk = createAsyncThunk('funding/reviewRecommendReg', async (id, { rejectWithValue }) => {
+   try {
+      const response = await reviewRecommendReg(id)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '리뷰 추천 실패')
+   }
+})
+
+// 리뷰 추천 취소
+export const reviewRecommendDelThunk = createAsyncThunk('funding/reviewRecommendDel', async (id, { rejectWithValue }) => {
+   try {
+      const response = await reviewRecommendDel(id)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '리뷰 추천 취소 실패')
+   }
+})
 
 const fundingSlice = createSlice({
    name: 'funding',
    initialState: {
       timelines: [],
-      count: 0,
+      reviews: [],
+      reviewCount: null,
+      timelineCount: 0,
       timeline: null,
       funding: null,
       loading: false,
@@ -73,7 +104,7 @@ const fundingSlice = createSlice({
          .addCase(fetchTimelinesThunk.fulfilled, (state, action) => {
             state.loading = false
             state.timelines = action.payload.timelines
-            state.count = action.payload.count
+            state.timelineCount = action.payload.timelineCount
          })
          .addCase(fetchTimelinesThunk.rejected, (state, action) => {
             state.loading = false
@@ -103,6 +134,47 @@ const fundingSlice = createSlice({
             state.loading = false
          })
          .addCase(timelineCommentRegThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+      // 리뷰 목록 호출
+      builder
+         .addCase(fetchReviewsThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(fetchReviewsThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.reviews = action.payload.reviews
+            state.reviewCount = action.payload.reviewCount
+         })
+         .addCase(fetchReviewsThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+      // 리뷰 추천
+      builder
+         .addCase(reviewRecommendRegThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(reviewRecommendRegThunk.fulfilled, (state, action) => {
+            state.loading = false
+         })
+         .addCase(reviewRecommendRegThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+      // 리뷰 추천 취소
+      builder
+         .addCase(reviewRecommendDelThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(reviewRecommendDelThunk.fulfilled, (state, action) => {
+            state.loading = false
+         })
+         .addCase(reviewRecommendDelThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

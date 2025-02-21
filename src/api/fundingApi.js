@@ -41,3 +41,36 @@ export const timelineCommentReg = async (data) => {
       throw error
    }
 }
+// 리뷰 목록 호출
+export const getReviews = async (data) => {
+   try {
+      const { page, limit, id } = data
+      const response = await likeitApi.get(`/funding/reviews/${id}?page=${page}&limit=${limit}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+// 리뷰 추천
+export const reviewRecommendReg = async (id) => {
+   try {
+      const response = await likeitApi.post(`/funding/review/recommend/reg/${id}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+// 리뷰 추천 취소
+export const reviewRecommendDel = async (id) => {
+   try {
+      const response = await likeitApi.delete(`/funding/review/recommend/del/${id}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
