@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { loginUser, registerUser, googleRegisterUser, logoutUser, checkAuthStatus, setTempPassword, changeEmail, changePassword } from '../api/authApi'
+import { loginUser, registerUser, googleRegisterUser, logoutUser, checkAuthStatus, setTempPassword, changeEmail, changePassword, fetchEmail } from '../api/authApi'
 
 // 회원가입 thunk
 export const registerUserThunk = createAsyncThunk('auth/registerUser', async (userData, { rejectWithValue }) => {
@@ -68,6 +68,16 @@ export const setTempPasswordThunk = createAsyncThunk('auth/setTempPassword', asy
    }
 })
 
+//
+export const fetchEmailThunk = createAsyncThunk('auth/fetchEmail', async (phone, { rejectWithValue }) => {
+   try {
+      const response = await fetchEmail(phone)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '이메일 가져오기 실패')
+   }
+})
+
 //이메일 바꾸기
 export const changeEmailThunk = createAsyncThunk('auth/changeEmail', async (email, { rejectWithValue }) => {
    try {
@@ -95,6 +105,7 @@ const authSlice = createSlice({
       isAuthenticated: false,
       loading: false,
       error: null,
+      email: null,
    },
    reducers: {},
    extraReducers: (builder) => {
@@ -211,6 +222,20 @@ const authSlice = createSlice({
             state.user = action.payload.user || null
          })
          .addCase(changePasswordThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+      //이메일 가져오기
+      builder
+         .addCase(fetchEmailThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(fetchEmailThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.email = action.payload.email
+         })
+         .addCase(fetchEmailThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })
