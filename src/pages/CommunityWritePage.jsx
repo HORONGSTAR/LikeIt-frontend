@@ -40,7 +40,7 @@ const CommunityWritePage = () => {
       }
 
       console.log('새 글 등록:', newPost)
-      navigate('/studio/commu') // 등록 후 목록으로 이동 (실제 저장 로직 필요)
+      navigate('/studio/community') // 등록 후 목록으로 이동 (실제 저장 로직 필요)
    }
 
    return (
@@ -74,7 +74,7 @@ const CommunityWritePage = () => {
             <Button variant="contained" color="primary" onClick={handlePostSubmit}>
                등록
             </Button>
-            <Button variant="outlined" onClick={() => navigate('/studio/commu')}>
+            <Button variant="outlined" onClick={() => navigate('/studio/community')}>
                취소
             </Button>
          </Box>

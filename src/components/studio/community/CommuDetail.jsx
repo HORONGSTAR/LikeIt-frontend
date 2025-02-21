@@ -10,8 +10,8 @@ import CommuComment from './CommuComment'
 const CommuDetail = ({ setOpen, id }) => {
    const { community, loading, error } = useSelector((state) => state.community)
    const [openComments, setOpenComments] = useState(false)
-
    const dispatch = useDispatch()
+
    useEffect(() => {
       dispatch(fetchCommunityByIdThunk(id))
    }, [dispatch, id])
@@ -57,11 +57,7 @@ const CommuDetail = ({ setOpen, id }) => {
                            </Box>
                         }
                      >
-                        <Box
-                           component="img"
-                           src={process.env.REACT_APP_API_URL + '/studioImg/' + community.imgUrl}
-                           sx={{ width: '100%', borderRadius: 1 }}
-                        />
+                        <Box component="img" src={process.env.REACT_APP_API_URL + '/studioImg/' + community.imgUrl} sx={{ width: '100%', borderRadius: 1 }} />
                      </ModalBox>
                   )}
                   <Typography>{community.contents}</Typography>

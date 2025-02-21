@@ -1,43 +1,33 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getStudio, createStudio, updateStudio, getStudioById } from '../api/studioApi'
-
-// 스튜디오 조회
-export const fetchStudioThunk = createAsyncThunk('studio/fetchStudioThunk', async (_, { rejectWithValue }) => {
-   try {
-      const response = await getStudio()
-      return response.data
-   } catch (error) {
-      return rejectWithValue(error.response?.data?.message || '스튜디오 불러오기 실패')
-   }
-})
+import { createProject, updateProject, getProjectById } from '../api/studioApi'
 
 // 스튜디오 생성
-export const createStudioThunk = createAsyncThunk('studio/createStudioThunk', async (studioData, { rejectWithValue }) => {
+export const createStudioThunk = createAsyncThunk('studio/createStudioThunk', async (projectData, { rejectWithValue }) => {
    try {
-      const response = await createStudio(studioData)
+      const response = await createProject(projectData)
       return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '스튜디오 생성 실패')
    }
 })
 
-// 특정 스튜디오 조회
-export const fetchStudioByIdThunk = createAsyncThunk('studio/fetchStudioByIdThunk', async (studioId, { rejectWithValue }) => {
-   try {
-      const response = await getStudioById(studioId)
-      return response.data
-   } catch (error) {
-      return rejectWithValue(error.response?.data?.message || '스튜디오 불러오기 실패')
-   }
-})
-
 // 스튜디오 수정
-export const updateStudioThunk = createAsyncThunk('studio/updateStudioThunk', async ({ studioId, studioData }, { rejectWithValue }) => {
+export const updateStudioThunk = createAsyncThunk('studio/updateStudioThunk', async ({ projectId, projectData }, { rejectWithValue }) => {
    try {
-      const response = await updateStudio(studioId, studioData)
+      const response = await updateProject(projectId, projectData)
       return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '스튜디오 수정 실패')
+   }
+})
+
+// 특정 스튜디오 조회
+export const fetchStudioByIdThunk = createAsyncThunk('studio/fetchStudioByIdThunk', async (projectId, { rejectWithValue }) => {
+   try {
+      const response = await getProjectById(projectId)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '스튜디오 불러오기 실패')
    }
 })
 

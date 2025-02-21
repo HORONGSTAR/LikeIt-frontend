@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getProfile, updateProfile } from '../api/pageApi'
+import { getProfile, updateProfile, updateCategory } from '../api/pageApi'
+import { data } from 'react-router-dom'
 
 // 내 프로필 정보 가져오기
 export const getProfileThunk = createAsyncThunk('page/getProfile', async (_, { rejectWithValue }) => {
@@ -21,6 +22,16 @@ export const updateProfileThunk = createAsyncThunk('page/updateProfile', async (
    }
 })
 
+//카테고리 변경
+export const updateCategoryThunk = createAsyncThunk('page/updateCategory', async (selectedValues, { rejectWithValue }) => {
+   try {
+      const response = await updateCategory(selectedValues)
+      return response
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '카테고리 변경 실패')
+   }
+})
+
 const pageSlice = createSlice({
    name: 'page',
    initialState: {
@@ -39,11 +50,13 @@ const pageSlice = createSlice({
          .addCase(getProfileThunk.fulfilled, (state, action) => {
             state.loading = false
             state.user = action.payload.user
+            // state.creator = action.payload.creator
          })
          .addCase(getProfileThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })
+      //프로필 수정
       builder
          .addCase(updateProfileThunk.pending, (state) => {
             state.loading = true
@@ -54,6 +67,20 @@ const pageSlice = createSlice({
             // state.user = action.payload.user
          })
          .addCase(updateProfileThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+      //카테고리 변경
+      builder
+         .addCase(updateCategoryThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(updateCategoryThunk.fulfilled, (state, action) => {
+            state.loading = false
+            // state.user = action.payload.user
+         })
+         .addCase(updateCategoryThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

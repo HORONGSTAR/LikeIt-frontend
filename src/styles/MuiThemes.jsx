@@ -5,19 +5,35 @@ export const theme = createTheme({
       primary: {
          main: '#222',
          light: '#666',
+         dark: '#222',
          contrastText: '#fff',
       },
-      yellow: { main: '#FFCC4D' },
-      orenge: { main: '#d97400' },
-      green: { main: '#45843C' },
+      yellow: {
+         main: '#FFCC4D',
+         light: '#ffe190',
+         dark: '#fec443',
+         contrastText: '#B25F00',
+      },
+      orenge: {
+         main: '#d97400',
+         light: '#e38d05',
+         dark: '#d26500',
+         contrastText: '#fff',
+      },
+      green: {
+         main: '#45843C',
+         light: '#4f9546',
+         dark: '#32652b',
+         contrastText: '#fff',
+      },
    },
    typography: {
-      h1: { fontSize: 32, fontWeight: 600 },
-      h2: { fontSize: 28, fontWeight: 600 },
-      h3: { fontSize: 24, fontWeight: 600 },
-      h4: { fontSize: 20, fontWeight: 600 },
-      h5: { fontSize: 18, fontWeight: 600 },
-      h6: { fontSize: 16, fontWeight: 600, lineHeight: '24px' },
+      h1: { fontSize: 32, fontWeight: 600, color: '#222' },
+      h2: { fontSize: 28, fontWeight: 600, color: '#222' },
+      h3: { fontSize: 24, fontWeight: 600, color: '#222' },
+      h4: { fontSize: 20, fontWeight: 600, color: '#222' },
+      h5: { fontSize: 18, fontWeight: 600, color: '#222' },
+      h6: { fontSize: 16, fontWeight: 600, lineHeight: '24px', color: '#222' },
       body1: { fontSize: 15, fontWeight: 400 },
       body2: { fontSize: 13, fontWeight: 400 },
       caption: { fontSize: 11, fontWeight: 500 },
@@ -32,6 +48,15 @@ export const theme = createTheme({
    },
 
    components: {
+      MuiPickersDay: {
+         styleOverrides: {
+            root: {
+               '&.Mui-selected': {
+                  backgroundColor: '#45843C !important',
+               },
+            },
+         },
+      },
       MuiAppBar: {
          styleOverrides: {
             root: {
@@ -54,13 +79,15 @@ export const theme = createTheme({
          styleOverrides: {
             root: {
                borderRadius: 10,
-               height: '42px',
             },
             notchedOutline: {
                borderRadius: 10,
             },
             input: {
                padding: '12px 14px',
+            },
+            multiline: {
+               padding: 0,
             },
          },
       },
@@ -140,6 +167,9 @@ export const theme = createTheme({
                         fontWeight: 600,
                         background: '#222',
                         color: '#fff',
+                        ':hover': {
+                           backgroundColor: '#666',
+                        },
                      },
                   },
                ],
@@ -156,11 +186,23 @@ export const theme = createTheme({
                margin: 4,
                variants: [
                   {
+                     props: (props) => props.variant === 'contained' && props.color === 'primary',
+                     style: {
+                        fontWeight: 600,
+                        boxShadow: 'none',
+
+                        ':hover': {
+                           boxShadow: 'none',
+                           backgroundColor: '#444',
+                        },
+                     },
+                  },
+                  {
                      props: { variant: 'contained' },
                      style: {
                         fontWeight: 600,
                         boxShadow: 'none',
-                        ':hover': { boxShadow: 'none', background: '#d97400' },
+                        ':hover': { boxShadow: 'none' },
                      },
                   },
                   {
@@ -173,7 +215,6 @@ export const theme = createTheme({
                      props: { variant: 'text' },
                      style: {
                         fontWeight: 700,
-                        ':hover': { background: '#DBE7D9' },
                      },
                   },
                   {
@@ -182,6 +223,9 @@ export const theme = createTheme({
                         fontWeight: 700,
                         color: '#B25F00',
                         background: '#FFCC4D',
+                        ':hover': {
+                           background: '#fdb73e',
+                        },
                      },
                   },
                   {
@@ -190,6 +234,21 @@ export const theme = createTheme({
                         fontWeight: 700,
                         color: '#45843C',
                         background: '#DBE7D9',
+                        ':hover': {
+                           background: '#b9d6b2',
+                        },
+                     },
+                  },
+                  {
+                     props: { size: 'small' },
+                     style: {
+                        padding: '10px 14px',
+                     },
+                  },
+                  {
+                     props: { size: 'large' },
+                     style: {
+                        padding: '20px 48px',
                      },
                   },
                ],
