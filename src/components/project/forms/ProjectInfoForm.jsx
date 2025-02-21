@@ -1,16 +1,22 @@
 import { TextField, Button } from '@mui/material'
 import { ImgUploadBox, Stack2 } from '../../../styles/BaseStyles'
 import { FormGrid } from '../../ui/FormGrid'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import DateRangePickers from './DateRangePickers'
 import dayjs from 'dayjs'
 
-function ProjectInfoForm({ onSubmit, initVals = {} }) {
+function ProjectInfoForm({ onSubmit, initVals = {}, isSave }) {
    const [imgFile, setImgFile] = useState(null)
    const [imgUrl, setImgUrl] = useState(initVals.imgUrl)
    const [title, setTitle] = useState(initVals.title)
    const [intro, setIntro] = useState(initVals.intro)
    const [term, setTerm] = useState({ start: dayjs(initVals.start), end: dayjs(initVals.end) })
+   const origin = useRef(JSON.stringify({ imgUrl, title, intro, term }))
+
+   useEffect(() => {
+      if (!isSave.current) return
+      if (origin.current !== JSON.stringify({ imgUrl, title, intro, term })) isSave.current = false
+   }, [isSave, imgUrl, title, intro, term])
 
    const handleSaveData = useCallback(() => {
       const formData = new FormData()

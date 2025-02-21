@@ -1,20 +1,26 @@
-import { TextField, Button, IconButton, Chip, Stack } from '@mui/material'
+import { TextField, Button, IconButton, Stack } from '@mui/material'
 import { Stack2 } from '../../../styles/BaseStyles'
 import { FormGrid } from '../../ui/FormGrid'
 import { ListCard } from '../../ui/Cards'
-import { useCallback, useState } from 'react'
-import ProductEditForm from './ProductEditForm'
+import { useCallback, useState, useRef, useEffect } from 'react'
+import EditProductBox from './EditProductBox'
 import { AddCircle, Create, Delete } from '@mui/icons-material'
 import { deleteProductThunk } from '../../../features/rewardSlice'
 import { useDispatch } from 'react-redux'
 
-function ProjectDetailForm({ onSubmit, initVals = {} }) {
+function ProjectDetailForm({ onSubmit, initVals = {}, isSave }) {
    const [contents, setContents] = useState(initVals.contents)
    const [schedule, setSchedule] = useState(initVals.schedule)
    const [products, setProducts] = useState(initVals.products)
    const [product, setProduct] = useState(null)
    const [open, setOpen] = useState(false)
+   const origin = useRef(JSON.stringify({ contents, schedule, products }))
    const dispatch = useDispatch()
+
+   useEffect(() => {
+      if (!isSave.current) return
+      if (origin.current !== JSON.stringify({ contents, schedule, products })) isSave.current = false
+   }, [isSave, contents, schedule, products])
 
    const handleSaveData = useCallback(() => {
       const formData = new FormData()
@@ -39,7 +45,7 @@ function ProjectDetailForm({ onSubmit, initVals = {} }) {
       setOpen(true)
    }, [])
 
-   const addData = useCallback((product) => {
+   const ChangeData = useCallback((product) => {
       setOpen(true)
       setProduct(product)
    }, [])
@@ -66,10 +72,10 @@ function ProjectDetailForm({ onSubmit, initVals = {} }) {
                   선물 구성품 추가
                </Button>
                <Stack spacing={1} mt={1}>
-                  <ProductEditForm open={open} setOpen={setOpen} product={product} setProducts={setProducts} />
+                  <EditProductBox open={open} setOpen={setOpen} product={product} setProducts={setProducts} />
                   {products.map((product) => (
                      <ListCard product={product} key={'product' + product.id}>
-                        <IconButton aria-label="수정" size="small" onClick={() => addData(product)}>
+                        <IconButton aria-label="수정" size="small" onClick={() => ChangeData(product)}>
                            <Create fontSize="small" />
                         </IconButton>
                         <IconButton aria-label="삭제" size="small" onClick={() => handleDeleteProduct(product.id)}>
