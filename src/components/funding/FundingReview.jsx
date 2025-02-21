@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchReviewsThunk, reviewRecommendDelThunk, reviewRecommendRegThunk } from '../../features/fundingSlice'
-import { Box, Grid2, Typography, Divider, Chip, Avatar, IconButton, TextField, Button } from '@mui/material'
+import { Box, Grid2, Typography, Divider, Chip, Avatar, IconButton, TextField, Button, Rating } from '@mui/material'
 import StarIcon from '@mui/icons-material/Star'
 import RecommendIcon from '@mui/icons-material/Recommend'
 
@@ -11,6 +11,7 @@ function FundingReview({ funding }) {
    const [loadingCount, setLoadingCount] = useState(5)
    const [allReviews, setAllReviews] = useState([])
    const [reviewInput, setReviewInput] = useState('')
+   const [rating, setRating] = useState(0)
 
    const { loading, error, reviews, reviewCount } = useSelector((state) => state.funding)
    const { isAuthenticated } = useSelector((state) => state.auth)
@@ -22,14 +23,6 @@ function FundingReview({ funding }) {
    const loadMoreReviews = () => {
       setLoadingCount(loadingCount + 5)
       setPage(page + 1) // 페이지 번호 증가
-   }
-
-   const stars = (stars) => {
-      let starsArray = []
-      for (let i = 0; i < stars; i++) {
-         starsArray.push(<StarIcon key={i} color="yellow" fontSize="small" />)
-      }
-      return starsArray
    }
 
    const handleRecommend = (isRecommended, id) => {
@@ -96,7 +89,9 @@ function FundingReview({ funding }) {
                         <Typography sx={{ marginX: '8px' }}>{review.recommendCount}</Typography>
                      </IconButton>
                   </Box>
-                  <Box my={1}>{stars(review.star)}</Box>
+                  <Box my={1}>
+                     <Rating name="read-only" value={review.star} size="small" readOnly />
+                  </Box>
                   <Typography my={1}>{review.contents}</Typography>
                </Grid2>
             </Grid2>
@@ -135,6 +130,15 @@ function FundingReview({ funding }) {
                         />
                         {/* 이미지 등록 */}
                         {/* 별점 */}
+                        <Box py={1} sx={{ '& > legend': { mt: 2 } }}>
+                           <Rating
+                              name="simple-controlled"
+                              value={rating}
+                              onChange={(event, newRating) => {
+                                 setRating(newRating)
+                              }}
+                           />
+                        </Box>
                         <Button onClick={isAuthenticated ? submitReviewReg : () => (window.location.href = '/login')} sx={{ marginY: '8px' }} variant="contained">
                            등록
                         </Button>
