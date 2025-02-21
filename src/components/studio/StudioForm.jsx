@@ -1,21 +1,14 @@
-<<<<<<< HEAD
 import { useCallback, useState } from 'react'
 import { Button, TextField, Typography, FormControl, MenuItem, Stack, Select, IconButton, InputAdornment, Chip } from '@mui/material'
-=======
-import { useCallback, useState, useEffect } from 'react'
-import { Button, TextField, Typography, FormControl, MenuItem, Stack, Select, IconButton, Chip, InputAdornment } from '@mui/material'
->>>>>>> 0a4a220710effe75dcaaeec4489431fb62a05ee1
+
 import { Link as LinkIcon, RemoveCircleOutline } from '@mui/icons-material'
 import { Stack2, ImgUploadBox } from '../../styles/BaseStyles'
 import { FormGrid } from '../ui/FormGrid'
 import { isBlank } from '../../util/isBlank'
 import { useNavigate } from 'react-router-dom'
-<<<<<<< HEAD
 import { AddCircle } from '@mui/icons-material'
-=======
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchStudioByIdThunk } from '../../features/studioSlice'
->>>>>>> 0a4a220710effe75dcaaeec4489431fb62a05ee1
 
 function StudioForm({ onSubmit, initVals = {} }) {
    const dispatch = useDispatch()
@@ -27,15 +20,6 @@ function StudioForm({ onSubmit, initVals = {} }) {
    const [snsLinks, setSnsLinks] = useState(initVals?.StudioAccounts || [])
    const [removeSns, setRemoveSns] = useState([])
    const navigate = useNavigate()
-<<<<<<< HEAD
-=======
-
-   useEffect(() => {
-      if (studio?.imgUrl) {
-         setImgUrl(`${process.env.REACT_APP_API_URL}${studio.imgUrl}`)
-      }
-   }, [studio?.imgUrl])
->>>>>>> 0a4a220710effe75dcaaeec4489431fb62a05ee1
 
    const snsItems = [
       { value: 'INSTAGRAM', name: 'instagram' },
@@ -109,7 +93,14 @@ function StudioForm({ onSubmit, initVals = {} }) {
 
    const inputName = (
       <Stack2 justifyContent="end">
-         <TextField type="text" fullWidth inputProps={{ maxLength: 30 }} value={studioName} onChange={(e) => setStudioName(e.target.value)} label="스튜디오의 이름을 지어주세요." />
+         <TextField
+            type="text"
+            fullWidth
+            inputProps={{ maxLength: 30 }}
+            value={studioName}
+            onChange={(e) => setStudioName(e.target.value)}
+            label="스튜디오의 이름을 지어주세요."
+         />
          <Typography color="grey" variant="caption">
             최대 30자 ( {studioName.length} / 30 )
          </Typography>
@@ -118,7 +109,16 @@ function StudioForm({ onSubmit, initVals = {} }) {
 
    const inputIntro = (
       <Stack2 justifyContent="end">
-         <TextField variant="outlined" fullWidth inputProps={{ maxLength: 225 }} value={intro} rows={4} multiline onChange={(e) => setIntro(e.target.value)} label="스튜디오를 소개해주세요." />
+         <TextField
+            variant="outlined"
+            fullWidth
+            inputProps={{ maxLength: 225 }}
+            value={intro}
+            rows={4}
+            multiline
+            onChange={(e) => setIntro(e.target.value)}
+            label="스튜디오를 소개해주세요."
+         />
          <Typography color="grey" variant="caption">
             최대 255자 ( {intro.length} / 255 )
          </Typography>

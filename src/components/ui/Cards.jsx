@@ -205,32 +205,6 @@ export const CommingCard = ({ project }) => {
    }
 
    return (
-<<<<<<< HEAD
-      <BasicCard imgUrl={project.imgUrl}>
-         <Typography variant="caption">BY.{project.studioName}</Typography>
-         <Ellipsis $line={2}>
-            <Typography sx={cententSx.title}>{project.title}</Typography>
-         </Ellipsis>
-         <Ellipsis>
-            <Typography variant="body2" color="grey" sx={cententSx.intro}>
-               {project.intro}
-            </Typography>
-         </Ellipsis>
-         <Stack2 mt={{ sm: 1, xs: 0.5 }}>
-            <Typography color="orenge" variant="caption">
-               {project.userCount}명 알림 신청 중
-            </Typography>
-            <Button
-               fullWidth
-               variant="outlined"
-               sx={{ p: 0, m: 0 }}
-               startIcon={<Box component="img" src="/images/icon/bell.svg" alt="알림버튼" sx={{ height: 12 }} />}
-            >
-               알림 신청하기
-            </Button>
-         </Stack2>
-      </BasicCard>
-=======
       <Link to={`/funding/${project.id}`}>
          <BasicCard imgUrl={project.imgUrl}>
             <Typography variant="caption">BY.{project.studioName}</Typography>
@@ -256,7 +230,14 @@ export const CommingCard = ({ project }) => {
                         project.isFavorite = !project.isFavorite
                         project.noticeDel(project.id)
                      }}
-                     startIcon={<Box component="img" src="/images/icon/bell.svg" alt="알림버튼" sx={{ height: 12, filter: 'grayscale(100%) brightness(1000%)' }} />}
+                     startIcon={
+                        <Box
+                           component="img"
+                           src="/images/icon/bell.svg"
+                           alt="알림버튼"
+                           sx={{ height: 12, filter: 'grayscale(100%) brightness(1000%)' }}
+                        />
+                     }
                   >
                      알림 신청중
                   </Button>
@@ -278,7 +259,6 @@ export const CommingCard = ({ project }) => {
             </Stack2>
          </BasicCard>
       </Link>
->>>>>>> 0a4a220710effe75dcaaeec4489431fb62a05ee1
    )
 }
 
