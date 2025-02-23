@@ -3,13 +3,8 @@ import likeitApi from './axiosApi'
 // 프로젝트 생성
 export const createProject = async (projectData) => {
    try {
-      const config = {
-         headers: {
-            'Content-Type': 'multipart/form-data',
-         },
-      }
-      const response = await likeitApi.post('/project/create', projectData, config)
-      return response.data
+      const response = await likeitApi.post('/project/create', projectData)
+      return response
    } catch (error) {
       console.error(`프로젝트 생성 오류: ${error.message}`)
       throw error
@@ -25,7 +20,7 @@ export const updateProject = async (projectId, projectData) => {
          },
       }
       const response = await likeitApi.put(`/project/edit/${projectId}`, projectData, config)
-      return response.data
+      return response
    } catch (error) {
       console.error(`프로젝트 수정 오류: ${error.message}`)
       throw error
@@ -35,7 +30,7 @@ export const updateProject = async (projectId, projectData) => {
 // 특정 프로젝트 조회
 export const getProjectById = async (projectId) => {
    try {
-      const response = await likeitApi.get(`/studio/${projectId}`)
+      const response = await likeitApi.get(`/project/${projectId}`)
       return response
    } catch (error) {
       console.error(`프로젝트 조회 오류: ${error.message}`)

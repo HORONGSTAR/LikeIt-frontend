@@ -1,19 +1,19 @@
 import { useCallback, useState } from 'react'
-import { Button, TextField, Typography, FormControl, MenuItem, Stack, Select, IconButton, Chip, InputAdornment } from '@mui/material'
-import { Link as LinkIcon, AddCircle, RemoveCircleOutline } from '@mui/icons-material'
-import { Stack2, ImgUploadBox } from '../../styles/BaseStyles'
+import { Button, TextField, Typography, FormControl, MenuItem, Stack, Select, IconButton, InputAdornment } from '@mui/material'
+import { Link as LinkIcon, RemoveCircleOutline } from '@mui/icons-material'
+import { Stack2, ImgUploadBox, AddButton } from '../../styles/BaseStyles'
 import { FormGrid } from '../ui/FormGrid'
 import { isBlank } from '../../util/isBlank'
 import { useNavigate } from 'react-router-dom'
 
 function StudioForm({ onSubmit, initVals = {} }) {
-   const navigate = useNavigate()
    const [imgFile, setImgFile] = useState(null)
-   const [imgUrl, setImgUrl] = useState(initVals ? process.env.REACT_APP_API_URL + '/studioImg/' + initVals.imgUrl : '')
+   const [imgUrl, setImgUrl] = useState(initVals?.imgUrl ? process.env.REACT_APP_API_URL + '/studioImg/' + initVals.imgUrl : '')
    const [studioName, setStudioName] = useState(initVals?.name || '')
    const [intro, setIntro] = useState(initVals?.intro || '')
    const [snsLinks, setSnsLinks] = useState(initVals?.StudioAccounts || [])
    const [removeSns, setRemoveSns] = useState([])
+   const navigate = useNavigate()
 
    const snsItems = [
       { value: 'INSTAGRAM', name: 'instagram' },
@@ -53,7 +53,6 @@ function StudioForm({ onSubmit, initVals = {} }) {
          const encodedFile = new File([imgFile], encodeURIComponent(imgFile.name), {
             type: imgFile.type,
          })
-
          formData.append('image', encodedFile)
       }
 
@@ -62,8 +61,6 @@ function StudioForm({ onSubmit, initVals = {} }) {
       formData.append('account', JSON.stringify({ snsLinks, removeSns }))
 
       onSubmit(formData)
-
-      navigate('/studio')
    }, [onSubmit, studioName, intro, imgUrl, snsLinks])
 
    const inputImg = (
@@ -148,15 +145,7 @@ function StudioForm({ onSubmit, initVals = {} }) {
                </Stack2>
             </Stack2>
          ))}
-         {snsLinks.length < 3 && (
-            <Chip
-               sx={{ height: 40 }}
-               icon={<AddCircle fontSize="small" />}
-               variant="grey"
-               onClick={handleAddSns}
-               label={`SNS 계정 추가하기 (${snsLinks.length}/3)`}
-            />
-         )}
+         {snsLinks.length < 3 && <AddButton handleAddItem={handleAddSns} label={`SNS 계정 추가하기 (${snsLinks.length}/3)`} />}
       </Stack>
    )
 
@@ -174,7 +163,7 @@ function StudioForm({ onSubmit, initVals = {} }) {
             <Button variant="contained" color="orenge" size="large" onClick={handleSubmit}>
                등록하기
             </Button>
-            <Button variant="outlined" color="orenge" size="large">
+            <Button variant="outlined" color="orenge" size="large" onClick={() => navigate(`/studio/${initVals?.id || ''}`)}>
                취소
             </Button>
          </Stack2>
