@@ -26,6 +26,7 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
 import FindingPasswordPage from './pages/FindingPasswordPage'
+import FindingEmailPage from './pages/FindingEmailPage'
 
 import StudioPage from './pages/StudioPage'
 
@@ -54,6 +55,8 @@ function App() {
    const pageName = {
       login: true,
       signup: true,
+      findingpassword: true,
+      findingemail: true,
       commonsignup: true,
       studio: <StudioNavber />,
       '/studio/project/write': true,
@@ -85,6 +88,7 @@ function App() {
             <Route path="/end" element={<Home />} />
             <Route path="/comming" element={<Home />} />
             <Route path="/findingpassword" element={<FindingPasswordPage />} />
+            <Route path="/findingemail" element={<FindingEmailPage />} />
             <Route path="/my" element={<MyPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/category/:id" element={<CategoryPage />} />
@@ -98,6 +102,15 @@ function App() {
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
             <Route path="/studio/profile" element={<StudioProfilePage />} />
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
+
+            <Route path="/studio/:id" element={<StudioPage />} />
+
+            <Route path="/funding" element={<FundingLayout />}>
+               <Route path="detail" element={<FundingOverview />} />
+               <Route path="timeline" element={<FundingTimeline />} />
+               <Route path="review" element={<FundingReview />} />
+            </Route>
+
             <Route path="/studio/member" element={<MemberPage />} />
             <Route path="detail" element={<FundingOverview />} />
             <Route path="timeline" element={<FundingTimeline />} />

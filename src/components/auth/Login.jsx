@@ -58,6 +58,12 @@ function Login() {
                </TextLink>
             </Stack2>
             <Stack2 spacing={1}>
+               <Typography variant="body2">가입한 이메일을 잊으셨나요?</Typography>
+               <TextLink variant="body2" color="orenge" to="/findingemail">
+                  이메일 찾기
+               </TextLink>
+            </Stack2>
+            <Stack2 spacing={1}>
                <Typography variant="body2">비밀번호를 잊으셨나요?</Typography>
                <TextLink variant="body2" color="orenge" to="/findingpassword">
                   비밀번호 재설정

@@ -16,7 +16,6 @@ const MyPage = () => {
    if (error) return <p>에러발생: {error}</p>
 
    return <My initialValues={user} />
-
 }
 
 export default MyPage

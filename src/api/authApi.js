@@ -56,6 +56,17 @@ export const checkAuthStatus = async () => {
    }
 }
 
+//이메일 찾기
+export const fetchEmail = async (phone) => {
+   try {
+      const response = await likeItApi.get('/auth/email', phone)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
 //임시비번 설정 및 보내주기
 export const setTempPassword = async (email) => {
    try {

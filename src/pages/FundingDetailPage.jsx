@@ -53,21 +53,21 @@ const FundingDetailPage = () => {
          <Main>
             <Box sx={{ maxWidth: '1000px', margin: 'auto', mt: 5 }}>
                {/* 제목 */}
-               <Typography variant="h4" fontWeight="bold" sx={{ mb: 3, textAlign: 'center' }}>
+               <Typography p={1} variant="h2" fontWeight="bold" sx={{ mb: 3, textAlign: 'center' }}>
                   {project.title}
                </Typography>
 
                {/* 이미지 & 정보 배치 */}
                <Grid2 container spacing={4} alignItems="center" justifyContent="flex-start">
                   {/* 왼쪽 - 대표 이미지 */}
-                  <Grid2 size={{ xs: 12, md: 6 }}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                      <Card sx={{ boxShadow: 'none' }}>
                         <CardMedia component="img" image={project.image} alt="프로젝트 이미지" sx={{ width: '100%', borderRadius: 2 }} />
                      </Card>
                   </Grid2>
 
                   {/* 오른쪽 - 프로젝트 정보 */}
-                  <Grid2 size={{ xs: 12, md: 6 }}>
+                  <Grid2 size={{ xs: 12, sm: 6 }}>
                      <Card sx={{ p: 1, boxShadow: 'none' }}>
                         <CardContent sx={{ textAlign: 'left' }}>
                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -118,10 +118,10 @@ const FundingDetailPage = () => {
                      <FundingOverview funding={funding} />
                   </TabPanel>
                   <TabPanel value="2">
-                     <FundingTimeline />
+                     <FundingTimeline funding={funding} />
                   </TabPanel>
                   <TabPanel value="3">
-                     <FundingReview />
+                     <FundingReview funding={funding} />
                   </TabPanel>
                </TabContext>
             </Box>
