@@ -80,11 +80,13 @@ function AccountMenu({ items }) {
          >
             {items.map((item) => (
                <MenuItem key={item.page} component={Link} to={item.path} onClick={handleClose}>
+                  <Box component="img" src={process.env.REACT_APP_FRONT_URL + `/images/icon/${item.icon}.svg`} sx={{ width: 12, mr: 1 }} />
                   <Box component="img" src={`/images/icon/${item.icon}.svg`} sx={{ width: 12, mr: 1 }} />
                   {item.page}
                </MenuItem>
             ))}
             <MenuItem onClick={handleLogout}>
+               <Box component="img" src={process.env.REACT_APP_FRONT_URL + '/images/icon/logout.svg'} sx={{ width: 12, mr: 1 }} />
                <Box component="img" src="/images/icon/logout.svg" sx={{ width: 12, mr: 1 }} />
                로그아웃
             </MenuItem>

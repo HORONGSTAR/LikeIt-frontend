@@ -26,9 +26,11 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
 import FindingPasswordPage from './pages/FindingPasswordPage'
+import FindingEmailPage from './pages/FindingEmailPage'
+
+import StudioPage from './pages/StudioPage'
 
 import FundingReview from './components/funding/FundingReview'
-import FundingLayout from './components/funding/FundingLayout'
 import FundingTimeline from './components/funding/FundingTimeline'
 import FundingOverview from './components/funding/FundingOverview'
 
@@ -42,7 +44,6 @@ import ProjectWritePage from './pages/ProjectWritePage'
 import { checkAuthStatusThunk } from './features/authSlice'
 import MyPage from './pages/MyPage'
 
-import DesignGuide from './pages/DesignGuide'
 import MemberPage from './pages/MemberPage'
 import CommunityForm from './components/studio/community/CommunityForm'
 import CreatorPage from './pages/CreatorPage'
@@ -53,6 +54,8 @@ function App() {
    const pageName = {
       login: true,
       signup: true,
+      findingpassword: true,
+      findingemail: true,
       commonsignup: true,
       studio: <StudioNavber />,
       project: true,
@@ -60,6 +63,7 @@ function App() {
 
    const dontNeedNavber = pageName[path[1]]
    const needBackground = pageName[path[2]]
+   const needBackground = pageName[location.pathname]
 
    const dispatch = useDispatch()
    const { isAuthenticated, user } = useSelector((state) => state.auth)
@@ -84,6 +88,7 @@ function App() {
             <Route path="/end" element={<Home />} />
             <Route path="/comming" element={<Home />} />
             <Route path="/findingpassword" element={<FindingPasswordPage />} />
+            <Route path="/findingemail" element={<FindingEmailPage />} />
             <Route path="/my" element={<MyPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/category/:id" element={<CategoryPage />} />
@@ -92,7 +97,6 @@ function App() {
             <Route path="/end" element={<EndPage />} />
             <Route path="/comming" element={<CommingPage />} />
             <Route path="/follow" element={<Home />} />
-
             <Route path="/studio" element={<StudioPage />} />
             <Route path="/studio/:id" element={<StudioPage />} />
             <Route path="/studio/project/create" element={<ProjectWritePage />} />
@@ -101,6 +105,8 @@ function App() {
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
             <Route path="/studio/member" element={<MemberPage />} />
             <Route path="/community/write" element={<CommunityForm />} />
+
+            <Route path="/studio/:id" element={<StudioPage />} />
 
             <Route path="/funding" element={<FundingLayout />}>
                <Route path="detail" element={<FundingOverview />} />
@@ -112,8 +118,20 @@ function App() {
 
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
+            <Route path="/studio/member" element={<MemberPage />} />
+            <Route path="detail" element={<FundingOverview />} />
+            <Route path="timeline" element={<FundingTimeline />} />
+            <Route path="review" element={<FundingReview />} />
+            <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
+            <Route path="/community/write" element={<CommunityForm />} />
+            <Route path="/funding/:id" element={<FundingDetailPage />} />
          </Routes>
-         <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
+         <Button
+            component={Link}
+            sx={{ position: 'fixed', right: 10, bottom: 10 }}
+            variant="contained"
+            to="/desinguide"
+         >
             디자인 가이드 확인하기
          </Button>
          <Footer></Footer>
