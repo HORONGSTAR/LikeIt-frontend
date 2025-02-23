@@ -12,7 +12,6 @@ import {
    DialogTitle,
    Container,
    Button,
-   Chip,
    Link as MuiLink,
 } from '@mui/material'
 import { Close, PlayArrowRounded, AddPhotoAlternate } from '@mui/icons-material'
@@ -21,7 +20,7 @@ import { Link } from 'react-router-dom'
 
 export const Main = ({ children, spacing }) => {
    return (
-      <Container maxWidth="md" sx={{ my: 4, px: { sm: 2, xs: 0.5 }, py: 2, background: '#fff', borderRadius: 3 }}>
+      <Container maxWidth="md" sx={{ my: 2, px: { sm: 2, xs: 0.5 }, py: 2, background: '#fff', borderRadius: 3 }}>
          <Stack spacing={spacing || 2}>{children}</Stack>
       </Container>
    )
