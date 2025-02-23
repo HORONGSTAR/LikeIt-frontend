@@ -15,8 +15,7 @@ import {
    Chip,
    Link as MuiLink,
 } from '@mui/material'
-import { Close, PlayArrowRounded, AddPhotoAlternate, AddCircle } from '@mui/icons-material'
-
+import { Close, PlayArrowRounded, AddPhotoAlternate } from '@mui/icons-material'
 import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -318,10 +317,6 @@ export const ImgUploadBox = ({ setImgFile, imgUrl, setImgUrl, children }) => {
          </Typography>
       </Stack2>
    )
-}
-
-export const AddButton = ({ handleAddItem, label }) => {
-   return <Chip sx={{ height: 40 }} icon={<AddCircle fontSize="small" />} variant="grey" onClick={handleAddItem} label={label} />
 }
 
 export const Ellipsis = styled.div`

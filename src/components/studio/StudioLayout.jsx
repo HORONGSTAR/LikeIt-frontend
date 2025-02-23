@@ -5,6 +5,8 @@ import { Stack2 } from '../../styles/BaseStyles'
 import MicIcon from '@mui/icons-material/Mic'
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
+import SpaceBox from './SpaceBox'
+import SpaceBar from './SpaceBar'
 
 const StudioLayout = () => {
    const { studio } = useSelector((state) => state.studio)
@@ -19,7 +21,7 @@ const StudioLayout = () => {
          {studio && (
             <>
                <Card variant="none">
-                  <CardMedia sx={{ minWidth: 180, height: 180, borderRadius: '10px' }} image={process.env.REACT_APP_API_URL + studio.imgUrl} alt="스튜디오 프로필" />
+                  <CardMedia sx={{ minWidth: 180, height: 180, borderRadius: '10px' }} image={studio.imgUrl ? `${process.env.REACT_APP_API_URL}${studio.imgUrl}` : null} alt="스튜디오 프로필" />
                   <CardContent sx={{ display: 'flex', flexDirection: 'column', py: 0 }}>
                      <Stack2 mb={1} alignItems="center">
                         <Typography variant="h2" fontWeight="bold">
@@ -62,6 +64,8 @@ const StudioLayout = () => {
                      </Stack2>
                   </CardContent>
                </Card>
+               <SpaceBar />
+               <SpaceBox />
                <StudioTab />
             </>
          )}

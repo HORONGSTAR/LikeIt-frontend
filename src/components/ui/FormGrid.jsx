@@ -6,7 +6,7 @@ export const FormGrid = ({ formItems }) => {
       <>
          {formItems &&
             formItems.map((item) => (
-               <Grid2 key={item.name} container rowSpacing={1} pb={4}>
+               <Grid2 key={item.name} container rowSpacing={1} pb={5}>
                   <Grid2 size={{ md: 3, sm: 12, xs: 12 }}>
                      <Dot>
                         <Typography variant="h6" lineHeight={2.2}>

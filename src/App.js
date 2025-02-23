@@ -36,22 +36,21 @@ import FundingOverview from './components/funding/FundingOverview'
 
 import RankingPage from './pages/RankingPage'
 import AdditionalSignupPage from './pages/AdditionalSignupPage'
+
+import StudioPage from './pages/StudioPage'
 import StudioProfilePage from './pages/StudioProfilePage'
 import ProjectWritePage from './pages/ProjectWritePage'
 
 import { checkAuthStatusThunk } from './features/authSlice'
 import MyPage from './pages/MyPage'
-import FundingDetailPage from './pages/FundingDetailPage'
-
-import DesignGuide from './pages/DesignGuide'
 
 import MemberPage from './pages/MemberPage'
 import CommunityForm from './components/studio/community/CommunityForm'
+import CreatorPage from './pages/CreatorPage'
 
 function App() {
    const location = useLocation()
    const path = location.pathname.split('/')
-
    const pageName = {
       login: true,
       signup: true,
@@ -59,10 +58,11 @@ function App() {
       findingemail: true,
       commonsignup: true,
       studio: <StudioNavber />,
-      '/studio/project/write': true,
+      project: true,
    }
 
    const dontNeedNavber = pageName[path[1]]
+   const needBackground = pageName[path[2]]
    const needBackground = pageName[location.pathname]
 
    const dispatch = useDispatch()
@@ -98,10 +98,13 @@ function App() {
             <Route path="/comming" element={<CommingPage />} />
             <Route path="/follow" element={<Home />} />
             <Route path="/studio" element={<StudioPage />} />
+            <Route path="/studio/:id" element={<StudioPage />} />
             <Route path="/studio/project/create" element={<ProjectWritePage />} />
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
             <Route path="/studio/profile" element={<StudioProfilePage />} />
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
+            <Route path="/studio/member" element={<MemberPage />} />
+            <Route path="/community/write" element={<CommunityForm />} />
 
             <Route path="/studio/:id" element={<StudioPage />} />
 
@@ -111,6 +114,10 @@ function App() {
                <Route path="review" element={<FundingReview />} />
             </Route>
 
+            <Route path="/creator" element={<CreatorPage />} />
+
+            <Route path="/follow" element={<FollowPage />} />
+            <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
             <Route path="/studio/member" element={<MemberPage />} />
             <Route path="detail" element={<FundingOverview />} />
             <Route path="timeline" element={<FundingTimeline />} />
