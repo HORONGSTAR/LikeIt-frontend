@@ -1,9 +1,10 @@
 import { useCallback, useState } from 'react'
-import { Button, TextField, Typography, FormControl, MenuItem, Stack, Select, IconButton, Chip, InputAdornment } from '@mui/material'
+import { Button, TextField, Typography, FormControl, MenuItem, Stack, Select, IconButton, InputAdornment } from '@mui/material'
 import { Link as LinkIcon, RemoveCircleOutline } from '@mui/icons-material'
 import { Stack2, ImgUploadBox, AddButton } from '../../styles/BaseStyles'
 import { FormGrid } from '../ui/FormGrid'
 import { isBlank } from '../../util/isBlank'
+import { useNavigate } from 'react-router-dom'
 
 function StudioForm({ onSubmit, initVals = {} }) {
    const [imgFile, setImgFile] = useState(null)
@@ -12,6 +13,7 @@ function StudioForm({ onSubmit, initVals = {} }) {
    const [intro, setIntro] = useState(initVals?.intro || '')
    const [snsLinks, setSnsLinks] = useState(initVals?.StudioAccounts || [])
    const [removeSns, setRemoveSns] = useState([])
+   const navigate = useNavigate()
 
    const snsItems = [
       { value: 'INSTAGRAM', name: 'instagram' },

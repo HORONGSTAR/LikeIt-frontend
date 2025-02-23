@@ -27,13 +27,9 @@ import SignupPage from './pages/SignupPage'
 import CommonSignupPage from './pages/CommonSignupPage'
 import FindingPasswordPage from './pages/FindingPasswordPage'
 
-import CommunityWritePage from './pages/CommunityWritePage'
 import StudioPage from './pages/StudioPage'
-import StudioEditPage from './pages/StudioEditPage'
-import StudioCreatePage from './pages/StudioCreatePage'
 
 import FundingReview from './components/funding/FundingReview'
-import FundingLayout from './components/funding/FundingLayout'
 import FundingTimeline from './components/funding/FundingTimeline'
 import FundingOverview from './components/funding/FundingOverview'
 
@@ -48,7 +44,6 @@ import FundingDetailPage from './pages/FundingDetailPage'
 
 import DesignGuide from './pages/DesignGuide'
 
-import DesignGuide from './pages/DesignGuide'
 import MemberPage from './pages/MemberPage'
 import CommunityForm from './components/studio/community/CommunityForm'
 
@@ -66,7 +61,6 @@ function App() {
 
    const dontNeedNavber = pageName[path[1]]
    const needBackground = pageName[location.pathname]
-
 
    const dispatch = useDispatch()
    const { isAuthenticated, user } = useSelector((state) => state.auth)
@@ -99,28 +93,25 @@ function App() {
             <Route path="/end" element={<EndPage />} />
             <Route path="/comming" element={<CommingPage />} />
             <Route path="/follow" element={<Home />} />
-
             <Route path="/studio" element={<StudioPage />} />
             <Route path="/studio/project/create" element={<ProjectWritePage />} />
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
             <Route path="/studio/profile" element={<StudioProfilePage />} />
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
             <Route path="/studio/member" element={<MemberPage />} />
-
-            <Route path="/studio/:id" element={<StudioPage />} />
-
-            <Route path="/funding" element={<FundingLayout />}>
-               <Route path="detail" element={<FundingOverview />} />
-               <Route path="timeline" element={<FundingTimeline />} />
-               <Route path="review" element={<FundingReview />} />
-            </Route>
-         
+            <Route path="detail" element={<FundingOverview />} />
+            <Route path="timeline" element={<FundingTimeline />} />
+            <Route path="review" element={<FundingReview />} />
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
             <Route path="/community/write" element={<CommunityForm />} />
-            <Route path="/studio/commu/write" element={<CommunityWritePage />} />
             <Route path="/funding/:id" element={<FundingDetailPage />} />
          </Routes>
-         <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
+         <Button
+            component={Link}
+            sx={{ position: 'fixed', right: 10, bottom: 10 }}
+            variant="contained"
+            to="/desinguide"
+         >
             디자인 가이드 확인하기
          </Button>
          <Footer></Footer>
