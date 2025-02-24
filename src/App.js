@@ -40,9 +40,7 @@ import FundingOverview from './components/funding/FundingOverview'
 import RankingPage from './pages/RankingPage'
 import AdditionalSignupPage from './pages/AdditionalSignupPage'
 
-import StudioPage from './pages/StudioPage'
 import StudioProfilePage from './pages/StudioProfilePage'
-import CommunityWritePage from './pages/CommunityWritePage'
 import ProjectWritePage from './pages/ProjectWritePage'
 
 import { checkAuthStatusThunk } from './features/authSlice'
