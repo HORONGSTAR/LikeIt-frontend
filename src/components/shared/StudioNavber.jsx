@@ -1,6 +1,6 @@
 import { AppBar, Container, Typography, Button, IconButton } from '@mui/material'
 import { Menu as MenuClose, MenuOpen } from '@mui/icons-material'
-import { NavLink, Link, useParams } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import { useState } from 'react'
 import AccountMenu from './AccountMenu'
 import { Stack2 } from '../../styles/BaseStyles'

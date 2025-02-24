@@ -49,6 +49,7 @@ import FundingDetailPage from './pages/FundingDetailPage'
 
 // develop
 import DesignGuide from './pages/DesignGuide'
+import ProjectAllPage from './pages/ProjectAllPage'
 
 function App() {
    const path = useLocation().pathname.split('/')
@@ -86,9 +87,6 @@ function App() {
             <Route path="/new" element={<NewPage />} />
             <Route path="/end" element={<EndPage />} />
             <Route path="/comming" element={<CommingPage />} />
-<<<<<<< HEAD
-            <Route path="/follow" element={<Home />} />
-=======
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/category/:id" element={<CategoryPage />} />
             <Route path="/search" element={<SearchPage />} />
@@ -103,25 +101,14 @@ function App() {
             <Route path="/my" element={<MyPage />} />
 
             {/* studio */}
->>>>>>> d2ee37319e4bf03834dc2870b6bc048c7dedece5
             <Route path="/studio" element={<StudioPage />} />
             <Route path="/studio/:id" element={<StudioPage />} />
             <Route path="/studio/project/create" element={<ProjectWritePage />} />
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
+            <Route path="/studio/project/all" element={<ProjectAllPage />} />
             <Route path="/studio/profile" element={<StudioProfilePage />} />
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
             <Route path="/studio/member" element={<MemberPage />} />
-<<<<<<< HEAD
-            <Route path="/community/write" element={<CommunityForm />} />
-            <Route path="/funding" element={<FundingLayout />}>
-               <Route path="detail" element={<FundingOverview />} />
-               <Route path="timeline" element={<FundingTimeline />} />
-               <Route path="review" element={<FundingReview />} />
-            </Route>
-            <Route path="/creator" element={<CreatorPage />} />
-            <Route path="/follow" element={<FollowPage />} />
-            <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
-=======
             <Route path="/studio/community/write" element={<CommunityForm />} />
 
             {/* fundingDetail - creator */}
@@ -132,7 +119,6 @@ function App() {
 
             {/* develop */}
             <Route path="/desinguide" element={<DesignGuide />} />
->>>>>>> d2ee37319e4bf03834dc2870b6bc048c7dedece5
          </Routes>
 
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">

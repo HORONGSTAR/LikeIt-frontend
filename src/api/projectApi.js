@@ -1,5 +1,18 @@
 import likeitApi from './axiosApi'
 
+// 특정 스튜디오의 프로젝트 조회
+export const getProjectsByStudio = async ({ studioId, page, limit, search = '' }) => {
+   try {
+      const response = await likeitApi.get(`/project/studio/${studioId}`, {
+         params: { page, limit, search },
+      })
+      return response
+   } catch (error) {
+      console.error(`특정 스튜디오 프로젝트 조회 오류: ${error.message}`)
+      throw error
+   }
+}
+
 // 프로젝트 생성
 export const createProject = async (projectData) => {
    try {
