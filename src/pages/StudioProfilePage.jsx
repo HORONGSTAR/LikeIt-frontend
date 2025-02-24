@@ -22,11 +22,11 @@ function StudioProfilePage() {
          } else {
             dispatch(createStudioThunk(studioData))
                .unwrap()
-               .then()
+               .then(() => (window.location.href = '/studio'))
                .catch((err) => setOpen(true))
          }
       },
-      [dispatch]
+      [dispatch, id]
    )
 
    useEffect(() => {

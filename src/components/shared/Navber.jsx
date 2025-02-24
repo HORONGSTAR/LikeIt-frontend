@@ -1,11 +1,10 @@
 import { NavLink, Link } from 'react-router-dom'
 import { Menu as MenuClose, MenuOpen, Search as SearchIcon } from '@mui/icons-material'
-import { TextField, AppBar, Container, IconButton, Button, Typography, Box, InputAdornment } from '@mui/material'
+import { AppBar, Container, IconButton, Button, Typography, Box } from '@mui/material'
 import { ModalBox, Stack2 } from '../../styles/BaseStyles'
 import { useState } from 'react'
 import AccountMenu from './AccountMenu'
 import SearchBar from './Searchbar'
-import { Stack } from '@mui/material'
 
 function Navber({ isAuthenticated, user }) {
    const [open, setOpen] = useState(false)
@@ -62,7 +61,7 @@ function Navber({ isAuthenticated, user }) {
                            <Button variant="contained">로그인</Button>
                         </Link>
                      ) : (
-                        <AccountMenu items={accountMeunItems} />
+                        <AccountMenu items={user.creatorId ? accountMeunItems : accountMeunItems.splice(1, 2)} />
                      )}
                   </Stack2>
                </Stack2>

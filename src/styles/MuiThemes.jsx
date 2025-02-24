@@ -63,7 +63,6 @@ export const theme = createTheme({
                '--AppBar-background': '#fff',
                '--AppBar-color': '#222',
                boxShadow: '0px 2px 4px rgba(0,0,0,0.25)',
-               marginBottom: 10,
             },
          },
       },
@@ -242,13 +241,14 @@ export const theme = createTheme({
                   {
                      props: { size: 'small' },
                      style: {
-                        padding: '10px 14px',
+                        padding: '8px 14px',
                      },
                   },
                   {
                      props: { size: 'large' },
                      style: {
                         padding: '20px 48px',
+                        fontSize: 14,
                      },
                   },
                ],

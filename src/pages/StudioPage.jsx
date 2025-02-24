@@ -35,12 +35,16 @@ function StudioPage() {
    const newStudio = (
       <>
          <Box>
-            <Typography variant="h4" sx={{ color: '#666', mt: 6, fontSize: '24px' }}>
+            <Typography variant="h4" sx={{ color: '#666', mt: 6, fontSize: '24px', textAlign: 'center' }}>
                스튜디오가 없습니다. 새로 만들까요?
             </Typography>
          </Box>
 
-         <Button variant="yellow" sx={{ color: 'white', height: '50px', fontSize: '24px' }} onClick={() => navigate('/studio/profile')}>
+         <Button
+            variant="yellow"
+            sx={{ color: 'white', height: '50px', fontSize: '24px' }}
+            onClick={() => navigate('/studio/profile')}
+         >
             스튜디오 만들기
          </Button>
 

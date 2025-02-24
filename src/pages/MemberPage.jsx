@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchCreatorsThunk, updateCreatorRoleThunk, addCreatorThunk } from '../features/creatorSlice'
+import { fetchCreatorsThunk, updateCreatorRoleThunk, addCreatorThunk, deleteCreatorThunk } from '../features/creatorSlice'
 import { Card, Avatar, Typography, Checkbox, Button, Box, Modal, TextField } from '@mui/material'
-import StudioNavber from '../components/shared/StudioNavber'
 import { LoadingBox } from '../styles/BaseStyles'
 import { useParams } from 'react-router-dom'
 
@@ -34,8 +33,7 @@ function MemberPage() {
    // 체크박스 변경 핸들러
    const handleCheckboxChange = (creator, field, currentValue) => {
       const newValue = currentValue === 'Y' ? 'N' : 'Y'
-
-      const creatorId = creator
+      const creatorId = creator.id
 
       if (!creatorId) {
          console.error('creatorId가 없습니다.')
@@ -45,7 +43,7 @@ function MemberPage() {
       dispatch(updateCreatorRoleThunk({ id: creatorId, updatedData: { [field]: newValue } }))
          .unwrap()
          .then(() => {
-            dispatch(fetchCreatorsThunk())
+            dispatch(fetchCreatorsThunk(selectedStudio))
          })
          .catch((error) => console.error('업데이트 실패:', error))
    }
@@ -78,13 +76,22 @@ function MemberPage() {
       }
    }
 
+   // 창작자 삭제
+   const handleDeleteCreator = async (id) => {
+      try {
+         await dispatch(deleteCreatorThunk(id)).unwrap()
+         dispatch(fetchCreatorsThunk(selectedStudio))
+      } catch (error) {
+         console.error('창작자 삭제 실패:', error)
+      }
+   }
+
    return (
       <>
-         <StudioNavber />
-         <Box sx={{ width: '60%', margin: 'auto', padding: 2 }}>
+         <Box maxWidth="md" sx={{ margin: 'auto' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
                <Typography variant="h5">창작자 관리</Typography>
-               <Button variant="contained" color="warning" sx={{ ml: 2 }} onClick={handleOpen}>
+               <Button variant="yellow" sx={{ ml: 1, color: '#fff', fontSize: '15px' }} onClick={handleOpen}>
                   추가
                </Button>
             </Box>
@@ -99,22 +106,35 @@ function MemberPage() {
             {!loading &&
                !error &&
                creators.map((creator, index) => (
-                  <Card key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: 2, padding: 2 }}>
-                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: 2 }}>
+                  <Card key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: 2, padding: 2, boxShadow: 'none', border: '1px solid #AAA' }}>
+                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <Avatar sx={{ width: 128, height: 128 }} src={creator?.Creator?.User?.imgUrl ? `${process.env.REACT_APP_API_URL}/userImg/${creator.Creator.User.imgUrl}` : `${process.env.REACT_APP_API_URL}/userImg/default_profile.png`} />
 
-                        <Typography variant="body2" sx={{ marginTop: 1 }}>
-                           {creator.role === 'LEADER' ? `대표 ${creator.Creator?.User?.name || '이름 없음'}` : creator.Creator?.User?.name || '이름 없음'}
-                        </Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyItems: 'center', mt: 1 }}>
+                           <Typography variant="body2">{creator.role === 'LEADER' ? `대표 ${creator.Creator?.User?.name || '이름 없음'}` : creator.Creator?.User?.name || '이름 없음'}</Typography>
+                           <Button
+                              sx={{
+                                 backgroundColor: 'red',
+                                 color: '#fff',
+                                 minWidth: '20px',
+                                 maxHeight: '20px',
+                                 fontSize: '12px',
+                                 borderRadius: '4px',
+                              }}
+                              onClick={() => handleDeleteCreator(creator.id)}
+                           >
+                              탈퇴
+                           </Button>
+                        </Box>
                      </Box>
 
                      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', ml: 2 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                           <Checkbox checked={creator.communityAdmin === 'Y'} onChange={() => handleCheckboxChange(creator.id, 'communityAdmin', creator.communityAdmin)} />
+                           <Checkbox checked={creator.communityAdmin === 'Y'} onChange={() => handleCheckboxChange(creator, 'communityAdmin', creator.communityAdmin)} color="yellow" />
                            <Typography variant="body2">글쓰기 권한</Typography>
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                           <Checkbox checked={creator.spaceAdmin === 'Y'} onChange={() => handleCheckboxChange(creator.id, 'spaceAdmin', creator.spaceAdmin)} />
+                           <Checkbox checked={creator.spaceAdmin === 'Y'} onChange={() => handleCheckboxChange(creator, 'spaceAdmin', creator.spaceAdmin)} color="yellow" />
                            <Typography variant="body2">스페이스 권한</Typography>
                         </Box>
                      </Box>

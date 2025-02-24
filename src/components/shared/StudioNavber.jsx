@@ -9,7 +9,7 @@ function StudioNavber({ isAuthenticated, user }) {
    const [open, setOpen] = useState(false)
 
    const studioMenu = [
-      { page: '새 프로젝트', path: '/studio/project/write' },
+      { page: '새 프로젝트', path: '/studio/project/create' },
       { page: '모든 프로젝트', path: '/studio/project/all' },
       { page: '창작자 관리', path: '/studio/member' },
    ]
@@ -33,12 +33,19 @@ function StudioNavber({ isAuthenticated, user }) {
             <Container maxWidth="md">
                <Stack2 my={2}>
                   <Link to="/studio">
-                     <img src="/images/logo-studio.svg" alt="Studio" />
+                     <img src="/images/logoStudio.svg" alt="Studio" />
                   </Link>
 
                   <Stack2 sx={{ display: breakpoint.desktop, ml: breakpoint.margin, alignItems: 'end', height: 32 }}>
                      {studioMenu.map((item) => (
-                        <Typography key={item.page} fontWeight="500" component={NavLink} to={item.path} mr={breakpoint.margin} onClick={() => setOpen(false)}>
+                        <Typography
+                           key={item.page}
+                           fontWeight="500"
+                           component={NavLink}
+                           to={item.path}
+                           mr={breakpoint.margin}
+                           onClick={() => setOpen(false)}
+                        >
                            {item.page}
                         </Typography>
                      ))}
@@ -52,7 +59,14 @@ function StudioNavber({ isAuthenticated, user }) {
                </Stack2>
                <Stack2 sx={{ flexWrap: 'wrap', my: 2, display: open ? 'flex' : 'none', gap: 2 }}>
                   {studioMenu.map((item) => (
-                     <Typography key={item.page} fontWeight="500">
+                     <Typography
+                        key={item.page}
+                        fontWeight="500"
+                        component={NavLink}
+                        to={item.path}
+                        mr={breakpoint.margin}
+                        onClick={() => setOpen(false)}
+                     >
                         {item.page}
                      </Typography>
                   ))}
