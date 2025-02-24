@@ -99,7 +99,7 @@ const studioSlice = createSlice({
             state.loading = true
             state.error = null
          })
-         .addCase(updateStudioThunk.fulfilled, (state, action) => {
+         .addCase(updateStudioThunk.fulfilled, (state) => {
             state.loading = false
          })
          .addCase(updateStudioThunk.rejected, (state, action) => {

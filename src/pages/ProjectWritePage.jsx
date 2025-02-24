@@ -23,7 +23,7 @@ function ProjectWritePage() {
             navigate(`/studio/project/edit/${result.project.id}`)
          })
          .catch(() => {})
-   }, [dispatch, title])
+   }, [dispatch, navigate, title])
 
    const handleEditProject = useCallback(
       (projectData) => {
@@ -33,7 +33,8 @@ function ProjectWritePage() {
    )
 
    useEffect(() => {
-      if (id) dispatch(fetchProjectByIdThunk(id))
+      if (!id) return
+      dispatch(fetchProjectByIdThunk(id))
    }, [dispatch, id])
 
    if (loading) return <LoadingBox />

@@ -241,7 +241,7 @@ export const theme = createTheme({
                   {
                      props: { size: 'small' },
                      style: {
-                        padding: '10px 14px',
+                        padding: '8px 14px',
                      },
                   },
                   {

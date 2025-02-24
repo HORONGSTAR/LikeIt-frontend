@@ -10,9 +10,9 @@ import adminReducer from '../features/adminSlice'
 import pageReducer from '../features/pageSlice'
 import fundingReducer from '../features/fundingSlice'
 import creatorReducer from '../features/creatorSlice'
-import pageReducer from '../features/pageSlice'
 import projectReducer from '../features/projectSlice'
 import rewardReducer from '../features/rewardSlice'
+import orderReducer from '../features/orderSlice'
 
 const store = configureStore({
    reducer: {
@@ -29,6 +29,7 @@ const store = configureStore({
       reward: rewardReducer,
       funding: fundingReducer,
       creator: creatorReducer,
+      order: orderReducer,
    },
 })
 
