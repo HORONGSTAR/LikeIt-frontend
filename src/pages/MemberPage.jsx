@@ -1,21 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCreatorsThunk, updateCreatorRoleThunk, addCreatorThunk, deleteCreatorThunk } from '../features/creatorSlice'
+import { fetchStudioThunk } from '../features/studioSlice'
 import { Card, Avatar, Typography, Checkbox, Button, Box, Modal, TextField } from '@mui/material'
 import { LoadingBox } from '../styles/BaseStyles'
-import { useParams } from 'react-router-dom'
 
 function MemberPage() {
    const dispatch = useDispatch()
-   const { id } = useParams()
-   const selectedStudio = id || '1'
+   const selectedStudio = useRef(null)
    const { creators, loading, error } = useSelector((state) => state.creator)
    const [open, setOpen] = useState(false)
    const [name, setName] = useState('')
 
    // 창작자 목록 불러오기
    useEffect(() => {
-      dispatch(fetchCreatorsThunk(selectedStudio))
+      dispatch(fetchStudioThunk())
+         .unwrap()
+         .then((result) => {
+            selectedStudio.current = result.studio.id
+            dispatch(fetchCreatorsThunk(selectedStudio.current))
+         })
+         .catch((error) => console.error('업데이트 실패:', error))
    }, [dispatch])
 
    // 모달 열고 닫기
@@ -43,7 +48,7 @@ function MemberPage() {
       dispatch(updateCreatorRoleThunk({ id: creatorId, updatedData: { [field]: newValue } }))
          .unwrap()
          .then(() => {
-            dispatch(fetchCreatorsThunk(selectedStudio))
+            dispatch(fetchCreatorsThunk(selectedStudio.current))
          })
          .catch((error) => console.error('업데이트 실패:', error))
    }
@@ -55,7 +60,7 @@ function MemberPage() {
          return
       }
 
-      if (!selectedStudio) {
+      if (!selectedStudio.current) {
          console.error('스튜디오 ID가 유효하지 않습니다.')
          return
       }
@@ -64,14 +69,14 @@ function MemberPage() {
          const newCreator = {
             name,
             role: 'TEAMMATE',
-            studioId: selectedStudio,
+            studioId: selectedStudio.current,
          }
 
          await dispatch(addCreatorThunk(newCreator)).unwrap()
       } catch (error) {
-         console.error('창작자 추가 실패:', error?.message || error)
+         console.error(error)
       } finally {
-         dispatch(fetchCreatorsThunk(selectedStudio))
+         dispatch(fetchCreatorsThunk(selectedStudio.current))
          handleClose()
       }
    }
@@ -80,7 +85,7 @@ function MemberPage() {
    const handleDeleteCreator = async (id) => {
       try {
          await dispatch(deleteCreatorThunk(id)).unwrap()
-         dispatch(fetchCreatorsThunk(selectedStudio))
+         dispatch(fetchCreatorsThunk(selectedStudio.current))
       } catch (error) {
          console.error('창작자 삭제 실패:', error)
       }
@@ -88,7 +93,7 @@ function MemberPage() {
 
    return (
       <>
-         <Box maxWidth="md" sx={{ margin: 'auto' }}>
+         <Box maxWidth="md" sx={{ margin: 'auto', marginTop: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
                <Typography variant="h5">창작자 관리</Typography>
                <Button variant="yellow" sx={{ ml: 1, color: '#fff', fontSize: '15px' }} onClick={handleOpen}>

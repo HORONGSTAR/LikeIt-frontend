@@ -92,7 +92,6 @@ function App() {
             <Route path="/end" element={<EndPage />} />
             <Route path="/comming" element={<CommingPage />} />
             <Route path="/follow" element={<Home />} />
-
             <Route path="/studio" element={<StudioPage />} />
             <Route path="/studio/:id" element={<StudioPage />} />
             <Route path="/studio/project/create" element={<ProjectWritePage />} />
@@ -101,15 +100,12 @@ function App() {
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
             <Route path="/studio/member" element={<MemberPage />} />
             <Route path="/community/write" element={<CommunityForm />} />
-
             <Route path="/funding" element={<FundingLayout />}>
                <Route path="detail" element={<FundingOverview />} />
                <Route path="timeline" element={<FundingTimeline />} />
                <Route path="review" element={<FundingReview />} />
             </Route>
-
             <Route path="/creator" element={<CreatorPage />} />
-
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
          </Routes>
