@@ -71,11 +71,7 @@ export const StepperTabs = ({ tabItems = [], step, isSave }) => {
                <Stepper nonLinear activeStep={activeStep} alternativeLabel connector={<StepConnector sx={{ top: 0 }} />}>
                   {tabItems.map((item, index) => (
                      <Step key={'label' + item.label}>
-                        <StepButton
-                           sx={{ display: 'inline-block', py: 1.2, wordBreak: 'keep-all' }}
-                           color="inherit"
-                           onClick={() => handleStep(index)}
-                        >
+                        <StepButton sx={{ display: 'inline-block', py: 1.2, wordBreak: 'keep-all' }} color="inherit" onClick={() => handleStep(index)}>
                            {item.label}
                         </StepButton>
                      </Step>
@@ -88,13 +84,7 @@ export const StepperTabs = ({ tabItems = [], step, isSave }) => {
                </TabPanel>
             ))}
          </TabContext>
-         <Snackbar
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-            open={open}
-            autoHideDuration={6000}
-            onClose={() => setOpen(false)}
-            message="변경된 내용을 저장해주세요."
-         />
+         <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={open} autoHideDuration={6000} onClose={() => setOpen(false)} message="변경된 내용을 저장해주세요." />
       </Box>
    )
 }

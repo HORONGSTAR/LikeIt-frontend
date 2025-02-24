@@ -1,33 +1,31 @@
 import { useCallback, useRef, useState } from 'react'
 import ProjectInfoForm from './forms/ProjectInfoForm'
-import ProjectDetailForm from './forms/ProjectDetailForm'
 import ProjectRewardForm from './forms/ProjectRewardForm'
 import ProjectBudgetForm from './forms/ProjectBudgetForm'
 import { StepperTabs } from '../ui/Tabs'
-import { useSelector } from 'react-redux'
 
-function ProjectFormTab({ onSubmit, step }) {
-   const { project } = useSelector((state) => state.project)
+function ProjectFormTab({ onSubmit, step, project }) {
+   const [products, setProducts] = useState(project?.RewardProducts || [])
+   const [rewards, setRewards] = useState(project?.Rewards || [])
+
    const isSave = useRef(true)
 
    const infoVals = {
       imgFile: null,
-      imgUrl: project?.imgUrl ? process.env.REACT_APP_API_URL + '/projectImg/' + project.imgUrl : '',
+      imgUrl: project?.imgUrl ? process.env.REACT_APP_API_URL + '/projectImg' + project.imgUrl : '',
       title: project?.title || '',
       intro: project?.intro || '',
+      contents: project?.contents || '',
       start: project?.startDate || null,
       end: project?.endDate || null,
-   }
-
-   const detailVals = {
-      contents: project?.contents || '',
-      products: project?.RewardProducts || [],
       schedule: project?.schedule || '',
    }
 
    const rewardVals = {
-      rewards: project?.Rewards || [],
-      products: detailVals.products,
+      products,
+      rewards,
+      setProducts,
+      setRewards,
    }
 
    const budgetVals = {
@@ -45,7 +43,7 @@ function ProjectFormTab({ onSubmit, step }) {
       [onSubmit, step, isSave]
    )
 
-   const saveDetailData = useCallback(
+   const saveRewardData = useCallback(
       (date) => {
          onSubmit(date)
          step.current = 1
@@ -54,19 +52,10 @@ function ProjectFormTab({ onSubmit, step }) {
       [onSubmit, step, isSave]
    )
 
-   const saveRewardData = useCallback(
-      (date) => {
-         onSubmit(date)
-         step.current = 2
-         isSave.current = true
-      },
-      [onSubmit, step, isSave]
-   )
-
    const saveBudgetData = useCallback(
       (date) => {
          onSubmit(date)
-         step.current = 3
+         step.current = 2
          isSave.current = true
       },
       [onSubmit, step, isSave]
@@ -78,12 +67,8 @@ function ProjectFormTab({ onSubmit, step }) {
          page: <ProjectInfoForm isSave={isSave} initVals={infoVals} onSubmit={saveInfoData} />,
       },
       {
-         label: '프로젝트 상세',
-         page: <ProjectDetailForm isSave={isSave} initVals={detailVals} onSubmit={saveDetailData} />,
-      },
-      {
-         label: '리워드 구성',
-         page: <ProjectRewardForm isSave={isSave} initVals={rewardVals} onSubmit={saveRewardData} />,
+         label: '선물 구성',
+         page: <ProjectRewardForm initVals={rewardVals} />,
       },
       {
          label: '예산 계획',

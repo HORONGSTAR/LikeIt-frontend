@@ -9,32 +9,18 @@ import { deleteProductThunk } from '../../../features/rewardSlice'
 import { useDispatch } from 'react-redux'
 
 function ProjectDetailForm({ onSubmit, initVals = {}, isSave }) {
-   const [contents, setContents] = useState(initVals.contents)
-   const [schedule, setSchedule] = useState(initVals.schedule)
    const [products, setProducts] = useState(initVals.products)
    const [product, setProduct] = useState(null)
+   const [rewards, setRewards] = useState(initVals.rewards)
+   const [reward, setReward] = useState(null)
    const [open, setOpen] = useState(false)
-   const origin = useRef(JSON.stringify({ contents, schedule, products }))
    const dispatch = useDispatch()
-
-   useEffect(() => {
-      if (!isSave.current) return
-      if (origin.current !== JSON.stringify({ contents, schedule, products })) isSave.current = false
-   }, [isSave, contents, schedule, products])
-
-   const handleSaveData = useCallback(() => {
-      const formData = new FormData()
-      formData.append('contents', contents)
-      formData.append('schedule', schedule)
-
-      onSubmit(formData)
-   }, [onSubmit, contents, schedule])
 
    const handleDeleteProduct = useCallback(
       (productId) => {
          dispatch(deleteProductThunk(productId))
             .unwrap()
-            .then((result) => setProducts(result.products))
+            .then((result) => setProducts(products.filter((product) => product.id !== result.productId)))
             .catch()
       },
       [dispatch]
@@ -52,19 +38,6 @@ function ProjectDetailForm({ onSubmit, initVals = {}, isSave }) {
 
    const formItems = [
       {
-         name: '프로젝트 소개',
-         input: (
-            <TextField
-               value={contents}
-               onChange={(e) => setContents(e.target.value)}
-               fullWidth
-               rows={3}
-               multiline
-               label="프로젝트의 기획 의도나 배경 등 전체적인 소개를 적어주세요."
-            />
-         ),
-      },
-      {
          name: '선물 구성품',
          input: (
             <>
@@ -72,7 +45,7 @@ function ProjectDetailForm({ onSubmit, initVals = {}, isSave }) {
                   선물 구성품 추가
                </Button>
                <Stack spacing={1} mt={1}>
-                  <EditProductBox open={open} setOpen={setOpen} product={product} setProducts={setProducts} />
+                  <EditProductBox open={open} setOpen={setOpen} product={product} setProducts={setProducts} products={products} />
                   {products.map((product) => (
                      <ListCard product={product} key={'product' + product.id}>
                         <IconButton aria-label="수정" size="small" onClick={() => ChangeData(product)}>
@@ -87,26 +60,13 @@ function ProjectDetailForm({ onSubmit, initVals = {}, isSave }) {
             </>
          ),
       },
-      {
-         name: '일정 안내',
-         input: (
-            <TextField
-               fullWidth
-               value={schedule}
-               onChange={(e) => setSchedule(e.target.value)}
-               rows={3}
-               multiline
-               label="결제 예정일이나 발송 예정일등 프로젝트 진행 일정을 적어주세요."
-            />
-         ),
-      },
    ]
 
    return (
       <>
          <FormGrid formItems={formItems} />
          <Stack2 justifyContent="end">
-            <Button variant="contained" size="large" onClick={handleSaveData}>
+            <Button variant="contained" size="large">
                내용 저장하기
             </Button>
          </Stack2>

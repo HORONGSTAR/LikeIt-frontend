@@ -35,6 +35,8 @@ const projectSlice = createSlice({
    name: 'project',
    initialState: {
       project: null,
+      products: [],
+      rewards: [],
       projects: null,
       loading: false,
       pagination: null,
@@ -63,7 +65,7 @@ const projectSlice = createSlice({
          })
          .addCase(updateProjectThunk.fulfilled, (state, action) => {
             state.loading = false
-            state.project = action.payload.project
+            state.project = { ...state.project, ...action.payload.project }
          })
          .addCase(updateProjectThunk.rejected, (state, action) => {
             state.loading = false
@@ -77,6 +79,8 @@ const projectSlice = createSlice({
          .addCase(fetchProjectByIdThunk.fulfilled, (state, action) => {
             state.loading = false
             state.project = action.payload.project
+            state.products = action.payload.products
+            state.rewards = action.payload.rewards
          })
          .addCase(fetchProjectByIdThunk.rejected, (state, action) => {
             state.loading = false
