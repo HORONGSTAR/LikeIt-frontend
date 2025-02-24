@@ -49,6 +49,7 @@ import FundingDetailPage from './pages/FundingDetailPage'
 
 // develop
 import DesignGuide from './pages/DesignGuide'
+import ProjectAllPage from './pages/ProjectAllPage'
 
 function App() {
    const path = useLocation().pathname.split('/')
@@ -104,6 +105,7 @@ function App() {
             <Route path="/studio/:id" element={<StudioPage />} />
             <Route path="/studio/project/create" element={<ProjectWritePage />} />
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
+            <Route path="/studio/project/all" element={<ProjectAllPage />} />
             <Route path="/studio/profile" element={<StudioProfilePage />} />
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
             <Route path="/studio/member" element={<MemberPage />} />

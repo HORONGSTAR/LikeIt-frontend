@@ -1,21 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCreatorsThunk, updateCreatorRoleThunk, addCreatorThunk, deleteCreatorThunk } from '../features/creatorSlice'
+import { fetchStudioThunk } from '../features/studioSlice'
 import { Card, Avatar, Typography, Checkbox, Button, Box, Modal, TextField } from '@mui/material'
-import { LoadingBox } from '../styles/BaseStyles'
-import { useParams } from 'react-router-dom'
+import { LoadingBox, Main } from '../styles/BaseStyles'
 
 function MemberPage() {
    const dispatch = useDispatch()
-   const { id } = useParams()
-   const selectedStudio = id || '1'
+   const selectedStudio = useRef(null)
    const { creators, loading, error } = useSelector((state) => state.creator)
    const [open, setOpen] = useState(false)
    const [name, setName] = useState('')
 
    // 창작자 목록 불러오기
    useEffect(() => {
-      dispatch(fetchCreatorsThunk(selectedStudio))
+      dispatch(fetchStudioThunk())
+         .unwrap()
+         .then((result) => {
+            selectedStudio.current = result.studio.id
+            dispatch(fetchCreatorsThunk(selectedStudio.current))
+         })
+         .catch((error) => console.error('업데이트 실패:', error))
    }, [dispatch])
 
    // 모달 열고 닫기
@@ -43,7 +48,7 @@ function MemberPage() {
       dispatch(updateCreatorRoleThunk({ id: creatorId, updatedData: { [field]: newValue } }))
          .unwrap()
          .then(() => {
-            dispatch(fetchCreatorsThunk(selectedStudio))
+            dispatch(fetchCreatorsThunk(selectedStudio.current))
          })
          .catch((error) => console.error('업데이트 실패:', error))
    }
@@ -55,7 +60,7 @@ function MemberPage() {
          return
       }
 
-      if (!selectedStudio) {
+      if (!selectedStudio.current) {
          console.error('스튜디오 ID가 유효하지 않습니다.')
          return
       }
@@ -64,14 +69,14 @@ function MemberPage() {
          const newCreator = {
             name,
             role: 'TEAMMATE',
-            studioId: selectedStudio,
+            studioId: selectedStudio.current,
          }
 
          await dispatch(addCreatorThunk(newCreator)).unwrap()
       } catch (error) {
-         console.error('창작자 추가 실패:', error?.message || error)
+         console.error(error)
       } finally {
-         dispatch(fetchCreatorsThunk(selectedStudio))
+         dispatch(fetchCreatorsThunk(selectedStudio.current))
          handleClose()
       }
    }
@@ -80,7 +85,7 @@ function MemberPage() {
    const handleDeleteCreator = async (id) => {
       try {
          await dispatch(deleteCreatorThunk(id)).unwrap()
-         dispatch(fetchCreatorsThunk(selectedStudio))
+         dispatch(fetchCreatorsThunk(selectedStudio.current))
       } catch (error) {
          console.error('창작자 삭제 실패:', error)
       }
@@ -88,8 +93,8 @@ function MemberPage() {
 
    return (
       <>
-         <Box maxWidth="md" sx={{ margin: 'auto' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 2 }}>
+         <Main>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                <Typography variant="h5">창작자 관리</Typography>
                <Button variant="yellow" sx={{ ml: 1, color: '#fff', fontSize: '15px' }} onClick={handleOpen}>
                   추가
@@ -140,33 +145,33 @@ function MemberPage() {
                      </Box>
                   </Card>
                ))}
-         </Box>
 
-         {/* 창작자 추가 모달 */}
-         <Modal open={open} onClose={handleClose} aria-labelledby="add-creator-modal">
-            <Box
-               sx={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: 400,
-                  bgcolor: 'background.paper',
-                  boxShadow: 24,
-                  p: 4,
-                  borderRadius: 2,
-                  textAlign: 'center',
-               }}
-            >
-               <Typography variant="h6" id="add-creator-modal" gutterBottom>
-                  스튜디오에 창작자를 추가하시겠어요?
-               </Typography>
-               <TextField fullWidth variant="outlined" placeholder="닉네임을 입력해주세요." value={name} onChange={handleNicknameChange} sx={{ my: 2 }} />
-               <Button variant="contained" color="warning" fullWidth onClick={handleAddCreator}>
-                  추가
-               </Button>
-            </Box>
-         </Modal>
+            {/* 창작자 추가 모달 */}
+            <Modal open={open} onClose={handleClose} aria-labelledby="add-creator-modal">
+               <Box
+                  sx={{
+                     position: 'absolute',
+                     top: '50%',
+                     left: '50%',
+                     transform: 'translate(-50%, -50%)',
+                     width: 400,
+                     bgcolor: 'background.paper',
+                     boxShadow: 24,
+                     p: 4,
+                     borderRadius: 2,
+                     textAlign: 'center',
+                  }}
+               >
+                  <Typography variant="h6" id="add-creator-modal" gutterBottom>
+                     스튜디오에 창작자를 추가하시겠어요?
+                  </Typography>
+                  <TextField fullWidth variant="outlined" placeholder="닉네임을 입력해주세요." value={name} onChange={handleNicknameChange} sx={{ my: 2 }} />
+                  <Button variant="contained" color="warning" fullWidth onClick={handleAddCreator}>
+                     추가
+                  </Button>
+               </Box>
+            </Modal>
+         </Main>
       </>
    )
 }
