@@ -1,6 +1,6 @@
 import './styles/common.css'
 import { Route, Routes, Link, useLocation } from 'react-router-dom'
-import { Button } from '@mui/material'
+import { Button, Box } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 
@@ -12,6 +12,7 @@ import Home from './pages/Home'
 import AdminPage from './pages/AdminPage'
 import Navber from './components/shared/Navber'
 import StudioNavber from './components/shared/StudioNavber'
+import Footer from './components/shared/Footer'
 
 import HotPage from './pages/list/HotPage'
 import NewPage from './pages/list/NewPage'
@@ -39,7 +40,6 @@ import FundingOverview from './components/funding/FundingOverview'
 
 import RankingPage from './pages/RankingPage'
 import AdditionalSignupPage from './pages/AdditionalSignupPage'
-
 import StudioProfilePage from './pages/StudioProfilePage'
 import ProjectWritePage from './pages/ProjectWritePage'
 
@@ -49,9 +49,14 @@ import FundingDetailPage from './pages/FundingDetailPage'
 
 import DesignGuide from './pages/DesignGuide'
 
+import DesignGuide from './pages/DesignGuide'
+import MemberPage from './pages/MemberPage'
+import CommunityForm from './components/studio/community/CommunityForm'
+
 function App() {
    const location = useLocation()
-   const path = location.pathname.split('/')[1]
+   const path = location.pathname.split('/')
+
    const pageName = {
       login: true,
       signup: true,
@@ -59,9 +64,11 @@ function App() {
       findingemail: true,
       commonsignup: true,
       studio: <StudioNavber />,
+      '/studio/project/write': true,
    }
 
-   const dontNeedNavber = pageName[path]
+   const dontNeedNavber = pageName[path[1]]
+   const needBackground = pageName[location.pathname]
 
    const dispatch = useDispatch()
    const { isAuthenticated, user } = useSelector((state) => state.auth)
@@ -71,7 +78,7 @@ function App() {
    }, [dispatch])
 
    return (
-      <>
+      <Box sx={{ background: needBackground && '#eee' }}>
          {dontNeedNavber || <Navber isAuthenticated={isAuthenticated} user={user} />}
          <Routes>
             <Route path="/desinguide" element={<DesignGuide />} />
@@ -97,12 +104,11 @@ function App() {
             <Route path="/follow" element={<Home />} />
 
             <Route path="/studio" element={<StudioPage />} />
-            <Route path="/studio/community/write" element={<CommunityWritePage />} />
-
-            <Route path="/studio/project/write" element={<ProjectWritePage />} />
+            <Route path="/studio/project/create" element={<ProjectWritePage />} />
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
             <Route path="/studio/profile" element={<StudioProfilePage />} />
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
+            <Route path="/studio/member" element={<MemberPage />} />
 
             <Route path="/studio/:id" element={<StudioPage />} />
 
@@ -113,14 +119,15 @@ function App() {
             </Route>
 
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
+            <Route path="/community/write" element={<CommunityForm />} />
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />
-
             <Route path="/funding/:id" element={<FundingDetailPage />} />
          </Routes>
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기
          </Button>
-      </>
+         <Footer></Footer>
+      </Box>
    )
 }
 export default App

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { showCommunities, getCommunityById, createCommunity, updateCommunity, deleteCommunity } from '../api/communityApi'
+import { getCommunity, getCommunityById, createCommunity, updateCommunity, deleteCommunity } from '../api/communityApi'
 
 export const fetchCommunityByIdThunk = createAsyncThunk('community/fetchCommunityById', async (id, { rejectWithValue }) => {
    try {
@@ -10,9 +10,9 @@ export const fetchCommunityByIdThunk = createAsyncThunk('community/fetchCommunit
    }
 })
 
-export const fetchCommunitiesThunk = createAsyncThunk('community/fetchCommunities', async (data, { rejectWithValue }) => {
+export const fetchCommunitiesThunk = createAsyncThunk('community/fetchCommunitiesThunk', async ({ page, limit }, { rejectWithValue }) => {
    try {
-      const response = await showCommunities(data)
+      const response = await getCommunity({ page, limit })
       return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '커뮤니티 목록 불러오기 실패')
@@ -22,7 +22,7 @@ export const fetchCommunitiesThunk = createAsyncThunk('community/fetchCommunitie
 export const createCommunityThunk = createAsyncThunk('community/createCommunity', async (communityData, { rejectWithValue }) => {
    try {
       const response = await createCommunity(communityData)
-      return response.data.community
+      return response
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '커뮤니티 글 등록 실패')
    }
@@ -31,7 +31,7 @@ export const createCommunityThunk = createAsyncThunk('community/createCommunity'
 export const updateCommunityThunk = createAsyncThunk('community/updateCommunity', async ({ id, communityData }, { rejectWithValue }) => {
    try {
       const response = await updateCommunity(id, communityData)
-      return response.data.community
+      return response.community
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '커뮤니티 글 수정 실패')
    }
@@ -39,7 +39,7 @@ export const updateCommunityThunk = createAsyncThunk('community/updateCommunity'
 
 export const deleteCommunityThunk = createAsyncThunk('community/deleteCommunity', async (id, { rejectWithValue }) => {
    try {
-      await deleteCommunity(id)
+      return await deleteCommunity(id)
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '커뮤니티 글 삭제 실패')
    }
@@ -93,6 +93,7 @@ const communitySlice = createSlice({
          })
          .addCase(createCommunityThunk.fulfilled, (state, action) => {
             state.loading = false
+            state.community = action.payload
          })
          .addCase(createCommunityThunk.rejected, (state, action) => {
             state.loading = false
@@ -111,7 +112,6 @@ const communitySlice = createSlice({
             state.loading = false
             state.error = action.payload
          })
-
          // 커뮤니티 글 삭제
          .addCase(deleteCommunityThunk.pending, (state) => {
             state.loading = true
