@@ -68,7 +68,7 @@ export const setTempPasswordThunk = createAsyncThunk('auth/setTempPassword', asy
    }
 })
 
-//
+//이메일 가져오기(찾기)
 export const fetchEmailThunk = createAsyncThunk('auth/fetchEmail', async (phone, { rejectWithValue }) => {
    try {
       const response = await fetchEmail(phone)

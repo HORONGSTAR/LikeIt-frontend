@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Button, Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, DialogContent, DialogTitle, Container, Link as MuiLink } from '@mui/material'
+import { Card, CardContent, CardMedia, Button, Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, DialogContent, DialogTitle, Container, Link as MuiLink } from '@mui/material'
 
 import { Close, PlayArrowRounded, AddPhotoAlternate } from '@mui/icons-material'
 import { useState, useCallback } from 'react'
@@ -316,3 +316,38 @@ export const Ellipsis = styled.div`
       -webkit-line-clamp: 1;
    }
 `
+
+export const FundingCard = ({ image, title, price, status }) => {
+   return (
+      <Card sx={{ display: 'flex', flexDirection: 'row', mb: 2, p: 1, boxShadow: 2 }}>
+         <CardMedia component="img" sx={{ width: 120, height: 80, borderRadius: 1 }} image={image} alt={title} />
+         <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Typography variant="body2" color="text.secondary">
+               결제 완료일 2025/01/12
+            </Typography>
+            <Typography variant="subtitle1" fontWeight="bold">
+               {title}
+            </Typography>
+            <Typography variant="body2" color="green">
+               {price}원
+            </Typography>
+         </CardContent>
+         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            {status === 'success' ? (
+               <Button variant="contained" color="success" sx={{ mb: 1 }}>
+                  선물 전달 완료
+               </Button>
+            ) : (
+               <Button variant="contained" color="grey" disabled>
+                  펀딩 실패
+               </Button>
+            )}
+            {status === 'success' && (
+               <Button variant="text" color="primary">
+                  후기 작성하기
+               </Button>
+            )}
+         </Box>
+      </Card>
+   )
+}

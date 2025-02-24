@@ -2,17 +2,17 @@ import React, { useCallback, useState, useEffect } from 'react'
 import { Avatar, Button, TextField, Tab, Typography, Box, Link, Checkbox, FormControlLabel, Grid } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import PostAddIcon from '@mui/icons-material/PostAdd'
-import { Main, SubTitle, Stack2, TextLink, Dot, ModifiedModalBox, LoadingBox, ErrorBox, ImgUploadBox } from '../../styles/BaseStyles'
+import { Main, SubTitle, Stack2, TextLink, Dot, ModifiedModalBox, LoadingBox, ErrorBox, ImgUploadBox, FundingCard } from '../../styles/BaseStyles'
 import { Tabs, TabLink } from '../../components/ui/Tabs'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeEmailThunk, changePasswordThunk, registerUserThunk } from '../../features/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { updateCategoryThunk, updateProfileThunk } from '../../features/pageSlice'
 
-function My({ initialValues = {} }) {
+function My({ initialValues = {}, userWithOrders = {} }) {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-
+   console.log(userWithOrders ? userWithOrders : '값 안넘어옴')
    const [email, setEmail] = useState(initialValues ? initialValues.email : '')
    const [currentPassword, setCurrentPassword] = useState('')
    const [passwordToChange, setPasswordToChange] = useState('')
@@ -160,11 +160,7 @@ function My({ initialValues = {} }) {
          })
    }, [nickname, imgFile, dispatch])
 
-   const sponsorList = (
-      <>
-         <>후원내역</>
-      </>
-   )
+   const sponsorList = <>{userWithOrders ? userWithOrders.map(() => <FundingCard />) : ''}</>
 
    const accountSetting = (
       <>

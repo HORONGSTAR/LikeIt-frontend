@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 const MyPage = () => {
    const dispatch = useDispatch()
 
-   const { user, loading, error } = useSelector((state) => state.page)
+   const { user, userWithOrders, loading, error } = useSelector((state) => state.page)
 
    useEffect(() => {
       dispatch(getProfileThunk())
@@ -15,7 +15,7 @@ const MyPage = () => {
    if (loading) return <p>로딩중</p>
    if (error) return <p>에러발생: {error}</p>
 
-   return <My initialValues={user} />
+   return <My initialValues={user} userWithOrders={userWithOrders} />
 }
 
 export default MyPage

@@ -29,21 +29,21 @@ import FindingEmailPage from './pages/FindingEmailPage'
 
 import CommunityWritePage from './pages/CommunityWritePage'
 import StudioPage from './pages/StudioPage'
-import StudioEditPage from './pages/StudioEditPage'
-import StudioCreatePage from './pages/StudioCreatePage'
+// import StudioEditPage from './pages/StudioEditPage'
+// import StudioCreatePage from './pages/StudioCreatePage'
 
-import FundingReview from './components/funding/FundingReview'
-import FundingLayout from './components/funding/FundingLayout'
-import FundingTimeline from './components/funding/FundingTimeline'
-import FundingOverview from './components/funding/FundingOverview'
+// import FundingReview from './components/funding/FundingReview'
+// import FundingLayout from './components/funding/FundingLayout'
+// import FundingTimeline from './components/funding/FundingTimeline'
+// import FundingOverview from './components/funding/FundingOverview'
 
 import RankingPage from './pages/RankingPage'
 import AdditionalSignupPage from './pages/AdditionalSignupPage'
 
-import StudioPage from './pages/StudioPage'
-import StudioProfilePage from './pages/StudioProfilePage'
-import CommunityWritePage from './pages/CommunityWritePage'
-import ProjectWritePage from './pages/ProjectWritePage'
+// import StudioPage from './pages/StudioPage'
+// import StudioProfilePage from './pages/StudioProfilePage'
+// import CommunityWritePage from './pages/CommunityWritePage'
+// import ProjectWritePage from './pages/ProjectWritePage'
 
 import { checkAuthStatusThunk } from './features/authSlice'
 import MyPage from './pages/MyPage'
@@ -101,18 +101,18 @@ function App() {
             <Route path="/studio" element={<StudioPage />} />
             <Route path="/studio/community/write" element={<CommunityWritePage />} />
 
-            <Route path="/studio/project/write" element={<ProjectWritePage />} />
+            {/* <Route path="/studio/project/write" element={<ProjectWritePage />} />
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
             <Route path="/studio/profile" element={<StudioProfilePage />} />
-            <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
+            <Route path="/studio/profile/:id" element={<StudioProfilePage />} /> */}
 
             <Route path="/studio/:id" element={<StudioPage />} />
 
-            <Route path="/funding" element={<FundingLayout />}>
+            {/* <Route path="/funding" element={<FundingLayout />}>
                <Route path="detail" element={<FundingOverview />} />
                <Route path="timeline" element={<FundingTimeline />} />
                <Route path="review" element={<FundingReview />} />
-            </Route>
+            </Route> */}
 
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
             <Route path="/studio/commu/write" element={<CommunityWritePage />} />
