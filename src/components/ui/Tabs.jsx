@@ -1,6 +1,5 @@
-import { useState } from 'react'
-import { Box, Tab, Chip, Stack, Stepper, Step, StepButton, StepConnector, Typography } from '@mui/material'
-
+import { useCallback, useState } from 'react'
+import { Box, Tab, Chip, Stack, Stepper, Step, StepButton, StepConnector, Snackbar } from '@mui/material'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
 import { Link, Element } from 'react-scroll'
 import { Stack2 } from '../../styles/BaseStyles'
@@ -53,12 +52,17 @@ export const TabLink = ({ links = [] }) => {
    )
 }
 
-export const StepperTabs = ({ tabItems = [], completed = {}, step }) => {
+export const StepperTabs = ({ tabItems = [], step, isSave }) => {
    const [activeStep, setActiveStep] = useState(step.current)
+   const [open, setOpen] = useState(false)
 
-   const handleStep = (step) => () => {
-      setActiveStep(step)
-   }
+   const handleStep = useCallback(
+      (step) => {
+         if (!isSave.current) return setOpen(true)
+         setActiveStep(step)
+      },
+      [isSave]
+   )
 
    return (
       <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -66,8 +70,12 @@ export const StepperTabs = ({ tabItems = [], completed = {}, step }) => {
             <Box sx={{ borderBottom: 1, borderColor: 'divider', py: 3 }}>
                <Stepper nonLinear activeStep={activeStep} alternativeLabel connector={<StepConnector sx={{ top: 0 }} />}>
                   {tabItems.map((item, index) => (
-                     <Step key={'label' + item.label} completed={completed[index]}>
-                        <StepButton sx={{ display: 'inline-block', py: 1.2, wordBreak: 'keep-all' }} color="inherit" onClick={handleStep(index)}>
+                     <Step key={'label' + item.label}>
+                        <StepButton
+                           sx={{ display: 'inline-block', py: 1.2, wordBreak: 'keep-all' }}
+                           color="inherit"
+                           onClick={() => handleStep(index)}
+                        >
                            {item.label}
                         </StepButton>
                      </Step>
@@ -80,6 +88,13 @@ export const StepperTabs = ({ tabItems = [], completed = {}, step }) => {
                </TabPanel>
             ))}
          </TabContext>
+         <Snackbar
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            open={open}
+            autoHideDuration={6000}
+            onClose={() => setOpen(false)}
+            message="변경된 내용을 저장해주세요."
+         />
       </Box>
    )
 }

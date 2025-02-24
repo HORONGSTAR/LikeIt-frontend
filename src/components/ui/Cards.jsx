@@ -228,6 +228,7 @@ export const CommingCard = ({ project }) => {
                      onClick={(e) => {
                         e.preventDefault()
                         project.isFavorite = !project.isFavorite
+                        project.userCount -= 1
                         project.noticeDel(project.id)
                      }}
                      startIcon={
@@ -249,6 +250,7 @@ export const CommingCard = ({ project }) => {
                      onClick={(e) => {
                         e.preventDefault()
                         project.isFavorite = !project.isFavorite
+                        project.userCount += 1
                         project.isAuthenticated ? project.noticeReg(project.id) : (window.location.href = '/login')
                      }}
                      startIcon={<Box component="img" src="/images/icon/bell.svg" alt="알림버튼" sx={{ height: 12 }} />}

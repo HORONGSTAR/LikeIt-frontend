@@ -40,7 +40,11 @@ function StudioPage() {
             </Typography>
          </Box>
 
-         <Button variant="yellow" sx={{ color: 'white', height: '50px', fontSize: '24px' }} onClick={() => navigate('/studio/profile')}>
+         <Button
+            variant="yellow"
+            sx={{ color: 'white', height: '50px', fontSize: '24px' }}
+            onClick={() => navigate('/studio/profile')}
+         >
             스튜디오 만들기
          </Button>
 

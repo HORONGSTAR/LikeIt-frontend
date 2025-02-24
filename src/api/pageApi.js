@@ -11,6 +11,7 @@ export const getProfile = async () => {
    }
 }
 
+//프로필 수정
 export const updateProfile = async (profileData) => {
    try {
       const config = {
@@ -20,6 +21,17 @@ export const updateProfile = async (profileData) => {
       }
 
       const response = await likeItApi.put('/page/profile', profileData, config)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+//카테고리 변경
+export const updateCategory = async (selectedValues) => {
+   try {
+      const response = await likeItApi.put('/page/category', { selectedCategories: selectedValues })
       return response
    } catch (error) {
       console.error(`API Request 오류: ${error.message}`)

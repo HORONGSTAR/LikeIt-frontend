@@ -6,7 +6,7 @@ import { createProductThunk, updateProductThunk } from '../../../features/reward
 import { useParams } from 'react-router-dom'
 import { isBlank } from '../../../util/isBlank'
 
-function ProductEditForm({ open, setOpen, product, setProducts }) {
+function EditProductBox({ open, setOpen, product, setProducts }) {
    const [imgFile, setImgFile] = useState(null)
    const [imgUrl, setImgUrl] = useState('')
    const [title, setTitle] = useState('')
@@ -49,35 +49,33 @@ function ProductEditForm({ open, setOpen, product, setProducts }) {
             .catch()
       }
       setOpen(false)
-   }, [dispatch, id, imgFile, title, contents])
+   }, [dispatch, setOpen, setProducts, product?.id, id, imgUrl, imgFile, title, contents])
 
    return (
-      <>
-         <Dialog open={open}>
-            <DialogTitle>선물 구성품 추가</DialogTitle>
-            <DialogContent>
-               <Stack spacing={2}>
-                  <ImgUploadBox setImgFile={setImgFile} imgUrl={imgUrl} setImgUrl={setImgUrl} />
-                  <TextField value={title} onChange={(e) => setTitle(e.target.value)} fullWidth label="구성품 이름을 적어주세요." />
-                  <TextField
-                     value={contents}
-                     onChange={(e) => setContents(e.target.value)}
-                     fullWidth
-                     label="구성품에 대한 설명을 적어주세요."
-                     rows={3}
-                     multiline
-                  />
-               </Stack>
-            </DialogContent>
-            <DialogActions>
-               <Button onClick={() => setOpen(false)}>취소</Button>
-               <Button color="orenge" onClick={handleSubmit}>
-                  확인
-               </Button>
-            </DialogActions>
-         </Dialog>
-      </>
+      <Dialog open={open}>
+         <DialogTitle>선물 구성품 추가</DialogTitle>
+         <DialogContent>
+            <Stack spacing={2}>
+               <ImgUploadBox setImgFile={setImgFile} imgUrl={imgUrl} setImgUrl={setImgUrl} />
+               <TextField value={title} onChange={(e) => setTitle(e.target.value)} fullWidth label="구성품 이름을 적어주세요." />
+               <TextField
+                  value={contents}
+                  onChange={(e) => setContents(e.target.value)}
+                  fullWidth
+                  label="구성품에 대한 설명을 적어주세요."
+                  rows={3}
+                  multiline
+               />
+            </Stack>
+         </DialogContent>
+         <DialogActions>
+            <Button onClick={() => setOpen(false)}>취소</Button>
+            <Button color="orenge" onClick={handleSubmit}>
+               확인
+            </Button>
+         </DialogActions>
+      </Dialog>
    )
 }
 
-export default ProductEditForm
+export default EditProductBox
