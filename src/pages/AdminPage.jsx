@@ -56,8 +56,8 @@ function AdminPage() {
    }, [dispatch, page, searchSubmit])
 
    const bannerReg = useCallback(
-      (id) => {
-         dispatch(bannerRegThunk(id))
+      (data) => {
+         dispatch(bannerRegThunk(data))
       },
       [dispatch]
    )

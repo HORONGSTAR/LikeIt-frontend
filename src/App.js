@@ -46,6 +46,7 @@ import CreatorPage from './pages/CreatorPage'
 
 // fundingDetail - user
 import FundingDetailPage from './pages/FundingDetailPage'
+import FundingOrderPage from './pages/FundingOrderPage'
 
 // develop
 import DesignGuide from './pages/DesignGuide'
@@ -109,6 +110,15 @@ function App() {
 
             {/* fundingDetail - user */}
             <Route path="/funding/:id" element={<FundingDetailPage />} />
+
+            <Route
+               path="/funding/order/:id"
+               element={
+                  <RedirectLogoutRoute>
+                     <FundingOrderPage />
+                  </RedirectLogoutRoute>
+               }
+            />
 
             {/* develop */}
             <Route path="/desinguide" element={<DesignGuide />} />

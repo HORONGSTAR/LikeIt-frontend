@@ -41,6 +41,17 @@ export const timelineCommentReg = async (data) => {
       throw error
    }
 }
+// 타임라인 댓글 삭제
+export const timelineCommentDel = async (id) => {
+   try {
+      const response = await likeitApi.delete(`/funding/timeline/comment/del/${id}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
 // 리뷰 목록 호출
 export const getReviews = async (data) => {
    try {
@@ -68,6 +79,33 @@ export const reviewRecommendReg = async (id) => {
 export const reviewRecommendDel = async (id) => {
    try {
       const response = await likeitApi.delete(`/funding/review/recommend/del/${id}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+// 리뷰 등록
+export const reviewReg = async (data) => {
+   try {
+      const config = {
+         headers: {
+            'Content-Type': 'multipart/form-data', // 데이터 형식 지정
+         },
+      }
+      const response = await likeitApi.post(`/funding/review/reg`, data, config)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+// 리뷰 삭제
+export const reviewDel = async (id) => {
+   try {
+      const response = await likeitApi.delete(`/funding/review/del/${id}`)
       return response
    } catch (error) {
       console.error(`API Request 오류: ${error.message}`)

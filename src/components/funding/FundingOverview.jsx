@@ -4,14 +4,29 @@ import { TabLink } from '../../components/ui/Tabs'
 import { useState } from 'react'
 import { AddCircle, RemoveCircle } from '@mui/icons-material'
 
-function FundingOverview({ funding }) {
+function FundingOverview({ funding, orderPlusReward, orderMinusReward }) {
    const [rewardBasket, setRewardBasket] = useState({})
+
    const plusReward = (rid) => {
-      setRewardBasket((prevData) => ({ ...prevData, [rid]: prevData[rid] + 1 }))
+      setRewardBasket((prevData) => {
+         const updatedBasket = {
+            ...prevData,
+            [rid]: prevData[rid] + 1,
+         }
+         orderPlusReward(updatedBasket)
+         return updatedBasket
+      })
    }
    const minusReward = (rid) => {
       if (0 > rewardBasket[rid] - 1) return
-      setRewardBasket((prevData) => ({ ...prevData, [rid]: prevData[rid] - 1 }))
+      setRewardBasket((prevData) => {
+         const updatedBasket = {
+            ...prevData,
+            [rid]: prevData[rid] - 1,
+         }
+         orderMinusReward(updatedBasket)
+         return updatedBasket
+      })
    }
 
    const showProduct = () => {

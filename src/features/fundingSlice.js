@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getFunding, getReviews, getTimeline, getTimelines, reviewRecommendDel, reviewRecommendReg, timelineCommentReg } from '../api/fundingApi'
+import { getFunding, getReviews, getTimeline, getTimelines, reviewDel, reviewRecommendDel, reviewRecommendReg, reviewReg, timelineCommentDel, timelineCommentReg } from '../api/fundingApi'
 
 // 특정 펀딩 프로젝트 가져오기
 export const fetchFundingThunk = createAsyncThunk('funding/fetchFunding', async (id, { rejectWithValue }) => {
@@ -37,6 +37,16 @@ export const timelineCommentRegThunk = createAsyncThunk('funding/timelineComment
       return rejectWithValue(error.response?.data?.message || '타임라인 댓글 작성 실패')
    }
 })
+// 타임라인 댓글 삭제
+export const timelineCommentDelThunk = createAsyncThunk('funding/timelineCommentDel', async (id, { rejectWithValue }) => {
+   try {
+      const response = await timelineCommentDel(id)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '댓글 삭제 실패')
+   }
+})
+
 // 리뷰 호출
 export const fetchReviewsThunk = createAsyncThunk('funding/fetchReviews', async (data, { rejectWithValue }) => {
    try {
@@ -64,6 +74,26 @@ export const reviewRecommendDelThunk = createAsyncThunk('funding/reviewRecommend
       return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '리뷰 추천 취소 실패')
+   }
+})
+
+// 리뷰 등록
+export const reviewRegThunk = createAsyncThunk('funding/reviewReg', async (data, { rejectWithValue }) => {
+   try {
+      const response = await reviewReg(data)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '리뷰 등록 실패')
+   }
+})
+
+// 리뷰 삭제
+export const reviewDelThunk = createAsyncThunk('funding/reviewDel', async (id, { rejectWithValue }) => {
+   try {
+      const response = await reviewDel(id)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '리뷰 삭제 실패')
    }
 })
 
@@ -175,6 +205,19 @@ const fundingSlice = createSlice({
             state.loading = false
          })
          .addCase(reviewRecommendDelThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+      // 댓글 등록
+      builder
+         .addCase(reviewRegThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(reviewRegThunk.fulfilled, (state, action) => {
+            state.loading = false
+         })
+         .addCase(reviewRegThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

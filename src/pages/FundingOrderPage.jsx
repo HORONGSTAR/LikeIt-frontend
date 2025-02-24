@@ -1,30 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Typography, Avatar, Button, Grid2, Card, CardMedia, CardContent, Tab } from '@mui/material'
-import { TabContext, TabList, TabPanel } from '@mui/lab'
-import { Link, useParams } from 'react-router-dom'
+import { Box, Typography, Avatar, Button, Grid2, Card, CardMedia, CardContent } from '@mui/material'
+import { useLocation, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchFundingThunk } from '../features/fundingSlice'
-import FundingOverview from '../components/funding/FundingOverview'
-import FundingTimeline from '../components/funding/FundingTimeline'
-import FundingReview from '../components/funding/FundingReview'
 import { Main } from '../styles/BaseStyles'
 import dayjs from 'dayjs'
 
-const FundingDetailPage = () => {
+function FundingOrderPage() {
    const dispatch = useDispatch()
    const { id } = useParams()
    const { funding, loading, error } = useSelector((state) => state.funding)
-   const { isAuthenticated } = useSelector((state) => state.auth)
+   const { user } = useSelector((state) => state.auth)
    const [project, setProject] = useState(null)
 
-   const [orderRewardBasket, setOrderRewardBasket] = useState({})
-
-   const orderPlusReward = (basket) => {
-      setOrderRewardBasket(basket)
-   }
-   const orderMinusReward = (basket) => {
-      setOrderRewardBasket(basket)
-   }
+   const location = useLocation()
+   const orderRewardBasket = location.state?.orderRewardBasket || {}
 
    const [tabValue, setTabValue] = useState('1')
    const handleTabChange = (event, newTabValue) => {
@@ -55,6 +45,35 @@ const FundingDetailPage = () => {
          endDate: formatDate(funding.enddate),
       })
    }, [funding])
+
+   // 리워드 체크
+   const rewardsCheck = () => {
+      const rewards = funding.Rewards
+      return rewards.map((reward) => {
+         if (!orderRewardBasket[reward.id]) return
+
+         return (
+            <Grid2 m={1} key={reward.id} container>
+               <Grid2 size={{ sm: 8 }}>
+                  <Typography my={1}>{reward.name}</Typography>
+                  {reward.RewardProducts.map((product) => {
+                     return (
+                        <Typography key={product.id}>
+                           · {product.title} (x{product.RewardProductRelation.stock})
+                        </Typography>
+                     )
+                  })}
+               </Grid2>
+               <Grid2 my={1} size={{ sm: 2 }}>
+                  x{orderRewardBasket[reward.id]}
+               </Grid2>
+               <Grid2 my={1} size={{ sm: 2 }}>
+                  {(orderRewardBasket[reward.id] * reward.price).toLocaleString()}원
+               </Grid2>
+            </Grid2>
+         )
+      })
+   }
 
    return (
       project && (
@@ -104,41 +123,80 @@ const FundingDetailPage = () => {
                            <Typography color="text.secondary">
                               펀딩 기간: {project.startDate} ~ {project.endDate}
                            </Typography>
-                           {isAuthenticated && (
-                              <Link to={Object.keys(orderRewardBasket).length > 0 ? `/funding/order/${funding.id}` : '#'} state={{ orderRewardBasket: orderRewardBasket }}>
-                                 <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
-                                    후원하기
-                                 </Button>
-                              </Link>
-                           )}
                         </CardContent>
                      </Card>
                   </Grid2>
                </Grid2>
             </Box>
-            <Box sx={{ width: '100%', typography: 'body1' }}>
-               <TabContext value={tabValue}>
-                  <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                     <TabList onChange={handleTabChange} aria-label="lab API tabs example">
-                        <Tab label="프로젝트 소개" value="1" />
-                        <Tab label="진행 소식" value="2" />
-                        <Tab label="후기" value="3" />
-                     </TabList>
-                  </Box>
-                  <TabPanel value="1">
-                     <FundingOverview funding={funding} orderPlusReward={orderPlusReward} orderMinusReward={orderMinusReward} />
-                  </TabPanel>
-                  <TabPanel value="2">
-                     <FundingTimeline funding={funding} />
-                  </TabPanel>
-                  <TabPanel value="3">
-                     <FundingReview funding={funding} />
-                  </TabPanel>
-               </TabContext>
+            <Box sx={{ width: '100%', typography: 'body1', border: '1px solid #dddddd' }}>
+               <Grid2 m={1} container>
+                  <Grid2 size={{ sm: 8 }}>선택 리워드</Grid2>
+                  <Grid2 size={{ sm: 2 }}>수량</Grid2>
+                  <Grid2 size={{ sm: 2 }}>가격</Grid2>
+               </Grid2>
+               {rewardsCheck()}
             </Box>
+            <Grid2
+               container
+               p={1}
+               sx={{
+                  width: '100%',
+                  border: '1px solid #dddddd',
+                  '& input': {
+                     border: '1px solid #dddddd',
+                     height: '2em',
+                     borderRadius: '5px',
+                  },
+               }}
+            >
+               <Grid2 size={{ sm: 3 }} p={2}>
+                  배송지
+               </Grid2>
+               <Grid2 size={{ sm: 3 }} p={1}>
+                  <input type="text" style={{ height: '100%' }} />
+               </Grid2>
+               <Grid2 size={{ sm: 6 }} p={1}>
+                  <Button variant="contained" sx={{ margin: '0' }}>
+                     배송지 관리
+                  </Button>
+               </Grid2>
+               <Grid2 size={{ sm: 3 }} p={2}>
+                  상세주소
+               </Grid2>
+               <Grid2 size={{ sm: 9 }} p={1}>
+                  <input type="text" style={{ height: '100%' }} />
+               </Grid2>
+               <Grid2 size={{ sm: 3 }} p={2}>
+                  연락처
+               </Grid2>
+               <Grid2 size={{ sm: 9 }} p={1}>
+                  <input type="text" style={{ height: '100%' }} />
+               </Grid2>
+               <Grid2 size={{ sm: 3 }} p={2}>
+                  출금계좌
+               </Grid2>
+               <Grid2 size={{ sm: 9 }} p={1}>
+                  <input type="text" style={{ height: '100%' }} />
+               </Grid2>
+               <Grid2 size={{ sm: 3 }} p={2}>
+                  포인트
+               </Grid2>
+               <Grid2 size={{ sm: 3 }} p={1}>
+                  {user?.point}
+               </Grid2>
+               <Grid2 size={{ sm: 6 }} p={1}>
+                  asdf
+               </Grid2>
+               <Grid2 size={{ sm: 3 }} p={2}>
+                  포인트사용
+               </Grid2>
+               <Grid2 size={{ sm: 9 }} p={1}>
+                  <input type="text" style={{ height: '100%' }} />
+               </Grid2>
+            </Grid2>
          </Main>
       )
    )
 }
 
-export default FundingDetailPage
+export default FundingOrderPage
