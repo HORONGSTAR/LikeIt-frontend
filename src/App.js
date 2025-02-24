@@ -34,7 +34,6 @@ import StudioEditPage from './pages/StudioEditPage'
 import StudioCreatePage from './pages/StudioCreatePage'
 
 import FundingReview from './components/funding/FundingReview'
-import FundingLayout from './components/funding/FundingLayout'
 import FundingTimeline from './components/funding/FundingTimeline'
 import FundingOverview from './components/funding/FundingOverview'
 
@@ -46,8 +45,6 @@ import ProjectWritePage from './pages/ProjectWritePage'
 import { checkAuthStatusThunk } from './features/authSlice'
 import MyPage from './pages/MyPage'
 import FundingDetailPage from './pages/FundingDetailPage'
-
-import DesignGuide from './pages/DesignGuide'
 
 import DesignGuide from './pages/DesignGuide'
 import MemberPage from './pages/MemberPage'
@@ -112,11 +109,7 @@ function App() {
 
             <Route path="/studio/:id" element={<StudioPage />} />
 
-            <Route path="/funding" element={<FundingLayout />}>
-               <Route path="detail" element={<FundingOverview />} />
-               <Route path="timeline" element={<FundingTimeline />} />
-               <Route path="review" element={<FundingReview />} />
-            </Route>
+            <Route path="/funding/:id" element={<FundingDetailPage />} />
 
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
             <Route path="/community/write" element={<CommunityForm />} />
