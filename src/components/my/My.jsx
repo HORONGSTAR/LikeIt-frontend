@@ -55,7 +55,7 @@ function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
    })
 
    const categoriesFromServer = initialValues ? initialValues?.Creator?.Categories : []
-   console.log(initialValues)
+   console.log(categoriesFromServer)
    useEffect(() => {
       if (categoriesFromServer?.length > 0) {
          setSelectedValues((prev) => {
@@ -271,97 +271,10 @@ function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
       </Paper>
    )
 
-   const [selectedList, setSelectedList] = useState('points')
-   const handleListChange = (list) => {
-      setSelectedList(list)
-   }
-
-   const pointAndProfitList = (
-      <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
-         <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-            <Button variant={selectedList === 'points' ? 'contained' : 'outlined'} onClick={() => handleListChange('points')}>
-               포인트 내역
-            </Button>
-            <Button variant={selectedList === 'profits' ? 'contained' : 'outlined'} onClick={() => handleListChange('profits')}>
-               수익금 내역
-            </Button>
-         </Box>
-
-         {selectedList === 'points' && (
-            <>
-               <Typography variant="h6" fontWeight="bold">
-                  포인트 내역
-               </Typography>
-               <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
-                  총 포인트 {initialValues?.point}P
-               </Typography>
-               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  {points.map((point, index) => (
-                     <Box
-                        key={index}
-                        sx={{
-                           display: 'flex',
-                           justifyContent: 'space-between',
-                           alignItems: 'center',
-                           p: 2,
-                           borderBottom: '1px solid #ddd',
-                        }}
-                     >
-                        <Typography variant="body1" color="text.secondary">
-                           {new Date(point.createdAt).toLocaleDateString()}
-                        </Typography>
-                        <Typography variant="body1">{point.changeComment}</Typography>
-                        <Typography variant="h6" fontWeight="bold">
-                           {point.changePoint}
-                        </Typography>
-                     </Box>
-                  ))}
-               </Box>
-            </>
-         )}
-
-         {selectedList === 'profits' && (
-            <>
-               <Typography variant="h6" fontWeight="bold">
-                  수익금 내역
-               </Typography>
-               <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
-                  총 보유액 {initialValues?.Creator?.profit}P
-               </Typography>
-               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  {points.map((point, index) => (
-                     <Box
-                        key={index}
-                        sx={{
-                           display: 'flex',
-                           justifyContent: 'space-between',
-                           alignItems: 'center',
-                           p: 2,
-                           borderBottom: '1px solid #ddd',
-                        }}
-                     >
-                        <Typography variant="body1" color="text.secondary">
-                           {new Date(point.createdAt).toLocaleDateString()}
-                        </Typography>
-                        <Typography variant="body1">{point.changeComment}</Typography>
-                        <Typography variant="h6" fontWeight="bold">
-                           {point.changePoint}
-                        </Typography>
-                     </Box>
-                  ))}
-               </Box>
-            </>
-         )}
-      </Paper>
-   )
-
    const tabItems = [
       { label: '후원 내역', page: sponsorList },
       { label: '계정 설정', page: accountSetting },
-      {
-         label: status === 'profit' ? '수익금 내역' : '포인트 내역',
-         page: status === 'profit' ? profitList : pointList,
-      },
+      { label: '포인트 내역', page: pointList },
    ]
 
    return (
