@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchTimelinesThunk, fetchTimelineThunk, timelineCommentRegThunk } from '../../features/fundingSlice'
+import { fetchTimelinesThunk, fetchTimelineThunk, timelineCommentDelThunk, timelineCommentRegThunk } from '../../features/fundingSlice'
 import { Box, Divider, Chip, Typography, Grid2, Avatar, Button, Pagination, Stack, TextField } from '@mui/material'
 import dayjs from 'dayjs'
 
@@ -24,14 +24,14 @@ function FundingTimeline({ funding }) {
       const newTimelines = []
       timelines.forEach((timeline) => {
          newTimelines.push(
-            <Grid2 container key={timeline.id} sx={{ display: 'flex', border: '1px solid #dddddd' }} m={1}>
+            <Grid2 container key={timeline.id} sx={{ display: 'flex', border: '1px solid #dddddd', height: '180px' }} m={1}>
                <Grid2
                   size={{
                      xs: 6,
                      sm: 4,
                   }}
                >
-                  <img onClick={() => timelineDetail(timeline.id)} src={process.env.REACT_APP_API_URL + '/projectTimelineImg' + timeline.imgUrl} width={'100%'} style={{ display: 'block', cursor: 'pointer' }} />
+                  <img onClick={() => timelineDetail(timeline.id)} src={process.env.REACT_APP_API_URL + '/projectTimelineImg' + timeline.imgUrl} width={'100%'} height={'180px'} style={{ display: 'block', cursor: 'pointer', objectFit: 'cover' }} />
                </Grid2>
                <Grid2
                   size={{
@@ -65,6 +65,10 @@ function FundingTimeline({ funding }) {
       setNowTimeline(0)
    }
 
+   const commentDel = (id) => {
+      dispatch(timelineCommentDelThunk(id))
+   }
+
    const showComments = useCallback(() => {
       if (timeline) {
          const start = (commentPage - 1) * 10
@@ -75,7 +79,11 @@ function FundingTimeline({ funding }) {
                <Grid2 sx={{ display: 'flex', position: 'relative' }} size={{ xs: 12 }}>
                   <Avatar src={process.env.REACT_APP_API_URL + '/userImg' + comment.User.imgUrl} sx={{ width: 40, height: 40, mr: 2 }} />
                   <Typography sx={{ lineHeight: '40px' }}>{comment.User.name}</Typography>
-                  {user?.id === comment.User.id && <Button sx={{ position: 'absolute', right: '0' }}>삭제</Button>}
+                  {user?.id === comment.User.id && (
+                     <Button onClick={commentDel(comment.id)} sx={{ position: 'absolute', right: '0' }}>
+                        삭제
+                     </Button>
+                  )}
                </Grid2>
                <Grid2 py={1} size={{ xs: 12 }}>
                   <Typography variant="body2">{dayjs(comment.createdAt).format('YYYY년 MM월 DD일 hh:mm:ss')}</Typography>

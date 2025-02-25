@@ -59,7 +59,7 @@ export const checkAuthStatus = async () => {
 //이메일 찾기
 export const fetchEmail = async (phone) => {
    try {
-      const response = await likeItApi.get('/auth/email', phone)
+      const response = await likeItApi.post('/auth/email', phone)
       return response
    } catch (error) {
       console.error(`API Request 오류: ${error.message}`)

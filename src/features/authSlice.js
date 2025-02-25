@@ -1,15 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import {
-   loginUser,
-   registerUser,
-   googleRegisterUser,
-   logoutUser,
-   checkAuthStatus,
-   setTempPassword,
-   changeEmail,
-   changePassword,
-   fetchEmail,
-} from '../api/authApi'
+import { loginUser, registerUser, googleRegisterUser, logoutUser, checkAuthStatus, setTempPassword, changeEmail, changePassword, fetchEmail } from '../api/authApi'
 
 // 회원가입 thunk
 export const registerUserThunk = createAsyncThunk('auth/registerUser', async (userData, { rejectWithValue }) => {
@@ -78,7 +68,7 @@ export const setTempPasswordThunk = createAsyncThunk('auth/setTempPassword', asy
    }
 })
 
-//
+//이메일 가져오기(찾기)
 export const fetchEmailThunk = createAsyncThunk('auth/fetchEmail', async (phone, { rejectWithValue }) => {
    try {
       const response = await fetchEmail(phone)
@@ -113,7 +103,7 @@ const authSlice = createSlice({
    initialState: {
       user: null,
       isAuthenticated: false,
-      loading: false,
+      loading: true,
       error: null,
       email: null,
    },

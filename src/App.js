@@ -46,6 +46,7 @@ import CreatorPage from './pages/CreatorPage'
 
 // fundingDetail - user
 import FundingDetailPage from './pages/FundingDetailPage'
+import FundingOrderPage from './pages/FundingOrderPage'
 
 // develop
 import DesignGuide from './pages/DesignGuide'
@@ -75,13 +76,6 @@ function App() {
          <Routes>
             {/* main */}
             <Route path="/" element={<Home />} />
-            <Route path="/hot" element={<Home />} />
-            <Route path="/new" element={<Home />} />
-            <Route path="/end" element={<Home />} />
-            <Route path="/comming" element={<Home />} />
-            <Route path="/follow" element={<Home />} />
-            <Route path="/category/:id" element={<Home />} />
-            <Route path="/list/hot" element={<HotPage />} />
             <Route path="/hot" element={<HotPage />} />
             <Route path="/new" element={<NewPage />} />
             <Route path="/end" element={<EndPage />} />
@@ -89,6 +83,8 @@ function App() {
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/category/:id" element={<CategoryPage />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/rank" element={<RankingPage />} />
+            <Route path="/admin" element={<AdminPage />} />
 
             {/* auth */}
             <Route path="/login" element={<LoginPage />} />
@@ -115,6 +111,15 @@ function App() {
             {/* fundingDetail - user */}
             <Route path="/funding/:id" element={<FundingDetailPage />} />
 
+            <Route
+               path="/funding/order/:id"
+               element={
+                  <RedirectLogoutRoute>
+                     <FundingOrderPage />
+                  </RedirectLogoutRoute>
+               }
+            />
+
             {/* develop */}
             <Route path="/desinguide" element={<DesignGuide />} />
          </Routes>
@@ -122,6 +127,12 @@ function App() {
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기
          </Button>
+
+         {user && user.role === 'ADMIN' && (
+            <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 50 }} variant="contained" to="/admin">
+               관리자 페이지
+            </Button>
+         )}
          <Footer />
       </>
    )
