@@ -112,3 +112,14 @@ export const reviewDel = async (id) => {
       throw error
    }
 }
+
+// 펀딩 후원
+export const orderReg = async (data) => {
+   try {
+      const response = await likeitApi.post(`/funding/order`, data)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}

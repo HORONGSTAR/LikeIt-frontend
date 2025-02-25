@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getFunding, getReviews, getTimeline, getTimelines, reviewDel, reviewRecommendDel, reviewRecommendReg, reviewReg, timelineCommentDel, timelineCommentReg } from '../api/fundingApi'
+import { getFunding, getReviews, getTimeline, getTimelines, orderReg, reviewDel, reviewRecommendDel, reviewRecommendReg, reviewReg, timelineCommentDel, timelineCommentReg } from '../api/fundingApi'
 
 // 특정 펀딩 프로젝트 가져오기
 export const fetchFundingThunk = createAsyncThunk('funding/fetchFunding', async (id, { rejectWithValue }) => {
@@ -94,6 +94,16 @@ export const reviewDelThunk = createAsyncThunk('funding/reviewDel', async (id, {
       return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '리뷰 삭제 실패')
+   }
+})
+
+// 펀딩 후원
+export const orderRegThunk = createAsyncThunk('funding/orderReg', async (data, { rejectWithValue }) => {
+   try {
+      const response = await orderReg(data)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '펀딩 후원 실패')
    }
 })
 
@@ -218,6 +228,19 @@ const fundingSlice = createSlice({
             state.loading = false
          })
          .addCase(reviewRegThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+      // 펀딩 후원
+      builder
+         .addCase(orderRegThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(orderRegThunk.fulfilled, (state, action) => {
+            state.loading = false
+         })
+         .addCase(orderRegThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

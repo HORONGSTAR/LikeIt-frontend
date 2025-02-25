@@ -1,17 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Typography, Avatar, Button, Grid2, Card, CardMedia, CardContent } from '@mui/material'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Box, Typography, Avatar, Button, Grid2, Card, CardMedia, CardContent, TextField } from '@mui/material'
 import { useLocation, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchFundingThunk } from '../features/fundingSlice'
+import { fetchFundingThunk, orderRegThunk } from '../features/fundingSlice'
 import { Main } from '../styles/BaseStyles'
 import dayjs from 'dayjs'
+import { padding } from '@mui/system'
 
 function FundingOrderPage() {
    const dispatch = useDispatch()
    const { id } = useParams()
    const { funding, loading, error } = useSelector((state) => state.funding)
-   const { user } = useSelector((state) => state.auth)
+   const { user, isAuthenticated } = useSelector((state) => state.auth)
    const [project, setProject] = useState(null)
+   const [orderFlag, setOrderFlag] = useState(false)
+
+   const [address, setAddress] = useState('')
+   const [addressDetail, setAddressDetail] = useState('')
+   const [phone, setPhone] = useState('')
+   const [account, setAccount] = useState('')
+   const [usePoint, setUsePoint] = useState(0)
 
    const location = useLocation()
    const orderRewardBasket = location.state?.orderRewardBasket || {}
@@ -51,10 +59,9 @@ function FundingOrderPage() {
       const rewards = funding.Rewards
       return rewards.map((reward) => {
          if (!orderRewardBasket[reward.id]) return
-
          return (
             <Grid2 m={1} key={reward.id} container>
-               <Grid2 size={{ sm: 8 }}>
+               <Grid2 sx={{ textAlign: 'center' }} size={{ xs: 7 }}>
                   <Typography my={1}>{reward.name}</Typography>
                   {reward.RewardProducts.map((product) => {
                      return (
@@ -64,10 +71,10 @@ function FundingOrderPage() {
                      )
                   })}
                </Grid2>
-               <Grid2 my={1} size={{ sm: 2 }}>
+               <Grid2 sx={{ textAlign: 'center' }} my={1} size={{ xs: 2 }}>
                   x{orderRewardBasket[reward.id]}
                </Grid2>
-               <Grid2 my={1} size={{ sm: 2 }}>
+               <Grid2 sx={{ textAlign: 'center' }} my={1} size={{ xs: 3 }}>
                   {(orderRewardBasket[reward.id] * reward.price).toLocaleString()}원
                </Grid2>
             </Grid2>
@@ -75,7 +82,42 @@ function FundingOrderPage() {
       })
    }
 
-   return (
+   // 총 가격 계산
+   const totalPrice = funding?.Rewards.reduce((acc, reward) => {
+      if (!orderRewardBasket[reward.id]) return acc
+      return acc + orderRewardBasket[reward.id] * reward.price
+   }, 0)
+
+   // 폼 제출
+   const handleSubmit = useCallback(
+      (e) => {
+         if (!funding) return
+         const rewards = funding.Rewards
+         let orderPrices = []
+         rewards.map((reward) => orderPrices.push(orderRewardBasket[reward.id] * reward.price))
+
+         const orderData = {
+            orderPrices: orderPrices,
+            address: address,
+            account: account,
+            rewards: orderRewardBasket,
+            projectId: funding.id,
+         }
+         if (usePoint) orderData.usePoint = usePoint
+         console.log(orderData)
+         dispatch(orderRegThunk(orderData))
+         setOrderFlag(true)
+      },
+      [address, account, usePoint, orderRewardBasket, dispatch]
+   )
+
+   return orderFlag ? (
+      <Main>
+         <Typography variant="h3" sx={{ textAlign: 'center' }}>
+            주문이 성공적으로 완료되었습니다.
+         </Typography>
+      </Main>
+   ) : (
       project && (
          <Main>
             <Box sx={{ maxWidth: '1000px', margin: 'auto', mt: 5 }}>
@@ -130,9 +172,15 @@ function FundingOrderPage() {
             </Box>
             <Box sx={{ width: '100%', typography: 'body1', border: '1px solid #dddddd' }}>
                <Grid2 m={1} container>
-                  <Grid2 size={{ sm: 8 }}>선택 리워드</Grid2>
-                  <Grid2 size={{ sm: 2 }}>수량</Grid2>
-                  <Grid2 size={{ sm: 2 }}>가격</Grid2>
+                  <Grid2 sx={{ textAlign: 'center' }} size={{ xs: 7 }}>
+                     선택 리워드
+                  </Grid2>
+                  <Grid2 sx={{ textAlign: 'center' }} size={{ xs: 2 }}>
+                     수량
+                  </Grid2>
+                  <Grid2 sx={{ textAlign: 'center' }} size={{ xs: 3 }}>
+                     가격
+                  </Grid2>
                </Grid2>
                {rewardsCheck()}
             </Box>
@@ -146,52 +194,73 @@ function FundingOrderPage() {
                      border: '1px solid #dddddd',
                      height: '2em',
                      borderRadius: '5px',
+                     paddingLeft: '8px',
                   },
                }}
             >
-               <Grid2 size={{ sm: 3 }} p={2}>
+               <Grid2 size={{ sm: 3, xs: 4 }} p={2}>
                   배송지
                </Grid2>
-               <Grid2 size={{ sm: 3 }} p={1}>
-                  <input type="text" style={{ height: '100%' }} />
+               <Grid2 size={{ sm: 5, xs: 8 }} p={1}>
+                  <input value={address} onChange={(e) => setAddress(e.target.value)} type="text" style={{ height: '100%', width: '100%' }} />
                </Grid2>
-               <Grid2 size={{ sm: 6 }} p={1}>
-                  <Button variant="contained" sx={{ margin: '0' }}>
+               <Grid2 size={{ sm: 4, xs: 12 }}>
+                  <Button size="small" variant="contained" sx={{ backgroundColor: '#d97400', margin: '10px', fontSize: '0.8em' }}>
                      배송지 관리
                   </Button>
                </Grid2>
-               <Grid2 size={{ sm: 3 }} p={2}>
+               <Grid2 size={{ sm: 3, xs: 4 }} p={2}>
                   상세주소
                </Grid2>
-               <Grid2 size={{ sm: 9 }} p={1}>
-                  <input type="text" style={{ height: '100%' }} />
+               <Grid2 size={{ sm: 5, xs: 8 }} p={1}>
+                  <input value={addressDetail} onChange={(e) => setAddressDetail(e.target.value)} type="text" style={{ height: '100%', width: '100%' }} />
                </Grid2>
-               <Grid2 size={{ sm: 3 }} p={2}>
+               <Grid2 size={{ sm: 4, xs: 0 }}></Grid2>
+               <Grid2 size={{ sm: 3, xs: 4 }} p={2}>
                   연락처
                </Grid2>
-               <Grid2 size={{ sm: 9 }} p={1}>
-                  <input type="text" style={{ height: '100%' }} />
+               <Grid2 size={{ sm: 4, xs: 8 }} p={1}>
+                  <input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" style={{ height: '100%', width: '100%' }} />
                </Grid2>
-               <Grid2 size={{ sm: 3 }} p={2}>
+               <Grid2 size={{ sm: 5, xs: 0 }}></Grid2>
+               <Grid2 size={{ sm: 3, xs: 4 }} p={2}>
                   출금계좌
                </Grid2>
-               <Grid2 size={{ sm: 9 }} p={1}>
-                  <input type="text" style={{ height: '100%' }} />
+               <Grid2 size={{ sm: 4, xs: 8 }} p={1}>
+                  <input value={account} onChange={(e) => setAccount(e.target.value)} type="text" style={{ height: '100%', width: '100%' }} />
                </Grid2>
-               <Grid2 size={{ sm: 3 }} p={2}>
-                  포인트
+               <Grid2 size={{ sm: 5, xs: 0 }}></Grid2>
+               <Grid2 size={{ sm: 3, xs: 4 }} p={2}>
+                  보유포인트
                </Grid2>
-               <Grid2 size={{ sm: 3 }} p={1}>
+               <Grid2 size={{ sm: 4, xs: 8 }} p={2}>
                   {user?.point}
                </Grid2>
-               <Grid2 size={{ sm: 6 }} p={1}>
-                  asdf
+               <Grid2 size={{ sm: 5, xs: 12 }} p={2}>
+                  {((totalPrice / 100) * 5).toLocaleString('')} 포인트 적립 예정
                </Grid2>
-               <Grid2 size={{ sm: 3 }} p={2}>
+               <Grid2 size={{ sm: 3, xs: 4 }} p={2}>
                   포인트사용
                </Grid2>
-               <Grid2 size={{ sm: 9 }} p={1}>
-                  <input type="text" style={{ height: '100%' }} />
+               <Grid2 size={{ sm: 4, xs: 8 }} p={1}>
+                  <input
+                     value={usePoint}
+                     onChange={(e) => {
+                        const inputValue = Number(e.target.value) || 0
+                        setUsePoint(Math.min(inputValue, user?.point))
+                     }}
+                     type="text"
+                     style={{ height: '100%', width: '100%' }}
+                  />
+               </Grid2>
+               <Grid2 size={{ sm: 5, xs: 0 }}></Grid2>
+               <Grid2 m={2}>
+                  <Typography variant="h4">합계 {(totalPrice - usePoint).toLocaleString('')}원</Typography>
+               </Grid2>
+               <Grid2 m={1}>
+                  <Button onClick={handleSubmit} sx={{ backgroundColor: '#d97400' }} variant="contained">
+                     후원하기
+                  </Button>
                </Grid2>
             </Grid2>
          </Main>
