@@ -40,16 +40,17 @@ import StudioProfilePage from './pages/StudioProfilePage'
 import ProjectWritePage from './pages/ProjectWritePage'
 import CommunityForm from './components/studio/community/CommunityForm'
 import MemberPage from './pages/MemberPage'
+import ProjectAllPage from './pages/ProjectAllPage'
 
 // fundingDetail - creator
 import CreatorPage from './pages/CreatorPage'
 
 // fundingDetail - user
 import FundingDetailPage from './pages/FundingDetailPage'
+import FundingOrderPage from './pages/FundingOrderPage'
 
 // develop
 import DesignGuide from './pages/DesignGuide'
-import ProjectAllPage from './pages/ProjectAllPage'
 
 function App() {
    const path = useLocation().pathname.split('/')
@@ -76,13 +77,6 @@ function App() {
          <Routes>
             {/* main */}
             <Route path="/" element={<Home />} />
-            <Route path="/hot" element={<Home />} />
-            <Route path="/new" element={<Home />} />
-            <Route path="/end" element={<Home />} />
-            <Route path="/comming" element={<Home />} />
-            <Route path="/follow" element={<Home />} />
-            <Route path="/category/:id" element={<Home />} />
-            <Route path="/list/hot" element={<HotPage />} />
             <Route path="/hot" element={<HotPage />} />
             <Route path="/new" element={<NewPage />} />
             <Route path="/end" element={<EndPage />} />
@@ -90,6 +84,8 @@ function App() {
             <Route path="/follow" element={<FollowPage />} />
             <Route path="/category/:id" element={<CategoryPage />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/rank" element={<RankingPage />} />
+            <Route path="/admin" element={<AdminPage />} />
 
             {/* auth */}
             <Route path="/login" element={<LoginPage />} />
@@ -109,7 +105,7 @@ function App() {
             <Route path="/studio/profile" element={<StudioProfilePage />} />
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
             <Route path="/studio/member" element={<MemberPage />} />
-            <Route path="/community/write" element={<CommunityForm />} />
+            <Route path="/studio/community/write" element={<CommunityForm />} />
 
             {/* fundingDetail - creator */}
             <Route path="/creator" element={<CreatorPage />} />
@@ -117,6 +113,22 @@ function App() {
             {/* fundingDetail - user */}
             <Route path="/funding/:id" element={<FundingDetailPage />} />
 
+            <Route
+               path="/funding/order/:id"
+               element={
+                  <RedirectLogoutRoute>
+                     <FundingOrderPage />
+                  </RedirectLogoutRoute>
+               }
+            />
+
+             {/* admin */}    
+         {user && user.role === 'ADMIN' && (
+            <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 50 }} variant="contained" to="/admin">
+               관리자 페이지
+            </Button>
+         )}
+         
             {/* develop */}
             <Route path="/desinguide" element={<DesignGuide />} />
          </Routes>
@@ -124,6 +136,7 @@ function App() {
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기
          </Button>
+
          <Footer />
       </>
    )

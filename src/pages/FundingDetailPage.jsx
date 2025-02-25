@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Typography, Avatar, Button, Grid2, Card, CardMedia, CardContent, Tab } from '@mui/material'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
-import { useNavigate, useLocation, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchFundingThunk } from '../features/fundingSlice'
 import FundingOverview from '../components/funding/FundingOverview'
@@ -11,12 +11,20 @@ import { Main } from '../styles/BaseStyles'
 import dayjs from 'dayjs'
 
 const FundingDetailPage = () => {
-   const navigate = useNavigate()
-   const location = useLocation()
    const dispatch = useDispatch()
    const { id } = useParams()
    const { funding, loading, error } = useSelector((state) => state.funding)
+   const { isAuthenticated } = useSelector((state) => state.auth)
    const [project, setProject] = useState(null)
+
+   const [orderRewardBasket, setOrderRewardBasket] = useState({})
+
+   const orderPlusReward = (basket) => {
+      setOrderRewardBasket(basket)
+   }
+   const orderMinusReward = (basket) => {
+      setOrderRewardBasket(basket)
+   }
 
    const [tabValue, setTabValue] = useState('1')
    const handleTabChange = (event, newTabValue) => {
@@ -62,7 +70,7 @@ const FundingDetailPage = () => {
                   {/* 왼쪽 - 대표 이미지 */}
                   <Grid2 size={{ xs: 12, sm: 6 }}>
                      <Card sx={{ boxShadow: 'none' }}>
-                        <CardMedia component="img" image={project.image} alt="프로젝트 이미지" sx={{ width: '100%', borderRadius: 2 }} />
+                        <CardMedia component="img" image={project.image} alt="프로젝트 이미지" sx={{ width: '100%', borderRadius: 2, maxHeight: '400px', objectFit: 'cover' }} />
                      </Card>
                   </Grid2>
 
@@ -96,10 +104,13 @@ const FundingDetailPage = () => {
                            <Typography color="text.secondary">
                               펀딩 기간: {project.startDate} ~ {project.endDate}
                            </Typography>
-
-                           <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
-                              후원하기
-                           </Button>
+                           {isAuthenticated && (
+                              <Link to={Object.keys(orderRewardBasket).length > 0 ? `/funding/order/${funding.id}` : '#'} state={{ orderRewardBasket: orderRewardBasket }}>
+                                 <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
+                                    후원하기
+                                 </Button>
+                              </Link>
+                           )}
                         </CardContent>
                      </Card>
                   </Grid2>
@@ -115,7 +126,7 @@ const FundingDetailPage = () => {
                      </TabList>
                   </Box>
                   <TabPanel value="1">
-                     <FundingOverview funding={funding} />
+                     <FundingOverview funding={funding} orderPlusReward={orderPlusReward} orderMinusReward={orderMinusReward} />
                   </TabPanel>
                   <TabPanel value="2">
                      <FundingTimeline funding={funding} />
