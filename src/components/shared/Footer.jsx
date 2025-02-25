@@ -13,9 +13,7 @@ function Footer() {
             }}
          >
             <Container maxWidth="md">
-               {/* 정보 & 고객센터 - 좌우 정렬 */}
                <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
-                  {/* 회사 정보 */}
                   <Stack>
                      <Stack direction="row" spacing={2} mb={1}>
                         {['공지사항', '서비스 소개', '제휴 · 협력', '수수료 안내', '개인정보처리방침', '이용약관'].map((text) => (
@@ -45,8 +43,6 @@ function Footer() {
                         <Typography>like-it@naver.com</Typography>
                      </Stack>
                   </Stack>
-
-                  {/* 고객센터 */}
                   <Stack
                      sx={{
                         border: '1px solid #DDDDDD',
@@ -56,22 +52,15 @@ function Footer() {
                         minWidth: '180px',
                      }}
                   >
-                     {/* 고객센터 타이틀 & 주말 및 공휴일 제외 (한 줄) */}
                      <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={1} ml={1}>
                         <Typography sx={{ fontWeight: 'bold', color: '#222' }}>고객센터</Typography>
                         <Typography sx={{ fontSize: '12px', color: '#666' }}>주말 및 공휴일 제외</Typography>
                      </Stack>
-
-                     {/* 운영 시간 */}
                      <Typography sx={{ fontSize: '12px', fontWeight: 'bold', color: '#222', ml: 1 }}>AM 10:30 - PM 06:30</Typography>
-
-                     {/* 문의하기 버튼 */}
                      <Button variant="contained">문의하기</Button>
                   </Stack>
                </Stack>
             </Container>
-
-            {/* 저작권 정보 */}
             <Stack
                sx={{
                   backgroundColor: '#EBEBEB',
