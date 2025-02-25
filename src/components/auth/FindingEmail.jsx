@@ -1,30 +1,31 @@
 import { useState, useCallback } from 'react'
-import { useDispatch } from 'react-redux'
-import { setTempPasswordThunk } from '../../features/authSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchEmailThunk } from '../../features/authSlice'
 import { TextField, Button, Typography, Stack, Divider, Box } from '@mui/material'
 import { Stack2, TextLink, Dot } from '../../styles/BaseStyles'
 import { useNavigate } from 'react-router-dom'
 
 function FindingEmail() {
-   const [email, setEmail] = useState('')
+   const [phone, setPhone] = useState('')
    const dispatch = useDispatch()
-   const navigate = useNavigate()
+   const { email, loading, error } = useSelector((state) => state.auth)
+   const [foundEmail, setFoundEmail] = useState(null)
 
-   const handleSendEmail = useCallback(
+   const handleSendPhone = useCallback(
       (e) => {
          e.preventDefault()
-         dispatch(setTempPasswordThunk({ email }))
+         const trimmedPhone = phone.replace(/\s/g, '')
+         dispatch(fetchEmailThunk({ trimmedPhone }))
             .unwrap()
-            .then(() => {
-               navigate('/login')
-               alert('이메일로 임시비밀번호를 보냈습니다!')
+            .then((response) => {
+               setFoundEmail(response.email) // Set state on success
             })
             .catch((error) => {
                console.error('로그인 실패:', error)
                alert(error)
             })
       },
-      [dispatch, navigate, email]
+      [dispatch, phone]
    )
 
    return (
@@ -37,13 +38,25 @@ function FindingEmail() {
                <Typography align="left">전화번호를 입력해주세요.</Typography>
             </Box>
          </Stack2>
-         <form onSubmit={handleSendEmail}>
-            <TextField fullWidth label="이메일 주소" margin="normal" variant="outlined" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+         <form onSubmit={handleSendPhone}>
+            <TextField fullWidth label="전화번호" margin="normal" variant="outlined" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
 
             <Button fullWidth variant="contained" type="submit">
-               이메일 보내기
+               이메일 찾기
             </Button>
          </form>
+
+         {foundEmail && (
+            <Stack width={300} spacing={2}>
+               <Stack2 justifyContent="left">
+                  <Box>
+                     <Typography align="left" sx={{ fontWeight: 'bold' }}>
+                        이메일 : {foundEmail}
+                     </Typography>
+                  </Box>
+               </Stack2>
+            </Stack>
+         )}
       </Stack>
    )
 }
