@@ -31,17 +31,12 @@ function AccountMenu({ items }) {
    return (
       <>
          <Tooltip title="내 계정">
-            <IconButton
-               onClick={handleClick}
-               size="small"
-               aria-controls={userOpen ? 'account-menu' : undefined}
-               aria-haspopup="true"
-               aria-expanded={userOpen ? 'true' : undefined}
-            >
+            <IconButton onClick={handleClick} size="small" aria-controls={userOpen ? 'account-menu' : undefined} aria-haspopup="true" aria-expanded={userOpen ? 'true' : undefined}>
                <Avatar sx={{ width: 32, height: 32 }} src={process.env.REACT_APP_API_URL + ''} />
             </IconButton>
          </Tooltip>
          <Menu
+            disableScrollLock
             anchorEl={anchorEl}
             id="userMenu"
             open={userOpen}

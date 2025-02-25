@@ -74,14 +74,7 @@ function Navber({ isAuthenticated, user }) {
                      </Typography>
                   </Stack2>
                   {navMeueItems.map((item) => (
-                     <Typography
-                        key={item.page}
-                        fontWeight="500"
-                        component={NavLink}
-                        to={item.path}
-                        mr={breakpoint.margin}
-                        onClick={() => setOpen(false)}
-                     >
+                     <Typography key={item.page} fontWeight="500" component={NavLink} to={item.path} mr={breakpoint.margin} onClick={() => setOpen(false)}>
                         {item.page}
                      </Typography>
                   ))}

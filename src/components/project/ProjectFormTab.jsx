@@ -3,13 +3,14 @@ import ProjectInfoForm from './forms/ProjectInfoForm'
 import ProjectRewardForm from './forms/ProjectRewardForm'
 import ProjectBudgetForm from './forms/ProjectBudgetForm'
 import ApprovaForm from './forms/ApprovaForm'
-import { FormGrid } from '../ui/FormGrid'
 import { StepperTabs } from '../ui/Tabs'
 import { isBlank } from '../../util/isBlank'
+import { Snackbar } from '@mui/material'
 
 function ProjectFormTab({ onSubmit, step, project }) {
    const [products, setProducts] = useState(project?.RewardProducts || [])
    const [rewards, setRewards] = useState(project?.Rewards || [])
+   const [open, setOpen] = useState(false)
 
    const isSave = useRef(true)
 
@@ -62,7 +63,7 @@ function ProjectFormTab({ onSubmit, step, project }) {
       const step1 = isBlank([imgUrl, title, intro, contents, start, end, schedule])
       const step2 = rewards.length
       const step3 = isBlank([goal, projBudg, creaBudg])
-      if (!step1 || !step2 || !step3) return
+      if (!step1 || !step2 || !step3) return setOpen(true)
       onSubmit({ proposalStatus: 'REVIEW_REQ' })
       step.current = 3
    }, [onSubmit, step, infoVals, budgetVals, rewards])
@@ -89,6 +90,7 @@ function ProjectFormTab({ onSubmit, step, project }) {
    return (
       <>
          <StepperTabs tabItems={tabItems} step={step} isSave={isSave} />
+         <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={open} autoHideDuration={6000} onClose={() => setOpen(false)} message="모든 항목을 입력해주세요." />
       </>
    )
 }

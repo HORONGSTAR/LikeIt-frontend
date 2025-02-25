@@ -71,7 +71,7 @@ function ProjectRewardForm({ initVals }) {
                .then((result) => setProducts(products.concat(result.product)))
                .catch()
          }
-         setOpen(null)
+         setOpen('')
       },
       [dispatch, id, product, products]
    )
@@ -91,7 +91,7 @@ function ProjectRewardForm({ initVals }) {
                })
                .catch()
          }
-         setOpen(null)
+         setOpen('')
       },
       [dispatch, id, reward, rewards]
    )
@@ -104,11 +104,7 @@ function ProjectRewardForm({ initVals }) {
                <Button onClick={openCreateProductBox} startIcon={<AddCircle fontSize="small" />} variant="outlined">
                   구성품 추가
                </Button>
-               {open && (
-                  <EditProductBox open={open} onSubmit={productSubmit} product={product}>
-                     <Button onClick={() => setOpen('')}>취소</Button>
-                  </EditProductBox>
-               )}
+
                <Stack spacing={1} mt={1}>
                   {products.map((product) => (
                      <ListCard product={product} key={'product' + product.id}>
@@ -121,6 +117,11 @@ function ProjectRewardForm({ initVals }) {
                      </ListCard>
                   ))}
                </Stack>
+               {open && (
+                  <EditProductBox open={open} onSubmit={productSubmit} product={product}>
+                     <Button onClick={() => setOpen('')}>취소</Button>
+                  </EditProductBox>
+               )}
             </>
          ),
       },

@@ -14,7 +14,7 @@ function StudioForm({ onSubmit, initVals = {} }) {
    const dispatch = useDispatch()
    const { studio } = useSelector((state) => state.studio)
    const [imgFile, setImgFile] = useState(null)
-   const [imgUrl, setImgUrl] = useState(studio.imgUrl ? `${process.env.REACT_APP_API_URL}${studio.imgUrl}` : null)
+   const [imgUrl, setImgUrl] = useState(studio?.imgUrl ? `${process.env.REACT_APP_API_URL}${studio.imgUrl}` : null)
    const [studioName, setStudioName] = useState(initVals?.name || '')
    const [intro, setIntro] = useState(initVals?.intro || '')
    const [snsLinks, setSnsLinks] = useState(initVals?.StudioAccounts || [])
@@ -60,8 +60,8 @@ function StudioForm({ onSubmit, initVals = {} }) {
    )
 
    const handleSubmit = useCallback(async () => {
-      if (isBlank([studioName, intro, imgUrl])) return alert('양식을 모두 채워주세요.')
-      if (isBlank(snsLinks.map((sns) => sns.contents))) return alert('SNS 링크를 입력해주세요.')
+      if (!isBlank([studioName, intro, imgUrl])) return alert('양식을 모두 채워주세요.')
+      if (!isBlank(snsLinks.map((sns) => sns.contents))) return alert('SNS 링크를 입력해주세요.')
 
       const formData = new FormData()
       if (imgFile) {
