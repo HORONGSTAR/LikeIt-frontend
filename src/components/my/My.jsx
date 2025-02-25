@@ -1,25 +1,44 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { Avatar, Button, TextField, Tab, Typography, Box, Link, Checkbox, FormControlLabel, Grid } from '@mui/material'
+import { Avatar, Button, TextField, Typography, Box, Link, Checkbox, FormControlLabel, Grid, Paper } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import PostAddIcon from '@mui/icons-material/PostAdd'
-import { Main, SubTitle, Stack2, TextLink, Dot, ModifiedModalBox, LoadingBox, ErrorBox, ImgUploadBox, FundingCard } from '../../styles/BaseStyles'
-import { Tabs, TabLink } from '../../components/ui/Tabs'
+import { Main, Stack2, TextLink, ModifiedModalBox, LoadingBox, ErrorBox, ImgUploadBox, FundingCard } from '../../styles/BaseStyles'
+import { styled } from '@mui/system'
+import CreateIcon from '@mui/icons-material/Create'
+import { Tabs } from '../../components/ui/Tabs'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeEmailThunk, changePasswordThunk, registerUserThunk } from '../../features/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { updateCategoryThunk, updateProfileThunk } from '../../features/pageSlice'
 
-function My({ initialValues = {}, userWithOrders = {} }) {
+const StyledPaper = styled(Paper)({
+   display: 'flex',
+   alignItems: 'center',
+   padding: '16px',
+   backgroundColor: '#E7F2E7',
+   borderRadius: '8px',
+})
+
+const IconWrapper = styled(Box)({
+   display: 'flex',
+   alignItems: 'center',
+   justifyContent: 'center',
+   width: 50,
+   height: 50,
+   backgroundColor: 'white',
+   borderRadius: '8px',
+   marginRight: '16px',
+})
+
+function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   console.log(userWithOrders ? userWithOrders : '값 안넘어옴')
    const [email, setEmail] = useState(initialValues ? initialValues.email : '')
    const [currentPassword, setCurrentPassword] = useState('')
    const [passwordToChange, setPasswordToChange] = useState('')
    const [confirmPasswordToChange, setConfirmPasswordToChange] = useState('')
    const [imgFile, setImgFile] = useState(null) //이미지 파일 객체
-   const [imgUrl, setImgUrl] = useState(initialValues ? process.env.REACT_APP_API_URL + '/userImg' + initialValues.imgUrl : '') //이미지 경로(파일명 포함)
-   //    const [imgUrl, setImgUrl] = useState('') //이미지 경로(파일명 포함)
+   const [imgUrl, setImgUrl] = useState(initialValues ? process.env.REACT_APP_API_URL + '/userImg' + initialValues.imgUrl : '')
    const [nickname, setNickname] = useState(initialValues ? initialValues.name : '')
 
    //창작자 정보 추가부분
@@ -35,10 +54,10 @@ function My({ initialValues = {}, userWithOrders = {} }) {
       performance: false,
    })
 
-   const categoriesFromServer = initialValues ? initialValues.Creator.Categories : []
-
+   const categoriesFromServer = initialValues ? initialValues?.Creator?.Categories : []
+   console.log(initialValues)
    useEffect(() => {
-      if (categoriesFromServer.length > 0) {
+      if (categoriesFromServer?.length > 0) {
          setSelectedValues((prev) => {
             const updatedValues = { ...prev }
             categoriesFromServer.forEach((category) => {
@@ -160,7 +179,20 @@ function My({ initialValues = {}, userWithOrders = {} }) {
          })
    }, [nickname, imgFile, dispatch])
 
-   const sponsorList = <>{userWithOrders ? userWithOrders.map(() => <FundingCard />) : ''}</>
+   const sponsorList = (
+      <>
+         {userWithOrders
+            ? userWithOrders.Orders?.map((order) => (
+                 <>
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                       주문일 {new Date(order.createdAt).toLocaleDateString()}
+                    </Typography>
+                    <FundingCard image={process.env.REACT_APP_API_URL + '/projectImg' + order.Project.imgUrl} title={order.Project.title} price={order.orderPrice} status={order.orderStatus} />
+                 </>
+              ))
+            : ''}
+      </>
+   )
 
    const accountSetting = (
       <>
@@ -206,15 +238,130 @@ function My({ initialValues = {}, userWithOrders = {} }) {
    )
 
    const pointList = (
-      <>
-         <>포인트내역</>
-      </>
+      <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
+         <Typography variant="h6" fontWeight="bold">
+            포인트 내역
+         </Typography>
+         <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+            총 포인트 {initialValues?.point}P
+         </Typography>
+
+         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {points.map((point, index) => (
+               <Box
+                  key={index}
+                  sx={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     p: 2,
+                     borderBottom: '1px solid #ddd',
+                  }}
+               >
+                  <Typography variant="body1" color="text.secondary">
+                     {new Date(point.createdAt).toLocaleDateString()}
+                  </Typography>
+                  <Typography variant="body1">{point.changeComment}</Typography>
+                  <Typography variant="h6" fontWeight="bold">
+                     {point.changePoint}
+                  </Typography>
+               </Box>
+            ))}
+         </Box>
+      </Paper>
+   )
+
+   const [selectedList, setSelectedList] = useState('points')
+   const handleListChange = (list) => {
+      setSelectedList(list)
+   }
+
+   const pointAndProfitList = (
+      <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
+         <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+            <Button variant={selectedList === 'points' ? 'contained' : 'outlined'} onClick={() => handleListChange('points')}>
+               포인트 내역
+            </Button>
+            <Button variant={selectedList === 'profits' ? 'contained' : 'outlined'} onClick={() => handleListChange('profits')}>
+               수익금 내역
+            </Button>
+         </Box>
+
+         {selectedList === 'points' && (
+            <>
+               <Typography variant="h6" fontWeight="bold">
+                  포인트 내역
+               </Typography>
+               <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+                  총 포인트 {initialValues?.point}P
+               </Typography>
+               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  {points.map((point, index) => (
+                     <Box
+                        key={index}
+                        sx={{
+                           display: 'flex',
+                           justifyContent: 'space-between',
+                           alignItems: 'center',
+                           p: 2,
+                           borderBottom: '1px solid #ddd',
+                        }}
+                     >
+                        <Typography variant="body1" color="text.secondary">
+                           {new Date(point.createdAt).toLocaleDateString()}
+                        </Typography>
+                        <Typography variant="body1">{point.changeComment}</Typography>
+                        <Typography variant="h6" fontWeight="bold">
+                           {point.changePoint}
+                        </Typography>
+                     </Box>
+                  ))}
+               </Box>
+            </>
+         )}
+
+         {selectedList === 'profits' && (
+            <>
+               <Typography variant="h6" fontWeight="bold">
+                  수익금 내역
+               </Typography>
+               <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+                  총 보유액 {initialValues?.Creator?.profit}P
+               </Typography>
+               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  {points.map((point, index) => (
+                     <Box
+                        key={index}
+                        sx={{
+                           display: 'flex',
+                           justifyContent: 'space-between',
+                           alignItems: 'center',
+                           p: 2,
+                           borderBottom: '1px solid #ddd',
+                        }}
+                     >
+                        <Typography variant="body1" color="text.secondary">
+                           {new Date(point.createdAt).toLocaleDateString()}
+                        </Typography>
+                        <Typography variant="body1">{point.changeComment}</Typography>
+                        <Typography variant="h6" fontWeight="bold">
+                           {point.changePoint}
+                        </Typography>
+                     </Box>
+                  ))}
+               </Box>
+            </>
+         )}
+      </Paper>
    )
 
    const tabItems = [
       { label: '후원 내역', page: sponsorList },
       { label: '계정 설정', page: accountSetting },
-      { label: '포인트 내역', page: pointList },
+      {
+         label: status === 'profit' ? '수익금 내역' : '포인트 내역',
+         page: status === 'profit' ? profitList : pointList,
+      },
    ]
 
    return (
@@ -229,7 +376,7 @@ function My({ initialValues = {}, userWithOrders = {} }) {
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                      <Typography variant="h4">{initialValues ? initialValues.name : ''}</Typography>
                      <Typography variant="body2" color="text.secondary">
-                        가입일 {initialValues ? initialValues.createdAt : ''}
+                        가입일 {initialValues ? new Date(initialValues.createdAt).toLocaleDateString() : ''}
                      </Typography>
                   </Box>
 
@@ -301,6 +448,26 @@ function My({ initialValues = {}, userWithOrders = {} }) {
                   </Box>
                </Box>
             </Box>
+            {categoriesFromServer.length > 0 && (
+               <StyledPaper>
+                  <IconWrapper>
+                     <CreateIcon style={{ color: '#4CAF50' }} />
+                  </IconWrapper>
+                  <Box flex={1}>
+                     <Typography variant="h6" fontWeight="bold">
+                        창작자 정보를 추가했어요!
+                     </Typography>
+                     <Typography variant="body2" color="textSecondary">
+                        이제 스튜디오를 생성할 수 있어요. 나만의 스튜디오를 만들거나 팀원들과 함께 활동해보세요!
+                     </Typography>
+                  </Box>
+                  <TextLink variant="body2" to="/studio">
+                     <Button variant="contained" color="success">
+                        나만의 스튜디오 만들기
+                     </Button>
+                  </TextLink>
+               </StyledPaper>
+            )}
             <Tabs tabItems={tabItems} />
          </Box>
       </Main>
