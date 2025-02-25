@@ -86,7 +86,7 @@ const CommuComment = ({ communityId, auth }) => {
                      <Stack>
                         <Typography>{comment.User.name}</Typography>
                         <Typography variant="caption" color="grey">
-                           {dayjs(comment.createdAt).format('YYYY-MM-DD HH:MM')}
+                           {dayjs(comment.createdAt).format('YYYY-MM-DD HH:mm')}
                         </Typography>
                      </Stack>
                      {auth?.id === comment.userId && (
@@ -103,13 +103,7 @@ const CommuComment = ({ communityId, auth }) => {
                   <ListItem>
                      {editCommentId === comment.id ? (
                         <Stack2 spacing={1} sx={{ background: '#fff', p: 1, borderRadius: 1, width: '100%' }}>
-                           <InputBase
-                              fullWidth
-                              placeholder="감상 작성하기"
-                              autoFocus
-                              value={editComment}
-                              onChange={(e) => setEditComment(e.target.value)}
-                           />
+                           <InputBase fullWidth placeholder="감상 작성하기" autoFocus value={editComment} onChange={(e) => setEditComment(e.target.value)} />
                         </Stack2>
                      ) : (
                         <Typography>{comment.comment}</Typography>

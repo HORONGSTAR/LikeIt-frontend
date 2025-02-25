@@ -109,7 +109,7 @@ function App() {
             <Route path="/studio/profile" element={<StudioProfilePage />} />
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
             <Route path="/studio/member" element={<MemberPage />} />
-            <Route path="/studio/community/write" element={<CommunityForm />} />
+            <Route path="/community/write" element={<CommunityForm />} />
 
             {/* fundingDetail - creator */}
             <Route path="/creator" element={<CreatorPage />} />

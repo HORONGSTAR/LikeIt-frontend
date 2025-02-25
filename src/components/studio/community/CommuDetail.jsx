@@ -118,7 +118,7 @@ const CommuDetail = ({ setOpen, id }) => {
                      <Stack spacing={-0.5}>
                         <Typography>{community.User.name || '닉네임 없음'}</Typography>
                         <Typography color="grey" variant="caption">
-                           {dayjs(community.createdAt).format('YYYY.MM.DD')}
+                           {dayjs(community.createdAt).format('YYYY.MM.DD HH:mm')}
                         </Typography>
                      </Stack>
                   </Stack>

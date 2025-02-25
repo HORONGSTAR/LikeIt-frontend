@@ -65,7 +65,7 @@ const StudioLayout = () => {
                   </CardContent>
                </Card>
                <SpaceBar />
-               <SpaceBox />
+               {/* <SpaceBox /> */}
                <StudioTab />
             </>
          )}

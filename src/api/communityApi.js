@@ -32,7 +32,7 @@ export const createCommunity = async (communityData) => {
          },
       }
       const response = await likeitApi.post('/community', communityData, config)
-      return response.data
+      return response
    } catch (error) {
       console.error(`커뮤니티 글 등록 실패: ${error.message}`)
       throw error
@@ -48,7 +48,7 @@ export const updateCommunity = async (id, communityData) => {
          },
       }
       const response = await likeitApi.put(`/community/${id}`, communityData, config)
-      return response.data
+      return response
    } catch (error) {
       console.error('커뮤니티 글 수정 실패:', error.response?.data?.message || error.message)
       throw error

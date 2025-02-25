@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchOrdersThunk } from '../../../features/orderSlice'
 import { LoadingBox } from '../../../styles/BaseStyles'
 import { useParams } from 'react-router-dom'
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 
 function Support() {
    const dispatch = useDispatch()
@@ -14,6 +16,8 @@ function Support() {
 
    // 프로젝트 ID가 없으면 3으로 설정(테스트용)
    const currentProjectId = projectId || 3
+
+   const sortedOrders = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
 
    useEffect(() => {
       dispatch(fetchOrdersThunk(currentProjectId))
@@ -72,6 +76,33 @@ function Support() {
    if (!orders || !giftStatistics) return <LoadingBox />
    if (loading) return <LoadingBox />
 
+   const handleExportExcel = () => {
+      const data = sortedOrders.map((order) => ({
+         닉네임: order.User.name,
+         선물: order.Reward.name,
+         후원금액: order.orderPrice.toLocaleString(),
+         후원일시:
+            new Date(order.createdAt).toLocaleDateString('ko-KR').replace(/\. /g, '/').slice(0, -1) +
+            ' ' +
+            new Date(order.createdAt).toLocaleTimeString('ko-KR', {
+               hour: '2-digit',
+               minute: '2-digit',
+               hour12: false,
+            }),
+         결제상태: getPaymentStatus(order.orderStatus),
+         선물전달: getDeliveryStatus(order).label,
+      }))
+
+      const worksheet = XLSX.utils.json_to_sheet(data)
+      const workbook = XLSX.utils.book_new()
+      XLSX.utils.book_append_sheet(workbook, worksheet, '후원자 관리')
+
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+      const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+
+      saveAs(dataBlob, '후원자관리.xlsx')
+   }
+
    const supporter = (
       <Stack spacing={1}>
          <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -80,7 +111,9 @@ function Support() {
             </Typography>
             <Stack direction="row" spacing={1}>
                <Button variant="outlined">운송장 입력</Button>
-               <Button variant="outlined">엑셀 파일 받기</Button>
+               <Button variant="outlined" onClick={handleExportExcel}>
+                  엑셀 파일 받기
+               </Button>
             </Stack>
          </Stack>
 
@@ -97,7 +130,7 @@ function Support() {
                   </TableRow>
                </TableHead>
                <TableBody>
-                  {orders.map((order, index) => (
+                  {sortedOrders.map((order, index) => (
                      <TableRow key={index} sx={{ borderBottom: index === orders.length - 1 ? 'none' : '1px solid #ddd' }}>
                         <TableCell sx={{ borderBottom: 'none' }}>{order.User.name}</TableCell>
                         <TableCell
