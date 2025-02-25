@@ -15,7 +15,7 @@ function ProjectRewardForm({ initVals }) {
    const { products, rewards, setProducts, setRewards } = initVals
    const [product, setProduct] = useState(null)
    const [reward, setReward] = useState(null)
-   const [open, setOpen] = useState(null)
+   const [open, setOpen] = useState('')
    const dispatch = useDispatch()
 
    const handleDeleteProduct = useCallback(
@@ -106,7 +106,7 @@ function ProjectRewardForm({ initVals }) {
                </Button>
                {open && (
                   <EditProductBox open={open} onSubmit={productSubmit} product={product}>
-                     <Button onClick={() => setOpen(null)}>취소</Button>
+                     <Button onClick={() => setOpen('')}>취소</Button>
                   </EditProductBox>
                )}
                <Stack spacing={1} mt={1}>
@@ -133,7 +133,7 @@ function ProjectRewardForm({ initVals }) {
                </Button>
                {open && (
                   <EditRewardBox open={open} onSubmit={rewardSubmit} products={products} reward={reward}>
-                     <Button onClick={() => setOpen(null)}>취소</Button>
+                     <Button onClick={() => setOpen('')}>취소</Button>
                   </EditRewardBox>
                )}
                <Grid2 container columnSpacing={1.5} rowSpacing={{ sm: 3, xs: 1.5 }}>
@@ -157,10 +157,8 @@ function ProjectRewardForm({ initVals }) {
                               </Typography>
                               {reward.RewardProducts &&
                                  reward.RewardProducts.map((product) => (
-                                    <Dot size={3}>
-                                       <Typography noWrap key={'RewardProducts' + product.RewardProductRelation.productId}>
-                                          {product.title}
-                                       </Typography>
+                                    <Dot size={3} key={'RewardProducts' + reward.id + product.RewardProductRelation.productId}>
+                                       <Typography noWrap>{product.title}</Typography>
                                        <Typography ml={0.5} variant="body2" color="grey">
                                           (×{product.RewardProductRelation.stock})
                                        </Typography>

@@ -65,7 +65,7 @@ function EditRewardBox({ onSubmit, open, products, reward, children }) {
                <TextField value={name} onChange={(e) => setName(e.target.value)} fullWidth label="선물 이름" />
                <List sx={{ border: '1px solid #ccc', borderRadius: 3 }}>
                   {products.map((product) => (
-                     <ListItem key={'list' + product.id} sx={{ p: 0.5, pr: 1 }}>
+                     <ListItem key={'product' + product.id} sx={{ p: 0.5, pr: 1 }}>
                         <ListItemIcon sx={{ minWidth: '38px' }}>
                            <Checkbox size="small" checked={checked[product.id] ? 1 : 0} onChange={() => handleChangeList(product.id)} />
                         </ListItemIcon>

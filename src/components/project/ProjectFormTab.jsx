@@ -2,7 +2,10 @@ import { useCallback, useRef, useState } from 'react'
 import ProjectInfoForm from './forms/ProjectInfoForm'
 import ProjectRewardForm from './forms/ProjectRewardForm'
 import ProjectBudgetForm from './forms/ProjectBudgetForm'
+import ApprovaForm from './forms/ApprovaForm'
+import { FormGrid } from '../ui/FormGrid'
 import { StepperTabs } from '../ui/Tabs'
+import { isBlank } from '../../util/isBlank'
 
 function ProjectFormTab({ onSubmit, step, project }) {
    const [products, setProducts] = useState(project?.RewardProducts || [])
@@ -30,23 +33,15 @@ function ProjectFormTab({ onSubmit, step, project }) {
 
    const budgetVals = {
       goal: project?.goal || 0,
-      projectBudget: project?.ProjectBudgets || [],
-      creatorBudget: project?.CreatorBudgets || [],
+      projBudg: project?.ProjectBudgets || [],
+      creaBudg: project?.CreatorBudgets || [],
+      studioId: project?.studioId,
    }
 
    const saveInfoData = useCallback(
       (date) => {
          onSubmit(date)
          step.current = 0
-         isSave.current = true
-      },
-      [onSubmit, step, isSave]
-   )
-
-   const saveRewardData = useCallback(
-      (date) => {
-         onSubmit(date)
-         step.current = 1
          isSave.current = true
       },
       [onSubmit, step, isSave]
@@ -60,6 +55,17 @@ function ProjectFormTab({ onSubmit, step, project }) {
       },
       [onSubmit, step, isSave]
    )
+
+   const sendApproval = useCallback(() => {
+      const { imgUrl, title, intro, contents, start, end, schedule } = infoVals
+      const { goal, projBudg, creaBudg } = budgetVals
+      const step1 = isBlank([imgUrl, title, intro, contents, start, end, schedule])
+      const step2 = rewards.length
+      const step3 = isBlank([goal, projBudg, creaBudg])
+      if (!step1 || !step2 || !step3) return
+      onSubmit({ proposalStatus: 'REVIEW_REQ' })
+      step.current = 3
+   }, [onSubmit, step, infoVals, budgetVals, rewards])
 
    const tabItems = [
       {
@@ -76,7 +82,7 @@ function ProjectFormTab({ onSubmit, step, project }) {
       },
       {
          label: '승인 요청',
-         page: '',
+         page: <ApprovaForm onSubmit={sendApproval} />,
       },
    ]
 

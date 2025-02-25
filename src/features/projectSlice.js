@@ -25,7 +25,7 @@ export const updateProjectThunk = createAsyncThunk('project/updateProject', asyn
 export const fetchProjectByIdThunk = createAsyncThunk('project/getProjectById', async (projectId, { rejectWithValue }) => {
    try {
       const response = await getProjectById(projectId)
-      return response
+      return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '프로젝트 불러오기 실패')
    }
@@ -45,13 +45,7 @@ const projectSlice = createSlice({
    name: 'project',
    initialState: {
       project: null,
-<<<<<<< HEAD
-      products: [],
-      rewards: [],
       projects: null,
-=======
-      projects: [],
->>>>>>> 8154c5bbd9f007e113db98665693617068fcebe1
       loading: false,
       pagination: null,
       error: null,
@@ -81,7 +75,7 @@ const projectSlice = createSlice({
          })
          .addCase(updateProjectThunk.fulfilled, (state, action) => {
             state.loading = false
-            state.project = { ...state.project, ...action.payload.project }
+            state.project = { ...state.project, ...action.payload.project, ...action.payload.budget }
          })
          .addCase(updateProjectThunk.rejected, (state, action) => {
             state.loading = false
@@ -95,8 +89,6 @@ const projectSlice = createSlice({
          .addCase(fetchProjectByIdThunk.fulfilled, (state, action) => {
             state.loading = false
             state.project = action.payload.project
-            state.products = action.payload.products
-            state.rewards = action.payload.rewards
          })
          .addCase(fetchProjectByIdThunk.rejected, (state, action) => {
             state.loading = false
