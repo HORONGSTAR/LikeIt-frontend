@@ -4,7 +4,7 @@ import likeitApi from './axiosApi'
 export const getCreators = async (studioId) => {
    try {
       const response = await likeitApi.get(`/creator/${studioId}`)
-      return response
+      return response.data
    } catch (error) {
       console.error(`API Request 오류: ${error.message}`)
       throw error

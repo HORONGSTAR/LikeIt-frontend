@@ -5,7 +5,7 @@ import { getCreators, updateCreatorRole, addCreator, deleteCreator } from '../ap
 export const fetchCreatorsThunk = createAsyncThunk('creator/fetchCreatorsThunk', async (studioId, { rejectWithValue }) => {
    try {
       const response = await getCreators(studioId)
-      return response.data
+      return response
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '창작자 목록 불러오기 실패')
    }

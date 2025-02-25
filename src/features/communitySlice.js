@@ -22,7 +22,7 @@ export const fetchCommunitiesThunk = createAsyncThunk('community/fetchCommunitie
 export const createCommunityThunk = createAsyncThunk('community/createCommunity', async (communityData, { rejectWithValue }) => {
    try {
       const response = await createCommunity(communityData)
-      return response
+      return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '커뮤니티 글 등록 실패')
    }

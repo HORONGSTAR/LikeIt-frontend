@@ -1,26 +1,12 @@
-import {
-   TextField,
-   Button,
-   List,
-   ListItem,
-   Checkbox,
-   ListItemIcon,
-   ListItemText,
-   Stack,
-   Dialog,
-   DialogActions,
-   DialogContent,
-   DialogTitle,
-} from '@mui/material'
+import { TextField, Button, List, ListItem, Checkbox, ListItemIcon, ListItemText, Stack, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import { useCallback, useState, useEffect } from 'react'
 import { NumberInput } from '../../ui/NumberInput'
+import { isBlank } from '../../../util/isBlank'
 
-function EditRewardBox({ open, setOpen, addData, reward, products }) {
-   const [price, setPrice] = useState(0)
-   const [name, setName] = useState('')
-   const [contents, setContents] = useState('')
-   const [stock, setStock] = useState(0)
-   const [limit, setLimit] = useState(0)
+function EditRewardBox({ onSubmit, open, products, reward, children }) {
+   const [price, setPrice] = useState(reward?.price || 0)
+   const [name, setName] = useState(reward?.name || '')
+   const [contents, setContents] = useState(reward?.contents || '')
    const [checked, setChecked] = useState({})
 
    const optionItems = [
@@ -29,27 +15,25 @@ function EditRewardBox({ open, setOpen, addData, reward, products }) {
    ]
 
    useEffect(() => {
-      const items = { stock, limit }
+      const items = { stock: reward?.stock || 0, limit: reward?.limit || 0 }
       products.map((product) => (items[product.id] = 0))
+      reward?.RewardProducts && reward.RewardProducts.map((product) => (items[product.RewardProductRelation.productId] = product.RewardProductRelation.stock))
       setChecked(items)
-   }, [products])
+   }, [reward, products])
 
-   useEffect(() => {
-      setPrice(reward?.price)
-      setName(reward?.name)
-      setContents(reward?.contents)
-      setStock(reward?.stock)
-      setLimit(reward?.limit)
-   }, [reward])
-
-   const handleAddReward = useCallback(() => {
+   const handleSubmit = useCallback(() => {
+      const { stock, limit } = checked
       const relation = products.map((product) => checked[product.id] && { id: product.id, count: checked[product.id] }).filter((product) => product)
-
-      console.log(relation)
-
-      addData({ price, name, contents, stock, limit, relation })
-      setOpen(false)
-   }, [price, name, contents, stock, limit, checked])
+      if (isBlank([name, contents, stock, limit, relation])) return
+      const formData = new FormData()
+      formData.append('price', price)
+      formData.append('name', name)
+      formData.append('contents', contents)
+      formData.append('stock', stock)
+      formData.append('limit', limit)
+      formData.append('relation', JSON.stringify({ relation }))
+      onSubmit(formData)
+   }, [onSubmit, name, contents, checked, price])
 
    const handleChangeList = useCallback(
       (id) => {
@@ -74,14 +58,14 @@ function EditRewardBox({ open, setOpen, addData, reward, products }) {
    )
 
    return (
-      <Dialog open={open}>
+      <Dialog open={open === 'reward'}>
          <DialogTitle>후원 선물 추가</DialogTitle>
          <DialogContent>
             <Stack pt={1} spacing={3}>
                <TextField value={name} onChange={(e) => setName(e.target.value)} fullWidth label="선물 이름" />
                <List sx={{ border: '1px solid #ccc', borderRadius: 3 }}>
                   {products.map((product) => (
-                     <ListItem key={'list' + product.id} sx={{ p: 0.5, pr: 1 }}>
+                     <ListItem key={'product' + product.id} sx={{ p: 0.5, pr: 1 }}>
                         <ListItemIcon sx={{ minWidth: '38px' }}>
                            <Checkbox size="small" checked={checked[product.id] ? 1 : 0} onChange={() => handleChangeList(product.id)} />
                         </ListItemIcon>
@@ -104,19 +88,12 @@ function EditRewardBox({ open, setOpen, addData, reward, products }) {
                </List>
 
                <TextField value={contents} onChange={(e) => setContents(e.target.value)} fullWidth label="선물 소개" />
-               <TextField
-                  value={price}
-                  type="number"
-                  inputProps={{ style: { textAlign: 'end' } }}
-                  onChange={(e) => setPrice(e.target.value)}
-                  fullWidth
-                  label="제작 및 배송 비용을 포함한 후원 금액"
-               />
+               <TextField value={price} type="number" inputProps={{ style: { textAlign: 'end' } }} onChange={(e) => setPrice(e.target.value)} fullWidth label="제작 및 배송 비용을 포함한 후원 금액" />
             </Stack>
          </DialogContent>
          <DialogActions>
-            <Button onClick={() => setOpen(false)}>취소</Button>
-            <Button color="orenge" onClick={handleAddReward}>
+            {children}
+            <Button color="orenge" onClick={handleSubmit}>
                확인
             </Button>
          </DialogActions>

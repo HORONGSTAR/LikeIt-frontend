@@ -25,11 +25,11 @@ export const SubTitle = ({ children, to }) => {
    )
 }
 
-export const Dot = ({ children, both, float }) => {
+export const Dot = ({ children, both, float, size }) => {
    const dotSx = {
       display: 'block',
-      width: 5,
-      height: 5,
+      width: size || 5,
+      height: size || 5,
       background: '#222',
       borderRadius: '50%',
       m: 1,

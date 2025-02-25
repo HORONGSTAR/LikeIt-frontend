@@ -148,12 +148,7 @@ export const AdminCard = ({ project, adminFunc }) => {
                   </ModalBox>
                   <ModalBox openBtn={<Chip variant="outlined" sx={{ marginRight: '8px', cursor: 'pointer' }} label={'승인거부'} />} closeBtn>
                      <Typography>이 프로젝트의 펀딩을 거부하시겠습니까?</Typography>
-                     <textarea
-                        placeholder="펀딩을 허가하지 않는 이유를 작성해주세요"
-                        style={{ width: '240px' }}
-                        value={denyMsg}
-                        onChange={(e) => setDenyMsg(e.target.value)}
-                     ></textarea>
+                     <textarea placeholder="펀딩을 허가하지 않는 이유를 작성해주세요" style={{ width: '240px' }} value={denyMsg} onChange={(e) => setDenyMsg(e.target.value)}></textarea>
                      <br />
                      <Button variant="outlined" onClick={() => adminFunc.proposalDeny(project.id, denyMsg)}>
                         승인거부
@@ -231,14 +226,7 @@ export const CommingCard = ({ project }) => {
                         project.userCount -= 1
                         project.noticeDel(project.id)
                      }}
-                     startIcon={
-                        <Box
-                           component="img"
-                           src="/images/icon/bell.svg"
-                           alt="알림버튼"
-                           sx={{ height: 12, filter: 'grayscale(100%) brightness(1000%)' }}
-                        />
-                     }
+                     startIcon={<Box component="img" src="/images/icon/bell.svg" alt="알림버튼" sx={{ height: 12, filter: 'grayscale(100%) brightness(1000%)' }} />}
                   >
                      알림 신청중
                   </Button>
@@ -307,7 +295,7 @@ export const HistoryCard = ({ project, studioName }) => {
             </Typography>
          </Ellipsis>
          <Stack2 mt={{ sm: 1, xs: 0.5 }}>
-            <Chip variant={chipDt[project.projectStatus].color} label={chipDt[project.projectStatus]?.label} />
+            <Chip variant={chipDt[project.projectStatus]?.color} label={chipDt[project.projectStatus]?.label} />
             <Stack2 ml="auto" alignItems="end">
                <Favorite color="yellow" sx={cententSx.favorite} />
                <Typography sx={cententSx.percent}>{Math.floor((project.totalOrderPrice / project.goal) * 100)}%</Typography>
@@ -346,10 +334,7 @@ export const StudioCard = ({ studio }) => {
 export const ListCard = ({ product, children }) => {
    return (
       <Card variant="outlined" key={'product' + product.id}>
-         <CardMedia
-            image={product?.imgUrl ? process.env.REACT_APP_API_URL + '/rewardProduct/' + product.imgUrl : ''}
-            sx={{ minHeight: 90, minWidth: 100 }}
-         />
+         <CardMedia image={product?.imgUrl ? process.env.REACT_APP_API_URL + '/rewardProduct/' + product.imgUrl : ''} sx={{ minHeight: 90, minWidth: 100 }} />
          <Stack p={1} spacing={1} width="100%">
             <Stack2>
                <Typography fontWeight={600}>{product.title}</Typography>

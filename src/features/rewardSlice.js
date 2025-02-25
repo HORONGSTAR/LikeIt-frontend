@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { createProduct, updateProduct, deleteProduct } from '../api/rewardApi'
+import { createProduct, updateProduct, deleteProduct, createReward, updateReward, deleteReward } from '../api/rewardApi'
 
 // 선물 구성품 생성
 export const createProductThunk = createAsyncThunk('project/createProduct', async ({ projectId, productData }, { rejectWithValue }) => {
@@ -31,6 +31,36 @@ export const deleteProductThunk = createAsyncThunk('project/deleteProduct', asyn
    }
 })
 
+// 후원 선물 생성
+export const createRewardThunk = createAsyncThunk('project/createReward', async ({ projectId, rewardData }, { rejectWithValue }) => {
+   try {
+      const response = await createReward(projectId, rewardData)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '선물 구성품 생성 실패')
+   }
+})
+
+// 후원 선물 수정
+export const updateRewardThunk = createAsyncThunk('project/updateReward', async ({ rewardId, rewardData }, { rejectWithValue }) => {
+   try {
+      const response = await updateReward(rewardId, rewardData)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '선물 구성품 수정 실패')
+   }
+})
+
+// 후원 선물 삭제
+export const deleteRewardThunk = createAsyncThunk('project/deleteReward', async (rewardId, { rejectWithValue }) => {
+   try {
+      const response = await deleteReward(rewardId)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '선물 구성품 수정 실패')
+   }
+})
+
 const rewardSlice = createSlice({
    name: 'reward',
    initialState: {
@@ -40,6 +70,7 @@ const rewardSlice = createSlice({
    reducers: {},
    extraReducers: (builder) => {
       builder
+
          // 선물 구성품 생성
          .addCase(createProductThunk.pending, (state) => {
             state.loading = true
@@ -73,6 +104,42 @@ const rewardSlice = createSlice({
             state.loading = false
          })
          .addCase(deleteProductThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+         // 후원 선물 생성
+         .addCase(createRewardThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(createRewardThunk.fulfilled, (state) => {
+            state.loading = false
+         })
+         .addCase(createRewardThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+         // 후원 선물 수정
+         .addCase(updateRewardThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(updateRewardThunk.fulfilled, (state) => {
+            state.loading = false
+         })
+         .addCase(updateRewardThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+         // 후원 선물 삭제
+         .addCase(deleteRewardThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(deleteRewardThunk.fulfilled, (state) => {
+            state.loading = false
+         })
+         .addCase(deleteRewardThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

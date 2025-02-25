@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { createCommunityThunk } from '../../../features/communitySlice'
-import CommunityForm from './CommunityForm'
+import CommunityForm from '../components/studio/community/CommunityForm'
 import { Main, LoadingBox, ErrorBox } from '../styles/BaseStyles'
 
 function CommunityPage() {

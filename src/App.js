@@ -40,6 +40,7 @@ import StudioProfilePage from './pages/StudioProfilePage'
 import ProjectWritePage from './pages/ProjectWritePage'
 import CommunityForm from './components/studio/community/CommunityForm'
 import MemberPage from './pages/MemberPage'
+import ProjectAllPage from './pages/ProjectAllPage'
 
 // fundingDetail - creator
 import CreatorPage from './pages/CreatorPage'
@@ -100,6 +101,7 @@ function App() {
             <Route path="/studio/:id" element={<StudioPage />} />
             <Route path="/studio/project/create" element={<ProjectWritePage />} />
             <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
+            <Route path="/studio/project/all" element={<ProjectAllPage />} />
             <Route path="/studio/profile" element={<StudioProfilePage />} />
             <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
             <Route path="/studio/member" element={<MemberPage />} />
@@ -120,6 +122,13 @@ function App() {
                }
             />
 
+             {/* admin */}    
+         {user && user.role === 'ADMIN' && (
+            <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 50 }} variant="contained" to="/admin">
+               관리자 페이지
+            </Button>
+         )}
+         
             {/* develop */}
             <Route path="/desinguide" element={<DesignGuide />} />
          </Routes>
@@ -128,11 +137,6 @@ function App() {
             디자인 가이드 확인하기
          </Button>
 
-         {user && user.role === 'ADMIN' && (
-            <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 50 }} variant="contained" to="/admin">
-               관리자 페이지
-            </Button>
-         )}
          <Footer />
       </>
    )

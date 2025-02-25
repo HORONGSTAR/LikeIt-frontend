@@ -11,7 +11,7 @@ function ProjectWritePage() {
    const { id } = useParams()
    const [open, setOpen] = useState(false)
    const [title, setTitle] = useState('')
-   const { loading, error } = useSelector((state) => state.project)
+   const { project, loading, error } = useSelector((state) => state.project)
 
    const dispatch = useDispatch()
    const navigate = useNavigate()
@@ -61,7 +61,7 @@ function ProjectWritePage() {
 
    return (
       <>
-         <Main>{id ? <ProjectFormTab onSubmit={handleEditProject} step={step} /> : firstStep}</Main>
+         <Main>{id ? <ProjectFormTab onSubmit={handleEditProject} step={step} project={project} /> : firstStep}</Main>
          <ErrorBox error={error} open={open} setOpen={setOpen} />
       </>
    )
