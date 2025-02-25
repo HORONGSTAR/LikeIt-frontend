@@ -104,9 +104,6 @@ function MemberPage() {
             {/* 데이터 로딩 중 */}
             {loading && <LoadingBox />}
 
-            {/* 에러 발생 시 */}
-            {error && <Typography color="error">{error}</Typography>}
-
             {/* 창작자 목록 표시 */}
             {!loading &&
                !error &&

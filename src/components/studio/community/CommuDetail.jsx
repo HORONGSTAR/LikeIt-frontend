@@ -118,7 +118,7 @@ const CommuDetail = ({ setOpen, id }) => {
                      <Stack spacing={-0.5}>
                         <Typography>{community.User.name || '닉네임 없음'}</Typography>
                         <Typography color="grey" variant="caption">
-                           {dayjs(community.createdAt).format('YYYY.MM.DD')}
+                           {dayjs(community.createdAt).format('YYYY.MM.DD HH:mm')}
                         </Typography>
                      </Stack>
                   </Stack>
@@ -146,15 +146,15 @@ const CommuDetail = ({ setOpen, id }) => {
                </CardContent>
 
                {isEditing && (
-                  <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 2 }}>
-                     <Button variant="outlined" startIcon={<ImageIcon />} component="label">
+                  <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mb: 2 }}>
+                     <Button variant="contained" color="orenge" startIcon={<ImageIcon />} component="label">
                         이미지 첨부
                         <input type="file" hidden onChange={handleImageChange} />
                      </Button>
-                     <Button variant="yellow" onClick={handleSave}>
+                     <Button variant="contained" color="orenge" onClick={handleSave}>
                         등록
                      </Button>
-                     <Button variant="outlined" onClick={() => navigate(`/studio/${studioId}`)}>
+                     <Button variant="outlined" color="orenge" onClick={() => navigate(`/studio/${studioId}`)}>
                         취소
                      </Button>
                   </Box>

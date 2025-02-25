@@ -26,6 +26,7 @@ export const fetchProjectByIdThunk = createAsyncThunk('project/getProjectById', 
    try {
       const response = await getProjectById(projectId)
       return response.data
+      return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '프로젝트 불러오기 실패')
    }

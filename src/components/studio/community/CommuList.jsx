@@ -31,7 +31,7 @@ const CommuList = ({ setOpen }) => {
                            {community.title}
                         </Typography>
                         <Typography color="grey" fontWeight={300} ml="auto">
-                           {dayjs(community.createdAt).format('YYYY.MM.DD')}
+                           {dayjs(community.createdAt).format('YYYY.MM.DD HH:mm')}
                         </Typography>
                      </Stack2>
                      <Stack2>

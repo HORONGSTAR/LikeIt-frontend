@@ -80,17 +80,17 @@ function CommunityForm() {
 
    return (
       <Box sx={{ maxWidth: '800px', margin: 'auto', mt: 5 }}>
-         <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+         <Typography variant="h4" color="orenge" mb={2}>
             글 작성하기
          </Typography>
 
-         <Box sx={{ mb: 2 }}>
+         <Box>
             <TextField fullWidth label="제목을 입력해주세요." variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} />
          </Box>
 
-         <Box sx={{ mb: 2, display: 'flex', justifyContent: 'center' }}>
+         <Box sx={{ mb: 1, display: 'flex', justifyContent: 'center' }}>
             {image && (
-               <Box sx={{ position: 'relative', display: 'inline-block', mt: 2 }}>
+               <Box sx={{ position: 'relative', display: 'inline-block', mt: 1 }}>
                   <CardMedia component="img" image={image} alt="첨부 이미지" sx={{ borderRadius: 2, maxHeight: 300, objectFit: 'contain' }} />
                   <IconButton
                      sx={{
@@ -118,15 +118,15 @@ function CommunityForm() {
             </Typography>
          )}
 
-         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
-            <Button variant="outlined" startIcon={<ImageIcon />} component="label">
+         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mb: 2 }}>
+            <Button variant="outlined" color="orenge" size="large" startIcon={<ImageIcon />} component="label">
                이미지 첨부
                <input type="file" hidden onChange={handleImageChange} />
             </Button>
-            <Button variant="yellow" onClick={handlePostSubmit}>
+            <Button variant="contained" color="orenge" size="large" onClick={handlePostSubmit}>
                등록
             </Button>
-            <Button variant="outlined" onClick={() => navigate(`/studio/${studioId}`)}>
+            <Button variant="outlined" color="orenge" size="large" onClick={() => navigate(`/studio/${studioId}`)}>
                취소
             </Button>
          </Box>

@@ -33,7 +33,7 @@ const StudioLayout = () => {
                               <Button sx={{ background: 'linear-gradient(to right, #4ACBCF, #A57EFF)', color: '#fff', p: 1 }}>
                                  <MicIcon sx={{ fontSize: '20px' }} /> 스페이스
                               </Button>
-                              <Button variant="yellow" sx={{ color: '#fff' }} onClick={() => navigate('/community/write')}>
+                              <Button variant="yellow" onClick={() => navigate('/community/write')}>
                                  글쓰기
                               </Button>
                            </Stack2>
