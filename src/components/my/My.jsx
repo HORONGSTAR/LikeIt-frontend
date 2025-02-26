@@ -187,7 +187,7 @@ function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
                     <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
                        주문일 {new Date(order.createdAt).toLocaleDateString()}
                     </Typography>
-                    <FundingCard image={process.env.REACT_APP_API_URL + '/projectImg' + order.Project.imgUrl} title={order.Project.title} price={order.orderPrice} status={order.orderStatus} />
+                    <FundingCard image={process.env.REACT_APP_API_URL + '/projectImg' + order.Project?.imgUrl} title={order.Project?.title} price={order.orderPrice} status={order.orderStatus} />
                  </>
               ))
             : ''}
@@ -361,7 +361,7 @@ function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
                   </Box>
                </Box>
             </Box>
-            {categoriesFromServer.length > 0 && (
+            {categoriesFromServer?.length > 0 && (
                <StyledPaper>
                   <IconWrapper>
                      <CreateIcon style={{ color: '#4CAF50' }} />

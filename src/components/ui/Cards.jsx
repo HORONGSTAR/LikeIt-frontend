@@ -4,6 +4,7 @@ import { Stack2, Ellipsis, ModalBox } from '../../styles/BaseStyles'
 import { setDDay } from '../../util/changeDate'
 import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { styled } from '@mui/system'
 
 export const BasicCard = ({ imgUrl, children, cardEf }) => {
    const cardSx = {
@@ -89,6 +90,19 @@ export const AdminCard = ({ project, adminFunc }) => {
       }
    }, [])
 
+   // 이미지 등록 버튼용
+   const VisuallyHiddenInput = styled('input')({
+      clip: 'rect(0 0 0 0)',
+      clipPath: 'inset(50%)',
+      height: 1,
+      overflow: 'hidden',
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      whiteSpace: 'nowrap',
+      width: 1,
+   })
+
    let proposalStatus = ''
    let proposalColor = ''
    if (project.proposalStatus === 'COMPLETE') {
@@ -137,15 +151,19 @@ export const AdminCard = ({ project, adminFunc }) => {
                <Typography sx={cententSx.percent}>{project.rate}%</Typography>
             </Stack2>
          </Stack2>
+         {/* 높이 맞춤용 */}
+         {proposalStatus === '승인거부' ? <Chip sx={{ visibility: 'hidden' }} /> : null}
          <Stack2 mt={{ sm: 1, xs: 0.5 }}>
             {proposalStatus === '승인대기중' && (
                <>
+                  {/* 승인허가 모달박스 */}
                   <ModalBox openBtn={<Chip variant="outlined" sx={{ marginRight: '8px', cursor: 'pointer' }} label={'승인허가'} />} closeBtn>
                      <Typography>이 프로젝트의 펀딩을 승인하시겠습니까?</Typography>
                      <Button variant="outlined" onClick={() => adminFunc.proposalPass(project.id)}>
                         승인허가
                      </Button>
                   </ModalBox>
+                  {/* 승인거부 모달박스 */}
                   <ModalBox openBtn={<Chip variant="outlined" sx={{ marginRight: '8px', cursor: 'pointer' }} label={'승인거부'} />} closeBtn>
                      <Typography>이 프로젝트의 펀딩을 거부하시겠습니까?</Typography>
                      <textarea placeholder="펀딩을 허가하지 않는 이유를 작성해주세요" style={{ width: '240px' }} value={denyMsg} onChange={(e) => setDenyMsg(e.target.value)}></textarea>
@@ -159,8 +177,11 @@ export const AdminCard = ({ project, adminFunc }) => {
             {proposalStatus === '승인완료' && !project.bannerId && (
                <ModalBox openBtn={<Chip variant="outlined" sx={{ marginRight: '8px', cursor: 'pointer' }} label={'홈 배너노출 등록'} />} closeBtn>
                   <Typography>배너 등록을 진행하시겠습니까</Typography>
-                  {ImgUrl && <img src={ImgUrl} alt="업로드 이미지 미리보기" style={{ height: '200px' }} />}
-                  <input type="file" onChange={handleImgChange} name="banner" />
+                  {ImgUrl && <img src={ImgUrl} alt="업로드 이미지 미리보기" style={{ width: '100%' }} />}
+                  <Button component="label" role={undefined} variant="contained" tabIndex={-1} sx={{ marginLeft: '0' }}>
+                     배너 이미지
+                     <VisuallyHiddenInput type="file" onChange={handleImgChange} name="banner" />
+                  </Button>
                   <Button
                      variant="outlined"
                      onClick={() => {
@@ -323,7 +344,7 @@ export const StudioCard = ({ studio }) => {
          </Ellipsis>
          <Stack2 mt={{ sm: 1, xs: 0.5 }}>
             <Typography variant="body2">구독자수 {studio.follow}명</Typography>
-            <Button fullWidth variant="outlined">
+            <Button fullWidth variant="outlined" onClick={() => (window.location.href = `/studio/${studio.id}`)}>
                스튜디오 방문하기
             </Button>
          </Stack2>

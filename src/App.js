@@ -121,17 +121,16 @@ function App() {
                   </RedirectLogoutRoute>
                }
             />
+            {/* develop */}
+            <Route path="/desinguide" element={<DesignGuide />} />
+         </Routes>
 
-             {/* admin */}    
+         {/* admin */}
          {user && user.role === 'ADMIN' && (
             <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 50 }} variant="contained" to="/admin">
                관리자 페이지
             </Button>
          )}
-         
-            {/* develop */}
-            <Route path="/desinguide" element={<DesignGuide />} />
-         </Routes>
 
          <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기

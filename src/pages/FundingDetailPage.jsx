@@ -16,6 +16,7 @@ const FundingDetailPage = () => {
    const { funding, loading, error } = useSelector((state) => state.funding)
    const { isAuthenticated } = useSelector((state) => state.auth)
    const [project, setProject] = useState(null)
+   const [noReward, setNoReward] = useState('')
 
    const [orderRewardBasket, setOrderRewardBasket] = useState({})
 
@@ -105,12 +106,22 @@ const FundingDetailPage = () => {
                               펀딩 기간: {project.startDate} ~ {project.endDate}
                            </Typography>
                            {isAuthenticated && (
-                              <Link to={Object.keys(orderRewardBasket).length > 0 ? `/funding/order/${funding.id}` : '#'} state={{ orderRewardBasket: orderRewardBasket }}>
+                              <Link
+                                 to={Object.keys(orderRewardBasket).length > 0 ? `/funding/order/${funding.id}` : undefined}
+                                 onClick={(e) => {
+                                    if (Object.keys(orderRewardBasket).length === 0) {
+                                       e.preventDefault()
+                                       setNoReward('리워드를 선택해주세요')
+                                    }
+                                 }}
+                                 state={{ orderRewardBasket: orderRewardBasket }}
+                              >
                                  <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
                                     후원하기
                                  </Button>
                               </Link>
                            )}
+                           <Typography sx={{ color: 'red', textAlign: 'center' }}>{noReward}</Typography>
                         </CardContent>
                      </Card>
                   </Grid2>

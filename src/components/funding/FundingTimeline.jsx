@@ -20,6 +20,21 @@ function FundingTimeline({ funding }) {
       dispatch(fetchTimelinesThunk({ id: funding.id, page, limit: 3 }))
    }, [dispatch, page])
 
+   // 뒤로가기 제어
+   useEffect(() => {
+      if (nowTimeline === 0) return
+      const handlePopState = () => {
+         setNowTimeline(0)
+      }
+
+      window.history.pushState(null, '', window.location.href)
+      window.addEventListener('popstate', handlePopState)
+
+      return () => {
+         window.removeEventListener('popstate', handlePopState)
+      }
+   }, [nowTimeline])
+
    useEffect(() => {
       const newTimelines = []
       timelines.forEach((timeline) => {
