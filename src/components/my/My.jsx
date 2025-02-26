@@ -30,7 +30,7 @@ const IconWrapper = styled(Box)({
    marginRight: '16px',
 })
 
-function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
+function My({ initialValues = {}, userWithOrders = {}, points = [] }) {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const [email, setEmail] = useState(initialValues ? initialValues.email : '')
@@ -283,7 +283,10 @@ function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
             {/* Profile Section */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                <Avatar sx={{ width: 64, height: 64, mr: 2 }}>
-                  <img src={initialValues ? process.env.REACT_APP_API_URL + '/userImg' + initialValues.imgUrl : ''} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                  <img
+                     src={initialValues ? process.env.REACT_APP_API_URL + '/userImg' + initialValues.imgUrl : ''}
+                     style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+                  />
                </Avatar>
                <Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
@@ -361,7 +364,7 @@ function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
                   </Box>
                </Box>
             </Box>
-            {categoriesFromServer.length > 0 && (
+            {categoriesFromServer?.length > 0 && (
                <StyledPaper>
                   <IconWrapper>
                      <CreateIcon style={{ color: '#4CAF50' }} />
