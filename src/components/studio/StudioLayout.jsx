@@ -5,16 +5,23 @@ import { Stack2 } from '../../styles/BaseStyles'
 import MicIcon from '@mui/icons-material/Mic'
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
-import SpaceBox from './SpaceBox'
 import SpaceBar from './SpaceBar'
+import { useMemo } from 'react'
 
 const StudioLayout = () => {
-   const { studio } = useSelector((state) => state.studio)
+   const { studio, projects } = useSelector((state) => state.studio)
    const { user } = useSelector((state) => state.auth)
+
+   console.log(studio)
+
    const navigate = useNavigate()
    const Spen = (props) => <Typography component="span" color="green" {...props} />
 
    const isCreator = studio?.StudioCreators?.some((creator) => creator.Creator?.User?.id === user?.id)
+
+   const maxPercent = useMemo(() => Math.floor(Math.max(...projects.map((project) => project.totalOrderPrice / project.goal)) * 100), [projects])
+
+   const completeProjects = useMemo(() => projects.filter((project) => project.projectStatus === 'FUNDING_COMPLETE').length, [projects])
 
    return (
       <>
@@ -51,21 +58,20 @@ const StudioLayout = () => {
 
                      <Stack2 sx={{ gap: '0 10px' }}>
                         <Typography>
-                           달성 프로젝트 <Spen>3건</Spen>
+                           달성 프로젝트 <Spen>{completeProjects}건</Spen>
                         </Typography>
                         <Divider orientation="vertical" flexItem />
                         <Typography>
-                           구독자 수 <Spen>82명</Spen>
+                           구독자 수 <Spen>{studio.Users.length}</Spen>
                         </Typography>
                         <Divider orientation="vertical" flexItem />
                         <Typography>
-                           최대 달성률 <Spen>1125%</Spen>
+                           최대 달성률 <Spen>{maxPercent}%</Spen>
                         </Typography>
                      </Stack2>
                   </CardContent>
                </Card>
-               <SpaceBar />
-               <SpaceBox />
+               <SpaceBar studio={studio} />
                <StudioTab />
             </>
          )}

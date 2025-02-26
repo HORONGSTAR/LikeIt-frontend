@@ -6,7 +6,7 @@ import StudioLayout from '../components/studio/StudioLayout'
 import { Typography, Button, Box } from '@mui/material'
 import { LoadingBox, ErrorBox, Main } from '../styles/BaseStyles'
 
-function StudioPage() {
+function StudioPage({ auth }) {
    const { id } = useParams()
    const [open, setOpen] = useState(false)
    const dispatch = useDispatch()
@@ -40,11 +40,7 @@ function StudioPage() {
             </Typography>
          </Box>
 
-         <Button
-            variant="yellow"
-            sx={{ color: 'white', height: '50px', fontSize: '24px' }}
-            onClick={() => navigate('/studio/profile')}
-         >
+         <Button variant="yellow" sx={{ color: 'white', height: '50px', fontSize: '24px' }} onClick={() => navigate('/studio/profile')}>
             스튜디오 만들기
          </Button>
 
@@ -56,7 +52,7 @@ function StudioPage() {
 
    return (
       <>
-         <Main>{studio ? <StudioLayout /> : newStudio}</Main>
+         <Main>{studio ? <StudioLayout auth={auth} /> : newStudio}</Main>
 
          <ErrorBox error={error} open={open} setOpen={setOpen} />
       </>

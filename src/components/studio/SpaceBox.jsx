@@ -1,10 +1,10 @@
-import { Box, Typography, Avatar, Stack, Slider, TextField, Button, Paper, Divider } from '@mui/material'
+import { Box, Typography, Avatar, Stack, Slider, IconButton, Divider, InputBase, Grid2 } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { useState } from 'react'
 import { LoadingBox } from '../../styles/BaseStyles'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
-import SendIcon from '@mui/icons-material/Send'
+import { SendRounded } from '@mui/icons-material'
 import { Main } from '../../styles/BaseStyles'
 
 function SpaceBox() {
@@ -31,85 +31,67 @@ function SpaceBox() {
 
    return (
       <Main>
-         <Box
-            sx={{
-               maxWidth: '100%',
-               p: 3,
-               display: 'flex',
-               flexDirection: 'row',
-               alignItems: 'center',
-               textAlign: 'left',
-               gap: 3,
-            }}
-         >
+         <Grid2 container>
             {/* 진행자 정보 */}
-            <Stack alignItems="center">
-               <Box
-                  sx={{
-                     width: 170,
-                     height: 170,
-                     display: 'flex',
-                     alignItems: 'center',
-                     justifyContent: 'center',
-                     borderRadius: '50%',
-                     background: 'linear-gradient(to right, #4ACBCF, #A57EFF)',
-                     padding: '5px',
-                  }}
-               >
-                  <Avatar
-                     src={imageUrl}
-                     alt={user?.name}
+            <Grid2 size={{ md: 4, sm: 12, xs: 12 }} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+               <Stack alignItems="center">
+                  <Box
                      sx={{
-                        width: 150,
-                        height: 150,
-                        backgroundColor: 'white',
-                        border: '5px solid white',
+                        width: 170,
+                        height: 170,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: '50%',
+                        background: 'linear-gradient(to right, #4ACBCF, #A57EFF)',
+                        padding: '5px',
                      }}
-                  />
-               </Box>
-
-               <Typography variant="body2" color="textSecondary" mt={1}>
-                  진행자
-               </Typography>
-               <Typography variant="h6">{user?.name || '이름 없음'}</Typography>
-
-               {/* 볼륨 조절 */}
-               <Box sx={{ display: 'flex', alignItems: 'center', width: 200, mt: 1 }}>
-                  {volume === 0 ? <VolumeOffIcon sx={{ fontSize: 32, mr: 1, color: '#666' }} /> : <VolumeUpIcon sx={{ fontSize: 32, mr: 1, color: '#666' }} />}
-                  <Slider
-                     value={volume}
-                     onChange={(e, newValue) => setVolume(newValue)}
-                     aria-labelledby="volume-slider"
-                     min={0}
-                     max={100}
-                     sx={{
-                        color: '#666',
-                        '& .MuiSlider-thumb': { backgroundColor: '#666' },
-                        '& .MuiSlider-track': { backgroundColor: '#666' },
-                     }}
-                  />
-               </Box>
-               <Typography variant="body2" color="textSecondary">
-                  볼륨: {volume}%
-               </Typography>
-            </Stack>
+                  >
+                     <Avatar
+                        src={imageUrl}
+                        alt={user?.name}
+                        sx={{
+                           width: 150,
+                           height: 150,
+                           backgroundColor: 'white',
+                           border: '5px solid white',
+                        }}
+                     />
+                  </Box>
+                  <Stack alignItems="center">
+                     <Typography variant="body2" color="textSecondary" mt={1}>
+                        진행자
+                     </Typography>
+                     <Typography variant="h6">{user?.name || '이름 없음'}</Typography>
+                     {/* 볼륨 조절 */}
+                     <Box sx={{ display: 'flex', alignItems: 'center', width: 200, mt: 1 }}>
+                        {volume === 0 ? <VolumeOffIcon sx={{ fontSize: 32, mr: 1, color: '#666' }} /> : <VolumeUpIcon sx={{ fontSize: 32, mr: 1, color: '#666' }} />}
+                        <Slider
+                           value={volume}
+                           onChange={(e, newValue) => setVolume(newValue)}
+                           aria-labelledby="volume-slider"
+                           min={0}
+                           max={100}
+                           sx={{
+                              color: '#666',
+                              '& .MuiSlider-thumb': { backgroundColor: '#666' },
+                              '& .MuiSlider-track': { backgroundColor: '#666' },
+                           }}
+                        />
+                     </Box>
+                     <Typography variant="body2" color="textSecondary">
+                        볼륨: {volume}%
+                     </Typography>
+                  </Stack>
+               </Stack>
+            </Grid2>
 
             {/* 채팅창 */}
-            <Paper
-               sx={{
-                  flex: 1,
-                  maxWidth: 600,
-                  borderRadius: 3,
-                  padding: 2,
-                  color: 'white',
-                  boxShadow: 'none',
-               }}
-            >
+            <Grid2 p={2} size={{ md: 8, sm: 12, xs: 12 }}>
                <Box
                   sx={{
                      backgroundColor: 'white',
                      borderRadius: 2,
-                     p: 2,
                      height: 250,
                      overflowY: 'auto',
                      color: '#222',
@@ -117,8 +99,8 @@ function SpaceBox() {
                >
                   <Stack spacing={1} divider={<Divider sx={{ backgroundColor: '#ddd' }} />}>
                      {chat.map((msg, index) => (
-                        <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
-                           <Avatar src={msg.imgUrl} sx={{ width: 30, height: 30, mr: 1 }}>
+                        <Box key={index} sx={{ display: 'flex', alignItems: 'start' }}>
+                           <Avatar src={msg.imgUrl} sx={{ width: 32, height: 32, mr: 1 }}>
                               {msg.name.charAt(0)}
                            </Avatar>
                            <Box>
@@ -133,30 +115,21 @@ function SpaceBox() {
                </Box>
 
                {/* 입력 필드 */}
-               <Box sx={{ display: 'flex', alignItems: 'center', m: 2, border: '1px solid #ddd', borderRadius: '5px' }}>
-                  <TextField
+               <Box sx={{ display: 'flex', alignItems: 'center', px: 1, py: 0.5, border: '1px solid #ddd', borderRadius: '5px' }}>
+                  <InputBase
                      fullWidth
-                     variant="outlined"
-                     size="small"
                      value={message}
                      color="#ddd"
                      onChange={(e) => setMessage(e.target.value)}
                      onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                     sx={{
-                        backgroundColor: 'white',
-                        borderRadius: 1,
-                        '& .MuiOutlinedInput-root': {
-                           '& fieldset': { border: 'none' },
-                        },
-                     }}
                      placeholder="채팅 입력하기..."
                   />
-                  <Button onClick={handleSendMessage} variant="outlined" sx={{ ml: 1 }}>
-                     <SendIcon />
-                  </Button>
+                  <IconButton onClick={handleSendMessage}>
+                     <SendRounded />
+                  </IconButton>
                </Box>
-            </Paper>
-         </Box>
+            </Grid2>
+         </Grid2>
       </Main>
    )
 }

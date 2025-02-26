@@ -86,7 +86,6 @@ function App() {
             <Route path="/search" element={<SearchPage />} />
             <Route path="/rank" element={<RankingPage />} />
             <Route path="/admin" element={<AdminPage />} />
-
             {/* auth */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
@@ -97,22 +96,77 @@ function App() {
             <Route path="/my" element={<MyPage />} />
 
             {/* studio */}
-            <Route path="/studio" element={<StudioPage />} />
+            <Route
+               path="/studio"
+               element={
+                  <RedirectLogoutRoute>
+                     <StudioPage auth={user} />
+                  </RedirectLogoutRoute>
+               }
+            />
+            <Route
+               path="/studio/project/create"
+               element={
+                  <RedirectLogoutRoute>
+                     <ProjectWritePage />
+                  </RedirectLogoutRoute>
+               }
+            />
+            <Route
+               path="/studio/project/edit/:id"
+               element={
+                  <RedirectLogoutRoute>
+                     <ProjectWritePage />
+                  </RedirectLogoutRoute>
+               }
+            />
+            <Route
+               path="/studio/project/all"
+               element={
+                  <RedirectLogoutRoute>
+                     <ProjectAllPage />
+                  </RedirectLogoutRoute>
+               }
+            />
+            <Route
+               path="/studio/profile"
+               element={
+                  <RedirectLogoutRoute>
+                     <StudioProfilePage />
+                  </RedirectLogoutRoute>
+               }
+            />
+            <Route
+               path="/studio/profile/:id"
+               element={
+                  <RedirectLogoutRoute>
+                     <StudioProfilePage />
+                  </RedirectLogoutRoute>
+               }
+            />
+            <Route
+               path="/studio/member"
+               element={
+                  <RedirectLogoutRoute>
+                     <MemberPage />
+                  </RedirectLogoutRoute>
+               }
+            />
+            <Route
+               path="/studio/community/write"
+               element={
+                  <RedirectLogoutRoute>
+                     <CommunityForm />
+                  </RedirectLogoutRoute>
+               }
+            />
             <Route path="/studio/:id" element={<StudioPage />} />
-            <Route path="/studio/project/create" element={<ProjectWritePage />} />
-            <Route path="/studio/project/edit/:id" element={<ProjectWritePage />} />
-            <Route path="/studio/project/all" element={<ProjectAllPage />} />
-            <Route path="/studio/profile" element={<StudioProfilePage />} />
-            <Route path="/studio/profile/:id" element={<StudioProfilePage />} />
-            <Route path="/studio/member" element={<MemberPage />} />
-            <Route path="/studio/community/write" element={<CommunityForm />} />
 
             {/* fundingDetail - creator */}
             <Route path="/creator" element={<CreatorPage />} />
 
             {/* fundingDetail - user */}
             <Route path="/funding/:id" element={<FundingDetailPage />} />
-
             <Route
                path="/funding/order/:id"
                element={
@@ -121,14 +175,12 @@ function App() {
                   </RedirectLogoutRoute>
                }
             />
-
-             {/* admin */}    
-         {user && user.role === 'ADMIN' && (
-            <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 50 }} variant="contained" to="/admin">
-               관리자 페이지
-            </Button>
-         )}
-         
+            {/* admin */}
+            {user && user.role === 'ADMIN' && (
+               <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 50 }} variant="contained" to="/admin">
+                  관리자 페이지
+               </Button>
+            )}
             {/* develop */}
             <Route path="/desinguide" element={<DesignGuide />} />
          </Routes>

@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles'
+import { fontSize } from '@mui/system'
 
 export const theme = createTheme({
    palette: {
@@ -73,7 +74,26 @@ export const theme = createTheme({
             },
          },
       },
-
+      MuiAvatarGroup: {
+         styleOverrides: {
+            root: ({ theme }) => ({
+               [theme.breakpoints.up(920)]: {
+                  '& .MuiAvatar-root': {
+                     width: 32,
+                     height: 32,
+                     fontSize: 14,
+                  },
+               },
+               [theme.breakpoints.down(920)]: {
+                  '& .MuiAvatar-root': {
+                     width: 24,
+                     height: 24,
+                     fontSize: 12,
+                  },
+               },
+            }),
+         },
+      },
       MuiOutlinedInput: {
          styleOverrides: {
             root: {
