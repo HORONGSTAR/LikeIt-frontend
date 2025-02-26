@@ -30,7 +30,8 @@ const IconWrapper = styled(Box)({
    marginRight: '16px',
 })
 
-function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
+function My({ initialValues = {}, orders = [], points = [], profits = [], allprojects = [] }) {
+   console.log(orders)
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const [email, setEmail] = useState(initialValues ? initialValues.email : '')
@@ -54,8 +55,10 @@ function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
       performance: false,
    })
 
-   const categoriesFromServer = initialValues ? initialValues?.Creator?.Categories : []
-   console.log(categoriesFromServer)
+   const categoriesFromServer = initialValues?.Creator?.Categories ?? []
+
+   //    console.log(categoriesFromServer)
+
    useEffect(() => {
       if (categoriesFromServer?.length > 0) {
          setSelectedValues((prev) => {
@@ -179,18 +182,20 @@ function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
          })
    }, [nickname, imgFile, dispatch])
 
+   // <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+   //    주문일 {new Date(order.createdAt).toLocaleDateString()}
+   // </Typography>
+   // <FundingCard image={process.env.REACT_APP_API_URL + '/projectImg' + order.Project.imgUrl} title={order.Project.title} price={order.orderPrice} status={order.orderStatus} />
+   //    <FundingCard image={process.env.REACT_APP_API_URL + '/projectImg' + order.Project.imgUrl} title={order.Project.title} subtitle={order.Reward.name} price={order.orderPrice} status={order.orderStatus} />
    const sponsorList = (
       <>
-         {userWithOrders
-            ? userWithOrders.Orders?.map((order) => (
-                 <>
-                    <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-                       주문일 {new Date(order.createdAt).toLocaleDateString()}
-                    </Typography>
-                    <FundingCard image={process.env.REACT_APP_API_URL + '/projectImg' + order.Project.imgUrl} title={order.Project.title} price={order.orderPrice} status={order.orderStatus} />
-                 </>
-              ))
-            : ''}
+         {allprojects.map((project) =>
+            orders
+               .filter((order) => order.Reward.Project.id === project.id)
+               .map((order) => {
+                  return <FundingCard key={order.id} image={`${process.env.REACT_APP_API_URL}/projectImg${order.Reward.Project.imgUrl}`} title={order.Reward.Project.title} subtitle={order.Reward.name} price={order.orderPrice} status={order.orderStatus} />
+               })
+         )}
       </>
    )
 
@@ -271,10 +276,97 @@ function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
       </Paper>
    )
 
+   const [selectedList, setSelectedList] = useState('points')
+   const handleListChange = (list) => {
+      setSelectedList(list)
+   }
+
+   const pointAndProfitList = (
+      <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
+         <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+            <Button variant={selectedList === 'points' ? 'contained' : 'outlined'} onClick={() => handleListChange('points')}>
+               포인트 내역
+            </Button>
+            <Button variant={selectedList === 'profits' ? 'contained' : 'outlined'} onClick={() => handleListChange('profits')}>
+               수익금 내역
+            </Button>
+         </Box>
+
+         {selectedList === 'points' && (
+            <>
+               <Typography variant="h6" fontWeight="bold">
+                  포인트 내역
+               </Typography>
+               <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+                  총 포인트 {initialValues?.point}P
+               </Typography>
+               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  {points.map((point, index) => (
+                     <Box
+                        key={index}
+                        sx={{
+                           display: 'flex',
+                           justifyContent: 'space-between',
+                           alignItems: 'center',
+                           p: 2,
+                           borderBottom: '1px solid #ddd',
+                        }}
+                     >
+                        <Typography variant="body1" color="text.secondary">
+                           {new Date(point.createdAt).toLocaleDateString()}
+                        </Typography>
+                        <Typography variant="body1">{point.changeComment}</Typography>
+                        <Typography variant="h6" fontWeight="bold">
+                           {point.changePoint}
+                        </Typography>
+                     </Box>
+                  ))}
+               </Box>
+            </>
+         )}
+
+         {selectedList === 'profits' && (
+            <>
+               <Typography variant="h6" fontWeight="bold">
+                  수익금 내역
+               </Typography>
+               <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+                  총 보유액 {initialValues?.Creator?.profit}P
+               </Typography>
+               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  {profits?.map((profit, index) => (
+                     <Box
+                        key={index}
+                        sx={{
+                           display: 'flex',
+                           justifyContent: 'space-between',
+                           alignItems: 'center',
+                           p: 2,
+                           borderBottom: '1px solid #ddd',
+                        }}
+                     >
+                        <Typography variant="body1" color="text.secondary">
+                           {new Date(profit.createdAt).toLocaleDateString()}
+                        </Typography>
+                        <Typography variant="body1">{profit.changeComment}</Typography>
+                        <Typography variant="h6" fontWeight="bold">
+                           {profit.changeProfit}
+                        </Typography>
+                     </Box>
+                  ))}
+               </Box>
+            </>
+         )}
+      </Paper>
+   )
+
    const tabItems = [
       { label: '후원 내역', page: sponsorList },
       { label: '계정 설정', page: accountSetting },
-      { label: '포인트 내역', page: pointList },
+      {
+         label: initialValues?.Creator ? '포인트 및 수익금 ' : '포인트 ',
+         page: initialValues?.Creator ? pointAndProfitList : pointList,
+      },
    ]
 
    return (
@@ -286,18 +378,25 @@ function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
                   <img src={initialValues ? process.env.REACT_APP_API_URL + '/userImg' + initialValues.imgUrl : ''} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
                </Avatar>
                <Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                     <Typography variant="h4">{initialValues ? initialValues.name : ''}</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                     <Typography variant="h4" sx={{ mr: 1 }}>
+                        {initialValues ? initialValues.name : ''}
+                     </Typography>
                      <Typography variant="body2" color="text.secondary">
                         가입일 {initialValues ? new Date(initialValues.createdAt).toLocaleDateString() : ''}
                      </Typography>
                   </Box>
 
                   <Box>
+                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography sx={{ fontWeight: 'bold' }}>활동분야 </Typography>
+                        {categoriesFromServer?.map((category) => (
+                           <Typography>{category.categoryName}</Typography>
+                        ))}
+                     </Box>
                      <Typography variant="body2" color="text.secondary">
                         후기 작성 3건 | 후원 횟수 22회 | 후원 순위 최고 기록 593위
                      </Typography>
-
                      <Box sx={{ display: 'flex' }}>
                         <ModifiedModalBox openBtn={<Button startIcon={<EditIcon />}>프로필 수정</Button>} closeBtn>
                            <Typography variant="h5">프로필 수정</Typography>
@@ -361,7 +460,7 @@ function My({ initialValues = {}, userWithOrders = {}, points = {} }) {
                   </Box>
                </Box>
             </Box>
-            {categoriesFromServer.length > 0 && (
+            {categoriesFromServer?.length > 0 && (
                <StyledPaper>
                   <IconWrapper>
                      <CreateIcon style={{ color: '#4CAF50' }} />

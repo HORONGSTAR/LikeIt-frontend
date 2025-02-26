@@ -319,7 +319,7 @@ export const Ellipsis = styled.div`
    }
 `
 
-export const FundingCard = ({ image, title, price, status }) => {
+export const FundingCard = ({ image, title, price, status, subtitle }) => {
    return (
       <Card sx={{ display: 'flex', flexDirection: 'row', mb: 2, boxShadow: 2, filter: status === 'FUNDING_FAILED' ? 'grayscale(100%)' : 'none', backgroundColor: status === 'FUNDING_FAILED' ? '#f0f0f0' : 'white' }}>
          <CardMedia component="img" sx={{ width: 200, height: 100, borderRadius: 1 }} image={image} alt={title} />
@@ -327,6 +327,7 @@ export const FundingCard = ({ image, title, price, status }) => {
             <Typography variant="subtitle1" fontWeight="bold">
                {title}
             </Typography>
+            <Typography fontWeight="bold">{subtitle}</Typography>
             <Typography variant="body2" color="green">
                {price}원
             </Typography>
