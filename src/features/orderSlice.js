@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { fetchOrdersByProject, fetchOrderById, createOrder, updateOrderStatus, deleteOrder } from '../api/orderApi'
+import { fetchOrdersByProject, fetchOrderById, createOrder, updateOrderStatus, deleteOrder, uploadTrackingNumbers } from '../api/orderApi'
 
 // 특정 프로젝트의 후원자 후원 목록 조회
 export const fetchOrdersThunk = createAsyncThunk('order/fetchOrders', async (projectId, { rejectWithValue }) => {
@@ -44,6 +44,16 @@ export const removeOrderThunk = createAsyncThunk('order/deleteOrder', async (ord
       return await deleteOrder(orderId)
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '후원 삭제 실패')
+   }
+})
+
+// 운송장 번호 및 택배사 업로드
+export const uploadTrackingNumbersThunk = createAsyncThunk('order/uploadTrackingNumbers', async (file, { rejectWithValue }) => {
+   try {
+      const response = await uploadTrackingNumbers(file)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '운송장 번호 업로드 실패')
    }
 })
 
@@ -122,6 +132,19 @@ const orderSlice = createSlice({
             state.loading = false
          })
          .addCase(removeOrderThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+         // 운송장 번호 업로드
+         .addCase(uploadTrackingNumbersThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(uploadTrackingNumbersThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.error = null
+         })
+         .addCase(uploadTrackingNumbersThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

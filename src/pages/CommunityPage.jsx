@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { createCommunityThunk } from '../../../features/communitySlice'
+import { fetchStudioByIdThunk } from '../features/studioSlice'
 import CommunityForm from '../components/studio/community/CommunityForm'
 import { Main, LoadingBox, ErrorBox } from '../styles/BaseStyles'
 
@@ -12,17 +13,10 @@ function CommunityPage() {
 
    const handleCreateCommunity = useCallback(
       (communityData) => {
-         if (id) {
-            dispatch(createCommunityThunk(communityData))
-               .unwrap()
-               .then()
-               .catch((err) => setOpen(true))
-         } else {
-            dispatch(createCommunityThunk(communityData))
-               .unwrap()
-               .then()
-               .catch((err) => setOpen(true))
-         }
+         dispatch(createCommunityThunk(communityData))
+            .unwrap()
+            .then(() => setOpen(false))
+            .catch(() => setOpen(true))
       },
       [dispatch]
    )
