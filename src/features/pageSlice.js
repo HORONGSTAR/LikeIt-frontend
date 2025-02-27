@@ -38,8 +38,10 @@ const pageSlice = createSlice({
       user: null,
       loading: false,
       error: null,
-      userWithOrders: null,
+      orders: [],
       points: [],
+      profits: [],
+      allprojects: [],
    },
    reducers: {},
    extraReducers: (builder) => {
@@ -52,8 +54,10 @@ const pageSlice = createSlice({
          .addCase(getProfileThunk.fulfilled, (state, action) => {
             state.loading = false
             state.user = action.payload.user
-            state.userWithOrders = action.payload.userWithOrders
+            state.orders = action.payload.orders
             state.points = action.payload.points
+            state.profits = action.payload.profits
+            state.allprojects = action.payload.allProjects
          })
          .addCase(getProfileThunk.rejected, (state, action) => {
             state.loading = false
