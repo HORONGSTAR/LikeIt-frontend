@@ -1,4 +1,4 @@
-import { Typography, Stack, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, Box } from '@mui/material'
+import { Typography, Stack, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, Box, Input } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchOrdersThunk } from '../../../features/orderSlice'
@@ -6,6 +6,7 @@ import { LoadingBox } from '../../../styles/BaseStyles'
 import { useParams } from 'react-router-dom'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
+import { uploadTrackingNumbersThunk } from '../../../features/orderSlice'
 
 function Support() {
    const dispatch = useDispatch()
@@ -13,6 +14,8 @@ function Support() {
    const [activeTab, setActiveTab] = useState('supporter')
    const { projectId } = useParams()
    const { totalSupporters } = useSelector((state) => state.order)
+   const [file, setFile] = useState(null)
+   const [uploadStatus, setUploadStatus] = useState('')
 
    // 프로젝트 ID가 없으면 3으로 설정(테스트용)
    const currentProjectId = projectId || 3
@@ -73,6 +76,41 @@ function Support() {
       )
    }
 
+   // 엑셀 파일 선택 핸들러
+   const handleFileChange = (e) => {
+      setFile(e.target.files[0])
+   }
+
+   // 엑셀 파일 업로드 핸들러
+   const handleUpload = async () => {
+      if (!file) {
+         alert('엑셀 파일을 선택해주세요.')
+         console.log('파일이 선택되지 않음')
+         return
+      }
+
+      const formData = new FormData()
+      formData.append('file', file)
+
+      try {
+         dispatch(uploadTrackingNumbersThunk(formData))
+         dispatch(fetchOrdersThunk(currentProjectId))
+      } catch (error) {
+         console.error('운송장 등록 오류:', error)
+         setUploadStatus('업로드 실패! 다시 시도해주세요.')
+      }
+   }
+
+   const handleDownloadTemplate = () => {
+      const fileUrl = `${process.env.REACT_APP_API_URL}/uploads/운송장 입력.xlsx`
+      const link = document.createElement('a')
+      link.href = fileUrl
+      link.setAttribute('download', '운송장 입력.xlsx')
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+   }
+
    if (!orders || !giftStatistics) return <LoadingBox />
    if (loading) return <LoadingBox />
 
@@ -90,6 +128,8 @@ function Support() {
                hour12: false,
             }),
          결제상태: getPaymentStatus(order.orderStatus),
+         운송장번호: order.orderTrackingNumber || '미등록',
+         택배사: order.shippingCompany || '미등록',
          선물전달: getDeliveryStatus(order).label,
       }))
 
@@ -110,7 +150,16 @@ function Support() {
                후원자 {totalSupporters}명
             </Typography>
             <Stack direction="row" spacing={1}>
-               <Button variant="outlined">운송장 입력</Button>
+               <Button variant="outlined" onClick={handleDownloadTemplate}>
+                  운송장 서식 다운로드
+               </Button>
+               <Input type="file" onChange={handleFileChange} accept=".xlsx, .xls" id="upload-button" sx={{ display: 'none' }} />
+               <Button variant="outlined" component="label" htmlFor="upload-button">
+                  운송장 입력
+               </Button>
+               <Button variant="outlined" onClick={handleUpload}>
+                  업로드
+               </Button>
                <Button variant="outlined" onClick={handleExportExcel}>
                   엑셀 파일 받기
                </Button>
@@ -126,6 +175,8 @@ function Support() {
                      <TableCell sx={{ fontWeight: 'bold' }}>후원 금액</TableCell>
                      <TableCell sx={{ fontWeight: 'bold' }}>후원일시</TableCell>
                      <TableCell sx={{ fontWeight: 'bold' }}>결제 상태</TableCell>
+                     <TableCell sx={{ fontWeight: 'bold' }}>운송장 번호</TableCell>
+                     <TableCell sx={{ fontWeight: 'bold' }}>택배사</TableCell>
                      <TableCell sx={{ fontWeight: 'bold' }}>선물 전달</TableCell>
                   </TableRow>
                </TableHead>
@@ -155,6 +206,8 @@ function Support() {
                               <Typography variant="body2">{getPaymentStatus(order.orderStatus)}</Typography>
                            </Box>
                         </TableCell>
+                        <TableCell sx={{ borderBottom: 'none' }}>{order.orderTrackingNumber || '미등록'}</TableCell>
+                        <TableCell sx={{ borderBottom: 'none' }}>{order.shippingCompany || '미등록'}</TableCell>
                         <TableCell sx={{ borderBottom: 'none' }}>
                            {(() => {
                               const { label, backgroundColor, color } = getDeliveryStatus(order)

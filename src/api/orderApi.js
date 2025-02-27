@@ -54,3 +54,19 @@ export const deleteOrder = async (orderId) => {
       throw error
    }
 }
+
+// 운송장 파일 업로드
+export const uploadTrackingNumbers = async (formData) => {
+   try {
+      const config = {
+         headers: {
+            'Content-Type': 'multipart/form-data',
+         },
+      }
+      const response = await likeitApi.post('/order/upload-tracking', formData, config)
+      return response
+   } catch (error) {
+      console.error('운송장 번호 업로드 오류:', error)
+      throw error
+   }
+}

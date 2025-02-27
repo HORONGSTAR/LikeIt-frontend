@@ -153,7 +153,7 @@ function App() {
                }
             />
             <Route
-               path="/studio/community/write"
+               path="/community/write"
                element={
                   <RedirectLogoutRoute>
                      <CommunityForm />
