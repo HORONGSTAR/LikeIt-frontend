@@ -103,9 +103,6 @@ function EditRewardBox({ onSubmit, open, products, reward, children }) {
                모든 항목을 채워주세요.
             </Alert>
          </Snackbar>
-         <Alert onClose={() => setAlert(false)} severity="error" variant="filled" sx={{ width: '100%' }}>
-            모든 항목을 채워주세요.
-         </Alert>
       </Dialog>
    )
 }

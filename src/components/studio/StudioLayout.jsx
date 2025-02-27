@@ -1,33 +1,45 @@
 import { useSelector } from 'react-redux'
-import { Card, CardContent, CardMedia, Typography, Button, Divider } from '@mui/material'
+import useBroadcastStatus from '../../util/useBroadcastStatus'
+import { Card, CardContent, CardMedia, Typography, Button, Divider, Stack } from '@mui/material'
 import StudioTab from './tab/StudioTab'
 import { Stack2 } from '../../styles/BaseStyles'
 import MicIcon from '@mui/icons-material/Mic'
-import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
-import SpaceBar from './SpaceBar'
-import { useMemo } from 'react'
+import SpaceBar from './space/SpaceBar'
+import { useMemo, useState } from 'react'
 
 const StudioLayout = () => {
    const { studio, projects } = useSelector((state) => state.studio)
    const { user } = useSelector((state) => state.auth)
+   const [isStartSpace, setStartSpace] = useState(false)
+   const isBroadcasting = useBroadcastStatus()
 
-   console.log(studio)
+   console.log(isBroadcasting)
 
    const navigate = useNavigate()
    const Spen = (props) => <Typography component="span" color="green" {...props} />
 
-   const isCreator = studio?.StudioCreators?.some((creator) => creator.Creator?.User?.id === user?.id)
+   const isCreator = useMemo(() => {
+      const checked = studio?.StudioCreators?.filter((creator) => creator.Creator?.User?.id === user?.id)
 
-   const maxPercent = useMemo(() => Math.floor(Math.max(...projects.map((project) => project.totalOrderPrice / project.goal)) * 100), [projects])
+      return checked.length > 0
+         ? {
+              leader: checked[0].role === 'LEADER' ? true : false,
+              cmAdmin: checked[0].communityAdmin === 'Y' ? true : false,
+              spAdmin: checked[0].spaceAdmin === 'Y' ? true : false,
+           }
+         : false
+   }, [studio, user])
 
-   const completeProjects = useMemo(() => projects.filter((project) => project.projectStatus === 'FUNDING_COMPLETE').length, [projects])
+   const completeProjects = useMemo(() => projects.filter((project) => project.projectStatus === 'FUNDING_COMPLETE'), [projects])
+
+   const maxPercent = useMemo(() => (completeProjects.length > 0 ? Math.floor(Math.max(...completeProjects.map((project) => project.totalOrderPrice / project.goal)) * 100) : 0), [completeProjects])
 
    return (
       <>
          {studio && (
             <>
-               <Card variant="none">
+               <Card variant="none" sx={{ display: 'flex', flexWrap: 'nowrap' }}>
                   <CardMedia sx={{ minWidth: 180, height: 180, borderRadius: '10px' }} image={studio.imgUrl ? `${process.env.REACT_APP_API_URL}${studio.imgUrl}` : null} alt="스튜디오 프로필" />
                   <CardContent sx={{ display: 'flex', flexDirection: 'column', py: 0 }}>
                      <Stack2 mb={1} alignItems="center">
@@ -37,32 +49,40 @@ const StudioLayout = () => {
 
                         {isCreator ? (
                            <Stack2>
-                              <Button sx={{ background: 'linear-gradient(to right, #4ACBCF, #A57EFF)', color: '#fff', p: 1 }}>
-                                 <MicIcon sx={{ fontSize: '20px' }} /> 스페이스
-                              </Button>
-                              <Button variant="yellow" onClick={() => navigate('/community/write')}>
-                                 글쓰기
-                              </Button>
+                              {isCreator.spAdmin && (
+                                 <Button sx={{ background: 'linear-gradient(to right, #4ACBCF, #A57EFF)', color: '#fff', p: 1 }} onClick={() => setStartSpace(!isStartSpace)}>
+                                    <MicIcon sx={{ fontSize: '20px' }} /> 스페이스
+                                 </Button>
+                              )}
+                              {isCreator.cmAdmin && (
+                                 <Button variant="yellow" onClick={() => navigate('/community/write')}>
+                                    글쓰기
+                                 </Button>
+                              )}
                            </Stack2>
                         ) : (
                            <Button variant="contained">구독</Button>
                         )}
                      </Stack2>
 
-                     <Stack2 sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-                        <Typography color="grey" variant="body1" sx={{ whiteSpace: 'pre-line', flexGrow: 1 }}>
+                     <Stack>
+                        <Typography color="grey" sx={{ whiteSpace: 'pre-wrap' }}>
                            {studio.intro}
                         </Typography>
-                        {isCreator && <EditIcon size="small" onClick={() => navigate(`/studio/profile/${studio.id}`)} sx={{ ml: 1, cursor: 'pointer' }} />}
-                     </Stack2>
-
+                        {isCreator.leader && (
+                           <Button sx={{ opacity: 0.8, width: 120, ml: 'auto' }} size="small" onClick={() => navigate(`/studio/profile/${studio.id}`)}>
+                              <img src="/images/icon/edit.svg" width="15" />
+                              &nbsp;소개 수정하기
+                           </Button>
+                        )}
+                     </Stack>
                      <Stack2 sx={{ gap: '0 10px' }}>
                         <Typography>
-                           달성 프로젝트 <Spen>{completeProjects}건</Spen>
+                           달성 프로젝트 <Spen>{completeProjects.length}건</Spen>
                         </Typography>
                         <Divider orientation="vertical" flexItem />
                         <Typography>
-                           구독자 수 <Spen>{studio.Users.length}</Spen>
+                           구독자 <Spen>{studio.Users?.length}명</Spen>
                         </Typography>
                         <Divider orientation="vertical" flexItem />
                         <Typography>
@@ -71,7 +91,8 @@ const StudioLayout = () => {
                      </Stack2>
                   </CardContent>
                </Card>
-               <SpaceBar studio={studio} />
+               {(isStartSpace || isBroadcasting) && <SpaceBar studio={studio} />}
+
                <StudioTab />
             </>
          )}

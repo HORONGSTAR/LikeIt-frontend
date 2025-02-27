@@ -1,5 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { createProduct, updateProduct, deleteProduct, createReward, updateReward, deleteReward } from '../api/rewardApi'
+import { getReward, createProduct, updateProduct, deleteProduct, createReward, updateReward, deleteReward } from '../api/rewardApi'
+
+// 특정 프로젝트의 선물 구성 조회
+export const fetchRewardThunk = createAsyncThunk('project/getReward', async (projectId, { rejectWithValue }) => {
+   try {
+      const response = await getReward(projectId)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '프로젝트 불러오기 실패')
+   }
+})
 
 // 선물 구성품 생성
 export const createProductThunk = createAsyncThunk('project/createProduct', async ({ projectId, productData }, { rejectWithValue }) => {
@@ -66,11 +76,23 @@ const rewardSlice = createSlice({
    initialState: {
       loading: false,
       error: null,
+      reward: null,
    },
    reducers: {},
    extraReducers: (builder) => {
       builder
-
+         .addCase(fetchRewardThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(fetchRewardThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.reward = action.payload.reward
+         })
+         .addCase(fetchRewardThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
          // 선물 구성품 생성
          .addCase(createProductThunk.pending, (state) => {
             state.loading = true

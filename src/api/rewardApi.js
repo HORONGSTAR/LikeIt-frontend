@@ -1,5 +1,15 @@
 import likeitApi from './axiosApi'
 
+export const getReward = async (projectId) => {
+   try {
+      const response = await likeitApi.get(`/project/reward/${projectId}`)
+      return response
+   } catch (error) {
+      console.error(`특정 프로젝트 선물 조회 오류: ${error.message}`)
+      throw error
+   }
+}
+
 // 선물 구성품 생성
 export const createProduct = async (projectId, productData) => {
    try {

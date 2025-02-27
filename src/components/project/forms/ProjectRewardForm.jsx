@@ -5,7 +5,7 @@ import { FormGrid } from '../../ui/FormGrid'
 import EditProductBox from './EditProductBox'
 import EditRewardBox from './EditRewardBox'
 import { AddCircle, Create, Delete } from '@mui/icons-material'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useRef } from 'react'
 import { createProductThunk, updateProductThunk, deleteProductThunk, createRewardThunk, updateRewardThunk, deleteRewardThunk } from '../../../features/rewardSlice'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -175,7 +175,11 @@ function ProjectRewardForm({ initVals }) {
       },
    ]
 
-   return <FormGrid formItems={formItems} />
+   return (
+      <>
+         <FormGrid formItems={formItems} />
+      </>
+   )
 }
 
 export default ProjectRewardForm

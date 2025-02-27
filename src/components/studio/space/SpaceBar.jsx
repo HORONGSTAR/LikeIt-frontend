@@ -1,13 +1,16 @@
-import { Box, Typography, Avatar, AvatarGroup, Grid2, Chip, Stack } from '@mui/material'
-import { Stack2 } from '../../styles/BaseStyles'
+import { Box, Typography, Avatar, AvatarGroup, Chip, Stack } from '@mui/material'
+import { Stack2 } from '../../../styles/BaseStyles'
 import SpaceBox from './SpaceBox'
 import { useState, useEffect, useRef } from 'react'
 import MicIcon from '@mui/icons-material/Mic'
-import { flexbox, height, maxWidth, minHeight, minWidth, width } from '@mui/system'
+import { flexbox } from '@mui/system'
 
 function SpaceBar({ studio }) {
    const boxRef = useRef(null)
    const [width, setWidth] = useState(0)
+   const [users, setUsers] = useState([])
+   const [open, setOpne] = useState(false)
+
    useEffect(() => {
       const observer = new ResizeObserver((entries) => {
          if (entries[0]) {
@@ -22,15 +25,7 @@ function SpaceBar({ studio }) {
       return () => observer.disconnect()
    }, [])
 
-   const users = [
-      { id: 1, nick: 'test', src: 'test' },
-      { id: 2, nick: 'test', src: 'test' },
-      { id: 3, nick: 'test', src: 'test' },
-      { id: 4, nick: 'test', src: 'test' },
-      { id: 5, nick: 'test', src: 'test' },
-   ]
-
-   const [open, setOpne] = useState(false)
+   useEffect(() => {})
 
    return (
       <Stack
@@ -94,9 +89,7 @@ function SpaceBar({ studio }) {
                      label={
                         <Stack2 spacing={{ sm: 1, xs: 0 }} sx={{ flexbox, alignItems: 'center' }}>
                            <AvatarGroup sx={{ display: { sm: 'flex', xs: 'none' } }} max={4}>
-                              {users.map((user) => (
-                                 <Avatar key={user?.id} alt={user?.name} src={user?.img} />
-                              ))}
+                              {users.length > 0 && users.map((user) => <Avatar key={user?.id} alt={user?.name} src={user?.img} />)}
                            </AvatarGroup>
                            <Typography fontWeight={600}>청취 참여하기</Typography>
                         </Stack2>
