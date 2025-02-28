@@ -19,7 +19,7 @@ function Navber({ isAuthenticated, user }) {
 
    const accountMeunItems = [
       { page: '스튜디오', path: '/studio', icon: 'edit' },
-      { page: '알림', path: '/hot', icon: 'bell' },
+      { page: '알림', path: `/notice`, icon: 'bell' },
       { page: '마이페이지', path: '/my', icon: 'user' },
    ]
 
@@ -74,14 +74,7 @@ function Navber({ isAuthenticated, user }) {
                      </Typography>
                   </Stack2>
                   {navMeueItems.map((item) => (
-                     <Typography
-                        key={item.page}
-                        fontWeight="500"
-                        component={NavLink}
-                        to={item.path}
-                        mr={breakpoint.margin}
-                        onClick={() => setOpen(false)}
-                     >
+                     <Typography key={item.page} fontWeight="500" component={NavLink} to={item.path} mr={breakpoint.margin} onClick={() => setOpen(false)}>
                         {item.page}
                      </Typography>
                   ))}

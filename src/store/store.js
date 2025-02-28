@@ -13,6 +13,7 @@ import creatorReducer from '../features/creatorSlice'
 import projectReducer from '../features/projectSlice'
 import rewardReducer from '../features/rewardSlice'
 import orderReducer from '../features/orderSlice'
+import messageReducer from '../features/messageSlice'
 
 const store = configureStore({
    reducer: {
@@ -30,6 +31,7 @@ const store = configureStore({
       funding: fundingReducer,
       creator: creatorReducer,
       order: orderReducer,
+      message: messageReducer,
    },
 })
 

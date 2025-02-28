@@ -1,6 +1,5 @@
 import { ProjectCard } from '../../components/ui/Cards'
-import { Grid2 } from '@mui/material'
-import { Box, Divider, Chip } from '@mui/material'
+import { Grid2, Box, Divider, Chip } from '@mui/material'
 
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'

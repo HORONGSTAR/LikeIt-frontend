@@ -191,7 +191,7 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
       <>
          {allprojects.map((project) =>
             orders
-               .filter((order) => order.Reward.Project.id === project.id)
+               .filter((order) => order.Reward?.Project?.id === project.id)
                .map((order) => {
                   return <FundingCard key={order.id} image={`${process.env.REACT_APP_API_URL}/projectImg${order.Reward.Project.imgUrl}`} title={order.Reward.Project.title} subtitle={order.Reward.name} price={order.orderPrice} status={order.orderStatus} />
                })

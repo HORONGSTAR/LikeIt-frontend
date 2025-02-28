@@ -32,6 +32,7 @@ import CommonSignupPage from './pages/CommonSignupPage'
 import FindingPasswordPage from './pages/FindingPasswordPage'
 import FindingEmailPage from './pages/FindingEmailPage'
 import MyPage from './pages/MyPage'
+import NoticePage from './pages/NoticePage'
 
 //studio
 import StudioPage from './pages/StudioPage'
@@ -95,6 +96,7 @@ function App() {
             <Route path="/findingemail" element={<FindingEmailPage />} />
             <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
             <Route path="/my" element={<MyPage />} />
+            <Route path="/notice" element={<NoticePage />} />
 
             {/* studio */}
             <Route path="/studio" element={<StudioPage />} />

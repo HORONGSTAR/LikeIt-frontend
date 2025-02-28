@@ -7,7 +7,7 @@ import { fetchFundingThunk } from '../features/fundingSlice'
 import FundingOverview from '../components/funding/FundingOverview'
 import FundingTimeline from '../components/funding/FundingTimeline'
 import FundingReview from '../components/funding/FundingReview'
-import { Main } from '../styles/BaseStyles'
+import { ErrorBox, LoadingBox, Main } from '../styles/BaseStyles'
 import dayjs from 'dayjs'
 
 const FundingDetailPage = () => {
@@ -17,6 +17,7 @@ const FundingDetailPage = () => {
    const { isAuthenticated } = useSelector((state) => state.auth)
    const [project, setProject] = useState(null)
    const [noReward, setNoReward] = useState('')
+   const [errorOpen, setErrorOpen] = useState(false)
 
    const [orderRewardBasket, setOrderRewardBasket] = useState({})
 
@@ -57,8 +58,27 @@ const FundingDetailPage = () => {
       })
    }, [funding])
 
+   let status = ''
+   if (funding?.projectStatus === 'FUNDING_COMPLETE')
+      status = (
+         <Typography variant="h5" p={2}>
+            펀딩에 성공했습니다! 후속 안내를 기다려주세요
+         </Typography>
+      )
+   else if (funding?.projectStatus === 'FUNDING_FAILED')
+      status = (
+         <Typography variant="h5" p={2}>
+            아쉽게도 펀딩이 실패로 종료됐습니다...
+         </Typography>
+      )
+
+   // 로딩 에러 처리
+   if (loading) return <LoadingBox />
+   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
+
    return (
-      project && (
+      project &&
+      funding?.proposalStatus === 'COMPLETE' && (
          <Main>
             <Box sx={{ maxWidth: '1000px', margin: 'auto', mt: 5 }}>
                {/* 제목 */}
@@ -80,9 +100,9 @@ const FundingDetailPage = () => {
                      <Card sx={{ p: 1, boxShadow: 'none' }}>
                         <CardContent sx={{ textAlign: 'left' }}>
                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                              <Avatar src={project.creator.profileImage} sx={{ width: 50, height: 50, mr: 2 }} />
+                              <Avatar onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)} src={project.creator.profileImage} sx={{ width: 50, height: 50, mr: 2, cursor: 'pointer' }} />
                               <Box>
-                                 <Typography variant="subtitle1" fontWeight="bold">
+                                 <Typography onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)} variant="subtitle1" fontWeight="bold" sx={{ cursor: 'pointer' }}>
                                     {project.creator.name}
                                  </Typography>
                                  <Typography variant="body2" color="text.secondary">
@@ -105,22 +125,24 @@ const FundingDetailPage = () => {
                            <Typography color="text.secondary">
                               펀딩 기간: {project.startDate} ~ {project.endDate}
                            </Typography>
-                           {isAuthenticated && (
-                              <Link
-                                 to={Object.keys(orderRewardBasket).length > 0 ? `/funding/order/${funding.id}` : undefined}
-                                 onClick={(e) => {
-                                    if (Object.keys(orderRewardBasket).length === 0) {
-                                       e.preventDefault()
-                                       setNoReward('리워드를 선택해주세요')
-                                    }
-                                 }}
-                                 state={{ orderRewardBasket: orderRewardBasket }}
-                              >
-                                 <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
-                                    후원하기
-                                 </Button>
-                              </Link>
-                           )}
+                           {status
+                              ? status
+                              : isAuthenticated && (
+                                   <Link
+                                      to={Object.keys(orderRewardBasket).length > 0 ? `/funding/order/${funding.id}` : undefined}
+                                      onClick={(e) => {
+                                         if (Object.keys(orderRewardBasket).length === 0) {
+                                            e.preventDefault()
+                                            setNoReward('리워드를 선택해주세요')
+                                         }
+                                      }}
+                                      state={{ orderRewardBasket: orderRewardBasket }}
+                                   >
+                                      <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
+                                         후원하기
+                                      </Button>
+                                   </Link>
+                                )}
                            <Typography sx={{ color: 'red', textAlign: 'center' }}>{noReward}</Typography>
                         </CardContent>
                      </Card>

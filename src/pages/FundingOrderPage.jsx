@@ -3,7 +3,7 @@ import { Box, Typography, Avatar, Button, Grid2, Card, CardMedia, CardContent, T
 import { useLocation, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchFundingThunk, orderRegThunk } from '../features/fundingSlice'
-import { Main } from '../styles/BaseStyles'
+import { ErrorBox, LoadingBox, Main } from '../styles/BaseStyles'
 import dayjs from 'dayjs'
 import { padding } from '@mui/system'
 
@@ -14,6 +14,7 @@ function FundingOrderPage() {
    const { user, isAuthenticated } = useSelector((state) => state.auth)
    const [project, setProject] = useState(null)
    const [orderFlag, setOrderFlag] = useState(false)
+   const [errorOpen, setErrorOpen] = useState(false)
 
    const [address, setAddress] = useState('')
    const [addressDetail, setAddressDetail] = useState('')
@@ -111,6 +112,10 @@ function FundingOrderPage() {
       [address, account, usePoint, orderRewardBasket, dispatch]
    )
 
+   // 로딩 에러 처리
+   if (loading) return <LoadingBox />
+   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
+
    return orderFlag ? (
       <Main>
          <Typography variant="h3" sx={{ textAlign: 'center' }}>
@@ -118,7 +123,7 @@ function FundingOrderPage() {
          </Typography>
       </Main>
    ) : (
-      project && (
+      project && funding?.projectStatus === 'ON_FUNDING' && (
          <Main>
             <Box sx={{ maxWidth: '1000px', margin: 'auto', mt: 5 }}>
                {/* 제목 */}
