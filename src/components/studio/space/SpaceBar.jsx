@@ -6,18 +6,21 @@ import { flexbox } from '@mui/system'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
 import { Chat, Broadcaster, Watcher } from './SpaceItems'
-import { useSelector } from 'react-redux'
+import dayjs from 'dayjs'
 
-function SpaceBar({ studio }) {
+function SpaceBar({ studio, spaceInfo }) {
    const boxRef = useRef(null)
    const [width, setWidth] = useState(0)
    const [users, setUsers] = useState([])
    const [open, setOpne] = useState(false)
    const [volume, setVolume] = useState(50)
    const [speaking, setSpeaking] = useState(1)
-   const { user, loading, error } = useSelector((state) => state.auth.user)
 
-   const imageUrl = user?.imgUrl ? process.env.REACT_APP_API_URL + 'userImg' + user.imgUrl : '/default_profile.png'
+   const info = {
+      name: spaceInfo?.admin?.name || '이름 없음',
+      imgUrl: spaceInfo?.admin?.imgUrl ? process.env.REACT_APP_API_URL + '/userImg' + spaceInfo.admin.imgUrl : '/default_profile.png',
+      startTime: dayjs(spaceInfo?.admin?.startTime).format('YYYY년 MM월 DD일 HH시 mm분'),
+   }
 
    useEffect(() => {
       const observer = new ResizeObserver((entries) => {
@@ -65,7 +68,7 @@ function SpaceBar({ studio }) {
                   <Stack2>
                      <Box sx={{ display: { md: 'block', sm: 'none', xs: 'none' }, height: '1px', background: '#fff', width: '20px', mr: 2 }} />
                      <Typography noWrap variant="body2">
-                        {open ? '2025년 1월 30일 13시 10분 라이브 시작' : '정소희님이 진행 중'}
+                        {open ? info.startTime + ' · 라이브 시작' : info.name + '님이 진행 중'}
                      </Typography>
                   </Stack2>
                </Stack>
@@ -131,8 +134,8 @@ function SpaceBar({ studio }) {
                               }}
                            >
                               <Avatar
-                                 src={imageUrl}
-                                 alt={user?.name}
+                                 src={info.imgUrl}
+                                 alt={info.name}
                                  sx={{
                                     width: { sm: 120, xs: 100 },
                                     height: { sm: 120, xs: 100 },
@@ -142,14 +145,14 @@ function SpaceBar({ studio }) {
                               />
                            </Box>
                         </Box>
-                        {/* <Broadcaster setSpeaking={setSpeaking} /> */}
-                        {/* <Watcher setSpeaking={setSpeaking} /> */}
+                        <Broadcaster setSpeaking={setSpeaking} />
+                        <Watcher setSpeaking={setSpeaking} />
                         <Stack alignItems={{ sm: 'center', xs: 'start' }}>
                            <Stack alignItems="center" spacing={1} direction={{ sm: 'column', xs: 'row' }}>
                               <Typography variant="body2" color="textSecondary">
                                  진행자
                               </Typography>
-                              <Typography variant="h6">{user?.name || '이름 없음'}</Typography>
+                              <Typography variant="h6">{info.name}</Typography>
                            </Stack>
                            <Stack alignItems="center">
                               <Box sx={{ display: 'flex', alignItems: 'center', width: { md: 170, sm: 150, xs: 130 }, mt: 1 }}>
@@ -175,7 +178,7 @@ function SpaceBar({ studio }) {
                      </Stack>
                   </Grid2>
                   <Grid2 p={2} size={{ md: 8, sm: 7, xs: 12 }}>
-                     <Chat />
+                     <Chat studioId={studio?.id} />
                   </Grid2>
                </Grid2>
             </Main>

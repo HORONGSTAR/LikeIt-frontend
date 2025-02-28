@@ -1,28 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { io } from 'socket.io-client'
 import { Stack, Divider, Box, InputBase, Avatar, IconButton, Typography } from '@mui/material'
 import { SendRounded } from '@mui/icons-material'
+import { io } from 'socket.io-client'
 
-// 서버와 연결 => connection 진행
-
-const socket = io(process.env.REACT_APP_API_URL, {
+export const socket = io(process.env.REACT_APP_API_URL, {
    withCredentials: true,
 })
+
 const peerConnection = new RTCPeerConnection()
 const peers = {}
 
-export const Chat = () => {
+export const Chat = ({ studioId }) => {
    const [messages, setMessages] = useState([])
    const [input, setInput] = useState('')
-   const [user, setUser] = useState(null)
    const messagesContainerRef = useRef(null)
 
    useEffect(() => {
-      socket.emit('user info', 'requestUserInfo')
-      socket.on('user info', (userInfo) => {
-         setUser(userInfo)
-      })
-
       socket.on('chat message', (msg) => {
          setMessages((prevMessages) => [...prevMessages, msg])
       })
@@ -31,7 +24,7 @@ export const Chat = () => {
          socket.off('chat message')
          socket.off('user info')
       }
-   }, [])
+   }, [socket, studioId])
 
    useEffect(() => {
       if (messagesContainerRef.current) {
@@ -41,8 +34,8 @@ export const Chat = () => {
 
    const sendMessage = () => {
       if (!input.trim()) return
+      socket.emit('chat message', studioId, input)
 
-      socket.emit('chat message', input)
       setInput('')
    }
 

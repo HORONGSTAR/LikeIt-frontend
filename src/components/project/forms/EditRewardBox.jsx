@@ -11,8 +11,8 @@ function EditRewardBox({ onSubmit, open, products, reward, children }) {
    const [alert, setAlert] = useState(false)
 
    const optionItems = [
-      { id: 'stock', title: '1인당 최대 선택 갯수 제한하기' },
-      { id: 'limit', title: '선착순 선물 여부' },
+      { id: 'limit', title: '1인당 최대 선택 갯수 제한하기' },
+      { id: 'stock', title: '선착순 선물 여부' },
    ]
 
    useEffect(() => {

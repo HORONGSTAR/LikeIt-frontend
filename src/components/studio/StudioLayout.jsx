@@ -5,26 +5,25 @@ import { Stack2 } from '../../styles/BaseStyles'
 import MicIcon from '@mui/icons-material/Mic'
 import { useNavigate } from 'react-router-dom'
 import SpaceBar from './space/SpaceBar'
-import { useMemo, useEffect, useRef, useCallback, useState } from 'react'
-import { io } from 'socket.io-client'
-
-const socket = io(process.env.REACT_APP_API_URL, {
-   withCredentials: true,
-})
+import { useMemo, useEffect, useCallback, useState } from 'react'
+import { socket } from './space/SpaceItems'
 
 const StudioLayout = () => {
    const { studio, projects } = useSelector((state) => state.studio)
    const { user } = useSelector((state) => state.auth)
-   const [spAdmin, setSpAdmin] = useState(null)
+   const [spaceInfo, setSpaceInfo] = useState(null)
    const navigate = useNavigate()
 
    const startSpace = useCallback(() => {
-      const data = { adminId: user.id, studioId: studio.id }
-      socket.emit('start space', data)
-   }, [socket, user.id, studio.id])
+      socket.emit('start space', studio?.id)
+   }, [socket, user, studio])
 
-   useEffect(() => {}, [])
-
+   useEffect(() => {
+      socket.emit('join space', studio?.id)
+      socket.on('space info', (spaceInfo) => {
+         setSpaceInfo(spaceInfo)
+      })
+   }, [socket, studio])
    const isCreator = useMemo(() => {
       const checked = studio?.StudioCreators?.filter((creator) => creator.Creator?.User?.id === user?.id)
 
@@ -99,7 +98,7 @@ const StudioLayout = () => {
                      </Stack2>
                   </CardContent>
                </Card>
-               {spAdmin && <SpaceBar studio={studio} />}
+               {spaceInfo !== null && <SpaceBar spaceInfo={spaceInfo} studio={studio} />}
                <StudioTab />
             </>
          )}
