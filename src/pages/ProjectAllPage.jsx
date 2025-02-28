@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, TextField, InputAdornment, Card, CardMedia, CardContent, CardActions, Button, Pagination, Stack } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import { Main, LoadingBox } from '../styles/BaseStyles'
+import { Main, LoadingBox, TextLink } from '../styles/BaseStyles'
 import { fetchProjectsByStudioThunk } from '../features/projectSlice'
 import { fetchStudioThunk } from '../features/studioSlice'
 import { useNavigate } from 'react-router-dom'
@@ -25,6 +25,18 @@ function getStatusData(project) {
          style: { backgroundColor: '#CCCCCC', color: '#666' },
       }
    }
+   if (project.proposalStatus === 'REVIEW_REQ') {
+      return {
+         label: '검토 중',
+         style: { backgroundColor: '#DBE7D9', color: '#45843C' },
+      }
+   }
+   if (project.proposalStatus === 'WRITING') {
+      return {
+         label: '작성 중',
+         style: { backgroundColor: '#CCCCCC', color: '#666' },
+      }
+   }
    switch (project.projectStatus) {
       case 'ON_FUNDING':
          return {
@@ -33,7 +45,7 @@ function getStatusData(project) {
          }
       case 'WAITING_FUNDING':
          return {
-            label: '승인 요청 중',
+            label: '대기 중',
             style: { backgroundColor: '#DBE7D9', color: '#45843C' },
          }
       case 'FUNDING_COMPLETE':
@@ -125,10 +137,10 @@ function ProjectAllPage() {
                         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                            {formatDate(project.startDate)} ~ {formatDate(project.endDate)}
                         </Typography>
-                        {(project.projectStatus === 'FUNDING_FAILED' || project.proposalStatus === 'DENIED') && (
-                           <Typography sx={{ color: '#666', fontSize: '13px', display: 'flex', alignItems: 'center' }}>
+                        {(project.projectStatus === 'FUNDING_FAILED' || project.proposalStatus === 'DENIED' || project.proposalStatus === 'WRITING') && (
+                           <TextLink sx={{ color: '#666', fontSize: '13px', display: 'flex', alignItems: 'center' }} to={`/studio/project/edit/${project.id}`}>
                               <EditIcon sx={{ fontSize: '15px' }} /> 프로젝트 수정하기
-                           </Typography>
+                           </TextLink>
                         )}
                      </Stack>
 

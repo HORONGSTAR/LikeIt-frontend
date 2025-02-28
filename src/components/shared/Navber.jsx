@@ -18,7 +18,7 @@ function Navber({ isAuthenticated, user }) {
    ]
 
    const accountMeunItems = [
-      { page: '스튜디오', path: `/studio/${user?.studioId}`, icon: 'edit' },
+      { page: '스튜디오', path: '/studio', icon: 'edit' },
       { page: '알림', path: '/hot', icon: 'bell' },
       { page: '마이페이지', path: '/my', icon: 'user' },
    ]

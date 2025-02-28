@@ -100,7 +100,7 @@ function App() {
                path="/studio"
                element={
                   <RedirectLogoutRoute>
-                     <StudioPage auth={user} />
+                     <StudioPage />
                   </RedirectLogoutRoute>
                }
             />
@@ -163,7 +163,7 @@ function App() {
             <Route path="/studio/:id" element={<StudioPage />} />
 
             {/* fundingDetail - creator */}
-            <Route path="/creator" element={<CreatorPage />} />
+            <Route path="/creator/:id" element={<CreatorPage />} />
 
             {/* fundingDetail - user */}
             <Route path="/funding/:id" element={<FundingDetailPage />} />

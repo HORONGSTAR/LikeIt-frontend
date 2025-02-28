@@ -1,15 +1,23 @@
-import { Box, Typography, Avatar, AvatarGroup, Chip, Stack } from '@mui/material'
-import { Stack2 } from '../../../styles/BaseStyles'
-import SpaceBox from './SpaceBox'
+import { Box, Typography, Avatar, AvatarGroup, Chip, Stack, Grid2, Slider } from '@mui/material'
+import { Stack2, Main } from '../../../styles/BaseStyles'
 import { useState, useEffect, useRef } from 'react'
 import MicIcon from '@mui/icons-material/Mic'
 import { flexbox } from '@mui/system'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'
+import VolumeOffIcon from '@mui/icons-material/VolumeOff'
+import { Chat, Broadcaster, Watcher } from './SpaceItems'
+import { useSelector } from 'react-redux'
 
 function SpaceBar({ studio }) {
    const boxRef = useRef(null)
    const [width, setWidth] = useState(0)
    const [users, setUsers] = useState([])
    const [open, setOpne] = useState(false)
+   const [volume, setVolume] = useState(50)
+   const [speaking, setSpeaking] = useState(1)
+   const { user, loading, error } = useSelector((state) => state.auth.user)
+
+   const imageUrl = user?.imgUrl ? process.env.REACT_APP_API_URL + 'userImg' + user.imgUrl : '/default_profile.png'
 
    useEffect(() => {
       const observer = new ResizeObserver((entries) => {
@@ -24,8 +32,6 @@ function SpaceBar({ studio }) {
 
       return () => observer.disconnect()
    }, [])
-
-   useEffect(() => {})
 
    return (
       <Stack
@@ -99,7 +105,81 @@ function SpaceBar({ studio }) {
                )}
             </Stack2>
          </Stack2>
-         {open && <SpaceBox />}
+         {open && (
+            <Main>
+               <Grid2 container display="flex">
+                  <Grid2 size={{ md: 4, sm: 5, xs: 12 }} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                     <Stack spacing={2} direction={{ sm: 'column', xs: 'row' }} alignItems="center">
+                        <Box
+                           sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              width: { sm: 180, xs: 140 },
+                              height: { sm: 180, xs: 140 },
+                           }}
+                        >
+                           <Box
+                              sx={{
+                                 display: 'flex',
+                                 alignItems: 'center',
+                                 justifyContent: 'center',
+                                 borderRadius: '50%',
+                                 background: `linear-gradient(${speaking}deg, #4ACBCF, #A57EFF)`,
+                                 p: speaking > 20 ? 2 : 1.1,
+                                 transition: '0.2s',
+                              }}
+                           >
+                              <Avatar
+                                 src={imageUrl}
+                                 alt={user?.name}
+                                 sx={{
+                                    width: { sm: 120, xs: 100 },
+                                    height: { sm: 120, xs: 100 },
+                                    backgroundColor: 'white',
+                                    border: '5px solid white',
+                                 }}
+                              />
+                           </Box>
+                        </Box>
+                        {/* <Broadcaster setSpeaking={setSpeaking} /> */}
+                        {/* <Watcher setSpeaking={setSpeaking} /> */}
+                        <Stack alignItems={{ sm: 'center', xs: 'start' }}>
+                           <Stack alignItems="center" spacing={1} direction={{ sm: 'column', xs: 'row' }}>
+                              <Typography variant="body2" color="textSecondary">
+                                 진행자
+                              </Typography>
+                              <Typography variant="h6">{user?.name || '이름 없음'}</Typography>
+                           </Stack>
+                           <Stack alignItems="center">
+                              <Box sx={{ display: 'flex', alignItems: 'center', width: { md: 170, sm: 150, xs: 130 }, mt: 1 }}>
+                                 {volume === 0 ? <VolumeOffIcon sx={{ fontSize: 32, mr: 1, color: '#666' }} /> : <VolumeUpIcon sx={{ fontSize: 32, mr: 1, color: '#666' }} />}
+                                 <Slider
+                                    value={volume}
+                                    onChange={(e, newValue) => setVolume(newValue)}
+                                    aria-labelledby="volume-slider"
+                                    min={0}
+                                    max={100}
+                                    sx={{
+                                       color: '#666',
+                                       '& .MuiSlider-thumb': { backgroundColor: '#666' },
+                                       '& .MuiSlider-track': { backgroundColor: '#666' },
+                                    }}
+                                 />
+                              </Box>
+                              <Typography variant="body2" color="textSecondary" sx={{ display: { sm: 'block', xs: 'none' } }}>
+                                 볼륨: {volume}%
+                              </Typography>
+                           </Stack>
+                        </Stack>
+                     </Stack>
+                  </Grid2>
+                  <Grid2 p={2} size={{ md: 8, sm: 7, xs: 12 }}>
+                     <Chat />
+                  </Grid2>
+               </Grid2>
+            </Main>
+         )}
       </Stack>
    )
 }

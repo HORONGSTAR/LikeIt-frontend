@@ -53,3 +53,13 @@ export const getStudioById = async (studioId) => {
       throw error
    }
 }
+
+export const runSpace = async () => {
+   try {
+      const response = await likeitApi.post('/studio/space')
+      return response
+   } catch (error) {
+      console.error(`스페이스 요청 오류: ${error.message}`)
+      throw error
+   }
+}

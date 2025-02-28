@@ -1,23 +1,29 @@
 import { useSelector } from 'react-redux'
-import useBroadcastStatus from '../../util/useBroadcastStatus'
 import { Card, CardContent, CardMedia, Typography, Button, Divider, Stack } from '@mui/material'
 import StudioTab from './tab/StudioTab'
 import { Stack2 } from '../../styles/BaseStyles'
 import MicIcon from '@mui/icons-material/Mic'
 import { useNavigate } from 'react-router-dom'
 import SpaceBar from './space/SpaceBar'
-import { useMemo, useState } from 'react'
+import { useMemo, useEffect, useRef, useCallback, useState } from 'react'
+import { io } from 'socket.io-client'
+
+const socket = io(process.env.REACT_APP_API_URL, {
+   withCredentials: true,
+})
 
 const StudioLayout = () => {
    const { studio, projects } = useSelector((state) => state.studio)
    const { user } = useSelector((state) => state.auth)
-   const [isStartSpace, setStartSpace] = useState(false)
-   const isBroadcasting = useBroadcastStatus()
-
-   console.log(isBroadcasting)
-
+   const [spAdmin, setSpAdmin] = useState(null)
    const navigate = useNavigate()
-   const Spen = (props) => <Typography component="span" color="green" {...props} />
+
+   const startSpace = useCallback(() => {
+      const data = { adminId: user.id, studioId: studio.id }
+      socket.emit('start space', data)
+   }, [socket, user.id, studio.id])
+
+   useEffect(() => {}, [])
 
    const isCreator = useMemo(() => {
       const checked = studio?.StudioCreators?.filter((creator) => creator.Creator?.User?.id === user?.id)
@@ -35,6 +41,8 @@ const StudioLayout = () => {
 
    const maxPercent = useMemo(() => (completeProjects.length > 0 ? Math.floor(Math.max(...completeProjects.map((project) => project.totalOrderPrice / project.goal)) * 100) : 0), [completeProjects])
 
+   const Spen = (props) => <Typography component="span" color="green" {...props} />
+
    return (
       <>
          {studio && (
@@ -50,7 +58,7 @@ const StudioLayout = () => {
                         {isCreator ? (
                            <Stack2>
                               {isCreator.spAdmin && (
-                                 <Button sx={{ background: 'linear-gradient(to right, #4ACBCF, #A57EFF)', color: '#fff', p: 1 }} onClick={() => setStartSpace(!isStartSpace)}>
+                                 <Button sx={{ background: 'linear-gradient(to right, #4ACBCF, #A57EFF)', color: '#fff', p: 1 }} onClick={startSpace}>
                                     <MicIcon sx={{ fontSize: '20px' }} /> 스페이스
                                  </Button>
                               )}
@@ -91,8 +99,7 @@ const StudioLayout = () => {
                      </Stack2>
                   </CardContent>
                </Card>
-               {(isStartSpace || isBroadcasting) && <SpaceBar studio={studio} />}
-
+               {spAdmin && <SpaceBar studio={studio} />}
                <StudioTab />
             </>
          )}

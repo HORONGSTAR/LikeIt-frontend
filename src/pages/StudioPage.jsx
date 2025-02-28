@@ -6,7 +6,7 @@ import StudioLayout from '../components/studio/StudioLayout'
 import { Typography, Button, Box } from '@mui/material'
 import { LoadingBox, ErrorBox, Main } from '../styles/BaseStyles'
 
-function StudioPage({ auth }) {
+function StudioPage() {
    const { id } = useParams()
    const [open, setOpen] = useState(false)
    const dispatch = useDispatch()
@@ -52,7 +52,7 @@ function StudioPage({ auth }) {
 
    return (
       <>
-         <Main>{studio ? <StudioLayout auth={auth} /> : newStudio}</Main>
+         <Main>{studio ? <StudioLayout /> : newStudio}</Main>
 
          <ErrorBox error={error} open={open} setOpen={setOpen} />
       </>

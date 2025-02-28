@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { io } from 'socket.io-client'
-import { Stack, Divider, Box, InputBase, Avatar, IconButton, Typography, Button } from '@mui/material'
+import { Stack, Divider, Box, InputBase, Avatar, IconButton, Typography } from '@mui/material'
 import { SendRounded } from '@mui/icons-material'
-import SpaceBox from './SpaceBox'
 
 // 서버와 연결 => connection 진행
 
 const socket = io(process.env.REACT_APP_API_URL, {
    withCredentials: true,
 })
-
 const peerConnection = new RTCPeerConnection()
-
 const peers = {}
 
 export const Chat = () => {
@@ -72,17 +69,18 @@ export const Chat = () => {
             }}
          >
             <Stack spacing={1} m={0.5} divider={<Divider />}>
-               {messages.map((msg, index) => (
-                  <Box key={index} sx={{ display: 'flex', alignItems: 'start' }}>
-                     <Avatar src={msg.imgUrl && process.env.REACT_APP_API_URL + '/userImg' + msg.imgUrl} sx={{ width: 32, height: 32, mr: 1 }} />
-                     <Box>
-                        <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                           {msg.user}
-                        </Typography>
-                        <Typography variant="body2">{msg.message}</Typography>
+               {messages.length > 0 &&
+                  messages.map((msg, index) => (
+                     <Box key={index} sx={{ display: 'flex', alignItems: 'start' }}>
+                        <Avatar src={msg.imgUrl && process.env.REACT_APP_API_URL + '/userImg' + msg.imgUrl} sx={{ width: 32, height: 32, mr: 1 }} />
+                        <Box>
+                           <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                              {msg.name}
+                           </Typography>
+                           <Typography variant="body2">{msg.message}</Typography>
+                        </Box>
                      </Box>
-                  </Box>
-               ))}
+                  ))}
             </Stack>
          </Box>
          <Box sx={{ display: 'flex', alignItems: 'center', px: 1, py: 0.5, mt: 1, border: '1px solid #ddd', borderRadius: '5px' }}>
@@ -107,8 +105,6 @@ export const Broadcaster = ({ setSpeaking }) => {
    const audioRef = useRef(null)
 
    useEffect(() => {
-      socket.emit('broadcaster')
-
       navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
          audioRef.current.srcObject = stream
 
@@ -174,21 +170,21 @@ export const Watcher = ({ setSpeaking }) => {
    useEffect(() => {
       socket.emit('watcher')
 
-      socket.on('offer', (offer, broadcasterId) => {
+      socket.on('offer', (offer, streamerId) => {
          const peerConnection = new RTCPeerConnection()
-         peers[broadcasterId] = peerConnection
+         peers[streamerId] = peerConnection
 
          peerConnection
             .setRemoteDescription(new RTCSessionDescription(offer))
             .then(() => peerConnection.createAnswer())
             .then((answer) => {
                peerConnection.setLocalDescription(answer)
-               socket.emit('answer', answer, broadcasterId)
+               socket.emit('answer', answer, streamerId)
             })
 
          peerConnection.onicecandidate = (event) => {
             if (event.candidate) {
-               socket.emit('candidate', event.candidate, broadcasterId)
+               socket.emit('candidate', event.candidate, streamerId)
             }
          }
 
@@ -218,16 +214,16 @@ export const Watcher = ({ setSpeaking }) => {
          }
       })
 
-      socket.on('candidate', (candidate, broadcasterId) => {
-         if (peers[broadcasterId]) {
-            peers[broadcasterId].addIceCandidate(new RTCIceCandidate(candidate))
+      socket.on('candidate', (candidate, streamerId) => {
+         if (peers[streamerId]) {
+            peers[streamerId].addIceCandidate(new RTCIceCandidate(candidate))
          }
       })
 
-      socket.on('broadcasterDisconnected', (broadcasterId) => {
-         if (peers[broadcasterId]) {
-            peers[broadcasterId].close()
-            delete peers[broadcasterId]
+      socket.on('streamerDisconnected', (streamerId) => {
+         if (peers[streamerId]) {
+            peers[streamerId].close()
+            delete peers[streamerId]
          }
       })
 
@@ -236,7 +232,7 @@ export const Watcher = ({ setSpeaking }) => {
          socket.emit('watcherDisconnected')
          socket.off('offer')
          socket.off('candidate')
-         socket.off('broadcasterDisconnected')
+         socket.off('streamerDisconnected')
          socket.disconnect()
       }
    }, [])
