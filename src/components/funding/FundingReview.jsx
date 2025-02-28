@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchReviewsThunk, reviewDelThunk, reviewRecommendDelThunk, reviewRecommendRegThunk, reviewRegThunk } from '../../features/fundingSlice'
 import { Box, Grid2, Typography, Divider, Chip, Avatar, IconButton, TextField, Button, Rating, styled } from '@mui/material'
 import RecommendIcon from '@mui/icons-material/Recommend'
-import { ModalBox } from '../../styles/BaseStyles'
+import { ErrorBox, LoadingBox, ModalBox } from '../../styles/BaseStyles'
 
 function FundingReview({ funding }) {
    const dispatch = useDispatch()
@@ -15,6 +15,7 @@ function FundingReview({ funding }) {
    const [ImgFile, setImgFile] = useState(null)
    const [ImgUrl, setImgUrl] = useState('')
    const [rating, setRating] = useState(0)
+   const [errorOpen, setErrorOpen] = useState(false)
 
    const { loading, error, reviews, reviewCount } = useSelector((state) => state.funding)
    const { isAuthenticated, user } = useSelector((state) => state.auth)
@@ -174,6 +175,11 @@ function FundingReview({ funding }) {
       dispatch(reviewRegThunk(formData))
       setReviewInput('')
    }
+
+   // 로딩 에러 처리
+   if (loading) return <LoadingBox />
+   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
+
    return (
       <>
          {reviews && (

@@ -1,7 +1,7 @@
 import { Box, Grid2, Typography } from '@mui/material'
-import { Main } from '../styles/BaseStyles'
+import { ErrorBox, LoadingBox, Main } from '../styles/BaseStyles'
 import { useDispatch, useSelector } from 'react-redux'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { fetchShowRanksThunk, fetchShowMyRankThunk } from '../features/rankSlice'
 import { Link } from 'react-router-dom'
 
@@ -9,6 +9,7 @@ function RankingPage() {
    const dispatch = useDispatch()
    const { myRank, ranks, loading, error } = useSelector((state) => state.rank)
    const { isAuthenticated, user } = useSelector((state) => state.auth)
+   const [errorOpen, setErrorOpen] = useState(false)
 
    useEffect(() => {
       dispatch(fetchShowRanksThunk())
@@ -161,6 +162,9 @@ function RankingPage() {
          )
       }
    }
+
+   if (loading) return <LoadingBox />
+   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
 
    return (
       ranks && (
