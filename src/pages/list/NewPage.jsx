@@ -5,7 +5,7 @@ import { Box, Divider, Chip } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchShowProjectsThunk } from '../../features/listSlice'
-import { Main, LoadingBox } from '../../styles/BaseStyles'
+import { ErrorBox, Main, LoadingBox } from '../../styles/BaseStyles'
 
 const NewPage = () => {
    const dispatch = useDispatch()
@@ -14,9 +14,13 @@ const NewPage = () => {
    const [allCards, setAllCards] = useState([])
    const [loadingCount, setLoadingCount] = useState(8)
    const [scrollPosition, setScrollPosition] = useState(0)
+   const [errorOpen, setErrorOpen] = useState(false)
 
    useEffect(() => {
       dispatch(fetchShowProjectsThunk({ page, limit: 8, type: 'new' }))
+         .unwrap()
+         .then()
+         .catch(() => setErrorOpen(true))
    }, [dispatch, page])
 
    useEffect(() => {
@@ -72,13 +76,9 @@ const NewPage = () => {
       setPage(page + 1) // 페이지 번호 증가
    }
 
-   if (loading)
-      return (
-         <Main>
-            <LoadingBox />
-         </Main>
-      )
-   if (error) return <Main>{error}</Main>
+   // 로딩 에러 처리
+   if (loading) return <LoadingBox />
+   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
 
    return (
       <Main>
@@ -91,7 +91,7 @@ const NewPage = () => {
                </Box>
             </>
          ) : (
-            <img src={process.env.REACT_APP_FRONT_URL + '/images/noProject.png'} width="640px" style={{ margin: '0 auto' }}></img>
+            <img src={process.env.REACT_APP_FRONT_URL + '/images/noProject.png'} width="640px" style={{ margin: '0 auto' }} alt="프로젝트 없음"></img>
          )}
       </Main>
    )

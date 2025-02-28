@@ -14,6 +14,7 @@ import projectReducer from '../features/projectSlice'
 import rewardReducer from '../features/rewardSlice'
 import orderReducer from '../features/orderSlice'
 import timelineReducer from '../features/timelineSlice'
+import messageReducer from '../features/messageSlice'
 
 const store = configureStore({
    reducer: {
@@ -32,6 +33,7 @@ const store = configureStore({
       creator: creatorReducer,
       order: orderReducer,
       timeline: timelineReducer,
+      message: messageReducer,
    },
 })
 

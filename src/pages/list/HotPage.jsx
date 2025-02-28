@@ -1,11 +1,10 @@
 import { ProjectCard } from '../../components/ui/Cards'
-import { Grid2 } from '@mui/material'
-import { Box, Divider, Chip } from '@mui/material'
+import { Grid2, Box, Divider, Chip } from '@mui/material'
 
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchShowProjectsThunk } from '../../features/listSlice'
-import { LoadingBox, Main } from '../../styles/BaseStyles'
+import { ErrorBox, LoadingBox, Main } from '../../styles/BaseStyles'
 
 const HotPage = () => {
    const dispatch = useDispatch()
@@ -14,9 +13,13 @@ const HotPage = () => {
    const [allCards, setAllCards] = useState([])
    const [loadingCount, setLoadingCount] = useState(8)
    const [scrollPosition, setScrollPosition] = useState(0)
+   const [errorOpen, setErrorOpen] = useState(false)
 
    useEffect(() => {
       dispatch(fetchShowProjectsThunk({ page, limit: 8, type: 'hot' }))
+         .unwrap()
+         .then()
+         .catch(() => setErrorOpen(true))
    }, [dispatch, page])
 
    useEffect(() => {
@@ -64,7 +67,7 @@ const HotPage = () => {
             window.scrollTo(0, scrollPosition)
          }, 0)
       }
-   }, [projects.hot])
+   }, [projects])
 
    const loadMoreProjects = () => {
       setScrollPosition(window.scrollY)
@@ -72,13 +75,9 @@ const HotPage = () => {
       setPage(page + 1) // 페이지 번호 증가
    }
 
-   if (loading)
-      return (
-         <Main>
-            <LoadingBox />
-         </Main>
-      )
-   if (error) return <Main>{error}</Main>
+   // 로딩 에러 처리
+   if (loading) return <LoadingBox />
+   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
 
    return (
       <Main>
@@ -91,7 +90,7 @@ const HotPage = () => {
                </Box>
             </>
          ) : (
-            <img src={process.env.REACT_APP_FRONT_URL + '/images/noProject.png'} width="640px" style={{ margin: '0 auto' }}></img>
+            <img src={process.env.REACT_APP_FRONT_URL + '/images/noProject.png'} width="640px" style={{ margin: '0 auto' }} alt="프로젝트 없음"></img>
          )}
       </Main>
    )

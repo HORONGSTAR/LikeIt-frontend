@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Card, CardContent, CardMedia, Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, DialogContent, DialogTitle, Container, Button, Link as MuiLink } from '@mui/material'
+import { Card, CardContent, CardMedia, Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, DialogContent, DialogTitle, Container, Button, Link as MuiLink, CardHeader } from '@mui/material'
 import { Close, PlayArrowRounded, AddPhotoAlternate } from '@mui/icons-material'
 import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
@@ -319,33 +319,72 @@ export const Ellipsis = styled.div`
    }
 `
 
-export const FundingCard = ({ image, title, price, status }) => {
+// export const FundingCard = ({ image, title, price, status, subtitle }) => {
+//    return (
+//       <Card sx={{ display: 'flex', flexDirection: 'row', mb: 2, boxShadow: 2, filter: status === 'FUNDING_FAILED' ? 'grayscale(100%)' : 'none', backgroundColor: status === 'FUNDING_FAILED' ? '#f0f0f0' : 'white' }}>
+//          {/* funding_failed일떄 회색처리하는걸 ListItem쪽으로 넘겨줘야함 */}
+//          <CardMedia component="img" sx={{ width: 200, height: 100, borderRadius: 1 }} image={image} alt={title} />
+//          <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+//             <Typography variant="subtitle1" fontWeight="bold">
+//                {title}
+//             </Typography>
+//             <Typography fontWeight="bold">{subtitle}</Typography>
+//             <Typography variant="body2" color="green">
+//                {price}원
+//             </Typography>
+//          </CardContent>
+//          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', mr: 2 }}>
+//             {status === 'ON_FUNDING' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>펀딩진행중</Box>}
+//             {status === 'FUNDING_COMPLETE_PAID' && <Box sx={{ backgroundColor: '#D0F0C0', m: 2, p: 1, borderRadius: 1, color: '#3BB143', display: 'inline-block' }}>펀딩성공/결제완료</Box>}
+//             {status === 'FUNDING_COMPLETE_NOT_PAID' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>펀딩성공/결제실패</Box>}
+//             {status === 'FUNDING_FAILED' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>펀딩실패</Box>}
+//             {status === 'DELIVERY_WAITING' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>전달준비중</Box>}
+//             {status === 'DELIVERY_STARTED' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>전달시작</Box>}
+//             {status === 'DELIVERY_COMPLETE' && <Box sx={{ backgroundColor: '#D0F0C0', m: 2, p: 1, borderRadius: 1, color: '#3BB143', display: 'inline-flex' }}>전달완료</Box>}
+//             {status === 'DELIVERY_COMPLETE' && (
+//                <Link>
+//                   <BorderColorIcon />
+//                   후기 작성하기
+//                </Link>
+//             )}
+//          </Box>
+//       </Card>
+//    )
+// }
+
+export const FundingCard = ({ orders }) => {
    return (
-      <Card sx={{ display: 'flex', flexDirection: 'row', mb: 2, boxShadow: 2, filter: status === 'FUNDING_FAILED' ? 'grayscale(100%)' : 'none', backgroundColor: status === 'FUNDING_FAILED' ? '#f0f0f0' : 'white' }}>
-         <CardMedia component="img" sx={{ width: 200, height: 100, borderRadius: 1 }} image={image} alt={title} />
-         <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <Typography variant="subtitle1" fontWeight="bold">
-               {title}
-            </Typography>
-            <Typography variant="body2" color="green">
-               {price}원
-            </Typography>
-         </CardContent>
-         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', mr: 2 }}>
-            {status === 'ON_FUNDING' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>펀딩진행중</Box>}
-            {status === 'FUNDING_COMPLETE_PAID' && <Box sx={{ backgroundColor: '#D0F0C0', m: 2, p: 1, borderRadius: 1, color: '#3BB143', display: 'inline-block' }}>펀딩성공/결제완료</Box>}
-            {status === 'FUNDING_COMPLETE_NOT_PAID' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>펀딩성공/결제실패</Box>}
-            {status === 'FUNDING_FAILED' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>펀딩실패</Box>}
-            {status === 'DELIVERY_WAITING' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>전달준비중</Box>}
-            {status === 'DELIVERY_STARTED' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>전달시작</Box>}
-            {status === 'DELIVERY_COMPLETE' && <Box sx={{ backgroundColor: '#D0F0C0', m: 2, p: 1, borderRadius: 1, color: '#3BB143', display: 'inline-flex' }}>전달완료</Box>}
-            {status === 'DELIVERY_COMPLETE' && (
-               <Link>
-                  <BorderColorIcon />
-                  후기 작성하기
-               </Link>
-            )}
-         </Box>
+      <Card sx={{ display: 'flex', flexDirection: 'column', mb: 2, boxShadow: 2 }}>
+         <CardHeader title={`주문 시각 : ${new Date(orders.orderTime).toLocaleString()}`} sx={{ backgroundColor: '#f5f5f5', padding: 1, borderRadius: 1 }} />
+         {orders.orders.map((order, index) => (
+            <Box key={index} sx={{ display: 'flex', flexDirection: 'row', filter: order.orderStatus === 'FUNDING_FAILED' ? 'grayscale(100%)' : 'none', backgroundColor: order.orderStatus === 'FUNDING_FAILED' ? '#f0f0f0' : 'white' }}>
+               {order.Reward.Project.imgUrl && <CardMedia component="img" sx={{ width: 200, height: 100, borderRadius: 1 }} image={`${process.env.REACT_APP_API_URL}/projectImg${order.Reward.Project.imgUrl}` || null} alt={order.Reward.Project.title} />}
+               <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <Typography variant="subtitle1" fontWeight="bold">
+                     {order.Reward.Project.title}
+                  </Typography>
+                  <Typography fontWeight="bold">{}</Typography>
+                  <Typography variant="body2" color="green">
+                     {order.orderPrice}원
+                  </Typography>
+               </CardContent>
+               <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', mr: 2 }}>
+                  {order.orderStatus === 'ON_FUNDING' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>펀딩진행중</Box>}
+                  {order.orderStatus === 'FUNDING_COMPLETE_PAID' && <Box sx={{ backgroundColor: '#D0F0C0', m: 2, p: 1, borderRadius: 1, color: '#3BB143', display: 'inline-block' }}>펀딩성공/결제완료</Box>}
+                  {order.orderStatus === 'FUNDING_COMPLETE_NOT_PAID' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>펀딩성공/결제실패</Box>}
+                  {order.orderStatus === 'FUNDING_FAILED' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>펀딩실패</Box>}
+                  {order.orderStatus === 'DELIVERY_WAITING' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>전달준비중</Box>}
+                  {order.orderStatus === 'DELIVERY_STARTED' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>전달시작</Box>}
+                  {order.orderStatus === 'DELIVERY_COMPLETE' && <Box sx={{ backgroundColor: '#D0F0C0', m: 2, p: 1, borderRadius: 1, color: '#3BB143', display: 'inline-flex' }}>전달완료</Box>}
+                  {order.orderStatus === 'DELIVERY_COMPLETE' && (
+                     <Link>
+                        <BorderColorIcon />
+                        후기 작성하기
+                     </Link>
+                  )}
+               </Box>
+            </Box>
+         ))}
       </Card>
    )
 }
