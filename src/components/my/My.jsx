@@ -181,12 +181,6 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
          })
    }, [nickname, imgFile, dispatch])
 
-   // <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-   //    주문일 {new Date(order.createdAt).toLocaleDateString()}
-   // </Typography>
-   // <FundingCard image={process.env.REACT_APP_API_URL + '/projectImg' + order.Project.imgUrl} title={order.Project.title} price={order.orderPrice} status={order.orderStatus} />
-   //    <FundingCard image={process.env.REACT_APP_API_URL + '/projectImg' + order.Project.imgUrl} title={order.Project.title} subtitle={order.Reward.name} price={order.orderPrice} status={order.orderStatus} />
-
    const groupedOrders = orders.reduce((acc, order) => {
       const { createdAt } = order
       if (!acc[createdAt]) {
