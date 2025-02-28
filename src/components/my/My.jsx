@@ -31,7 +31,6 @@ const IconWrapper = styled(Box)({
 })
 
 function My({ initialValues = {}, orders = [], points = [], profits = [], allprojects = [] }) {
-   console.log(orders)
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const [email, setEmail] = useState(initialValues ? initialValues.email : '')
@@ -187,15 +186,28 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
    // </Typography>
    // <FundingCard image={process.env.REACT_APP_API_URL + '/projectImg' + order.Project.imgUrl} title={order.Project.title} price={order.orderPrice} status={order.orderStatus} />
    //    <FundingCard image={process.env.REACT_APP_API_URL + '/projectImg' + order.Project.imgUrl} title={order.Project.title} subtitle={order.Reward.name} price={order.orderPrice} status={order.orderStatus} />
+
+   const groupedOrders = orders.reduce((acc, order) => {
+      const { createdAt } = order
+      if (!acc[createdAt]) {
+         acc[createdAt] = []
+      }
+      acc[createdAt].push(order)
+      return acc
+   }, {})
+
+   const orderBoxes = Object.entries(groupedOrders).map(([createdAt, items]) => ({
+      orderTime: createdAt,
+      orders: items,
+   }))
+
+   //    <FundingCard key={order.id} image={`${process.env.REACT_APP_API_URL}/projectImg${order.Reward.Project.imgUrl}`} title={order.Reward.Project.title} subtitle={order.Reward.name} price={order.orderPrice} status={order.orderStatus}
+
    const sponsorList = (
       <>
-         {allprojects.map((project) =>
-            orders
-               .filter((order) => order.Reward?.Project?.id === project.id)
-               .map((order) => {
-                  return <FundingCard key={order.id} image={`${process.env.REACT_APP_API_URL}/projectImg${order.Reward.Project.imgUrl}`} title={order.Reward.Project.title} subtitle={order.Reward.name} price={order.orderPrice} status={order.orderStatus} />
-               })
-         )}
+         {orderBoxes.map((orders, index) => (
+            <FundingCard key={index} orders={orders} />
+         ))}
       </>
    )
 
@@ -375,7 +387,7 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
             {/* Profile Section */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                <Avatar sx={{ width: 64, height: 64, mr: 2 }}>
-                  <img src={initialValues ? process.env.REACT_APP_API_URL + '/userImg' + initialValues.imgUrl : ''} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                  <img src={process.env.REACT_APP_API_URL + '/userImg' + initialValues?.imgUrl || null} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
                </Avatar>
                <Box>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -390,8 +402,8 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
                   <Box>
                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography sx={{ fontWeight: 'bold' }}>활동분야 </Typography>
-                        {categoriesFromServer?.map((category) => (
-                           <Typography>{category.categoryName}</Typography>
+                        {categoriesFromServer?.map((category, index) => (
+                           <Typography key={index}>{category.categoryName}</Typography>
                         ))}
                      </Box>
                      <Typography variant="body2" color="text.secondary">
