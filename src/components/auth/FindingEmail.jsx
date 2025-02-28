@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchEmailThunk } from '../../features/authSlice'
 import { TextField, Button, Typography, Stack, Divider, Box } from '@mui/material'
@@ -9,24 +9,23 @@ function FindingEmail() {
    const [phone, setPhone] = useState('')
    const dispatch = useDispatch()
    const { email, loading, error } = useSelector((state) => state.auth)
-   const [foundEmail, setFoundEmail] = useState(null)
+   const [foundEmail, setFoundEmail] = useState('')
 
-   const handleSendPhone = useCallback(
-      (e) => {
-         e.preventDefault()
-         const trimmedPhone = phone.replace(/\s/g, '')
-         dispatch(fetchEmailThunk({ trimmedPhone }))
-            .unwrap()
-            .then((response) => {
-               setFoundEmail(response.email) // Set state on success
-            })
-            .catch((error) => {
-               console.error('로그인 실패:', error)
-               alert(error)
-            })
-      },
-      [dispatch, phone]
-   )
+   const handleSendPhone = (e) => {
+      e.preventDefault()
+      const trimmedPhone = phone.replace(/\s/g, '')
+      dispatch(fetchEmailThunk({ trimmedPhone }))
+         .unwrap()
+         .then(() => {})
+         .catch((error) => {
+            console.error('로그인 실패:', error)
+            alert(error)
+         })
+   }
+
+   useEffect(() => {
+      setFoundEmail(email) // Set state on success
+   }, [email])
 
    return (
       <Stack width={300} spacing={2}>

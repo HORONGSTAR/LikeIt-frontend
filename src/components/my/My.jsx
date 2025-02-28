@@ -226,12 +226,7 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
                비밀번호 변경
             </Typography>
             <TextField fullWidth variant="outlined" margin="dense" label="현재 비밀번호" type="password" onChange={(e) => setCurrentPassword(e.target.value)} />
-            <Stack2 spacing={1}>
-               <Typography variant="body2">비밀번호를 잊으셨나요?</Typography>
-               <TextLink variant="body2" color="orenge" to="/findingpassword">
-                  비밀번호 재설정
-               </TextLink>
-            </Stack2>
+
             <TextField fullWidth variant="outlined" margin="dense" label="변경할 비밀번호" type="password" onChange={(e) => setPasswordToChange(e.target.value)} />
             <TextField fullWidth variant="outlined" margin="dense" label="변경할 비밀번호 확인" type="password" onChange={(e) => setConfirmPasswordToChange(e.target.value)} />
          </Box>
@@ -380,9 +375,7 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
          <Box>
             {/* Profile Section */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-               <Avatar sx={{ width: 64, height: 64, mr: 2 }}>
-                  <img src={process.env.REACT_APP_API_URL + '/userImg' + initialValues?.imgUrl || null} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-               </Avatar>
+               {initialValues && <Avatar sx={{ width: 64, height: 64, mr: 2, objectFit: 'cover', borderRadius: '50%' }} src={process.env.REACT_APP_API_URL + '/userImg' + initialValues?.imgUrl} />}
                <Box>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                      <Typography variant="h4" sx={{ mr: 1 }}>
@@ -400,9 +393,7 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
                            <Typography key={index}>{category.categoryName}</Typography>
                         ))}
                      </Box>
-                     <Typography variant="body2" color="text.secondary">
-                        후기 작성 3건 | 후원 횟수 22회 | 후원 순위 최고 기록 593위
-                     </Typography>
+
                      <Box sx={{ display: 'flex' }}>
                         <ModifiedModalBox openBtn={<Button startIcon={<EditIcon />}>프로필 수정</Button>} closeBtn>
                            <Typography variant="h5">프로필 수정</Typography>

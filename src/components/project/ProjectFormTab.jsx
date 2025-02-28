@@ -1,17 +1,16 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import ProjectInfoForm from './forms/ProjectInfoForm'
 import ProjectRewardForm from './forms/ProjectRewardForm'
 import ProjectBudgetForm from './forms/ProjectBudgetForm'
 import ApprovaForm from './forms/ApprovaForm'
-import { FormGrid } from '../ui/FormGrid'
 import { StepperTabs } from '../ui/Tabs'
 import { isBlank } from '../../util/isBlank'
+import { Snackbar, Alert } from '@mui/material'
 
 function ProjectFormTab({ onSubmit, step, project }) {
    const [products, setProducts] = useState(project?.RewardProducts || [])
    const [rewards, setRewards] = useState(project?.Rewards || [])
-
-   const isSave = useRef(true)
+   const [alert, setAlert] = useState(false)
 
    const infoVals = {
       imgFile: null,
@@ -42,35 +41,38 @@ function ProjectFormTab({ onSubmit, step, project }) {
       (date) => {
          onSubmit(date)
          step.current = 0
-         isSave.current = true
       },
-      [onSubmit, step, isSave]
+      [onSubmit, step]
    )
 
    const saveBudgetData = useCallback(
       (date) => {
          onSubmit(date)
          step.current = 2
-         isSave.current = true
       },
-      [onSubmit, step, isSave]
+      [onSubmit, step]
    )
 
-   const sendApproval = useCallback(() => {
+   const completed = useMemo(() => {
       const { imgUrl, title, intro, contents, start, end, schedule } = infoVals
-      const { goal, projBudg, creaBudg } = budgetVals
+      const { projBudg, creaBudg } = budgetVals
       const step1 = isBlank([imgUrl, title, intro, contents, start, end, schedule])
       const step2 = rewards.length
-      const step3 = isBlank([goal, projBudg, creaBudg])
-      if (!step1 || !step2 || !step3) return
+      const step3 = projBudg.length && creaBudg.length
+
+      return { 0: step1, 1: step2, 2: step3 }
+   }, [infoVals, budgetVals, rewards])
+
+   const sendApproval = useCallback(() => {
+      if (!completed[0] || !completed[1] || !completed[2]) return setAlert(true)
       onSubmit({ proposalStatus: 'REVIEW_REQ' })
       step.current = 3
-   }, [onSubmit, step, infoVals, budgetVals, rewards])
+   }, [onSubmit, step, completed])
 
    const tabItems = [
       {
          label: '기본 정보',
-         page: <ProjectInfoForm isSave={isSave} initVals={infoVals} onSubmit={saveInfoData} />,
+         page: <ProjectInfoForm initVals={infoVals} onSubmit={saveInfoData} />,
       },
       {
          label: '선물 구성',
@@ -78,17 +80,22 @@ function ProjectFormTab({ onSubmit, step, project }) {
       },
       {
          label: '예산 계획',
-         page: <ProjectBudgetForm isSave={isSave} initVals={budgetVals} onSubmit={saveBudgetData} />,
+         page: <ProjectBudgetForm initVals={budgetVals} onSubmit={saveBudgetData} />,
       },
       {
          label: '승인 요청',
-         page: <ApprovaForm onSubmit={sendApproval} />,
+         page: <ApprovaForm proposalStatus={project?.proposalStatus} onSubmit={sendApproval} />,
       },
    ]
 
    return (
       <>
-         <StepperTabs tabItems={tabItems} step={step} isSave={isSave} />
+         <StepperTabs tabItems={tabItems} step={step} completed={completed} />
+         <Snackbar open={alert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={6000} onClose={() => setAlert(false)}>
+            <Alert onClose={() => setAlert(false)} severity="error" variant="filled" sx={{ width: '100%' }}>
+               모든 항목을 채워주세요.
+            </Alert>
+         </Snackbar>
       </>
    )
 }

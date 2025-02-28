@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import DateRangePickers from './DateRangePickers'
 import dayjs from 'dayjs'
 
-function ProjectInfoForm({ onSubmit, initVals = {}, isSave }) {
+function ProjectInfoForm({ onSubmit, initVals = {} }) {
    const [imgFile, setImgFile] = useState(null)
    const [imgUrl, setImgUrl] = useState(initVals.imgUrl)
    const [title, setTitle] = useState(initVals.title)
@@ -13,12 +13,6 @@ function ProjectInfoForm({ onSubmit, initVals = {}, isSave }) {
    const [contents, setContents] = useState(initVals.contents)
    const [term, setTerm] = useState({ start: dayjs(initVals.start), end: dayjs(initVals.end) })
    const [schedule, setSchedule] = useState(initVals.schedule)
-   const origin = useRef(JSON.stringify({ imgUrl, title, intro, term }))
-
-   useEffect(() => {
-      if (!isSave.current) return
-      if (origin.current !== JSON.stringify({ imgUrl, title, intro, term })) isSave.current = false
-   }, [isSave, imgUrl, title, intro, contents, term, schedule])
 
    const handleSaveData = useCallback(() => {
       const formData = new FormData()
