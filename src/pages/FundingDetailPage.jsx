@@ -17,7 +17,6 @@ const FundingDetailPage = () => {
    const { isAuthenticated } = useSelector((state) => state.auth)
    const [project, setProject] = useState(null)
    const [noReward, setNoReward] = useState('')
-   const [errorOpen, setErrorOpen] = useState(false)
 
    const [orderRewardBasket, setOrderRewardBasket] = useState({})
 
@@ -71,10 +70,6 @@ const FundingDetailPage = () => {
             아쉽게도 펀딩이 실패로 종료됐습니다...
          </Typography>
       )
-
-   // 로딩 에러 처리
-   if (loading) return <LoadingBox />
-   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
 
    return (
       project &&
@@ -159,7 +154,7 @@ const FundingDetailPage = () => {
                      </TabList>
                   </Box>
                   <TabPanel value="1">
-                     <FundingOverview funding={funding} orderPlusReward={orderPlusReward} orderMinusReward={orderMinusReward} />
+                     <FundingOverview funding={funding} loading={loading} error={error} orderPlusReward={orderPlusReward} orderMinusReward={orderMinusReward} />
                   </TabPanel>
                   <TabPanel value="2">
                      <FundingTimeline funding={funding} />

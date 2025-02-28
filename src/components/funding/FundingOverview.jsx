@@ -1,11 +1,12 @@
 import { Box, Grid2, IconButton, Typography } from '@mui/material'
-import { SubTitle } from '../../styles/BaseStyles'
+import { ErrorBox, LoadingBox, SubTitle } from '../../styles/BaseStyles'
 import { TabLink } from '../../components/ui/Tabs'
 import { useState } from 'react'
 import { AddCircle, RemoveCircle } from '@mui/icons-material'
 
-function FundingOverview({ funding, orderPlusReward, orderMinusReward }) {
+function FundingOverview({ funding, loading, error, orderPlusReward, orderMinusReward }) {
    const [rewardBasket, setRewardBasket] = useState({})
+   const [errorOpen, setErrorOpen] = useState(false)
 
    const plusReward = (rid) => {
       setRewardBasket((prevData) => {
@@ -202,6 +203,10 @@ function FundingOverview({ funding, orderPlusReward, orderMinusReward }) {
       { name: '프로젝트 예산', section: budget },
       { name: '팀 소개', section: teamIntro },
    ]
+
+   // 로딩 에러 처리
+   if (loading) return <LoadingBox />
+   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
 
    return (
       <Grid2

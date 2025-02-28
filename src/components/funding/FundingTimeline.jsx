@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchTimelinesThunk, fetchTimelineThunk, timelineCommentDelThunk, timelineCommentRegThunk } from '../../features/fundingSlice'
 import { Box, Divider, Chip, Typography, Grid2, Avatar, Button, Pagination, Stack, TextField } from '@mui/material'
 import dayjs from 'dayjs'
+import { ErrorBox, LoadingBox } from '../../styles/BaseStyles'
 
 function FundingTimeline({ funding }) {
    const dispatch = useDispatch()
@@ -12,6 +13,7 @@ function FundingTimeline({ funding }) {
    const [allTimelines, setAllTimelines] = useState([])
    const [nowTimeline, setNowTimeline] = useState(0)
    const [comment, setComment] = useState('')
+   const [errorOpen, setErrorOpen] = useState(false)
 
    const { timelineCount, timelines, timeline, loading, error } = useSelector((state) => state.funding)
    const { user } = useSelector((state) => state.auth)
@@ -115,6 +117,10 @@ function FundingTimeline({ funding }) {
       setComment('')
       dispatch(fetchTimelineThunk(timeline.id))
    }
+
+   // 로딩 에러 처리
+   if (loading) return <LoadingBox />
+   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
 
    return (
       <>
