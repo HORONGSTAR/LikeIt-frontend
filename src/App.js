@@ -86,7 +86,15 @@ function App() {
             <Route path="/category/:id" element={<CategoryPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/rank" element={<RankingPage />} />
-            <Route path="/admin" element={<AdminPage />} />
+            <Route
+               path="/admin"
+               element={
+                  <AdminRoute>
+                     <AdminPage />
+                  </AdminRoute>
+               }
+            />
+
             {/* auth */}
             <Route
                path="/login"
@@ -141,6 +149,14 @@ function App() {
                element={
                   <RedirectLogoutRoute>
                      <MyPage />
+                  </RedirectLogoutRoute>
+               }
+            />
+            <Route
+               path="/notice"
+               element={
+                  <RedirectLogoutRoute>
+                     <NoticePage />
                   </RedirectLogoutRoute>
                }
             />
