@@ -1,7 +1,7 @@
 import { Box, Grid2, Typography } from '@mui/material'
-import { Main } from '../styles/BaseStyles'
+import { ErrorBox, LoadingBox, Main } from '../styles/BaseStyles'
 import { useDispatch, useSelector } from 'react-redux'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { fetchShowRanksThunk, fetchShowMyRankThunk } from '../features/rankSlice'
 import { Link } from 'react-router-dom'
 
