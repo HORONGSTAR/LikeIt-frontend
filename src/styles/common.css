@@ -61,6 +61,31 @@ input[type='number']::-webkit-inner-spin-button {
    appearance: none;
 }
 
+.spacebar-title {
+   position: relative;
+   animation: moveTitle 10s linear infinite;
+   transform: animation;
+   white-space: nowrap;
+}
+
+.spacebar-title-copy {
+   display: none;
+}
+
+div ::-webkit-scrollbar {
+   width: 8px;
+   height: 8px;
+}
+div ::-webkit-scrollbar-thumb {
+   height: 30%;
+   background: #ddd;
+   border-radius: 10px;
+}
+div ::-webkit-scrollbar-track {
+   background: #eee;
+   border-radius: 10px;
+}
+
 @keyframes rotateEgg {
    0% {
       transform: rotate(-20deg);
@@ -82,5 +107,17 @@ input[type='number']::-webkit-inner-spin-button {
    }
    100% {
       transform: rotate(-20deg);
+   }
+}
+
+@keyframes moveTitle {
+   0% {
+      transform: translateX(0%);
+   }
+   20% {
+      transform: translateX(0%);
+   }
+   100% {
+      transform: translateX(-100%);
    }
 }

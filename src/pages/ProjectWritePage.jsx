@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { createProjectThunk, updateProjectThunk, fetchProjectByIdThunk } from '../features/projectSlice'
+import { fetchRewardThunk } from '../features/rewardSlice'
 import { InputBase, Box, Button, Stack, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { Main, Dot, LoadingBox, ErrorBox } from '../styles/BaseStyles'
@@ -58,6 +59,13 @@ function ProjectWritePage() {
          </Button>
       </Stack>
    )
+
+   if (project?.proposalStatus === 'REVIEW_REQ') {
+      return <>현재 프로젝트를 심사중입니다.</>
+   }
+   if (project?.proposalStatus === 'COMPLETE') {
+      return <>이미 심사가 끝난 프로젝트 입니다.</>
+   }
 
    return (
       <>

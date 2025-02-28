@@ -5,7 +5,7 @@ import { FormGrid } from '../../ui/FormGrid'
 import EditProductBox from './EditProductBox'
 import EditRewardBox from './EditRewardBox'
 import { AddCircle, Create, Delete } from '@mui/icons-material'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useRef } from 'react'
 import { createProductThunk, updateProductThunk, deleteProductThunk, createRewardThunk, updateRewardThunk, deleteRewardThunk } from '../../../features/rewardSlice'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -71,7 +71,7 @@ function ProjectRewardForm({ initVals }) {
                .then((result) => setProducts(products.concat(result.product)))
                .catch()
          }
-         setOpen(null)
+         setOpen('')
       },
       [dispatch, id, product, products]
    )
@@ -91,7 +91,7 @@ function ProjectRewardForm({ initVals }) {
                })
                .catch()
          }
-         setOpen(null)
+         setOpen('')
       },
       [dispatch, id, reward, rewards]
    )
@@ -104,11 +104,7 @@ function ProjectRewardForm({ initVals }) {
                <Button onClick={openCreateProductBox} startIcon={<AddCircle fontSize="small" />} variant="outlined">
                   구성품 추가
                </Button>
-               {open && (
-                  <EditProductBox open={open} onSubmit={productSubmit} product={product}>
-                     <Button onClick={() => setOpen('')}>취소</Button>
-                  </EditProductBox>
-               )}
+
                <Stack spacing={1} mt={1}>
                   {products.map((product) => (
                      <ListCard product={product} key={'product' + product.id}>
@@ -121,6 +117,11 @@ function ProjectRewardForm({ initVals }) {
                      </ListCard>
                   ))}
                </Stack>
+               {open && (
+                  <EditProductBox open={open} onSubmit={productSubmit} product={product}>
+                     <Button onClick={() => setOpen('')}>취소</Button>
+                  </EditProductBox>
+               )}
             </>
          ),
       },
@@ -174,7 +175,11 @@ function ProjectRewardForm({ initVals }) {
       },
    ]
 
-   return <FormGrid formItems={formItems} />
+   return (
+      <>
+         <FormGrid formItems={formItems} />
+      </>
+   )
 }
 
 export default ProjectRewardForm

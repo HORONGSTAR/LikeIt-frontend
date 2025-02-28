@@ -2,19 +2,43 @@ import { Typography, Table, TableBody, TableCell, TableContainer, TableRow, Pape
 import { LoadingBox } from '../../../styles/BaseStyles'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchProjectByIdThunk } from '../../../features/projectSlice'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
+import { fetchOrdersThunk } from '../../../features/orderSlice'
 
 function FundHistory() {
    const { project, loading } = useSelector((state) => state.project)
+   const { orders } = useSelector((state) => state.order)
    const dispatch = useDispatch()
    const { projectId } = useParams()
 
    const currentProjectId = projectId || 3
 
+   const totalFunds = useMemo(() => orders.reduce((sum, order) => sum + order.orderPrice, 0), [orders])
+   const failedPayments = useMemo(() => orders.filter((order) => order.orderStatus === 'FUNDING_COMPLETE_NOT_PAID').reduce((sum, order) => sum + order.orderPrice, 0), [orders])
+   const successfulPayments = totalFunds - failedPayments
+
+   const totalPeople = orders.length
+   const failedPeople = orders.filter((order) => order.orderStatus === 'FUNDING_COMPLETE_NOT_PAID').length
+   const successfulPeople = totalPeople - failedPeople
+
+   const platformFee = Math.floor(successfulPayments * 0.08)
+   const vat = Math.floor(successfulPayments * 0.1)
+   const totalSettlement = successfulPayments - (platformFee + vat)
+
+   const formatWithComma = (value) => {
+      if (value === null || value === undefined) return '0'
+      if (typeof value === 'number') value = value.toString()
+      return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+   }
+
    useEffect(() => {
       dispatch(fetchProjectByIdThunk(currentProjectId))
    }, [dispatch, currentProjectId])
+
+   useEffect(() => {
+      dispatch(fetchOrdersThunk(projectId))
+   }, [dispatch, projectId])
 
    if (loading) return <LoadingBox />
    if (!project) return <LoadingBox />
@@ -34,7 +58,7 @@ function FundHistory() {
 
                   <TableRow>
                      <TableCell>스튜디오 이름</TableCell>
-                     <TableCell sx={{ textAlign: 'right' }}>이름</TableCell>
+                     <TableCell sx={{ textAlign: 'right' }}>{project.Studio?.name}</TableCell>
                   </TableRow>
 
                   <TableRow>
@@ -52,18 +76,18 @@ function FundHistory() {
             <Table>
                <TableBody>
                   <TableRow>
-                     <TableCell>총 모금액 (명)</TableCell>
-                     <TableCell sx={{ textAlign: 'right' }}>원</TableCell>
+                     <TableCell>총 모금액 ({formatWithComma(totalPeople)}명)</TableCell>
+                     <TableCell sx={{ textAlign: 'right' }}>{formatWithComma(totalFunds)}원</TableCell>
                   </TableRow>
 
                   <TableRow>
-                     <TableCell>결제 실패 (명)</TableCell>
-                     <TableCell sx={{ textAlign: 'right' }}>원</TableCell>
+                     <TableCell>결제 실패 ({formatWithComma(failedPeople)}명)</TableCell>
+                     <TableCell sx={{ textAlign: 'right' }}>{formatWithComma(failedPayments)} 원</TableCell>
                   </TableRow>
 
                   <TableRow>
-                     <TableCell sx={{ borderBottom: 'none' }}>총 결제 금액 (명)</TableCell>
-                     <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>원</TableCell>
+                     <TableCell sx={{ borderBottom: 'none' }}>총 결제 금액 ({formatWithComma(successfulPeople)}명)</TableCell>
+                     <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>{formatWithComma(successfulPayments)} 원</TableCell>
                   </TableRow>
                </TableBody>
             </Table>
@@ -77,17 +101,17 @@ function FundHistory() {
                <TableBody>
                   <TableRow>
                      <TableCell>플랫폼 수수료</TableCell>
-                     <TableCell sx={{ textAlign: 'right' }}>원</TableCell>
+                     <TableCell sx={{ textAlign: 'right' }}> {formatWithComma(platformFee)}원</TableCell>
                   </TableRow>
 
                   <TableRow>
                      <TableCell>부가가치세</TableCell>
-                     <TableCell sx={{ textAlign: 'right' }}>원</TableCell>
+                     <TableCell sx={{ textAlign: 'right' }}> {formatWithComma(vat)}원</TableCell>
                   </TableRow>
 
                   <TableRow>
                      <TableCell sx={{ borderBottom: 'none' }}>전체 정산 금액</TableCell>
-                     <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>원</TableCell>
+                     <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>{formatWithComma(totalSettlement)}원</TableCell>
                   </TableRow>
                </TableBody>
             </Table>

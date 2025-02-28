@@ -1,4 +1,4 @@
-import { Grid2, Typography, Divider } from '@mui/material'
+import { Grid2, Typography, Divider, FormGroup } from '@mui/material'
 import { Dot } from '../../styles/BaseStyles'
 
 export const FormGrid = ({ formItems }) => {

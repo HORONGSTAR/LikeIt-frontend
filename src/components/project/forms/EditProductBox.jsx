@@ -1,6 +1,6 @@
-import { TextField, Stack, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
+import { TextField, Stack, Button, Dialog, DialogActions, DialogContent, DialogTitle, Snackbar, Alert } from '@mui/material'
 import { ImgUploadBox } from '../../../styles/BaseStyles'
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useState } from 'react'
 import { isBlank } from '../../../util/isBlank'
 
 function EditProductBox({ open, onSubmit, product, children }) {
@@ -8,9 +8,10 @@ function EditProductBox({ open, onSubmit, product, children }) {
    const [imgUrl, setImgUrl] = useState(product?.imgUrl ? process.env.REACT_APP_API_URL + '/rewardProduct/' + product.imgUrl : '')
    const [title, setTitle] = useState(product?.title || '')
    const [contents, setContents] = useState(product?.contents || '')
+   const [alert, setAlert] = useState(false)
 
    const handleSubmit = useCallback(() => {
-      if (isBlank([imgUrl, title, contents])) return
+      if (!isBlank([imgUrl, title, contents])) return setAlert(true)
       const formData = new FormData()
       if (imgFile) {
          const encodedFile = new File([imgFile], encodeURIComponent(imgFile.name), {
@@ -29,8 +30,8 @@ function EditProductBox({ open, onSubmit, product, children }) {
          <DialogContent>
             <Stack spacing={2}>
                <ImgUploadBox setImgFile={setImgFile} imgUrl={imgUrl} setImgUrl={setImgUrl} />
-               <TextField value={title} onChange={(e) => setTitle(e.target.value)} fullWidth label="구성품 이름을 적어주세요." />
-               <TextField value={contents} onChange={(e) => setContents(e.target.value)} fullWidth label="구성품에 대한 설명을 적어주세요." rows={3} multiline />
+               <TextField value={title} onChange={(e) => setTitle(e.target.value)} fullWidth label="구성품 이름" placeholder="구성품 이름을 적어주세요." />
+               <TextField value={contents} onChange={(e) => setContents(e.target.value)} fullWidth label="구성품 설명" placeholder="구성품에 대한 설명을 적어주세요." rows={3} multiline />
             </Stack>
          </DialogContent>
          <DialogActions>
@@ -39,6 +40,11 @@ function EditProductBox({ open, onSubmit, product, children }) {
                확인
             </Button>
          </DialogActions>
+         <Snackbar open={alert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={6000} onClose={() => setAlert(false)}>
+            <Alert onClose={() => setAlert(false)} severity="error" variant="filled" sx={{ width: '100%' }}>
+               모든 항목을 채워주세요.
+            </Alert>
+         </Snackbar>
       </Dialog>
    )
 }

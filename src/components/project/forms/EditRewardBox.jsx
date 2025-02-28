@@ -1,4 +1,4 @@
-import { TextField, Button, List, ListItem, Checkbox, ListItemIcon, ListItemText, Stack, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
+import { TextField, Button, List, ListItem, Checkbox, ListItemIcon, ListItemText, Stack, Dialog, DialogActions, DialogContent, DialogTitle, Snackbar, Alert } from '@mui/material'
 import { useCallback, useState, useEffect } from 'react'
 import { NumberInput } from '../../ui/NumberInput'
 import { isBlank } from '../../../util/isBlank'
@@ -8,6 +8,7 @@ function EditRewardBox({ onSubmit, open, products, reward, children }) {
    const [name, setName] = useState(reward?.name || '')
    const [contents, setContents] = useState(reward?.contents || '')
    const [checked, setChecked] = useState({})
+   const [alert, setAlert] = useState(false)
 
    const optionItems = [
       { id: 'stock', title: '1인당 최대 선택 갯수 제한하기' },
@@ -24,7 +25,7 @@ function EditRewardBox({ onSubmit, open, products, reward, children }) {
    const handleSubmit = useCallback(() => {
       const { stock, limit } = checked
       const relation = products.map((product) => checked[product.id] && { id: product.id, count: checked[product.id] }).filter((product) => product)
-      if (isBlank([name, contents, stock, limit, relation])) return
+      if (!isBlank([name, contents, stock, limit, relation])) return
       const formData = new FormData()
       formData.append('price', price)
       formData.append('name', name)
@@ -97,6 +98,11 @@ function EditRewardBox({ onSubmit, open, products, reward, children }) {
                확인
             </Button>
          </DialogActions>
+         <Snackbar open={alert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={6000} onClose={() => setAlert(false)}>
+            <Alert onClose={() => setAlert(false)} severity="error" variant="filled" sx={{ width: '100%' }}>
+               모든 항목을 채워주세요.
+            </Alert>
+         </Snackbar>
       </Dialog>
    )
 }

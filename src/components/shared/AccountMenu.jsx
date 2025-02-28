@@ -36,6 +36,7 @@ function AccountMenu({ items }) {
             </IconButton>
          </Tooltip>
          <Menu
+            disableScrollLock
             anchorEl={anchorEl}
             id="userMenu"
             open={userOpen}
