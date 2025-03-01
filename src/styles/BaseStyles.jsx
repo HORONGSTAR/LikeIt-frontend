@@ -352,7 +352,7 @@ export const Ellipsis = styled.div`
 //    )
 // }
 
-export const FundingCard = ({ orders }) => {
+export const FundingCard = ({ orders, point, totalOrderPrice }) => {
    return (
       <Card sx={{ display: 'flex', flexDirection: 'column', mb: 2, boxShadow: 2 }}>
          <CardHeader title={`주문 시각 : ${new Date(orders.orderTime).toLocaleString()}`} sx={{ backgroundColor: '#f5f5f5', padding: 1, borderRadius: 1 }} />
@@ -385,6 +385,14 @@ export const FundingCard = ({ orders }) => {
                </Box>
             </Box>
          ))}
+         <Box>
+            <Typography p={2} variant="h6">
+               {point} 포인트 사용
+            </Typography>
+            <Typography pl={2} pb={2} variant="h4">
+               합계 {totalOrderPrice.toLocaleString('')}원
+            </Typography>
+         </Box>
       </Card>
    )
 }

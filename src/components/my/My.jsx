@@ -201,9 +201,21 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
 
    const sponsorList = (
       <>
-         {orderBoxes.map((orders, index) => (
-            <FundingCard key={index} orders={orders} />
-         ))}
+         {orderBoxes.map((orderBox, index) => {
+            let totalOrderPrice = 0
+            let point = 0
+            orderBox.orders.forEach((order) => {
+               totalOrderPrice += order.orderPrice
+               if (order.orderPrice < 0) point = order.orderPrice * -1
+            })
+            const filteredOrders = orderBox.orders.filter((order) => order.orderPrice > 0)
+            const updatedOrderBox = {
+               ...orderBox,
+               orders: filteredOrders,
+            }
+
+            return <FundingCard key={index} orders={updatedOrderBox} point={point} totalOrderPrice={totalOrderPrice} />
+         })}
       </>
    )
 
