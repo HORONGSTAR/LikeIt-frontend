@@ -159,10 +159,12 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
          alert('닉네임을 입력하세요')
          return
       }
-      if (!imgFile) {
-         alert('이미지 파일을 추가하세요')
-         return
-      }
+
+      // if (!imgFile) {
+      //    alert('이미지 파일을 추가하세요')
+      //    return
+      // }
+
       const formData = new FormData()
       formData.append('name', nickname)
 
