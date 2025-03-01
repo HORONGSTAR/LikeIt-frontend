@@ -10,6 +10,8 @@ function HomeProjects() {
    const { projects, loading: listLoading, error: listError } = useSelector((state) => state.list)
    const { isAuthenticated, loading: authLoading, error: authError } = useSelector((state) => state.auth)
 
+   console.log(projects)
+
    // 알림 신청 버튼 실시간 반영을 위해 따로 처리
    const [commingCards, setCommingCards] = useState([])
    // 에러 처리용
