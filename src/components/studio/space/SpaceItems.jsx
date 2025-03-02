@@ -1,183 +1,149 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Stack, Divider, Box, InputBase, Avatar, IconButton, Typography } from '@mui/material'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import useSocket from '../../../hooks/useSocket'
+import { Button, Slider, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import { SendRounded } from '@mui/icons-material'
-import { io } from 'socket.io-client'
-
-export const socket = io(process.env.REACT_APP_API_URL, {
-   withCredentials: true,
-})
+import { Mic, VolumeUp, VolumeOff } from '@mui/icons-material'
 
 const peerConnection = new RTCPeerConnection()
 const peers = {}
 
-export const Chat = ({ studioId }) => {
-   const [messages, setMessages] = useState([])
-   const [input, setInput] = useState('')
-   const messagesContainerRef = useRef(null)
-
-   useEffect(() => {
-      socket.on('chat message', (msg) => {
-         setMessages((prevMessages) => [...prevMessages, msg])
-      })
+export const SpaceStartButton = ({ studioId, setStart }) => {
+   const socket = useSocket()
+   const [open, setOpen] = useState(false)
+   const startSpace = useCallback(() => {
+      if (studioId) {
+         socket.emit('start space', studioId)
+         setStart(true)
+         setOpen(false)
+      }
 
       return () => {
-         socket.off('chat message')
-         socket.off('user info')
+         socket.off('start space', studioId)
       }
-   }, [socket, studioId])
-
-   useEffect(() => {
-      if (messagesContainerRef.current) {
-         messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
-      }
-   }, [messages])
-
-   const sendMessage = () => {
-      if (!input.trim()) return
-      socket.emit('chat message', studioId, input)
-
-      setInput('')
-   }
-
-   const handleKeyDown = (e) => {
-      if (e.key === 'Enter') {
-         e.preventDefault()
-         sendMessage()
-      }
-   }
+   }, [socket, setStart, studioId])
 
    return (
       <>
-         <Divider>
-            <Typography variant="caption" color="grey">
-               채팅 내용
-            </Typography>
-         </Divider>
-         <Box
-            ref={messagesContainerRef} // 메시지 컨테이너에 ref 추가
+         {open && (
+            <Dialog open={open}>
+               <DialogTitle>음성 스페이스 시작</DialogTitle>
+               <DialogContent>
+                  <img src="/images/space.png" width="300" alt="스페이스를 통한 교류" />
+                  <DialogContentText>스페이스를 통해 스튜디오 구독자들과 소통할까요?</DialogContentText>
+               </DialogContent>
+               <DialogActions>
+                  <Button color="orenge" disabled={!socket} onClick={startSpace}>
+                     확인
+                  </Button>
+                  <Button onClick={() => setOpen(false)}>취소</Button>
+               </DialogActions>
+            </Dialog>
+         )}
+         <Button
             sx={{
-               height: 250,
-               overflowY: 'auto',
-               color: '#222',
+               background: 'linear-gradient(to right, #4ACBCF, #A57EFF)',
+               color: '#fff',
+               p: 1,
             }}
+            onClick={() => setOpen(true)}
          >
-            <Stack spacing={1} m={0.5} divider={<Divider />}>
-               {messages.length > 0 &&
-                  messages.map((msg, index) => (
-                     <Box key={index} sx={{ display: 'flex', alignItems: 'start' }}>
-                        <Avatar src={msg.imgUrl && process.env.REACT_APP_API_URL + '/userImg' + msg.imgUrl} sx={{ width: 32, height: 32, mr: 1 }} />
-                        <Box>
-                           <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                              {msg.name}
-                           </Typography>
-                           <Typography variant="body2">{msg.message}</Typography>
-                        </Box>
-                     </Box>
-                  ))}
-            </Stack>
-         </Box>
-         <Box sx={{ display: 'flex', alignItems: 'center', px: 1, py: 0.5, mt: 1, border: '1px solid #ddd', borderRadius: '5px' }}>
-            <InputBase
-               fullWidth
-               variant="outlined"
-               value={input}
-               onChange={(e) => setInput(e.target.value)}
-               placeholder="메시지를 입력하세요"
-               onKeyDown={handleKeyDown} // 엔터키 눌렀을 때 전송
-            />
-
-            <IconButton onClick={sendMessage}>
-               <SendRounded />
-            </IconButton>
-         </Box>
+            <Mic sx={{ fontSize: '20px' }} /> 스페이스
+         </Button>
       </>
    )
 }
 
-export const Broadcaster = ({ setSpeaking }) => {
+export const AdminAudio = ({ close, studioId }) => {
+   const socket = useSocket()
    const audioRef = useRef(null)
+   const [volume, setVolume] = useState(0)
+   const [speaking, setIsSpeaking] = useState(false)
 
    useEffect(() => {
-      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-         audioRef.current.srcObject = stream
+      if (!socket) return
 
-         stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream))
+      navigator.mediaDevices
+         .getUserMedia({ audio: true })
+         .then((stream) => {
+            audioRef.current.srcObject = stream
+            stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream))
 
-         peerConnection.onicecandidate = (event) => {
-            if (event.candidate) {
-               socket.emit('candidate', event.candidate)
+            peerConnection.onicecandidate = (event) => {
+               if (event.candidate) socket.emit('candidate', event.candidate, studioId)
             }
-         }
-
-         socket.on('watcher', (watcherId) => {
             peerConnection.createOffer().then((offer) => {
                peerConnection.setLocalDescription(offer)
-               socket.emit('offer', offer, watcherId)
+               socket.emit('offer', offer, studioId)
             })
+
+            socket.on('answer', (answer) => {
+               peerConnection.setRemoteDescription(new RTCSessionDescription(answer))
+            })
+
+            socket.on('candidate', (candidate) => {
+               peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
+            })
+
+            const audioContext = new AudioContext()
+            const analyser = audioContext.createAnalyser()
+            const microphone = audioContext.createMediaStreamSource(stream)
+            microphone.connect(analyser)
+            analyser.fftSize = 256
+
+            const bufferLength = analyser.frequencyBinCount
+            const dataArray = new Uint8Array(bufferLength)
+
+            const checkVolume = () => {
+               analyser.getByteFrequencyData(dataArray)
+               let sum = dataArray.reduce((a, b) => a + b, 0)
+               let average = sum / bufferLength
+               setVolume(average)
+               setIsSpeaking(average > 20)
+               requestAnimationFrame(checkVolume)
+            }
+
+            checkVolume()
          })
-
-         socket.on('answer', (answer) => {
-            peerConnection.setRemoteDescription(new RTCSessionDescription(answer))
-         })
-
-         socket.on('candidate', (candidate) => {
-            peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
-         })
-
-         socket.on('watcherDisconnected', (watcherId) => {
-            console.log(`청취자 ${watcherId} 연결 해제됨`)
-         })
-
-         const audioContext = new AudioContext()
-         const analyser = audioContext.createAnalyser()
-         const microphone = audioContext.createMediaStreamSource(stream)
-         microphone.connect(analyser)
-         analyser.fftSize = 256
-
-         const bufferLength = analyser.frequencyBinCount
-         const dataArray = new Uint8Array(bufferLength)
-
-         const checkVolume = () => {
-            analyser.getByteFrequencyData(dataArray)
-            let sum = dataArray.reduce((a, b) => a + b, 0)
-            let average = sum / bufferLength
-            setSpeaking(average)
-            requestAnimationFrame(checkVolume)
-         }
-
-         checkVolume()
-      })
+         .catch((err) => console.log(err))
 
       return () => {
-         peerConnection.close()
-         socket.disconnect()
+         socket.off('candidate')
+         socket.off('offer')
+         socket.off('answer')
       }
-   }, [])
-
-   return <audio ref={audioRef} autoPlay />
-}
-
-export const Watcher = ({ setSpeaking }) => {
-   const audioRef = useRef(null)
+   }, [socket, studioId])
 
    useEffect(() => {
-      socket.emit('watcher')
+      if (close) {
+         peerConnection.close()
+      }
+   }, [close])
 
-      socket.on('offer', (offer, streamerId) => {
+   return <audio ref={audioRef} autoPlay controls />
+}
+
+export const UserAudio = ({ studioId }) => {
+   const socket = useSocket()
+   const audioRef = useRef(null)
+   const [volume, setVolume] = useState(0)
+
+   useEffect(() => {
+      if (!socket) return
+      socket.on('offer', (offer, studioId, adminId) => {
          const peerConnection = new RTCPeerConnection()
-         peers[streamerId] = peerConnection
+         peers[adminId] = peerConnection
 
          peerConnection
             .setRemoteDescription(new RTCSessionDescription(offer))
             .then(() => peerConnection.createAnswer())
             .then((answer) => {
                peerConnection.setLocalDescription(answer)
-               socket.emit('answer', answer, streamerId)
+               socket.emit('answer', answer, adminId)
             })
 
          peerConnection.onicecandidate = (event) => {
             if (event.candidate) {
-               socket.emit('candidate', event.candidate, streamerId)
+               socket.emit('candidate', event.candidate, studioId)
             }
          }
 
@@ -199,7 +165,7 @@ export const Watcher = ({ setSpeaking }) => {
                analyser.getByteFrequencyData(dataArray)
                let sum = dataArray.reduce((a, b) => a + b, 0)
                let average = sum / bufferLength
-               setSpeaking(average)
+               setVolume(average)
                requestAnimationFrame(checkVolume)
             }
 
@@ -207,32 +173,19 @@ export const Watcher = ({ setSpeaking }) => {
          }
       })
 
-      socket.on('candidate', (candidate, streamerId) => {
-         if (peers[streamerId]) {
-            peers[streamerId].addIceCandidate(new RTCIceCandidate(candidate))
-         }
-      })
-
-      socket.on('streamerDisconnected', (streamerId) => {
-         if (peers[streamerId]) {
-            peers[streamerId].close()
-            delete peers[streamerId]
+      socket.on('candidate', (candidate, adminId) => {
+         if (peers[adminId]) {
+            peers[adminId].addIceCandidate(new RTCIceCandidate(candidate))
          }
       })
 
       return () => {
          Object.values(peers).forEach((peer) => peer.close())
-         socket.emit('watcherDisconnected')
          socket.off('offer')
          socket.off('candidate')
-         socket.off('streamerDisconnected')
-         socket.disconnect()
+         socket.off('answer')
       }
-   }, [])
+   }, [socket])
 
-   return (
-      <>
-         <audio ref={audioRef} autoPlay />
-      </>
-   )
+   return <audio ref={audioRef} autoPlay controls />
 }

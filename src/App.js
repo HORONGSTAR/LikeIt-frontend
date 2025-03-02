@@ -54,6 +54,9 @@ import FundingOrderPage from './pages/FundingOrderPage'
 import DesignGuide from './pages/DesignGuide'
 
 function App() {
+   const dispatch = useDispatch()
+   const { isAuthenticated, user } = useSelector((state) => state.auth)
+
    const path = useLocation().pathname.split('/')
    const pageName = {
       login: true,
@@ -61,12 +64,9 @@ function App() {
       findingpassword: true,
       findingemail: true,
       commonsignup: true,
-      studio: <StudioNavber />,
+      studio: <StudioNavber isAuthenticated={isAuthenticated} user={user} />,
    }
    const dontNeedNavber = pageName[path[1]]
-
-   const dispatch = useDispatch()
-   const { isAuthenticated, user } = useSelector((state) => state.auth)
 
    useEffect(() => {
       dispatch(checkAuthStatusThunk())

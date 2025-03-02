@@ -30,7 +30,6 @@ const IconWrapper = styled(Box)({
    marginRight: '16px',
 })
 
-
 function My({ initialValues = {}, orders = [], points = [], profits = [], allprojects = [] }) {
    const dispatch = useDispatch()
    const navigate = useNavigate()
@@ -232,15 +231,36 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
             <Typography variant="subtitle1" sx={{ mb: 1 }}>
                비밀번호 변경
             </Typography>
-            <TextField fullWidth variant="outlined" margin="dense" label="현재 비밀번호" type="password" onChange={(e) => setCurrentPassword(e.target.value)} />
+            <TextField
+               fullWidth
+               variant="outlined"
+               margin="dense"
+               label="현재 비밀번호"
+               type="password"
+               onChange={(e) => setCurrentPassword(e.target.value)}
+            />
             <Stack2 spacing={1}>
                <Typography variant="body2">비밀번호를 잊으셨나요?</Typography>
                <TextLink variant="body2" color="orenge" to="/findingpassword">
                   비밀번호 재설정
                </TextLink>
             </Stack2>
-            <TextField fullWidth variant="outlined" margin="dense" label="변경할 비밀번호" type="password" onChange={(e) => setPasswordToChange(e.target.value)} />
-            <TextField fullWidth variant="outlined" margin="dense" label="변경할 비밀번호 확인" type="password" onChange={(e) => setConfirmPasswordToChange(e.target.value)} />
+            <TextField
+               fullWidth
+               variant="outlined"
+               margin="dense"
+               label="변경할 비밀번호"
+               type="password"
+               onChange={(e) => setPasswordToChange(e.target.value)}
+            />
+            <TextField
+               fullWidth
+               variant="outlined"
+               margin="dense"
+               label="변경할 비밀번호 확인"
+               type="password"
+               onChange={(e) => setConfirmPasswordToChange(e.target.value)}
+            />
          </Box>
 
          {/* Save/Cancel Buttons */}
@@ -388,7 +408,11 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
             {/* Profile Section */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                <Avatar sx={{ width: 64, height: 64, mr: 2 }}>
-                  <img src={process.env.REACT_APP_API_URL + '/userImg' + initialValues?.imgUrl || null} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                  <img
+                     src={initialValues?.imgUrl ? process.env.REACT_APP_API_URL + '/userImg/' + initialValues?.imgUrl : null}
+                     style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+                     alt={initialValues?.name}
+                  />
                </Avatar>
                <Box>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -431,35 +455,62 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
                               <Grid container spacing={2}>
                                  {/* Row 1 */}
                                  <Grid item xs={4}>
-                                    <FormControlLabel control={<Checkbox name="food" checked={selectedValues.food} onChange={handleChange} />} label="푸드" />
+                                    <FormControlLabel
+                                       control={<Checkbox name="food" checked={selectedValues.food} onChange={handleChange} />}
+                                       label="푸드"
+                                    />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel control={<Checkbox name="pets" checked={selectedValues.pets} onChange={handleChange} />} label="반려동물" />
+                                    <FormControlLabel
+                                       control={<Checkbox name="pets" checked={selectedValues.pets} onChange={handleChange} />}
+                                       label="반려동물"
+                                    />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel control={<Checkbox name="art" checked={selectedValues.art} onChange={handleChange} />} label="그림" />
+                                    <FormControlLabel
+                                       control={<Checkbox name="art" checked={selectedValues.art} onChange={handleChange} />}
+                                       label="그림"
+                                    />
                                  </Grid>
 
                                  {/* Row 2 */}
                                  <Grid item xs={4}>
-                                    <FormControlLabel control={<Checkbox name="books" checked={selectedValues.books} onChange={handleChange} />} label="도서" />
+                                    <FormControlLabel
+                                       control={<Checkbox name="books" checked={selectedValues.books} onChange={handleChange} />}
+                                       label="도서"
+                                    />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel control={<Checkbox name="beauty" checked={selectedValues.beauty} onChange={handleChange} />} label="뷰티" />
+                                    <FormControlLabel
+                                       control={<Checkbox name="beauty" checked={selectedValues.beauty} onChange={handleChange} />}
+                                       label="뷰티"
+                                    />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel control={<Checkbox name="clothing" checked={selectedValues.clothing} onChange={handleChange} />} label="의류" />
+                                    <FormControlLabel
+                                       control={<Checkbox name="clothing" checked={selectedValues.clothing} onChange={handleChange} />}
+                                       label="의류"
+                                    />
                                  </Grid>
 
                                  {/* Row 3 */}
                                  <Grid item xs={4}>
-                                    <FormControlLabel control={<Checkbox name="living" checked={selectedValues.living} onChange={handleChange} />} label="리빙" />
+                                    <FormControlLabel
+                                       control={<Checkbox name="living" checked={selectedValues.living} onChange={handleChange} />}
+                                       label="리빙"
+                                    />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel control={<Checkbox name="photography" checked={selectedValues.photography} onChange={handleChange} />} label="사진" />
+                                    <FormControlLabel
+                                       control={<Checkbox name="photography" checked={selectedValues.photography} onChange={handleChange} />}
+                                       label="사진"
+                                    />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel control={<Checkbox name="performance" checked={selectedValues.performance} onChange={handleChange} />} label="공연" />
+                                    <FormControlLabel
+                                       control={<Checkbox name="performance" checked={selectedValues.performance} onChange={handleChange} />}
+                                       label="공연"
+                                    />
                                  </Grid>
                               </Grid>
                            </div>

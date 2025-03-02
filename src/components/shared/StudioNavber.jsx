@@ -11,7 +11,7 @@ function StudioNavber({ isAuthenticated, user }) {
    const studioMenu = [
       { page: '새 프로젝트', path: '/studio/project/create' },
       { page: '모든 프로젝트', path: '/studio/project/all' },
-      { page: '창작자 관리', path: `/studio/member` },
+      { page: '창작자 관리', path: '/studio/member' },
    ]
 
    const accountMeunItems = [
@@ -32,30 +32,38 @@ function StudioNavber({ isAuthenticated, user }) {
          <AppBar position="static">
             <Container maxWidth="md">
                <Stack2 my={2}>
-                  <Link to="/studio">
-                     <img src="/images/logoStudio.svg" alt="Studio" />
-                  </Link>
+                  {user?.studioId ? (
+                     <>
+                        <Link to="/studio">
+                           <img src={process.env.REACT_APP_FRONT_URL + '/images/logoStudio.svg'} alt="Studio" />
+                        </Link>
 
-                  <Stack2 sx={{ display: breakpoint.desktop, ml: breakpoint.margin, alignItems: 'end', height: 32 }}>
-                     {studioMenu.map((item) => (
-                        <Typography key={item.page} fontWeight="500" component={NavLink} to={item.path} mr={breakpoint.margin} onClick={() => setOpen(false)}>
-                           {item.page}
-                        </Typography>
-                     ))}
-                  </Stack2>
+                        <Stack2 sx={{ display: breakpoint.desktop, ml: breakpoint.margin, alignItems: 'end', height: 32 }}>
+                           {studioMenu.map((item) => (
+                              <Typography key={item.page} fontWeight="500" component={NavLink} to={item.path} mr={breakpoint.margin} onClick={() => setOpen(false)}>
+                                 {item.page}
+                              </Typography>
+                           ))}
+                        </Stack2>
+                     </>
+                  ) : (
+                     <Link to="/">
+                        <img src={process.env.REACT_APP_FRONT_URL + '/images/logo.svg'} alt="Like It!" />
+                     </Link>
+                  )}
+
                   <Stack2 ml="auto">
                      <IconButton sx={{ display: breakpoint.mobile }} onClick={() => setOpen(!open)}>
                         {open ? <MenuOpen /> : <MenuClose />}
                      </IconButton>
-                     {isAuthenticated ? <Button variant="contained">로그인</Button> : <AccountMenu items={accountMeunItems} />}
+                     {!isAuthenticated ? (
+                        <Link to="/login">
+                           <Button variant="contained">로그인</Button>
+                        </Link>
+                     ) : (
+                        <AccountMenu items={user?.studioId ? accountMeunItems : accountMeunItems.splice(1, 2)} />
+                     )}
                   </Stack2>
-               </Stack2>
-               <Stack2 sx={{ flexWrap: 'wrap', my: 2, display: open ? 'flex' : 'none', gap: 2 }}>
-                  {studioMenu.map((item) => (
-                     <Typography key={item.page} fontWeight="500" component={NavLink} to={item.path} mr={breakpoint.margin} onClick={() => setOpen(false)}>
-                        {item.page}
-                     </Typography>
-                  ))}
                </Stack2>
             </Container>
          </AppBar>
