@@ -11,12 +11,11 @@ function FindingEmail() {
    const { email, loading, error } = useSelector((state) => state.auth)
    const [foundEmail, setFoundEmail] = useState('')
 
-   const handleSendPhone = (e) => {
-      e.preventDefault()
+   const handleSendPhone = () => {
       const trimmedPhone = phone.replace(/\s/g, '')
       dispatch(fetchEmailThunk({ trimmedPhone }))
          .unwrap()
-         .then(() => {})
+         .then()
          .catch((error) => {
             console.error('로그인 실패:', error)
             alert(error)
@@ -37,13 +36,12 @@ function FindingEmail() {
                <Typography align="left">전화번호를 입력해주세요.</Typography>
             </Box>
          </Stack2>
-         <form onSubmit={handleSendPhone}>
-            <TextField fullWidth label="전화번호" margin="normal" variant="outlined" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
 
-            <Button fullWidth variant="contained" type="submit">
-               이메일 찾기
-            </Button>
-         </form>
+         <TextField fullWidth label="전화번호" margin="normal" variant="outlined" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+
+         <Button onClick={handleSendPhone} fullWidth variant="contained">
+            이메일 찾기
+         </Button>
 
          {foundEmail && (
             <Stack width={300} spacing={2}>

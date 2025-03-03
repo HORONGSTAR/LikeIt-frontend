@@ -5,15 +5,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { React, useCallback, useState } from 'react'
 import Navber from '../../components/shared/Navber'
 import { styled } from '@mui/system'
-import { googleRegisterUserThunk } from '../../features/authSlice'
+import { snsRegisterUserThunk } from '../../features/authSlice'
 
 const AdditionalSignup = () => {
    const StyledButton = styled(Button)({
       marginTop: '10px',
    })
    const [phone, setPhone] = useState('')
-   const [isSignupComplete, setIsSignupComplete] = useState(false) // 회원가입 완료 상태 추가
    const dispatch = useDispatch()
+   const { isSignupComplete, loading, error } = useSelector((state) => state.auth)
 
    const validatePhone = (phone) => {
       const phoneRegex1 = /^\d{11}$/ //true로 반환돼야 좋은거 - 길이 11인지 확인
@@ -21,24 +21,35 @@ const AdditionalSignup = () => {
       const boolResult = phoneRegex1.test(phone) && !phoneRegex2.test(phone)
       return boolResult
    }
-   const handleAdditionalSignup = useCallback(() => {
-      if (!phone.trim()) {
-         alert('연락처를 입력해주세요!')
-         return
-      }
-      if (!validatePhone(phone)) {
-         alert('유효한 연락처를 입력해주세요!')
-         return
-      }
 
-      dispatch(googleRegisterUserThunk({ phone }))
-   }, [phone])
+   const handleAdditionalSignup = useCallback(
+      (e) => {
+         e.preventDefault() // 폼 제출 시 새로고침 방지
+
+         if (!phone.trim()) {
+            alert('연락처를 입력해주세요!')
+            return
+         }
+         if (!validatePhone(phone)) {
+            alert('유효한 연락처를 입력해주세요!')
+            return
+         }
+
+         dispatch(snsRegisterUserThunk({ phone }))
+            .unwrap()
+            .then()
+            .catch((error) => {
+               console.error('로그인 실패:', error)
+               alert(error)
+            })
+      },
+      [phone]
+   )
 
    //회원가입이 완료 되었을 때
    if (isSignupComplete) {
       return (
          <>
-            <Navber />
             <Container maxWidth="sm" sx={{ mt: 5 }}>
                <Typography variant="h4" gutterBottom align="center">
                   회원가입이 완료되었습니다!
@@ -61,21 +72,23 @@ const AdditionalSignup = () => {
    }
 
    return (
-      <Stack width={300} spacing={2}>
-         <Stack2 justifyContent="center">
-            <Dot />
-            <Typography>회원가입 추가정보 입력.</Typography>
-            <Dot />
-         </Stack2>
-         <TextField label="연락처" variant="outlined" type="text" fullWidth margin="dense" value={phone} onChange={(e) => setPhone(e.target.value)} />
-         <Typography variant="body2" color="textSecondary" sx={{ fontSize: '10px' }} align="center">
-            숫자만 입력하세요.
-         </Typography>
+      <form onSubmit={handleAdditionalSignup}>
+         <Stack width={300} spacing={2}>
+            <Stack2 justifyContent="center">
+               <Dot />
+               <Typography>회원가입 추가정보 입력.</Typography>
+               <Dot />
+            </Stack2>
+            <TextField label="연락처" variant="outlined" type="text" fullWidth margin="dense" value={phone} onChange={(e) => setPhone(e.target.value)} />
+            <Typography variant="body2" color="textSecondary" sx={{ fontSize: '10px' }} align="center">
+               숫자만 입력하세요.
+            </Typography>
 
-         <StyledButton fullWidth variant="contained" sx={{ backgroundColor: '#000000', color: '#FFFFFF' }} onClick={handleAdditionalSignup}>
-            회원가입
-         </StyledButton>
-      </Stack>
+            <StyledButton type="submit" fullWidth variant="contained" sx={{ backgroundColor: '#000000', color: '#FFFFFF' }}>
+               회원가입
+            </StyledButton>
+         </Stack>
+      </form>
    )
 }
 

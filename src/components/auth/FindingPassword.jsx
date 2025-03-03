@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setTempPasswordThunk } from '../../features/authSlice'
 import { TextField, Button, Typography, Stack, Divider } from '@mui/material'
 import { Stack2, TextLink, Dot } from '../../styles/BaseStyles'
@@ -9,6 +9,7 @@ const FindingPassword = () => {
    const [email, setEmail] = useState('')
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const { loading, error } = useSelector((state) => state.auth)
 
    const handleSendEmail = useCallback(
       (e) => {

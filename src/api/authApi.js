@@ -24,9 +24,9 @@ export const loginUser = async (credentials) => {
 }
 
 //구글 로그인 혹은 구글 회원가입
-export const googleRegisterUser = async (credential) => {
+export const snsRegisterUser = async (credential) => {
    try {
-      const response = await likeItApi.post('/auth/googlejoin', credential)
+      const response = await likeItApi.post('/auth/snsjoin', credential)
       return response
    } catch (error) {
       console.error(`API request 오류: ${error.message}`)
