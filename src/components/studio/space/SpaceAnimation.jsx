@@ -3,10 +3,33 @@ import { Stack, Box, Typography, Slider } from '@mui/material'
 import { Stack2 } from '../../../styles/BaseStyles'
 import { Mic, VolumeUp, VolumeOff } from '@mui/icons-material'
 
-export const SpaceScreen = ({ adminName, children, audio }) => {
-   const audioRef = useRef(null)
+export const SpaceScreen = ({ adminName, children, stream, audio }) => {
    const [volume, setVolume] = useState(50)
    const [speaking, setSpeaking] = useState(1)
+   console.log(stream)
+
+   useEffect(() => {
+      if (!stream) return
+      console.log(stream)
+      const audioContext = new AudioContext()
+      const analyser = audioContext.createAnalyser()
+      const microphone = audioContext.createMediaStreamSource(stream)
+      microphone.connect(analyser)
+
+      analyser.fftSize = 256
+      const bufferLength = analyser.frequencyBinCount
+      const dataArray = new Uint8Array(bufferLength)
+
+      const checkVolume = () => {
+         analyser.getByteFrequencyData(dataArray)
+         let sum = dataArray.reduce((a, b) => a + b, 0)
+         let average = sum / bufferLength
+
+         setSpeaking(average)
+         requestAnimationFrame(checkVolume)
+      }
+      checkVolume()
+   }, [stream])
 
    return (
       <Stack spacing={2} direction={{ sm: 'column', xs: 'row' }} alignItems="center">
@@ -21,7 +44,7 @@ export const SpaceScreen = ({ adminName, children, audio }) => {
                sx={{
                   justifyContent: 'center',
                   borderRadius: '50%',
-                  background: `linear-gradient(${speaking}deg, #4ACBCF, #A57EFF)`,
+                  background: `linear-gradient(${speaking * 3}deg, ${speaking > 20 ? '#FFCC4D' : '#4ACBCF'}, #A57EFF)`,
                   p: speaking > 20 ? 2 : 1.1,
                   transition: '0.2s',
                }}
@@ -37,6 +60,7 @@ export const SpaceScreen = ({ adminName, children, audio }) => {
                <Typography variant="h6">{adminName}</Typography>
             </Stack>
             <Stack alignItems="center">
+               {audio}
                <Stack2 sx={{ width: { md: 170, sm: 150, xs: 130 }, mt: 1 }}>
                   {volume === 0 ? <VolumeOff sx={{ fontSize: 32, mr: 1, color: '#666' }} /> : <VolumeUp sx={{ fontSize: 32, mr: 1, color: '#666' }} />}
                   <Slider
@@ -52,7 +76,6 @@ export const SpaceScreen = ({ adminName, children, audio }) => {
                      }}
                   />
                </Stack2>
-               {audio}
                <Typography variant="body2" color="textSecondary" sx={{ display: { sm: 'block', xs: 'none' } }}>
                   볼륨: {volume}%
                </Typography>

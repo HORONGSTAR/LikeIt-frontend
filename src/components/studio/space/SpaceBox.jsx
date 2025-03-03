@@ -1,65 +1,60 @@
 import { Typography, Avatar, AvatarGroup, Chip, Stack, Grid2 } from '@mui/material'
 import { Stack2, Main } from '../../../styles/BaseStyles'
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { flexbox } from '@mui/system'
-import { UserAudio, AdminAudio } from './SpaceItems'
-import { SpaceScreen, MoveTitle } from './SpaceAnimation'
+import { MoveTitle, SpaceScreen } from './SpaceAnimation'
+import { Broadcaster, Listener } from './SpaceAudio'
+
 import SpaceChat from './SpaceChat'
-import useSocket from '../../../hooks/useSocket'
 import dayjs from 'dayjs'
 
-function SpaceBox({ studio, user, start }) {
+function SpaceBox({ socket, studio, user }) {
    const [users, setUsers] = useState([])
-   const [spaceInfo, setSpaceInfo] = useState(null)
-   const [close, setClose] = useState(false)
-   const [isJoin, setJoin] = useState(false)
+   const [info, setInfo] = useState(null)
+   const [isOpen, setOpen] = useState(false)
+   const [isAdmin, setAdmin] = useState(false)
+   const [stream, setStream] = useState(null)
 
-   const socket = useSocket()
+   const studioId = studio?.id + '번 스튜디오'
 
    useEffect(() => {
       if (!socket) return
-      socket.emit('space info', studio?.id)
-      socket.on('space info', (spaceInfo) => {
-         setSpaceInfo(spaceInfo)
+      socket.emit('space info', studioId)
+
+      socket.on('space info', (info) => {
+         setInfo({
+            name: info?.admin?.name,
+            imgUrl: info?.admin?.imgUrl && process.env.REACT_APP_API_URL + '/userImg' + info.admin.imgUrl,
+            startTime: dayjs(info.startTime).format('YYYY년 MM월 DD일 HH시 mm분'),
+         })
+         setAdmin(info?.admin?.id === user?.id ? true : false)
       })
       return () => {
-         socket.off('space info', studio?.id)
+         socket.off('space info', studioId)
       }
-   }, [start, socket, user, studio])
+   }, [socket, user, studioId])
 
    const joinSpace = useCallback(() => {
-      socket.emit('join space', studio?.id)
-      socket.on('user info', (userInfo) => {
-         setUsers((prev) => [...prev, userInfo])
+      socket.emit('join space', studioId)
+      socket.on('user info', (info) => {
+         setUsers((prev) => [...prev, info])
+         setOpen(true)
       })
-      setJoin(true)
-   }, [socket, studio])
+   }, [socket, studioId])
 
    const endSpace = useCallback(() => {
-      socket.emit('end space', studio?.id)
-      setSpaceInfo(null)
-      setUsers([])
-      setClose(true)
-   }, [socket, studio])
+      socket.emit('end space', studioId)
+      setOpen(false)
+      setInfo(null)
+   }, [socket, studioId])
 
    const leaveSpace = useCallback(() => {
-      socket.emit('leave space', studio?.id)
+      socket.emit('leave space', studioId)
       socket.on('leave space', (userId) => {
-         setUsers(users.filter((user) => user.id !== userId))
+         setUsers(users.filter((user) => user?.id !== userId))
       })
-      setJoin(false)
-   }, [users, socket, studio])
-
-   const admin = useMemo(() => {
-      return {
-         id: spaceInfo?.admin?.id || null,
-         name: spaceInfo?.admin?.name || '이름 없음',
-         imgUrl: spaceInfo?.admin?.imgUrl ? process.env.REACT_APP_API_URL + '/userImg' + spaceInfo.admin.imgUrl : '/default_profile.png',
-         startTime: dayjs(spaceInfo?.startTime).format('YYYY년 MM월 DD일 HH시 mm분'),
-      }
-   }, [spaceInfo])
-
-   const isAdmin = useMemo(() => (user?.id === admin.id ? true : false), [admin, user])
+      setOpen(false)
+   }, [users, socket, studioId])
 
    const chipSx = {
       background: '#fff',
@@ -68,17 +63,41 @@ function SpaceBox({ studio, user, start }) {
       '&:hover': { background: 'none', color: '#fff' },
    }
 
-   const offButton = useMemo(() => {
-      return isAdmin ? <Chip sx={chipSx} label={'끝내기'} onClick={endSpace} /> : <Chip sx={chipSx} label={'나가기'} onClick={leaveSpace} /> // eslint-disable-next-line
-   }, [endSpace, leaveSpace, isAdmin])
+   const openSx = useMemo(() => {
+      return {
+         true: {
+            radius: '30px 30px 10px 10px',
+            comment: info?.startTime + ' · 라이브 시작',
+         },
+         false: {
+            radius: '30px',
+            comment: info?.name + '님이 진행 중',
+         },
+      }
+   }, [info])
 
-   if (!spaceInfo) return null
+   const adminSx = useMemo(() => {
+      return {
+         true: {
+            label: '끝내기',
+            comment: '스페이스 시작',
+            callback: endSpace,
+         },
+         false: {
+            label: '나가기',
+            comment: '청취 참여하기',
+            callback: leaveSpace,
+         },
+      }
+   }, [endSpace, leaveSpace])
+
+   if (!info) return null
 
    return (
       <Stack
          sx={{
             background: 'linear-gradient(to right, #4ACBCF, #A57EFF)',
-            borderRadius: isAdmin || isJoin ? '30px 30px 10px 10px' : '30px',
+            borderRadius: openSx[isOpen].radius,
             color: '#fff',
             p: 1,
          }}
@@ -86,12 +105,12 @@ function SpaceBox({ studio, user, start }) {
          <Stack2 sx={{ height: 50 }}>
             <MoveTitle studioName={studio.name}>
                <Typography noWrap variant="body2">
-                  {spaceInfo ? admin.startTime + ' · 라이브 시작' : admin.name + '님이 진행 중'}
+                  {openSx[isOpen].comment}
                </Typography>
             </MoveTitle>
             <Stack2>
-               {isAdmin || isJoin ? (
-                  offButton
+               {isOpen ? (
+                  <Chip sx={chipSx} label={adminSx[isAdmin].label} onClick={adminSx[isAdmin].callback} />
                ) : (
                   <Chip
                      sx={{ ...chipSx, borderRadius: 7, height: 50 }}
@@ -101,7 +120,7 @@ function SpaceBox({ studio, user, start }) {
                               {users.length > 0 &&
                                  users.map((user) => <Avatar key={user.id} alt={user.name} src={user.imgUrl ? process.env.REACT_APP_API_URL + '/userImg' + user.imgUrl : '/default_profile.png'} />)}
                            </AvatarGroup>
-                           <Typography fontWeight={600}>청취 참여하기</Typography>
+                           <Typography fontWeight={600}>{adminSx[isAdmin].comment}</Typography>
                         </Stack2>
                      }
                      onClick={joinSpace}
@@ -109,14 +128,18 @@ function SpaceBox({ studio, user, start }) {
                )}
             </Stack2>
          </Stack2>
-         {(isAdmin || isJoin) && (
+         {isOpen && (
             <Main>
                <Grid2 container display="flex">
                   <Grid2 size={{ md: 4, sm: 5, xs: 12 }} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                     <SpaceScreen adminName={admin.name} audio={isAdmin ? <AdminAudio close={close} studioId={studio.id} /> : <UserAudio studioId={studio.id} adminId={admin.id} />}>
+                     <SpaceScreen
+                        stream={stream}
+                        adminName={info.name}
+                        audio={isAdmin ? <Broadcaster socket={socket} studioId={studioId} setStream={setStream} /> : <Listener socket={socket} studioId={studioId} setStream={setStream} />}
+                     >
                         <Avatar
-                           src={admin.imgUrl}
-                           alt={admin.name}
+                           src={info.imgUrl}
+                           alt={info.name}
                            sx={{
                               width: { sm: 120, xs: 100 },
                               height: { sm: 120, xs: 100 },
@@ -127,7 +150,7 @@ function SpaceBox({ studio, user, start }) {
                      </SpaceScreen>
                   </Grid2>
                   <Grid2 p={2} size={{ md: 8, sm: 7, xs: 12 }}>
-                     <SpaceChat studioId={studio?.id} />
+                     <SpaceChat socket={socket} studioId={studioId} />
                   </Grid2>
                </Grid2>
             </Main>

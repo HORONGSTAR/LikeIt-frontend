@@ -10,7 +10,6 @@ const useSocket = () => {
          socketRef.current = io(process.env.REACT_APP_API_URL, {
             withCredentials: true,
          })
-         socketRef.current.on('active server', (msg) => console.log(msg))
          setSocket(socketRef.current)
       }
 

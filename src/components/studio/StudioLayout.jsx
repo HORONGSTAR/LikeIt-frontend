@@ -3,14 +3,16 @@ import { Stack2 } from '../../styles/BaseStyles'
 import { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { SpaceStartButton } from './space/SpaceItems'
+import StartButton from './space/StartButton'
 import StudioTab from './tab/StudioTab'
 import SpaceBox from './space/SpaceBox'
+import useSocket from '../../hooks/useSocket'
 
 function StudioLayout() {
    const { studio, projects } = useSelector((state) => state.studio)
    const { user } = useSelector((state) => state.auth)
-   const [start, setStart] = useState(false)
+   const socket = useSocket()
+
    const navigate = useNavigate()
 
    const isMumber = useMemo(() => {
@@ -45,7 +47,7 @@ function StudioLayout() {
                   </Typography>
                   {isMumber ? (
                      <Stack2>
-                        {isMumber.spAdmin && <SpaceStartButton setStart={setStart} studioId={studio.id} />}
+                        {isMumber.spAdmin && <StartButton socket={socket} studioId={studio?.id + '번 스튜디오'} />}
                         {isMumber.cmAdmin && (
                            <Button variant="yellow" onClick={() => navigate('/community/write')}>
                               글쓰기
@@ -83,7 +85,7 @@ function StudioLayout() {
                </Stack2>
             </CardContent>
          </Card>
-         <SpaceBox start={start} studio={studio} user={user} />
+         <SpaceBox socket={socket} studio={studio} user={user} />
          <StudioTab />
       </>
    )

@@ -1,22 +1,21 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Stack, Divider, Box, InputBase, Avatar, IconButton, Typography } from '@mui/material'
 import { SendRounded } from '@mui/icons-material'
-import useSocket from '../../../hooks/useSocket'
 
-function SpaceChat({ studioId }) {
+function SpaceChat({ socket, studioId }) {
    const [messages, setMessages] = useState([])
    const [input, setInput] = useState('')
    const messagesContainerRef = useRef(null)
-   const socket = useSocket()
 
    useEffect(() => {
       if (!socket) return
-      socket.on('chat message', (msg) => {
+      socket.on('send message', (msg) => {
          setMessages((prevMessages) => [...prevMessages, msg])
       })
 
       return () => {
          socket.off('chat message')
+         socket.off('send message')
       }
    }, [socket])
 
@@ -28,7 +27,7 @@ function SpaceChat({ studioId }) {
 
    const sendMessage = useCallback(() => {
       if (!input.trim()) return
-      socket.emit('chat message', studioId, input)
+      socket.emit('chat message', input, studioId)
       setInput('')
    }, [socket, studioId, input])
 
