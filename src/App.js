@@ -61,6 +61,7 @@ function App() {
       findingpassword: true,
       findingemail: true,
       commonsignup: true,
+      additionalsignup: true,
       studio: <StudioNavber />,
    }
    const dontNeedNavber = pageName[path[1]]
