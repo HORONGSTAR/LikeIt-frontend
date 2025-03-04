@@ -353,6 +353,7 @@ export const Ellipsis = styled.div`
 // }
 
 export const FundingCard = ({ orders, point, totalOrderPrice }) => {
+   console.log(orders)
    return (
       <Card
          sx={{
@@ -365,9 +366,9 @@ export const FundingCard = ({ orders, point, totalOrderPrice }) => {
             backgroundColor: orders.orders[0].orderStatus === 'FUNDING_FAILED' ? '#eee' : 'white',
          }}
       >
-         <CardHeader title={`${orders.orders[0].Project.title} 주문 시각 : ${new Date(orders.orderTime).toLocaleString()}`} sx={{ backgroundColor: '#f5f5f5', padding: 1, borderRadius: 1 }} />
+         <CardHeader title={`${orders.orders[0].Project?.title} 주문 시각 : ${new Date(orders.orderTime).toLocaleString()}`} sx={{ backgroundColor: '#f5f5f5', padding: 1, borderRadius: 1 }} />
          <Stack2>
-            {orders.orders[0].Project.imgUrl && <CardMedia component="img" sx={{ width: 200, borderRadius: 1 }} image={`${process.env.REACT_APP_API_URL}/projectImg${orders.orders[0].Project.imgUrl}` || null} alt={orders.orders[0].Project.title} />}
+            {orders.orders[0].Project?.imgUrl && <CardMedia component="img" sx={{ width: 200, borderRadius: 1 }} image={`${process.env.REACT_APP_API_URL}/projectImg${orders.orders[0].Project.imgUrl}` || null} alt={orders.orders[0].Project.title} />}
             <CardContent>
                {orders.orders.map((order, index) => (
                   <Box key={index} sx={{ display: 'flex', flexDirection: 'row', pb: 1 }}>
@@ -401,12 +402,12 @@ export const FundingCard = ({ orders, point, totalOrderPrice }) => {
          </Stack2>
 
          <Box>
-            {/* <Typography p={2} variant="h6">
+            <Typography p={2} variant="h6">
                {point} 포인트 사용
             </Typography>
             <Typography pl={2} pb={2} variant="h4">
-               합계 {totalOrderPrice.toLocaleString('')}원
-            </Typography> */}
+               합계 {Number(totalOrderPrice).toLocaleString('ko-KR')}원
+            </Typography>
          </Box>
       </Card>
    )
