@@ -53,7 +53,6 @@ function StudioPage() {
    return (
       <>
          <Main>{studio ? <StudioLayout /> : newStudio}</Main>
-
          <ErrorBox error={error} open={open} setOpen={setOpen} />
       </>
    )

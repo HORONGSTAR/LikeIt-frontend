@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { TextField, Button, Box, Stack } from '@mui/material'
 import { createTimelineThunk } from '../../../features/timelineSlice'
 import { fetchTimelinesThunk } from '../../../features/fundingSlice'
@@ -9,9 +9,7 @@ import { fetchProjectByIdThunk } from '../../../features/projectSlice'
 function Timeline() {
    const dispatch = useDispatch()
    const navigate = useNavigate()
-
-   const project = useSelector((state) => state.project?.project || {})
-   const projectId = project?.id
+   const { id } = useParams()
    const timelines = useSelector((state) => state.funding?.timelines || [])
 
    const today = new Date().toISOString().split('T')[0]
@@ -22,10 +20,10 @@ function Timeline() {
    const [error, setError] = useState('')
 
    useEffect(() => {
-      if (!projectId) return
-      dispatch(fetchProjectByIdThunk(projectId))
-      dispatch(fetchTimelinesThunk({ id: projectId, page: 1, limit: 10 }))
-   }, [dispatch, projectId])
+      if (!id) return
+      dispatch(fetchProjectByIdThunk(id))
+      dispatch(fetchTimelinesThunk({ id, page: 1, limit: 10 }))
+   }, [dispatch, id])
 
    const handleTitleChange = (e) => {
       const newTitle = e.target.value
@@ -57,7 +55,7 @@ function Timeline() {
          return
       }
 
-      if (!projectId) {
+      if (!id) {
          alert('프로젝트 ID가 없습니다. Redux 상태를 확인해주세요.')
          return
       }
@@ -70,7 +68,7 @@ function Timeline() {
       const formData = new FormData()
       formData.append('title', title)
       formData.append('contents', content)
-      formData.append('projectId', projectId)
+      formData.append('projectId', id)
       if (imgFile) {
          formData.append('image', imgFile)
       }
@@ -83,7 +81,7 @@ function Timeline() {
          setImgFile(null)
          setImagePreview(null)
          setError('')
-         navigate(`/creator`)
+         navigate(`/creator/${id}`)
       } catch (error) {
          alert(`게시글 등록 실패: ${error}`)
       }
@@ -111,7 +109,7 @@ function Timeline() {
                등록
             </Button>
 
-            <Button variant="outlined" color="orenge" onClick={() => navigate(`/creator`)}>
+            <Button variant="outlined" color="orenge" onClick={() => navigate(`/creator/${id}`)}>
                취소
             </Button>
          </Stack>
