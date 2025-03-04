@@ -95,7 +95,9 @@ function FundingOrderPage() {
          if (!funding) return
          const rewards = funding.Rewards
          let orderPrices = []
-         rewards.map((reward) => orderPrices.push(orderRewardBasket[reward.id] * reward.price))
+         rewards.map((reward) => {
+            orderPrices.push(orderRewardBasket[reward.id] * reward.price)
+         })
 
          const orderData = {
             orderPrices: orderPrices,
@@ -103,9 +105,9 @@ function FundingOrderPage() {
             account: account,
             rewards: orderRewardBasket,
             projectId: funding.id,
+            totalPrice,
          }
          if (usePoint) orderData.usePoint = usePoint
-         console.log(orderData)
          dispatch(orderRegThunk(orderData))
          setOrderFlag(true)
       },
@@ -209,11 +211,7 @@ function FundingOrderPage() {
                <Grid2 size={{ sm: 5, xs: 8 }} p={1}>
                   <input value={address} onChange={(e) => setAddress(e.target.value)} type="text" style={{ height: '100%', width: '100%' }} />
                </Grid2>
-               <Grid2 size={{ sm: 4, xs: 12 }}>
-                  <Button size="small" variant="contained" sx={{ backgroundColor: '#d97400', margin: '10px', fontSize: '0.8em' }}>
-                     배송지 관리
-                  </Button>
-               </Grid2>
+               <Grid2 size={{ sm: 4, xs: 0 }}> </Grid2>
                <Grid2 size={{ sm: 3, xs: 4 }} p={2}>
                   상세주소
                </Grid2>
