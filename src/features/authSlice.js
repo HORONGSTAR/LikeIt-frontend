@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { loginUser, registerUser, googleRegisterUser, logoutUser, checkAuthStatus, setTempPassword, changeEmail, changePassword, fetchEmail } from '../api/authApi'
+import { loginUser, registerUser, snsRegisterUser, logoutUser, checkAuthStatus, setTempPassword, changeEmail, changePassword, fetchEmail } from '../api/authApi'
 
 // 회원가입 thunk
 export const registerUserThunk = createAsyncThunk('auth/registerUser', async (userData, { rejectWithValue }) => {
@@ -12,9 +12,9 @@ export const registerUserThunk = createAsyncThunk('auth/registerUser', async (us
 })
 
 //구글계정으로 회원가입 thunk
-export const googleRegisterUserThunk = createAsyncThunk('auth/googleRegisterUser', async (userData, { rejectWithValue }) => {
+export const snsRegisterUserThunk = createAsyncThunk('auth/googleRegisterUser', async (userData, { rejectWithValue }) => {
    try {
-      const response = await googleRegisterUser(userData)
+      const response = await snsRegisterUser(userData)
       return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '구글계정으로 회원가입실패')
@@ -106,6 +106,7 @@ const authSlice = createSlice({
       loading: true,
       error: null,
       email: null,
+      isSignupComplete: false,
    },
    reducers: {},
    extraReducers: (builder) => {
@@ -125,15 +126,15 @@ const authSlice = createSlice({
          })
       //구글회원가입
       builder
-         .addCase(googleRegisterUserThunk.pending, (state) => {
+         .addCase(snsRegisterUserThunk.pending, (state) => {
             state.loading = true
             state.error = null
          })
-         .addCase(googleRegisterUserThunk.fulfilled, (state, action) => {
+         .addCase(snsRegisterUserThunk.fulfilled, (state, action) => {
             state.loading = false
-            state.user = action.payload
+            state.isSignupComplete = action.payload.isSignupComplete
          })
-         .addCase(googleRegisterUserThunk.rejected, (state, action) => {
+         .addCase(snsRegisterUserThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

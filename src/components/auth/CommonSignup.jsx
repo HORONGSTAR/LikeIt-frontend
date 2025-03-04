@@ -8,30 +8,6 @@ import { registerUserThunk } from '../../features/authSlice'
 import Navber from '../../components/shared/Navber'
 import { ErrorBox, LoadingBox } from '../../styles/BaseStyles'
 
-const Root = styled(Box)({
-   display: 'flex',
-   height: '100vh',
-})
-
-const LeftPanel = styled(Box)({
-   flex: 1,
-   backgroundSize: 'cover',
-   backgroundPosition: 'center',
-   backgroundRepeat: 'no-repeat',
-   width: '100%',
-   height: '100%',
-})
-
-const RightPanel = styled(Container)({
-   flex: 1,
-   display: 'flex',
-   flexDirection: 'column',
-   justifyContent: 'center',
-   alignItems: 'center',
-   backgroundColor: '#fff',
-   padding: '20px',
-})
-
 const SignupForm = styled(Box)({
    width: '100%',
    maxWidth: '350px',
@@ -104,9 +80,19 @@ const CommonSignup = () => {
          })
    }, [dispatch, email, phone, nickname, password, confirmPassword])
 
-   if (loading) return <LoadingBox />
+   if (loading)
+      return (
+         <>
+            <LoadingBox />
+         </>
+      )
 
-   if (error) return <ErrorBox error={error} />
+   if (error)
+      return (
+         <>
+            <ErrorBox error={error} />
+         </>
+      )
 
    //회원가입이 완료 되었을 때
    if (isSignupComplete) {
@@ -135,35 +121,30 @@ const CommonSignup = () => {
    }
 
    return (
-      <Root>
-         <LeftPanel />
-         <RightPanel>
-            <SignupForm>
-               <Typography variant="body2" color="textSecondary" gutterBottom>
-                  이메일로 회원가입
-               </Typography>
+      <SignupForm>
+         <Typography variant="body2" color="textSecondary" gutterBottom>
+            이메일로 회원가입
+         </Typography>
 
-               <TextField label="이메일 주소" variant="outlined" fullWidth margin="normal" value={email} onChange={(e) => setEmail(e.target.value)} />
+         <TextField label="이메일 주소" variant="outlined" fullWidth margin="normal" value={email} onChange={(e) => setEmail(e.target.value)} />
 
-               <TextField label="연락처" variant="outlined" type="text" fullWidth margin="dense" value={phone} onChange={(e) => setPhone(e.target.value)} />
-               <Typography variant="body2" color="textSecondary" sx={{ fontSize: '10px' }} align="center">
-                  숫자만 입력하세요.
-               </Typography>
+         <TextField label="연락처" variant="outlined" type="text" fullWidth margin="dense" value={phone} onChange={(e) => setPhone(e.target.value)} />
+         <Typography variant="body2" color="textSecondary" sx={{ fontSize: '10px' }} align="center">
+            숫자만 입력하세요.
+         </Typography>
 
-               <TextField label="닉네임" variant="outlined" fullWidth margin="dense" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+         <TextField label="닉네임" variant="outlined" fullWidth margin="dense" value={nickname} onChange={(e) => setNickname(e.target.value)} />
 
-               <TextField label="비밀번호" variant="outlined" type="password" fullWidth margin="dense" value={password} onChange={(e) => setPassword(e.target.value)} />
-               <Typography variant="body2" color="textSecondary" sx={{ fontSize: '10px' }}>
-                  비밀번호는 영문, 숫자, 특수문자를 포함하여 공백 없이 8~20자로 입력.
-               </Typography>
+         <TextField label="비밀번호" variant="outlined" type="password" fullWidth margin="dense" value={password} onChange={(e) => setPassword(e.target.value)} />
+         <Typography variant="body2" color="textSecondary" sx={{ fontSize: '10px' }}>
+            비밀번호는 영문, 숫자, 특수문자를 포함하여 공백 없이 8~20자로 입력.
+         </Typography>
 
-               <TextField label="비밀번호 확인" variant="outlined" type="password" fullWidth margin="dense" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-               <StyledButton fullWidth variant="contained" sx={{ backgroundColor: '#000000', color: '#FFFFFF' }} onClick={handleCommonSignup}>
-                  회원가입
-               </StyledButton>
-            </SignupForm>
-         </RightPanel>
-      </Root>
+         <TextField label="비밀번호 확인" variant="outlined" type="password" fullWidth margin="dense" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+         <StyledButton fullWidth variant="contained" sx={{ backgroundColor: '#000000', color: '#FFFFFF' }} onClick={handleCommonSignup}>
+            회원가입
+         </StyledButton>
+      </SignupForm>
    )
 }
 

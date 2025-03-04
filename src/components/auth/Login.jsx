@@ -14,6 +14,14 @@ function Login() {
    const { loading, error } = useSelector((state) => state.auth)
    const [open, setOpen] = useState(false)
 
+   const googleLoginOrSignup = () => {
+      window.location.href = 'http://localhost:8000/auth/google'
+   }
+
+   const kakaoLoginOrSignup = () => {
+      window.location.href = 'http://localhost:8000/auth/kakao'
+   }
+
    const handleLogin = useCallback(
       (e) => {
          e.preventDefault()
@@ -77,10 +85,10 @@ function Login() {
             </Typography>
          </Divider>
          <Stack2 justifyContent="center">
-            <Button variant="contained" sx={{ background: '#F9E000', color: '#3A1D1D' }} startIcon={<img src="/images/icon/kakao.svg" alt="kakao" />}>
+            <Button onClick={kakaoLoginOrSignup} variant="contained" sx={{ background: '#F9E000', color: '#3A1D1D' }} startIcon={<img src="/images/icon/kakao.svg" alt="kakao" />}>
                카카오 로그인
             </Button>
-            <Button variant="outlined" startIcon={<img src="/images/icon/google.svg" alt="google" />}>
+            <Button onClick={googleLoginOrSignup} variant="outlined" startIcon={<img src="/images/icon/google.svg" alt="google" />}>
                구글 로그인
             </Button>
          </Stack2>

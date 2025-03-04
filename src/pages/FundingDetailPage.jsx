@@ -15,7 +15,7 @@ const FundingDetailPage = () => {
    const dispatch = useDispatch()
    const { id } = useParams()
    const { funding, loading, error } = useSelector((state) => state.funding)
-   const { isAuthenticated } = useSelector((state) => state.auth)
+   const { user, isAuthenticated } = useSelector((state) => state.auth)
    const [project, setProject] = useState(null)
    const [noReward, setNoReward] = useState('')
    const { user } = useSelector((state) => state.auth)
@@ -51,13 +51,13 @@ const FundingDetailPage = () => {
          title: funding.title,
          creator: {
             name: funding.Studio.name,
-            profileImage: process.env.REACT_APP_API_URL + '/studioImg' + funding.Studio.imgUrl, // 창작자 프로필 이미지
+            profileImage: process.env.REACT_APP_API_URL + funding.Studio.imgUrl, // 창작자 프로필 이미지
             subscribers: funding.Studio.subscribers || 0,
          },
          fundedAmount: Number(funding.totalOrderPrice), // 현재 모금 금액
          targetAmount: funding.goal,
          startDate: formatDate(funding.startDate),
-         endDate: formatDate(funding.enddate),
+         endDate: formatDate(funding.endDate),
       })
    }, [funding])
 
@@ -70,20 +70,26 @@ const FundingDetailPage = () => {
    let status = ''
    if (funding?.projectStatus === 'FUNDING_COMPLETE')
       status = (
-         <Typography variant="h5" p={2}>
+         <Typography variant="h5" pt={2}>
             펀딩에 성공했습니다! 후속 안내를 기다려주세요
          </Typography>
       )
    else if (funding?.projectStatus === 'FUNDING_FAILED')
       status = (
-         <Typography variant="h5" p={2}>
+         <Typography variant="h5" pt={2}>
             아쉽게도 펀딩이 실패로 종료됐습니다...
+         </Typography>
+      )
+   else if (funding?.projectStatus === 'WAITING_FUNDING')
+      status = (
+         <Typography variant="h5" pt={2}>
+            {dayjs(funding?.startDate).format('YYYY년 MM월 MM일')} 펀딩 시작을 기대해주세요
          </Typography>
       )
 
    return (
       project &&
-      funding?.proposalStatus === 'COMPLETE' && (
+      (funding?.proposalStatus === 'COMPLETE' || user?.role === 'ADMIN') && (
          <Main>
             <Box sx={{ maxWidth: '1000px', margin: 'auto', mt: 5 }}>
                {/* 제목 */}
