@@ -15,6 +15,7 @@ function FundingReview({ funding }) {
    const [ImgFile, setImgFile] = useState(null)
    const [ImgUrl, setImgUrl] = useState('')
    const [rating, setRating] = useState(0)
+   const [noData, setNoData] = useState('')
    const [errorOpen, setErrorOpen] = useState(false)
 
    const { loading, error, reviews, reviewCount } = useSelector((state) => state.funding)
@@ -145,8 +146,9 @@ function FundingReview({ funding }) {
       formData.append('reviewImg', ImgFile)
       formData.append('star', rating)
       formData.append('review', reviewInput)
-      dispatch(reviewRegThunk(formData))
+      await dispatch(reviewRegThunk(formData))
       setReviewInput('')
+      dispatch(fetchReviewsThunk({ id: funding.id, page, limit: 5 }))
    }
 
    // 로딩 에러 처리
@@ -179,9 +181,20 @@ function FundingReview({ funding }) {
                   </Box>
                   <ImgUploadBox setImgFile={setImgFile} imgUrl={ImgUrl} setImgUrl={setImgUrl} />
                   {/* 리뷰 등록 */}
-                  <Button onClick={isAuthenticated ? submitReviewReg : () => (window.location.href = '/login')} sx={{ marginY: '8px' }} variant="contained">
+                  <Button
+                     onClick={() => {
+                        if (ImgFile !== null && rating !== 0) {
+                           isAuthenticated ? submitReviewReg() : (window.location.href = '/login')
+                        } else {
+                           setNoData('이미지와 별점을 포함한 모든 내용을 입력해주세요!')
+                        }
+                     }}
+                     sx={{ marginY: '8px' }}
+                     variant="contained"
+                  >
                      등록
                   </Button>
+                  <Typography sx={{ color: 'red' }}>{noData}</Typography>
                </Box>
                {/* 리뷰 목록 */}
                {reviewCount?.count > 0 ? (

@@ -98,7 +98,6 @@ const CommonSignup = () => {
    if (isSignupComplete) {
       return (
          <>
-            <Navber />
             <Container maxWidth="sm" sx={{ mt: 5 }}>
                <Typography variant="h4" gutterBottom align="center">
                   회원가입이 완료되었습니다!

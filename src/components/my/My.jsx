@@ -390,7 +390,6 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
          <Box>
             {/* Profile Section */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-
                {initialValues && <Avatar sx={{ width: 64, height: 64, mr: 2, objectFit: 'cover', borderRadius: '50%' }} src={process.env.REACT_APP_API_URL + '/userImg' + initialValues?.imgUrl} />}
                <Box>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -404,10 +403,25 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
 
                   <Box>
                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={{ fontWeight: 'bold' }}>활동분야 </Typography>
-                        {categoriesFromServer?.map((category, index) => (
-                           <Typography key={index}>{category.categoryName}</Typography>
-                        ))}
+                        <Typography sx={{ fontWeight: 'bold' }}>활동분야 : </Typography>
+                        {categoriesFromServer?.map((category, index) => {
+                           const categoryKr = {
+                              food: '푸드',
+                              pets: '반려동물',
+                              books: '도서',
+                              beauty: '뷰티',
+                              living: '리빙',
+                              photography: '사진',
+                              art: '그림',
+                              performance: '공연',
+                              clothing: '의류',
+                           }
+                           return (
+                              <Typography px={0.4} key={index}>
+                                 {categoryKr[category.categoryName]}
+                              </Typography>
+                           )
+                        })}
                      </Box>
 
                      <Box sx={{ display: 'flex' }}>
@@ -431,62 +445,35 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
                               <Grid container spacing={2}>
                                  {/* Row 1 */}
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="food" checked={selectedValues.food} onChange={handleChange} />}
-                                       label="푸드"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="food" checked={selectedValues.food} onChange={handleChange} />} label="푸드" />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="pets" checked={selectedValues.pets} onChange={handleChange} />}
-                                       label="반려동물"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="pets" checked={selectedValues.pets} onChange={handleChange} />} label="반려동물" />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="art" checked={selectedValues.art} onChange={handleChange} />}
-                                       label="그림"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="art" checked={selectedValues.art} onChange={handleChange} />} label="그림" />
                                  </Grid>
 
                                  {/* Row 2 */}
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="books" checked={selectedValues.books} onChange={handleChange} />}
-                                       label="도서"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="books" checked={selectedValues.books} onChange={handleChange} />} label="도서" />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="beauty" checked={selectedValues.beauty} onChange={handleChange} />}
-                                       label="뷰티"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="beauty" checked={selectedValues.beauty} onChange={handleChange} />} label="뷰티" />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="clothing" checked={selectedValues.clothing} onChange={handleChange} />}
-                                       label="의류"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="clothing" checked={selectedValues.clothing} onChange={handleChange} />} label="의류" />
                                  </Grid>
 
                                  {/* Row 3 */}
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="living" checked={selectedValues.living} onChange={handleChange} />}
-                                       label="리빙"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="living" checked={selectedValues.living} onChange={handleChange} />} label="리빙" />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="photography" checked={selectedValues.photography} onChange={handleChange} />}
-                                       label="사진"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="photography" checked={selectedValues.photography} onChange={handleChange} />} label="사진" />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="performance" checked={selectedValues.performance} onChange={handleChange} />}
-                                       label="공연"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="performance" checked={selectedValues.performance} onChange={handleChange} />} label="공연" />
                                  </Grid>
                               </Grid>
                            </div>
