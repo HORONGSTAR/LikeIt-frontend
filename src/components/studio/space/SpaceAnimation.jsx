@@ -8,7 +8,6 @@ export const SpaceScreen = ({ adminName, children, stream, audio }) => {
 
    useEffect(() => {
       if (!stream) return
-      console.log(stream)
       const audioContext = new AudioContext()
       const analyser = audioContext.createAnalyser()
       const microphone = audioContext.createMediaStreamSource(stream)
@@ -57,6 +56,8 @@ export const SpaceScreen = ({ adminName, children, stream, audio }) => {
                </Typography>
                <Typography variant="h6">{adminName}</Typography>
             </Stack>
+            <Typography color="#222">{speaking}</Typography>
+
             <Stack alignItems="center">{audio}</Stack>
          </Stack>
       </Stack>

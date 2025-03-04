@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Slider, Typography, Stack } from '@mui/material'
 import { VolumeUp, VolumeOff } from '@mui/icons-material'
 import { Stack2 } from '../../../styles/BaseStyles'
@@ -34,7 +34,7 @@ export const Broadcaster = ({ socket, studioId, setStream }) => {
                   .createOffer()
                   .then((offer) => {
                      peer.setLocalDescription(offer)
-                     socket.emit('offer', { studioId, offer, listenerId })
+                     socket.emit('offer', { offer, listenerId })
                   })
                   .catch((err) => console.error(err))
 
@@ -50,10 +50,7 @@ export const Broadcaster = ({ socket, studioId, setStream }) => {
                   const peer = peerConnections.current[listenerId]
                   if (peer.signalingState === 'stable') return
 
-                  peer
-                     .setRemoteDescription(new RTCSessionDescription(answer))
-                     .then(() => console.log('잘됨'))
-                     .catch((err) => console.error(err))
+                  peer.setRemoteDescription(new RTCSessionDescription(answer)).catch((err) => console.error(err))
                }
             })
          })
@@ -87,13 +84,14 @@ export const Broadcaster = ({ socket, studioId, setStream }) => {
          <Typography variant="body2" color="textSecondary" sx={{ display: { sm: 'block', xs: 'none' } }}>
             볼륨: {volume}%
          </Typography>
-         <audio />
       </Stack>
    )
 }
 
 export const Listener = ({ studioId, socket, setStream }) => {
    const [volume, setVolume] = useState(50)
+   const [test, setTest] = useState(null)
+
    const audioRef = useRef(null)
    const peerConnection = useRef(null)
 
@@ -110,7 +108,7 @@ export const Listener = ({ studioId, socket, setStream }) => {
 
          peerConnection.current.createAnswer().then((answer) => {
             peerConnection.current.setLocalDescription(answer)
-            socket.emit('answer', { studioId, answer, broadcasterId })
+            socket.emit('answer', { answer, broadcasterId })
          })
 
          peerConnection.current.onicecandidate = (event) => {
@@ -122,9 +120,9 @@ export const Listener = ({ studioId, socket, setStream }) => {
 
          peerConnection.current.ontrack = (event) => {
             const stream = event.streams[0]
-
+            setTest(event)
             if (!audioRef.current) {
-               console.error('audioRef.current is null!')
+               console.error('audioRef is null.')
                return
             }
 
@@ -140,12 +138,15 @@ export const Listener = ({ studioId, socket, setStream }) => {
       }
    }, [socket, studioId, setStream])
 
-   useEffect(() => {
+   const audioPlay = useCallback(() => {
       if (audioRef.current) {
          audioRef.current.play()
-         console.log('잘됨')
       }
-   }, [audioRef])
+   })
+
+   useEffect(() => {
+      audioPlay()
+   }, [audioPlay])
 
    return (
       <Stack>
