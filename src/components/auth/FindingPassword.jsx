@@ -4,6 +4,7 @@ import { setTempPasswordThunk } from '../../features/authSlice'
 import { TextField, Button, Typography, Stack, Divider } from '@mui/material'
 import { Stack2, TextLink, Dot } from '../../styles/BaseStyles'
 import { useNavigate } from 'react-router-dom'
+import { LoadingBox, ErrorBox } from '../../styles/BaseStyles'
 
 const FindingPassword = () => {
    const [email, setEmail] = useState('')
@@ -27,6 +28,19 @@ const FindingPassword = () => {
       },
       [dispatch, navigate, email]
    )
+
+   if (loading)
+      return (
+         <>
+            <LoadingBox />
+         </>
+      )
+   if (error)
+      return (
+         <>
+            <ErrorBox />
+         </>
+      )
 
    return (
       <Stack width={300} spacing={2}>

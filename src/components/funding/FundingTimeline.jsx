@@ -4,9 +4,12 @@ import { fetchTimelinesThunk, fetchTimelineThunk, timelineCommentDelThunk, timel
 import { Box, Divider, Chip, Typography, Grid2, Avatar, Button, Pagination, Stack, TextField } from '@mui/material'
 import dayjs from 'dayjs'
 import { ErrorBox, LoadingBox } from '../../styles/BaseStyles'
+import { useParams, useNavigate } from 'react-router-dom'
+import { fetchCreatorsThunk } from '../../features/creatorSlice'
 
 function FundingTimeline({ funding }) {
    const dispatch = useDispatch()
+   const navigate = useNavigate()
    const [page, setPage] = useState(1)
    const [commentPage, setCommentPage] = useState(1)
    const [loadingCount, setLoadingCount] = useState(3)
@@ -14,13 +17,16 @@ function FundingTimeline({ funding }) {
    const [nowTimeline, setNowTimeline] = useState(0)
    const [comment, setComment] = useState('')
    const [errorOpen, setErrorOpen] = useState(false)
+   const { id } = useParams()
+   const { user } = useSelector((state) => state.auth)
+   const { creators } = useSelector((state) => state.creator)
+   const isCreator = creators.some((creator) => creator.Creator?.User?.id === user?.id)
 
    const { timelineCount, timelines, timeline, loading, error } = useSelector((state) => state.funding)
-   const { user } = useSelector((state) => state.auth)
 
    useEffect(() => {
-      dispatch(fetchTimelinesThunk({ id: funding.id, page, limit: 3 }))
-   }, [dispatch, page])
+      dispatch(fetchTimelinesThunk({ id, page, limit: 3 }))
+   }, [dispatch, page, id])
 
    // 뒤로가기 제어
    useEffect(() => {
@@ -48,7 +54,7 @@ function FundingTimeline({ funding }) {
                      sm: 4,
                   }}
                >
-                  <img onClick={() => timelineDetail(timeline.id)} src={process.env.REACT_APP_API_URL + '/projectTimelineImg' + timeline.imgUrl} width={'100%'} height={'180px'} style={{ display: 'block', cursor: 'pointer', objectFit: 'cover' }} />
+                  <img onClick={() => timelineDetail(timeline.id)} src={`${process.env.REACT_APP_API_URL}${timeline.imgUrl}` || null} width={'100%'} height={'180px'} style={{ display: 'block', cursor: 'pointer', objectFit: 'cover' }} />
                </Grid2>
                <Grid2
                   size={{
@@ -118,12 +124,21 @@ function FundingTimeline({ funding }) {
       dispatch(fetchTimelineThunk(timeline.id))
    }
 
+   const goToCreateTimeline = () => {
+      navigate(`/creator/${id}/timeline/create`) // 글쓰기 페이지로 이동
+   }
+
    // 로딩 에러 처리
    if (loading) return <LoadingBox />
    if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
 
    return (
       <>
+         {isCreator && (
+            <Button variant="contained" color="yellow" onClick={goToCreateTimeline}>
+               글쓰기
+            </Button>
+         )}
          {timelineCount ? (
             nowTimeline ? (
                timeline && (
@@ -134,7 +149,7 @@ function FundingTimeline({ funding }) {
                            {dayjs(timeline.createdAt).format('YYYY년 MM월 DD일 hh:mm:ss')}
                         </Typography>
                      </Typography>
-                     <img src={process.env.REACT_APP_API_URL + '/projectTimelineImg' + timeline.imgUrl} width={'90%'} style={{ display: 'block', margin: '0 auto' }} />
+                     <img src={`${process.env.REACT_APP_API_URL}${timeline.imgUrl}` || null} width={'90%'} style={{ display: 'block', margin: '0 auto' }} />
                      <Typography m={2}>{timeline.contents}</Typography>
                      <Button variant="contained" sx={{ borderBottom: '1px solid #dddddd', margin: '16px' }} onClick={timelineList}>
                         목록

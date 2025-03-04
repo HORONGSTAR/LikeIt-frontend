@@ -13,8 +13,18 @@ const MyPage = () => {
       dispatch(getProfileThunk())
    }, [dispatch])
 
-   if (loading) return <p>로딩중</p>
-   if (error) return <p>에러발생: {error}</p>
+   if (loading)
+      return (
+         <>
+            <LoadingBox />
+         </>
+      )
+   if (error)
+      return (
+         <>
+            <ErrorBox />
+         </>
+      )
 
    return <My initialValues={user} orders={orders} points={points} profits={profits} allprojects={allprojects} />
 }
