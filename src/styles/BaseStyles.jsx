@@ -333,7 +333,16 @@ export const FundingCard = ({ orders, point, totalOrderPrice }) => {
             backgroundColor: orders.orders[0].orderStatus === 'FUNDING_FAILED' ? '#eee' : 'white',
          }}
       >
-         <CardHeader title={`${orders.orders[0].Project?.title} 주문 시각 : ${new Date(orders.orderTime).toLocaleString()}`} sx={{ backgroundColor: '#f5f5f5', padding: 1, borderRadius: 1 }} />
+         <CardHeader
+            title={
+               <>
+                  {orders.orders[0].Project?.title}
+                  <br />
+                  주문 시각 : {new Date(orders.orderTime).toLocaleString()}
+               </>
+            }
+            sx={{ backgroundColor: '#f5f5f5', padding: 1, borderRadius: 1 }}
+         />
          <Stack2>
             {orders.orders[0].Project?.imgUrl && <CardMedia component="img" sx={{ width: 200, borderRadius: 1 }} image={`${process.env.REACT_APP_API_URL}/projectImg${orders.orders[0].Project.imgUrl}` || null} alt={orders.orders[0].Project.title} />}
             <CardContent>
