@@ -159,10 +159,12 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
          alert('닉네임을 입력하세요')
          return
       }
-      if (!imgFile) {
-         alert('이미지 파일을 추가하세요')
-         return
-      }
+
+      // if (!imgFile) {
+      //    alert('이미지 파일을 추가하세요')
+      //    return
+      // }
+
       const formData = new FormData()
       formData.append('name', nickname)
 
@@ -180,12 +182,6 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
             console.error('프로필 수정 에러:', error)
          })
    }, [nickname, imgFile, dispatch])
-
-   // <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-   //    주문일 {new Date(order.createdAt).toLocaleDateString()}
-   // </Typography>
-   // <FundingCard image={process.env.REACT_APP_API_URL + '/projectImg' + order.Project.imgUrl} title={order.Project.title} price={order.orderPrice} status={order.orderStatus} />
-   //    <FundingCard image={process.env.REACT_APP_API_URL + '/projectImg' + order.Project.imgUrl} title={order.Project.title} subtitle={order.Reward.name} price={order.orderPrice} status={order.orderStatus} />
 
    const groupedOrders = orders.reduce((acc, order) => {
       const { createdAt } = order
@@ -205,9 +201,21 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
 
    const sponsorList = (
       <>
-         {orderBoxes.map((orders, index) => (
-            <FundingCard key={index} orders={orders} />
-         ))}
+         {orderBoxes.map((orderBox, index) => {
+            let totalOrderPrice = 0
+            let point = 0
+            orderBox.orders.forEach((order) => {
+               totalOrderPrice += order.orderPrice
+               if (order.orderPrice < 0) point = order.orderPrice * -1
+            })
+            const filteredOrders = orderBox.orders.filter((order) => order.orderPrice > 0)
+            const updatedOrderBox = {
+               ...orderBox,
+               orders: filteredOrders,
+            }
+
+            return <FundingCard key={index} orders={updatedOrderBox} point={point} totalOrderPrice={totalOrderPrice} />
+         })}
       </>
    )
 
@@ -231,36 +239,11 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
             <Typography variant="subtitle1" sx={{ mb: 1 }}>
                비밀번호 변경
             </Typography>
-            <TextField
-               fullWidth
-               variant="outlined"
-               margin="dense"
-               label="현재 비밀번호"
-               type="password"
-               onChange={(e) => setCurrentPassword(e.target.value)}
-            />
-            <Stack2 spacing={1}>
-               <Typography variant="body2">비밀번호를 잊으셨나요?</Typography>
-               <TextLink variant="body2" color="orenge" to="/findingpassword">
-                  비밀번호 재설정
-               </TextLink>
-            </Stack2>
-            <TextField
-               fullWidth
-               variant="outlined"
-               margin="dense"
-               label="변경할 비밀번호"
-               type="password"
-               onChange={(e) => setPasswordToChange(e.target.value)}
-            />
-            <TextField
-               fullWidth
-               variant="outlined"
-               margin="dense"
-               label="변경할 비밀번호 확인"
-               type="password"
-               onChange={(e) => setConfirmPasswordToChange(e.target.value)}
-            />
+
+            <TextField fullWidth variant="outlined" margin="dense" label="현재 비밀번호" type="password" onChange={(e) => setCurrentPassword(e.target.value)} />
+
+            <TextField fullWidth variant="outlined" margin="dense" label="변경할 비밀번호" type="password" onChange={(e) => setPasswordToChange(e.target.value)} />
+            <TextField fullWidth variant="outlined" margin="dense" label="변경할 비밀번호 확인" type="password" onChange={(e) => setConfirmPasswordToChange(e.target.value)} />
          </Box>
 
          {/* Save/Cancel Buttons */}
@@ -407,13 +390,8 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
          <Box>
             {/* Profile Section */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-               <Avatar sx={{ width: 64, height: 64, mr: 2 }}>
-                  <img
-                     src={initialValues?.imgUrl ? process.env.REACT_APP_API_URL + '/userImg/' + initialValues?.imgUrl : null}
-                     style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
-                     alt={initialValues?.name}
-                  />
-               </Avatar>
+
+               {initialValues && <Avatar sx={{ width: 64, height: 64, mr: 2, objectFit: 'cover', borderRadius: '50%' }} src={process.env.REACT_APP_API_URL + '/userImg' + initialValues?.imgUrl} />}
                <Box>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                      <Typography variant="h4" sx={{ mr: 1 }}>
@@ -431,9 +409,7 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
                            <Typography key={index}>{category.categoryName}</Typography>
                         ))}
                      </Box>
-                     <Typography variant="body2" color="text.secondary">
-                        후기 작성 3건 | 후원 횟수 22회 | 후원 순위 최고 기록 593위
-                     </Typography>
+
                      <Box sx={{ display: 'flex' }}>
                         <ModifiedModalBox openBtn={<Button startIcon={<EditIcon />}>프로필 수정</Button>} closeBtn>
                            <Typography variant="h5">프로필 수정</Typography>
