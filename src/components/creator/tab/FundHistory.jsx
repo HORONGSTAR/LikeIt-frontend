@@ -2,17 +2,19 @@ import { Typography, Table, TableBody, TableCell, TableContainer, TableRow, Pape
 import { LoadingBox } from '../../../styles/BaseStyles'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchProjectByIdThunk } from '../../../features/projectSlice'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { fetchOrdersThunk } from '../../../features/orderSlice'
+import { fetchCreatorsThunk } from '../../../features/creatorSlice'
+import { fetchStudioThunk } from '../../../features/studioSlice'
 
 function FundHistory() {
+   const dispatch = useDispatch()
+   const selectedStudio = useRef(null)
+   const { creators } = useSelector((state) => state.creator)
    const { project, loading } = useSelector((state) => state.project)
    const { orders } = useSelector((state) => state.order)
-   const dispatch = useDispatch()
-   const { projectId } = useParams()
-
-   const currentProjectId = projectId || 3
+   const { id } = useParams()
 
    const totalFunds = useMemo(() => orders.reduce((sum, order) => sum + order.orderPrice, 0), [orders])
    const failedPayments = useMemo(() => orders.filter((order) => order.orderStatus === 'FUNDING_COMPLETE_NOT_PAID').reduce((sum, order) => sum + order.orderPrice, 0), [orders])
@@ -33,12 +35,30 @@ function FundHistory() {
    }
 
    useEffect(() => {
-      dispatch(fetchProjectByIdThunk(currentProjectId))
-   }, [dispatch, currentProjectId])
+      dispatch(fetchStudioThunk())
+         .unwrap()
+         .then((result) => {
+            selectedStudio.current = result.studio.id
+            dispatch(fetchCreatorsThunk(selectedStudio.current))
+         })
+         .catch((error) => console.error('업데이트 실패:', error))
+   }, [dispatch])
+
+   const leader = creators.find((creator) => creator.role === 'LEADER')
 
    useEffect(() => {
-      dispatch(fetchOrdersThunk(projectId))
-   }, [dispatch, projectId])
+      dispatch(fetchProjectByIdThunk(id))
+   }, [dispatch, id])
+
+   useEffect(() => {
+      dispatch(fetchOrdersThunk(id))
+   }, [dispatch, id])
+
+   useEffect(() => {
+      if (project?.Studio?.id) {
+         dispatch(fetchCreatorsThunk(project.Studio.id))
+      }
+   }, [dispatch, project])
 
    if (loading) return <LoadingBox />
    if (!project) return <LoadingBox />
@@ -63,7 +83,7 @@ function FundHistory() {
 
                   <TableRow>
                      <TableCell sx={{ borderBottom: 'none' }}>프로젝트 예산 정산 계정</TableCell>
-                     <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>계정</TableCell>
+                     <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>{leader?.Creator?.User?.email}</TableCell>
                   </TableRow>
                </TableBody>
             </Table>

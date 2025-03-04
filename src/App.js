@@ -52,8 +52,12 @@ import FundingOrderPage from './pages/FundingOrderPage'
 
 // develop
 import DesignGuide from './pages/DesignGuide'
+import Timeline from './components/creator/tab/Timeline'
 
 function App() {
+   const dispatch = useDispatch()
+   const { isAuthenticated, user } = useSelector((state) => state.auth)
+
    const path = useLocation().pathname.split('/')
    const pageName = {
       login: true,
@@ -61,13 +65,10 @@ function App() {
       findingpassword: true,
       findingemail: true,
       commonsignup: true,
+      studio: <StudioNavber isAuthenticated={isAuthenticated} user={user} />,
       additionalsignup: true,
-      studio: <StudioNavber />,
    }
    const dontNeedNavber = pageName[path[1]]
-
-   const dispatch = useDispatch()
-   const { isAuthenticated, user } = useSelector((state) => state.auth)
 
    useEffect(() => {
       dispatch(checkAuthStatusThunk())
@@ -217,6 +218,7 @@ function App() {
 
             {/* fundingDetail - creator */}
             <Route path="/creator/:id" element={<CreatorPage />} />
+            <Route path="/creator/:id/timeline/create" element={Timeline} />
 
             {/* fundingDetail - user */}
             <Route path="/funding/:id" element={<FundingDetailPage />} />

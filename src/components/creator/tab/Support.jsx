@@ -12,19 +12,16 @@ function Support() {
    const dispatch = useDispatch()
    const { orders, giftStatistics, loading } = useSelector((state) => state.order)
    const [activeTab, setActiveTab] = useState('supporter')
-   const { projectId } = useParams()
+   const { id } = useParams()
    const { totalSupporters } = useSelector((state) => state.order)
    const [file, setFile] = useState(null)
    const [uploadStatus, setUploadStatus] = useState('')
 
-   // 프로젝트 ID가 없으면 3으로 설정(테스트용)
-   const currentProjectId = projectId || 3
-
    const sortedOrders = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
 
    useEffect(() => {
-      dispatch(fetchOrdersThunk(currentProjectId))
-   }, [dispatch, currentProjectId])
+      dispatch(fetchOrdersThunk(id))
+   }, [dispatch, id])
 
    const getStatusColor = (status) => {
       switch (status) {
@@ -94,7 +91,7 @@ function Support() {
 
       try {
          dispatch(uploadTrackingNumbersThunk(formData))
-         dispatch(fetchOrdersThunk(currentProjectId))
+         dispatch(fetchOrdersThunk(id))
       } catch (error) {
          console.error('운송장 등록 오류:', error)
          setUploadStatus('업로드 실패! 다시 시도해주세요.')
