@@ -6,6 +6,7 @@ import { React, useCallback, useState } from 'react'
 import Navber from '../../components/shared/Navber'
 import { styled } from '@mui/system'
 import { snsRegisterUserThunk } from '../../features/authSlice'
+import { ErrorBox, LoadingBox } from '../../styles/BaseStyles'
 
 const AdditionalSignup = () => {
    const StyledButton = styled(Button)({
@@ -45,6 +46,9 @@ const AdditionalSignup = () => {
       },
       [phone]
    )
+
+   if (loading) return <LoadingBox />
+   if (error) return <ErrorBox />
 
    //회원가입이 완료 되었을 때
    if (isSignupComplete) {

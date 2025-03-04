@@ -119,6 +119,7 @@ const authSlice = createSlice({
          .addCase(registerUserThunk.fulfilled, (state, action) => {
             state.loading = false
             state.user = action.payload
+            state.isSignupComplete = action.payload.isSignupComplete
          })
          .addCase(registerUserThunk.rejected, (state, action) => {
             state.loading = false
