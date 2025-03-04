@@ -8,13 +8,12 @@ import CreatorTab from './tab/CreatorTab'
 
 const CreatorLayout = () => {
    const dispatch = useDispatch()
-   const { projectId } = useParams()
+   const { id } = useParams()
    const { project, loading, error } = useSelector((state) => state.project)
 
    useEffect(() => {
-      const tempProjectId = projectId || 3
-      dispatch(fetchProjectByIdThunk(tempProjectId))
-   }, [dispatch, projectId])
+      dispatch(fetchProjectByIdThunk(id))
+   }, [dispatch, id])
 
    // 날짜 변환 함수 (YYYY. MM. DD 형식)
    const formatDate = (dateString) => {

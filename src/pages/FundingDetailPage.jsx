@@ -9,6 +9,7 @@ import FundingTimeline from '../components/funding/FundingTimeline'
 import FundingReview from '../components/funding/FundingReview'
 import { ErrorBox, LoadingBox, Main } from '../styles/BaseStyles'
 import dayjs from 'dayjs'
+import { fetchCreatorsThunk } from '../features/creatorSlice'
 
 const FundingDetailPage = () => {
    const dispatch = useDispatch()
@@ -17,6 +18,9 @@ const FundingDetailPage = () => {
    const { isAuthenticated } = useSelector((state) => state.auth)
    const [project, setProject] = useState(null)
    const [noReward, setNoReward] = useState('')
+   const { user } = useSelector((state) => state.auth)
+   const { creators } = useSelector((state) => state.creator)
+   const isCreator = creators.some((creator) => creator.Creator?.User?.id === user?.id)
 
    const [orderRewardBasket, setOrderRewardBasket] = useState({})
 
@@ -56,6 +60,12 @@ const FundingDetailPage = () => {
          endDate: formatDate(funding.enddate),
       })
    }, [funding])
+
+   useEffect(() => {
+      if (funding?.Studio?.id) {
+         dispatch(fetchCreatorsThunk(funding.Studio.id)) // 스튜디오 ID로 창작자 목록 불러오기
+      }
+   }, [dispatch, funding])
 
    let status = ''
    if (funding?.projectStatus === 'FUNDING_COMPLETE')
@@ -120,24 +130,33 @@ const FundingDetailPage = () => {
                            <Typography color="text.secondary">
                               펀딩 기간: {project.startDate} ~ {project.endDate}
                            </Typography>
-                           {status
-                              ? status
-                              : isAuthenticated && (
-                                   <Link
-                                      to={Object.keys(orderRewardBasket).length > 0 ? `/funding/order/${funding.id}` : undefined}
-                                      onClick={(e) => {
-                                         if (Object.keys(orderRewardBasket).length === 0) {
-                                            e.preventDefault()
-                                            setNoReward('리워드를 선택해주세요')
-                                         }
-                                      }}
-                                      state={{ orderRewardBasket: orderRewardBasket }}
-                                   >
-                                      <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
-                                         후원하기
-                                      </Button>
-                                   </Link>
-                                )}
+                           {status ? (
+                              status
+                           ) : isAuthenticated ? (
+                              isCreator ? (
+                                 <Link to={`/creator/${funding.id}`}>
+                                    <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
+                                       프로젝트 관리
+                                    </Button>
+                                 </Link>
+                              ) : (
+                                 <Link
+                                    to={Object.keys(orderRewardBasket).length > 0 ? `/funding/order/${funding.id}` : undefined}
+                                    onClick={(e) => {
+                                       if (Object.keys(orderRewardBasket).length === 0) {
+                                          e.preventDefault()
+                                          setNoReward('리워드를 선택해주세요')
+                                       }
+                                    }}
+                                    state={{ orderRewardBasket: orderRewardBasket }}
+                                 >
+                                    <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
+                                       후원하기
+                                    </Button>
+                                 </Link>
+                              )
+                           ) : null}
+
                            <Typography sx={{ color: 'red', textAlign: 'center' }}>{noReward}</Typography>
                         </CardContent>
                      </Card>

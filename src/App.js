@@ -52,6 +52,7 @@ import FundingOrderPage from './pages/FundingOrderPage'
 
 // develop
 import DesignGuide from './pages/DesignGuide'
+import Timeline from './components/creator/tab/Timeline'
 
 function App() {
    const dispatch = useDispatch()
@@ -214,6 +215,7 @@ function App() {
 
             {/* fundingDetail - creator */}
             <Route path="/creator/:id" element={<CreatorPage />} />
+            <Route path="/creator/:id/timeline/create" element={Timeline} />
 
             {/* fundingDetail - user */}
             <Route path="/funding/:id" element={<FundingDetailPage />} />
