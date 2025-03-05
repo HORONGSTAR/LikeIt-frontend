@@ -1,21 +1,25 @@
 import { useState, useEffect, useRef } from 'react'
-import { Stack, Box, Typography, Slider } from '@mui/material'
+import { Stack, Box, Typography, Slider, Avatar } from '@mui/material'
 import { Stack2 } from '../../../styles/BaseStyles'
-import { Mic } from '@mui/icons-material'
+import { Mic, VolumeOff, VolumeUp } from '@mui/icons-material'
 
-export const SpaceScreen = ({ adminName, children, stream, audio }) => {
+export const SpaceScreen = ({ info, stream }) => {
    const [speaking, setSpeaking] = useState(1)
+   const [volume, setVolume] = useState(50)
 
    useEffect(() => {
       if (!stream) return
       const audioContext = new AudioContext()
+      const mediaStreamSource = audioContext.createMediaStreamSource(stream)
       const analyser = audioContext.createAnalyser()
-      const microphone = audioContext.createMediaStreamSource(stream)
-      microphone.connect(analyser)
+      const gainNode = audioContext.createGain()
+      gainNode.gain.value = volume
 
       analyser.fftSize = 256
       const bufferLength = analyser.frequencyBinCount
       const dataArray = new Uint8Array(bufferLength)
+
+      mediaStreamSource.connect(analyser)
 
       const checkVolume = () => {
          analyser.getByteFrequencyData(dataArray)
@@ -26,6 +30,9 @@ export const SpaceScreen = ({ adminName, children, stream, audio }) => {
          requestAnimationFrame(checkVolume)
       }
       checkVolume()
+      return () => {
+         audioContext.close()
+      }
    }, [stream])
 
    return (
@@ -46,7 +53,16 @@ export const SpaceScreen = ({ adminName, children, stream, audio }) => {
                   transition: '0.2s',
                }}
             >
-               {children}
+               <Avatar
+                  src={info?.imgUrl}
+                  alt={info?.name}
+                  sx={{
+                     width: { sm: 120, xs: 100 },
+                     height: { sm: 120, xs: 100 },
+                     backgroundColor: 'white',
+                     border: '5px solid white',
+                  }}
+               />
             </Stack2>
          </Stack2>
          <Stack alignItems={{ sm: 'center', xs: 'start' }}>
@@ -54,11 +70,26 @@ export const SpaceScreen = ({ adminName, children, stream, audio }) => {
                <Typography variant="body2" color="textSecondary">
                   진행자
                </Typography>
-               <Typography variant="h6">{adminName}</Typography>
+               <Typography variant="h6">{info?.name}</Typography>
+               <Stack2 sx={{ width: { md: 170, sm: 150, xs: 130 }, mt: 1 }}>
+                  {volume === 0 ? <VolumeOff sx={{ fontSize: 32, mr: 1, color: '#666' }} /> : <VolumeUp sx={{ fontSize: 32, mr: 1, color: '#666' }} />}
+                  <Slider
+                     value={volume}
+                     onChange={(e, newValue) => setVolume(newValue)}
+                     aria-labelledby="volume-slider"
+                     min={0}
+                     max={100}
+                     sx={{
+                        color: '#666',
+                        '& .MuiSlider-thumb': { backgroundColor: '#666' },
+                        '& .MuiSlider-track': { backgroundColor: '#666' },
+                     }}
+                  />
+               </Stack2>
+               <Typography variant="body2" color="textSecondary" sx={{ display: { sm: 'block', xs: 'none' } }}>
+                  볼륨: {volume}%
+               </Typography>
             </Stack>
-            <Typography color="#222">{speaking}</Typography>
-
-            <Stack alignItems="center">{audio}</Stack>
          </Stack>
       </Stack>
    )

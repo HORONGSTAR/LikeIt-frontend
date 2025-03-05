@@ -5,7 +5,7 @@ import { Box, Divider, Chip, Typography, Grid2, Avatar, Button, Pagination, Stac
 import dayjs from 'dayjs'
 import { ErrorBox, LoadingBox } from '../../styles/BaseStyles'
 import { useParams, useNavigate } from 'react-router-dom'
-import { fetchCreatorsThunk } from '../../features/creatorSlice'
+import { deleteTimelineThunk } from '../../features/timelineSlice'
 
 function FundingTimeline({ funding }) {
    const dispatch = useDispatch()
@@ -47,7 +47,7 @@ function FundingTimeline({ funding }) {
       const newTimelines = []
       timelines.forEach((timeline) => {
          newTimelines.push(
-            <Grid2 container key={timeline.id} sx={{ display: 'flex', border: '1px solid #dddddd', height: '180px' }} m={1}>
+            <Grid2 container key={timeline.id} sx={{ display: 'flex', border: '1px solid #dddddd', height: '180px', overflow: 'hidden' }} m={1}>
                <Grid2
                   size={{
                      xs: 6,
@@ -125,7 +125,19 @@ function FundingTimeline({ funding }) {
    }
 
    const goToCreateTimeline = () => {
-      navigate(`/creator/${id}/timeline/create`) // 글쓰기 페이지로 이동
+      navigate(`/creator/${id}/timeline/create`)
+   }
+
+   const handleDelete = async () => {
+      if (!window.confirm('정말 삭제하시겠습니까?')) return
+
+      try {
+         await dispatch(deleteTimelineThunk(nowTimeline)).unwrap()
+         alert('삭제되었습니다.')
+         dispatch(fetchTimelineThunk(id))
+      } catch (error) {
+         alert(`삭제 실패: ${error}`)
+      }
    }
 
    // 로딩 에러 처리
@@ -134,26 +146,46 @@ function FundingTimeline({ funding }) {
 
    return (
       <>
-         {isCreator && (
-            <Button variant="contained" color="yellow" onClick={goToCreateTimeline}>
-               글쓰기
-            </Button>
-         )}
+         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2, mr: 2 }}>
+            {isCreator && !nowTimeline && (
+               <Button variant="contained" onClick={goToCreateTimeline}>
+                  글쓰기
+               </Button>
+            )}
+         </Box>
+
          {timelineCount ? (
             nowTimeline ? (
                timeline && (
                   <Box>
-                     <Typography my={2} pb={2} variant="h2">
-                        {timeline.title}
-                        <Typography py={1} variant="body2" sx={{ borderBottom: '1px solid #dddddd' }}>
-                           {dayjs(timeline.createdAt).format('YYYY년 MM월 DD일 hh:mm:ss')}
-                        </Typography>
-                     </Typography>
-                     <img src={`${process.env.REACT_APP_API_URL}${timeline.imgUrl}` || null} width={'90%'} style={{ display: 'block', margin: '0 auto' }} />
-                     <Typography m={2}>{timeline.contents}</Typography>
                      <Button variant="contained" sx={{ borderBottom: '1px solid #dddddd', margin: '16px' }} onClick={timelineList}>
                         목록
                      </Button>
+                     <Typography my={2} pb={2} variant="h4" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        {/* 제목과 날짜를 한 줄로 정리 */}
+                        <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column', ml: 2 }}>
+                           {timeline.title}
+                           <Typography variant="body2" sx={{ color: 'gray' }}>
+                              {dayjs(timeline.createdAt).format('YYYY년 MM월 DD일 hh:mm:ss')}
+                           </Typography>
+                        </Box>
+
+                        {/* 수정/삭제 버튼 (창작자만 가능) */}
+                        {isCreator && (
+                           <Box>
+                              <Button variant="contained" size="small" sx={{ mr: 1 }} onClick={() => navigate(`/creator/${id}/timeline/${nowTimeline}/edit`)}>
+                                 수정
+                              </Button>
+                              <Button variant="outlined" color="error" size="small" onClick={handleDelete}>
+                                 삭제
+                              </Button>
+                           </Box>
+                        )}
+                     </Typography>
+
+                     <img src={`${process.env.REACT_APP_API_URL}${timeline.imgUrl}` || null} width={'90%'} style={{ display: 'block', margin: '0 auto' }} />
+                     <Typography m={2}>{timeline.contents}</Typography>
+
                      {showComments()}
                      <Stack spacing={2}>
                         <Pagination onChange={(e, value) => setCommentPage(value)} count={timeline.ProjectTimelineComments.length > 0 ? Math.ceil(timeline.ProjectTimelineComments.length / 10) : 1} />

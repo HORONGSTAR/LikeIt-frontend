@@ -208,11 +208,10 @@ function App() {
                }
             />
             <Route path="/studio/:id" element={<StudioPage />} />
-
             {/* fundingDetail - creator */}
             <Route path="/creator/:id" element={<CreatorPage />} />
-            <Route path="/creator/:id/timeline/create" element={Timeline} />
-
+            <Route path="/creator/:id/timeline/create" element={<Timeline />} />
+            <Route path="/creator/:id/timeline/:timelineId/edit" element={<Timeline />} />
             {/* fundingDetail - user */}
             <Route path="/funding/:id" element={<FundingDetailPage />} />
             <Route
@@ -223,7 +222,6 @@ function App() {
                   </RedirectLogoutRoute>
                }
             />
-
             {/* develop */}
             <Route path="/desinguide" element={<DesignGuide />} />
          </Routes>

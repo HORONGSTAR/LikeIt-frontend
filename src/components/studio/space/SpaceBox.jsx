@@ -1,8 +1,8 @@
-import { Typography, Avatar, AvatarGroup, Chip, Stack, Grid2 } from '@mui/material'
+import { Typography, Avatar, AvatarGroup, Chip, Stack, Grid2, Snackbar, Alert } from '@mui/material'
 import { Stack2, Main } from '../../../styles/BaseStyles'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { flexbox } from '@mui/system'
-import { MoveTitle, SpaceScreen } from './SpaceAnimation'
+import { MoveTitle } from './SpaceAnimation'
 import { Broadcaster, Listener } from './SpaceAudio'
 
 import SpaceChat from './SpaceChat'
@@ -13,33 +13,12 @@ function SpaceBox({ socket, studio, user }) {
    const [info, setInfo] = useState(null)
    const [isOpen, setOpen] = useState(false)
    const [isAdmin, setAdmin] = useState(false)
-   const [stream, setStream] = useState(null)
-
+   const [alert, setAlert] = useState(false)
    const studioId = studio?.id + '번 스튜디오'
-
-   useEffect(() => {
-      if (!socket) return
-      socket.emit('space info', studioId)
-
-      socket.on('space info', (info) => {
-         setInfo({
-            name: info?.admin?.name,
-            imgUrl: info?.admin?.imgUrl && process.env.REACT_APP_API_URL + '/userImg' + info.admin.imgUrl,
-            startTime: dayjs(info.startTime).format('YYYY년 MM월 DD일 HH시 mm분'),
-         })
-         setAdmin(info?.admin?.id === user?.id ? true : false)
-      })
-      return () => {
-         socket.off('space info', studioId)
-      }
-   }, [socket, user, studioId])
 
    const joinSpace = useCallback(() => {
       socket.emit('join space', studioId)
-      socket.on('user info', (info) => {
-         setUsers((prev) => [...prev, info])
-         setOpen(true)
-      })
+      setOpen(true)
    }, [socket, studioId])
 
    const endSpace = useCallback(() => {
@@ -50,11 +29,38 @@ function SpaceBox({ socket, studio, user }) {
 
    const leaveSpace = useCallback(() => {
       socket.emit('leave space', studioId)
-      socket.on('leave space', (userId) => {
-         setUsers(users.filter((user) => user?.id !== userId))
-      })
       setOpen(false)
-   }, [users, socket, studioId])
+   }, [socket, studioId])
+
+   useEffect(() => {
+      if (!socket) return
+      socket.emit('space info', studioId)
+      socket.on('space info', (info) => {
+         setInfo({
+            studioId: studioId,
+            name: info?.admin?.name,
+            imgUrl: info?.admin?.imgUrl ? process.env.REACT_APP_API_URL + '/userImg' + info?.admin?.imgUrl : '/default_profile.png',
+            startTime: dayjs(info.startTime).format('YYYY년 MM월 DD일 HH시 mm분'),
+            users: info?.users,
+         })
+         setAdmin(info?.admin?.id === user?.id ? true : false)
+         setUsers({ velue: info?.users, keyList: Object.keys(info?.users) })
+      })
+
+      socket.on('end space', (msg) => {
+         if (msg) {
+            leaveSpace()
+            setInfo(null)
+            setAlert(true)
+         }
+      })
+
+      return () => {
+         socket.off('space info', studioId)
+         socket.off('leave space', studioId)
+         socket.off('end space', studioId)
+      }
+   }, [socket, user, leaveSpace, studioId])
 
    const chipSx = {
       background: '#fff',
@@ -91,71 +97,69 @@ function SpaceBox({ socket, studio, user }) {
       }
    }, [endSpace, leaveSpace])
 
-   if (!info) return null
-
    return (
-      <Stack
-         sx={{
-            background: 'linear-gradient(to right, #4ACBCF, #A57EFF)',
-            borderRadius: openSx[isOpen].radius,
-            color: '#fff',
-            p: 1,
-         }}
-      >
-         <Stack2 sx={{ height: 50 }}>
-            <MoveTitle studioName={studio.name}>
-               <Typography noWrap variant="body2">
-                  {openSx[isOpen].comment}
-               </Typography>
-            </MoveTitle>
-            <Stack2>
-               {isOpen ? (
-                  <Chip sx={chipSx} label={adminSx[isAdmin].label} onClick={adminSx[isAdmin].callback} />
-               ) : (
-                  <Chip
-                     sx={{ ...chipSx, borderRadius: 7, height: 50 }}
-                     label={
-                        <Stack2 spacing={{ sm: 1, xs: 0 }} sx={{ flexbox }}>
-                           <AvatarGroup sx={{ display: { sm: 'flex', xs: 'none' } }} max={4}>
-                              {users.length > 0 &&
-                                 users.map((user) => <Avatar key={user.id} alt={user.name} src={user.imgUrl ? process.env.REACT_APP_API_URL + '/userImg' + user.imgUrl : '/default_profile.png'} />)}
-                           </AvatarGroup>
-                           <Typography fontWeight={600}>{adminSx[isAdmin].comment}</Typography>
-                        </Stack2>
-                     }
-                     onClick={joinSpace}
-                  />
-               )}
-            </Stack2>
-         </Stack2>
-         {isOpen && (
-            <Main>
-               <Grid2 container display="flex">
-                  <Grid2 size={{ md: 4, sm: 5, xs: 12 }} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                     <SpaceScreen
-                        stream={stream}
-                        adminName={info.name}
-                        audio={isAdmin ? <Broadcaster socket={socket} studioId={studioId} setStream={setStream} /> : <Listener socket={socket} studioId={studioId} setStream={setStream} />}
-                     >
-                        <Avatar
-                           src={info.imgUrl}
-                           alt={info.name}
-                           sx={{
-                              width: { sm: 120, xs: 100 },
-                              height: { sm: 120, xs: 100 },
-                              backgroundColor: 'white',
-                              border: '5px solid white',
-                           }}
+      <>
+         {info && (
+            <Stack
+               sx={{
+                  background: 'linear-gradient(to right, #4ACBCF, #A57EFF)',
+                  borderRadius: openSx[isOpen].radius,
+                  color: '#fff',
+                  p: 1,
+               }}
+            >
+               <Stack2 sx={{ height: 50 }}>
+                  <MoveTitle studioName={studio.name}>
+                     <Typography noWrap variant="body2">
+                        {openSx[isOpen].comment}
+                     </Typography>
+                  </MoveTitle>
+                  <Stack2>
+                     {isOpen ? (
+                        <Chip sx={chipSx} label={adminSx[isAdmin].label} onClick={adminSx[isAdmin].callback} />
+                     ) : (
+                        <Chip
+                           sx={{ ...chipSx, borderRadius: 7, height: 50 }}
+                           label={
+                              <Stack2 spacing={{ sm: 1, xs: 0 }} sx={{ flexbox }}>
+                                 <AvatarGroup sx={{ display: { sm: 'flex', xs: 'none' } }} max={4}>
+                                    {users.keyList.length > 0 &&
+                                       users.keyList.map((key) => (
+                                          <Avatar
+                                             key={users.velue[key].id}
+                                             alt={users.velue[key].name}
+                                             src={users.velue[key].imgUrl ? process.env.REACT_APP_API_URL + '/userImg' + users.velue[key].imgUrl : '/default_profile.png'}
+                                          />
+                                       ))}
+                                 </AvatarGroup>
+                                 <Typography fontWeight={600}>{adminSx[isAdmin].comment}</Typography>
+                              </Stack2>
+                           }
+                           onClick={joinSpace}
                         />
-                     </SpaceScreen>
-                  </Grid2>
-                  <Grid2 p={2} size={{ md: 8, sm: 7, xs: 12 }}>
-                     <SpaceChat socket={socket} studioId={studioId} />
-                  </Grid2>
-               </Grid2>
-            </Main>
+                     )}
+                  </Stack2>
+               </Stack2>
+               {isOpen && (
+                  <Main>
+                     <Grid2 container display="flex">
+                        <Grid2 size={{ md: 4, sm: 5, xs: 12 }} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                           {isAdmin ? <Broadcaster socket={socket} info={info} /> : <Listener socket={socket} info={info} />}
+                        </Grid2>
+                        <Grid2 p={2} size={{ md: 8, sm: 7, xs: 12 }}>
+                           <SpaceChat socket={socket} studioId={studioId} />
+                        </Grid2>
+                     </Grid2>
+                  </Main>
+               )}
+            </Stack>
          )}
-      </Stack>
+         <Snackbar open={alert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={6000} onClose={() => setAlert(false)}>
+            <Alert onClose={() => setAlert(false)} severity="error" variant="filled" sx={{ width: '100%' }}>
+               스페이스가 종료되었습니다.
+            </Alert>
+         </Snackbar>
+      </>
    )
 }
 

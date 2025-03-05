@@ -1,6 +1,6 @@
 import { Card, CardContent, CardMedia, Typography, Button, Divider, Stack } from '@mui/material'
 import { Stack2 } from '../../styles/BaseStyles'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import StartButton from './space/StartButton'
@@ -12,7 +12,6 @@ function StudioLayout() {
    const { studio, projects } = useSelector((state) => state.studio)
    const { user } = useSelector((state) => state.auth)
    const socket = useSocket()
-
    const navigate = useNavigate()
 
    const isMumber = useMemo(() => {

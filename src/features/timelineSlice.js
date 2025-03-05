@@ -10,9 +10,9 @@ export const createTimelineThunk = createAsyncThunk('timeline/createTimeline', a
    }
 })
 
-export const updateTimelineThunk = createAsyncThunk('timeline/updateTimeline', async ({ id, timelineData }, { rejectWithValue }) => {
+export const updateTimelineThunk = createAsyncThunk('timeline/updateTimeline', async ({ timelineId, formData }, { rejectWithValue }) => {
    try {
-      const response = await updateTimeline(id, timelineData)
+      const response = await updateTimeline(timelineId, formData)
       return response.timeline
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '타임라인 글 수정 실패')

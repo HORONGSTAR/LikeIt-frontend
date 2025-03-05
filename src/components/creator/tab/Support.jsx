@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import { uploadTrackingNumbersThunk } from '../../../features/orderSlice'
+import { fetchRewardThunk } from '../../../features/rewardSlice'
 
 function Support() {
    const dispatch = useDispatch()
@@ -14,6 +15,7 @@ function Support() {
    const [activeTab, setActiveTab] = useState('supporter')
    const { id } = useParams()
    const { totalSupporters } = useSelector((state) => state.order)
+   const { rewardProducts } = useSelector((state) => state.reward)
    const [file, setFile] = useState(null)
    const [uploadStatus, setUploadStatus] = useState('')
 
@@ -21,6 +23,7 @@ function Support() {
 
    useEffect(() => {
       dispatch(fetchOrdersThunk(id))
+      dispatch(fetchRewardThunk(id))
    }, [dispatch, id])
 
    const getStatusColor = (status) => {
@@ -140,6 +143,10 @@ function Support() {
       saveAs(dataBlob, '후원자관리.xlsx')
    }
 
+   const totalProductCount = rewardProducts.reduce((acc, product) => {
+      return acc + product.orderCount * (product.stock || 0) // stock 값이 null일 경우 0 처리
+   }, 0)
+
    const supporter = (
       <Stack spacing={1}>
          <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -243,9 +250,9 @@ function Support() {
          <TableContainer component={Paper} sx={{ boxShadow: 'none', border: '1px solid #ccc' }}>
             <Table>
                <TableBody>
-                  {giftStatistics.map((gift, index) => (
-                     <TableRow key={index} sx={{ borderBottom: index === giftStatistics.length - 1 ? 'none' : '1px solid #ddd' }}>
-                        <TableCell sx={{ borderBottom: 'none' }}>에?</TableCell>
+                  {rewardProducts.map((product, index) => (
+                     <TableRow key={index} sx={{ borderBottom: index === rewardProducts.length - 1 ? 'none' : '1px solid #ddd' }}>
+                        <TableCell sx={{ borderBottom: 'none' }}>{product.title}</TableCell>
                         <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>몇개</TableCell>
                      </TableRow>
                   ))}
