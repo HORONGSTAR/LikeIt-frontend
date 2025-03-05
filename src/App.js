@@ -106,14 +106,7 @@ function App() {
                   </RedirectLoginRoute>
                }
             />
-            <Route
-               path="/signup"
-               element={
-                  <RedirectLoginRoute>
-                     <SignupPage />
-                  </RedirectLoginRoute>
-               }
-            />
+            <Route path="/signup" element={<SignupPage />} />
             <Route path="/commonsignup" element={<CommonSignupPage />} />
             <Route
                path="/findingpassword"
