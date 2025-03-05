@@ -16,15 +16,13 @@ function FindingEmail() {
       dispatch(fetchEmailThunk({ trimmedPhone }))
          .unwrap()
          .then()
-         .catch((error) => {
-            console.error('로그인 실패:', error)
-            alert(error)
-         })
+         .catch(() => {})
    }
 
    useEffect(() => {
       setFoundEmail(email) // Set state on success
    }, [email])
+   if (error) return <Typography sx={{ color: 'red' }}>{error}</Typography>
 
    return (
       <Stack width={300} spacing={2}>
