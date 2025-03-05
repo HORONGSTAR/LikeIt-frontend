@@ -1,14 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom'
-import { Stack, TextField, Button, Typography } from '@mui/material'
+import { Link } from 'react-router-dom'
+import { Stack, Button, Typography } from '@mui/material'
 import { Dot, Stack2 } from '../../styles/BaseStyles'
 
 const Signup = () => {
    const googleLoginOrSignup = () => {
-      window.location.href = 'http://localhost:8000/auth/google'
+      window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`
    }
 
    const kakaoLoginOrSignup = () => {
-      window.location.href = 'http://localhost:8000/auth/kakao'
+      window.location.href = `${process.env.REACT_APP_API_URL}/auth/kakao`
    }
 
    return (
