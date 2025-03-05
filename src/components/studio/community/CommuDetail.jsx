@@ -114,7 +114,7 @@ const CommuDetail = ({ setOpen, id }) => {
                   </Stack>
 
                   <Stack mt={1} direction="row" alignItems="center">
-                     <Avatar src={community.User.imgUrl || '/images/default-profile.jpg'} sx={{ width: 32, height: 32, mr: 1 }} />
+                     <Avatar src={process.env.REACT_APP_API_URL + '/userImg' + community.User.imgUrl || '/images/default-profile.jpg'} sx={{ width: 32, height: 32, mr: 1 }} />
                      <Stack spacing={-0.5}>
                         <Typography>{community.User.name || '닉네임 없음'}</Typography>
                         <Typography color="grey" variant="caption">

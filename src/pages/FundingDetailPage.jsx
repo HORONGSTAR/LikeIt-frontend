@@ -92,7 +92,7 @@ const FundingDetailPage = () => {
          <Main>
             <Box sx={{ maxWidth: '1000px', margin: 'auto', mt: 5 }}>
                {/* 제목 */}
-               <Typography p={1} variant="h2" fontWeight="bold" sx={{ mb: 3, textAlign: 'center' }}>
+               <Typography p={1} variant="h2" fontWeight="bold" sx={{ mb: 2, textAlign: 'center' }}>
                   {project.title}
                </Typography>
 
@@ -110,11 +110,7 @@ const FundingDetailPage = () => {
                      <Card sx={{ p: 1, boxShadow: 'none' }}>
                         <CardContent sx={{ textAlign: 'left' }}>
                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                              <Avatar
-                                 onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)}
-                                 src={project.creator.profileImage}
-                                 sx={{ width: 50, height: 50, mr: 2, cursor: 'pointer' }}
-                              />
+                              <Avatar onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)} src={project.creator.profileImage} sx={{ width: 50, height: 50, mr: 2, cursor: 'pointer' }} />
                               <Box>
                                  <Typography onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)} variant="subtitle1" fontWeight="bold" sx={{ cursor: 'pointer' }}>
                                     {project.creator.name}
@@ -144,7 +140,7 @@ const FundingDetailPage = () => {
                            ) : isAuthenticated ? (
                               isCreator ? (
                                  <Link to={`/creator/${funding.id}`}>
-                                    <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
+                                    <Button variant="yellow" fullWidth sx={{ mt: 2, py: 2.5, fontSize: '1.1rem', color: '#ffffff' }}>
                                        프로젝트 관리
                                     </Button>
                                  </Link>
@@ -175,10 +171,48 @@ const FundingDetailPage = () => {
             <Box sx={{ width: '100%', typography: 'body1' }}>
                <TabContext value={tabValue}>
                   <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                     <TabList onChange={handleTabChange} aria-label="lab API tabs example">
-                        <Tab label="프로젝트 소개" value="1" />
-                        <Tab label="진행 소식" value="2" />
-                        <Tab label="후기" value="3" />
+                     <TabList
+                        onChange={handleTabChange}
+                        aria-label="lab API tabs example"
+                        sx={{
+                           '& .MuiTabs-indicator': {
+                              backgroundColor: '#D97400',
+                           },
+                        }}
+                     >
+                        <Tab
+                           label="프로젝트 소개"
+                           value="1"
+                           sx={{
+                              color: '#666666',
+                              '&.Mui-selected': {
+                                 color: '#D97400',
+                                 fontWeight: 'bold',
+                              },
+                           }}
+                        />
+                        <Tab
+                           label="진행 소식"
+                           value="2"
+                           sx={{
+                              color: '#666666',
+                              '&.Mui-selected': {
+                                 color: '#D97400',
+                                 fontWeight: 'bold',
+                              },
+                           }}
+                        />
+                        <Tab
+                           label="후기"
+                           value="3"
+                           sx={{
+                              color: '#666666',
+                              '&.Mui-selected': {
+                                 color: '#D97400',
+                                 fontWeight: 'bold',
+                              },
+                           }}
+                        />
                      </TabList>
                   </Box>
                   <TabPanel value="1">
