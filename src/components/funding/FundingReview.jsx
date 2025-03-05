@@ -155,6 +155,7 @@ function FundingReview({ funding }) {
       setImgUrl('')
       setRating(0)
       dispatch(fetchReviewsThunk({ id: funding.id, page: 1, limit: 5 }))
+
    }
 
    // 로딩 에러 처리

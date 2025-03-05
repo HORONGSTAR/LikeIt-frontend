@@ -1,14 +1,13 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { Avatar, Button, TextField, Typography, Box, Link, Checkbox, FormControlLabel, Grid, Paper } from '@mui/material'
+import { Avatar, Button, TextField, Typography, Box, Checkbox, FormControlLabel, Grid, Paper } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import PostAddIcon from '@mui/icons-material/PostAdd'
-import { Main, Stack2, TextLink, ModifiedModalBox, LoadingBox, ErrorBox, ImgUploadBox, FundingCard } from '../../styles/BaseStyles'
+import { Main, TextLink, ModifiedModalBox, ImgUploadBox, FundingCard } from '../../styles/BaseStyles'
 import { styled } from '@mui/system'
 import CreateIcon from '@mui/icons-material/Create'
 import { Tabs } from '../../components/ui/Tabs'
-import { useDispatch, useSelector } from 'react-redux'
-import { changeEmailThunk, changePasswordThunk, registerUserThunk } from '../../features/authSlice'
-import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { changeEmailThunk, changePasswordThunk } from '../../features/authSlice'
 import { updateCategoryThunk, updateProfileThunk } from '../../features/pageSlice'
 
 const StyledPaper = styled(Paper)({
@@ -30,9 +29,8 @@ const IconWrapper = styled(Box)({
    marginRight: '16px',
 })
 
-function My({ initialValues = {}, orders = [], points = [], profits = [], allprojects = [] }) {
+function My({ initialValues = {}, orders = [], points = [], profits = [] }) {
    const dispatch = useDispatch()
-   const navigate = useNavigate()
    const [email, setEmail] = useState(initialValues ? initialValues.email : '')
    const [currentPassword, setCurrentPassword] = useState('')
    const [passwordToChange, setPasswordToChange] = useState('')
@@ -55,8 +53,6 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
    })
 
    const categoriesFromServer = initialValues?.Creator?.Categories ?? []
-
-   //    console.log(categoriesFromServer)
 
    useEffect(() => {
       if (categoriesFromServer?.length > 0) {
@@ -160,11 +156,6 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
          return
       }
 
-      // if (!imgFile) {
-      //    alert('이미지 파일을 추가하세요')
-      //    return
-      // }
-
       const formData = new FormData()
       formData.append('name', nickname)
 
@@ -224,11 +215,11 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
          {/* Email Update */}
          <Box sx={{ mb: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-               <Typography variant="subtitle1" sx={{ mb: 1 }}>
+               <Typography variant="subtitle1" sx={{}}>
                   이메일 주소 변경
                </Typography>
-               <TextField variant="outlined" margin="dense" value={email} onChange={(e) => setEmail(e.target.value)} />
-               <Button variant="contained" color="inherit" onClick={changeEmail}>
+               <TextField sx={{ ml: 2, mr: 1 }} variant="outlined" margin="dense" value={email} onChange={(e) => setEmail(e.target.value)} />
+               <Button variant="contained" onClick={changeEmail}>
                   변경
                </Button>
             </Box>
@@ -390,7 +381,6 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
          <Box>
             {/* Profile Section */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-
                {initialValues && <Avatar sx={{ width: 64, height: 64, mr: 2, objectFit: 'cover', borderRadius: '50%' }} src={process.env.REACT_APP_API_URL + '/userImg' + initialValues?.imgUrl} />}
                <Box>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -404,10 +394,25 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
 
                   <Box>
                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={{ fontWeight: 'bold' }}>활동분야 </Typography>
-                        {categoriesFromServer?.map((category, index) => (
-                           <Typography key={index}>{category.categoryName}</Typography>
-                        ))}
+                        {categoriesFromServer.length !== 0 ? <Typography sx={{ fontWeight: 'bold' }}>활동분야 : </Typography> : ''}
+                        {categoriesFromServer?.map((category, index) => {
+                           const categoryKr = {
+                              food: '푸드',
+                              pets: '반려동물',
+                              books: '도서',
+                              beauty: '뷰티',
+                              living: '리빙',
+                              photography: '사진',
+                              art: '그림',
+                              performance: '공연',
+                              clothing: '의류',
+                           }
+                           return (
+                              <Typography px={0.4} key={index}>
+                                 {categoryKr[category.categoryName]}
+                              </Typography>
+                           )
+                        })}
                      </Box>
 
                      <Box sx={{ display: 'flex' }}>
@@ -431,62 +436,35 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
                               <Grid container spacing={2}>
                                  {/* Row 1 */}
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="food" checked={selectedValues.food} onChange={handleChange} />}
-                                       label="푸드"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="food" checked={selectedValues.food} onChange={handleChange} />} label="푸드" />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="pets" checked={selectedValues.pets} onChange={handleChange} />}
-                                       label="반려동물"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="pets" checked={selectedValues.pets} onChange={handleChange} />} label="반려동물" />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="art" checked={selectedValues.art} onChange={handleChange} />}
-                                       label="그림"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="art" checked={selectedValues.art} onChange={handleChange} />} label="그림" />
                                  </Grid>
 
                                  {/* Row 2 */}
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="books" checked={selectedValues.books} onChange={handleChange} />}
-                                       label="도서"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="books" checked={selectedValues.books} onChange={handleChange} />} label="도서" />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="beauty" checked={selectedValues.beauty} onChange={handleChange} />}
-                                       label="뷰티"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="beauty" checked={selectedValues.beauty} onChange={handleChange} />} label="뷰티" />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="clothing" checked={selectedValues.clothing} onChange={handleChange} />}
-                                       label="의류"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="clothing" checked={selectedValues.clothing} onChange={handleChange} />} label="의류" />
                                  </Grid>
 
                                  {/* Row 3 */}
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="living" checked={selectedValues.living} onChange={handleChange} />}
-                                       label="리빙"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="living" checked={selectedValues.living} onChange={handleChange} />} label="리빙" />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="photography" checked={selectedValues.photography} onChange={handleChange} />}
-                                       label="사진"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="photography" checked={selectedValues.photography} onChange={handleChange} />} label="사진" />
                                  </Grid>
                                  <Grid item xs={4}>
-                                    <FormControlLabel
-                                       control={<Checkbox name="performance" checked={selectedValues.performance} onChange={handleChange} />}
-                                       label="공연"
-                                    />
+                                    <FormControlLabel control={<Checkbox name="performance" checked={selectedValues.performance} onChange={handleChange} />} label="공연" />
                                  </Grid>
                               </Grid>
                            </div>

@@ -2,8 +2,9 @@ import { useState, useCallback } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import { Mic } from '@mui/icons-material'
 
-function StartButton({ socket, studioId }) {
+function StartButton({ socket, studioId, start }) {
    const [open, setOpen] = useState(false)
+
    const startSpace = useCallback(() => {
       if (studioId) {
          socket.emit('create space', studioId)
@@ -38,6 +39,7 @@ function StartButton({ socket, studioId }) {
                p: 1,
             }}
             onClick={() => setOpen(true)}
+            disabled={start}
          >
             <Mic sx={{ fontSize: '20px' }} /> 스페이스
          </Button>

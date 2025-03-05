@@ -6,6 +6,7 @@ import { React, useCallback, useState } from 'react'
 import Navber from '../../components/shared/Navber'
 import { styled } from '@mui/system'
 import { snsRegisterUserThunk } from '../../features/authSlice'
+import { ErrorBox, LoadingBox } from '../../styles/BaseStyles'
 
 const AdditionalSignup = () => {
    const StyledButton = styled(Button)({
@@ -14,6 +15,7 @@ const AdditionalSignup = () => {
    const [phone, setPhone] = useState('')
    const dispatch = useDispatch()
    const { isSignupComplete, loading, error } = useSelector((state) => state.auth)
+   const [errorOpen, setErrorOpen] = useState(false)
 
    const validatePhone = (phone) => {
       const phoneRegex1 = /^\d{11}$/ //true로 반환돼야 좋은거 - 길이 11인지 확인
@@ -38,13 +40,13 @@ const AdditionalSignup = () => {
          dispatch(snsRegisterUserThunk({ phone }))
             .unwrap()
             .then()
-            .catch((error) => {
-               console.error('로그인 실패:', error)
-               alert(error)
-            })
+            .catch(() => {})
       },
       [phone]
    )
+
+   if (loading) return <LoadingBox />
+   if (error) return <Typography sx={{ color: 'red' }}>{error}</Typography>
 
    //회원가입이 완료 되었을 때
    if (isSignupComplete) {

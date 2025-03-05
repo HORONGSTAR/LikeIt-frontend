@@ -54,7 +54,13 @@ function FundingTimeline({ funding }) {
                      sm: 4,
                   }}
                >
-                  <img onClick={() => timelineDetail(timeline.id)} src={`${process.env.REACT_APP_API_URL}${timeline.imgUrl}` || null} width={'100%'} height={'180px'} style={{ display: 'block', cursor: 'pointer', objectFit: 'cover' }} />
+                  <img
+                     onClick={() => timelineDetail(timeline.id)}
+                     src={timeline.imgUrl ? `${process.env.REACT_APP_API_URL}${timeline.imgUrl}` : `${process.env.REACT_APP_FRONT_URL}/images/notFindImg.png`}
+                     width={'100%'}
+                     height={'180px'}
+                     style={{ display: 'block', cursor: 'pointer', objectFit: 'cover' }}
+                  />
                </Grid2>
                <Grid2
                   size={{
@@ -88,8 +94,9 @@ function FundingTimeline({ funding }) {
       setNowTimeline(0)
    }
 
-   const commentDel = (id) => {
-      dispatch(timelineCommentDelThunk(id))
+   const commentDel = async (id) => {
+      await dispatch(timelineCommentDelThunk(id))
+      dispatch(fetchTimelineThunk(timeline.id))
    }
 
    const showComments = useCallback(() => {
@@ -103,7 +110,7 @@ function FundingTimeline({ funding }) {
                   <Avatar src={process.env.REACT_APP_API_URL + '/userImg' + comment.User.imgUrl} sx={{ width: 40, height: 40, mr: 2 }} />
                   <Typography sx={{ lineHeight: '40px' }}>{comment.User.name}</Typography>
                   {user?.id === comment.User.id && (
-                     <Button onClick={commentDel(comment.id)} sx={{ position: 'absolute', right: '0' }}>
+                     <Button onClick={() => commentDel(comment.id)} sx={{ position: 'absolute', right: '0' }}>
                         삭제
                      </Button>
                   )}
@@ -183,7 +190,7 @@ function FundingTimeline({ funding }) {
                         )}
                      </Typography>
 
-                     <img src={`${process.env.REACT_APP_API_URL}${timeline.imgUrl}` || null} width={'90%'} style={{ display: 'block', margin: '0 auto' }} />
+                     <img src={timeline.imgUrl ? `${process.env.REACT_APP_API_URL}${timeline.imgUrl}` : `${process.env.REACT_APP_FRONT_URL}/images/notFindImg.png`} width={'90%'} style={{ display: 'block', margin: '0 auto' }} />
                      <Typography m={2}>{timeline.contents}</Typography>
 
                      {showComments()}

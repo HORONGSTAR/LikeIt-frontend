@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { SpaceScreen } from './SpaceAnimation'
 import { ErrorBox } from '../../../styles/BaseStyles'
 
-export const Broadcaster = ({ socket, info }) => {
+export const Broadcaster = ({ setStart, socket, info }) => {
    const [stream, setStream] = useState(null)
    const [open, setOpen] = useState(false)
    const localStream = useRef(null)
@@ -18,8 +18,8 @@ export const Broadcaster = ({ socket, info }) => {
             localStream.current = stream
             setStream(stream)
 
-            socket.on('new listener', (listenerId) => {
-               if (peerConnections.current[listenerId]) {
+            socket.on('new listener', ({ listenerId }) => {
+               if (peerConnections.current && peerConnections.current[listenerId]) {
                   peerConnections.current[listenerId].close()
                   delete peerConnections.current[listenerId]
                }
@@ -43,19 +43,26 @@ export const Broadcaster = ({ socket, info }) => {
                      peer.setLocalDescription(offer)
                      socket.emit('offer', { offer, listenerId })
                   })
-                  .catch(() => setOpen(true))
+                  .catch((err) => {
+                     setOpen(true)
+                     console.error(err)
+                  })
 
                peer.onicecandidate = (event) => {
-                  if (event.candidate) socket.emit('ice-candidate', { sand: '방송자', targetId: listenerId, candidate: event.candidate })
+                  if (event.candidate) socket.emit('ice-candidate', { targetId: listenerId, candidate: event.candidate })
                }
             })
 
             socket.on('answer', ({ answer, listenerId }) => {
                if (peerConnections.current[listenerId]) {
                   const peer = peerConnections.current[listenerId]
-                  if (peer.signalingState === 'stable') return
 
-                  peer.setRemoteDescription(new RTCSessionDescription(answer)).catch(() => setOpen(true))
+                  if (peer.signalingState !== 'stable') {
+                     peer.setRemoteDescription(new RTCSessionDescription(answer)).catch((err) => {
+                        setOpen(true)
+                        console.error(err)
+                     })
+                  }
                }
             })
 
@@ -65,15 +72,36 @@ export const Broadcaster = ({ socket, info }) => {
                }
             })
          })
-         .catch(() => setOpen(true))
+         .catch((err) => {
+            setOpen(true)
+            console.error(err)
+         })
 
-      const peerConnectionsCurrent = peerConnections.current
+      socket.on('end space', (msg) => {
+         if (msg) {
+            localStream.current?.getTracks().forEach((track) => track.stop())
+            peerConnections.current && Object.values(peerConnections.current).forEach((peer) => peer.close())
+            peerConnections.current = null
+         }
+      })
+
+      socket.on('leave listener', ({ listenerId }) => {
+         if (peerConnections.current[listenerId]) {
+            peerConnections.current[listenerId].close()
+            delete peerConnections.current[listenerId]
+         }
+      })
 
       return () => {
-         localStream.current?.getTracks().forEach((track) => track.stop())
-         Object.values(peerConnectionsCurrent).forEach((peer) => peer.close())
+         setStart(false)
+         socket.off('new listener')
+         socket.off('end space')
+         socket.off('ice-candidate')
+         socket.off('answer')
+         socket.off('offer')
+         socket.off('leave space')
       }
-   }, [socket, studioId, setStream])
+   }, [socket, studioId, peerConnections, localStream, setStream, setStart])
 
    return (
       <>
@@ -114,7 +142,7 @@ export const Listener = ({ socket, info }) => {
 
          peerConnection.current.onicecandidate = (event) => {
             if (event.candidate) {
-               socket.emit('ice-candidate', { sand: '청취자', targetId: broadcasterId, candidate: event.candidate })
+               socket.emit('ice-candidate', { targetId: broadcasterId, candidate: event.candidate })
                peerConnection.current.addIceCandidate(new RTCIceCandidate(event.candidate))
             }
          }
@@ -125,30 +153,32 @@ export const Listener = ({ socket, info }) => {
 
          peerConnection.current.ontrack = (event) => {
             const stream = event.streams[0]
-            if (!audioRef.current) {
-               setOpen(true)
-               setTimeout(() => {
-                  if (audioRef.current) {
-                     audioRef.current.srcObject = stream
-                     audioRef.current.play()
-                  }
-               }, 500)
-               return
-            }
+            if (!audioRef.current) return setOpen(true)
             setStream(stream)
             audioRef.current.srcObject = stream
             audioRef.current.play()
          }
       })
 
+      socket.on('leave space', (msg) => {
+         if (msg) {
+            peerConnection.current.close()
+            peerConnection.current = null
+         }
+      })
+
       socket.on('end space', (msg) => {
-         if (msg) peerConnection.current?.close()
+         if (msg) {
+            peerConnection.current = null
+         }
       })
 
       return () => {
-         peerConnection.current?.close()
+         socket.off('offer')
+         socket.off('ice-candidate')
+         socket.off('leave space')
       }
-   }, [socket, studioId])
+   }, [socket, studioId, audioRef, peerConnection])
 
    return (
       <>

@@ -8,7 +8,7 @@ import { Broadcaster, Listener } from './SpaceAudio'
 import SpaceChat from './SpaceChat'
 import dayjs from 'dayjs'
 
-function SpaceBox({ socket, studio, user }) {
+function SpaceBox({ socket, studio, user, setStart }) {
    const [users, setUsers] = useState([])
    const [info, setInfo] = useState(null)
    const [isOpen, setOpen] = useState(false)
@@ -17,7 +17,7 @@ function SpaceBox({ socket, studio, user }) {
    const studioId = studio?.id + '번 스튜디오'
 
    const joinSpace = useCallback(() => {
-      socket.emit('join space', studioId)
+      socket.emit('enter space', studioId)
       setOpen(true)
    }, [socket, studioId])
 
@@ -29,7 +29,12 @@ function SpaceBox({ socket, studio, user }) {
 
    const leaveSpace = useCallback(() => {
       socket.emit('leave space', studioId)
-      setOpen(false)
+
+      socket.on('leave space', (msg) => {
+         if (msg) {
+            setOpen(false)
+         }
+      })
    }, [socket, studioId])
 
    useEffect(() => {
@@ -43,24 +48,24 @@ function SpaceBox({ socket, studio, user }) {
             startTime: dayjs(info.startTime).format('YYYY년 MM월 DD일 HH시 mm분'),
             users: info?.users,
          })
-         setAdmin(info?.admin?.id === user?.id ? true : false)
+         setAdmin(info?.id === user?.id ? true : false)
+         setOpen(info?.id === user?.id ? true : false)
          setUsers({ velue: info?.users, keyList: Object.keys(info?.users) })
+         setStart(true)
       })
 
       socket.on('end space', (msg) => {
          if (msg) {
-            leaveSpace()
             setInfo(null)
-            setAlert(true)
+            setStart(false)
          }
       })
 
       return () => {
-         socket.off('space info', studioId)
-         socket.off('leave space', studioId)
-         socket.off('end space', studioId)
+         socket.off('space info')
+         socket.off('leave space')
       }
-   }, [socket, user, leaveSpace, studioId])
+   }, [socket, user, studioId, setStart])
 
    const chipSx = {
       background: '#fff',
@@ -101,6 +106,7 @@ function SpaceBox({ socket, studio, user }) {
       <>
          {info && (
             <Stack
+               className="space-start"
                sx={{
                   background: 'linear-gradient(to right, #4ACBCF, #A57EFF)',
                   borderRadius: openSx[isOpen].radius,
@@ -144,7 +150,7 @@ function SpaceBox({ socket, studio, user }) {
                   <Main>
                      <Grid2 container display="flex">
                         <Grid2 size={{ md: 4, sm: 5, xs: 12 }} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                           {isAdmin ? <Broadcaster socket={socket} info={info} /> : <Listener socket={socket} info={info} />}
+                           {isAdmin ? <Broadcaster setStart={setStart} socket={socket} info={info} /> : <Listener socket={socket} info={info} />}
                         </Grid2>
                         <Grid2 p={2} size={{ md: 8, sm: 7, xs: 12 }}>
                            <SpaceChat socket={socket} studioId={studioId} />
@@ -155,7 +161,7 @@ function SpaceBox({ socket, studio, user }) {
             </Stack>
          )}
          <Snackbar open={alert} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} autoHideDuration={6000} onClose={() => setAlert(false)}>
-            <Alert onClose={() => setAlert(false)} severity="error" variant="filled" sx={{ width: '100%' }}>
+            <Alert onClose={() => setAlert(false)} severity="info" variant="filled" sx={{ width: '100%' }}>
                스페이스가 종료되었습니다.
             </Alert>
          </Snackbar>
