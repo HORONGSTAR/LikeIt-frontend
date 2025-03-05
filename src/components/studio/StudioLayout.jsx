@@ -1,6 +1,6 @@
 import { Card, CardContent, CardMedia, Typography, Button, Divider, Stack } from '@mui/material'
 import { Stack2 } from '../../styles/BaseStyles'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import StartButton from './space/StartButton'
@@ -11,6 +11,7 @@ import useSocket from '../../hooks/useSocket'
 function StudioLayout() {
    const { studio, projects } = useSelector((state) => state.studio)
    const { user } = useSelector((state) => state.auth)
+   const [start, setStart] = useState(false)
    const socket = useSocket()
    const navigate = useNavigate()
 
@@ -46,7 +47,7 @@ function StudioLayout() {
                   </Typography>
                   {isMumber ? (
                      <Stack2>
-                        {isMumber.spAdmin && <StartButton socket={socket} studioId={studio?.id + '번 스튜디오'} />}
+                        {isMumber.spAdmin && <StartButton socket={socket} studioId={studio?.id + '번 스튜디오'} start={start} />}
                         {isMumber.cmAdmin && (
                            <Button variant="yellow" onClick={() => navigate('/community/write')}>
                               글쓰기
@@ -84,7 +85,7 @@ function StudioLayout() {
                </Stack2>
             </CardContent>
          </Card>
-         <SpaceBox socket={socket} studio={studio} user={user} />
+         <SpaceBox setStart={setStart} socket={socket} studio={studio} user={user} />
          <StudioTab />
       </>
    )

@@ -61,6 +61,11 @@ input[type='number']::-webkit-inner-spin-button {
    appearance: none;
 }
 
+.space-start {
+   animation: spaceStart 0.1s linear;
+   transform: animation;
+}
+
 .spacebar-title {
    position: relative;
    animation: moveTitle 10s linear infinite;
@@ -119,5 +124,19 @@ div ::-webkit-scrollbar-track {
    }
    100% {
       transform: translateX(-100%);
+   }
+}
+
+@keyframes spaceStart {
+   0% {
+      transform: scaleX(0.8);
+      transform: scaleY(0.8);
+      opacity: 0;
+   }
+
+   100% {
+      transform: scaleX(1);
+      transform: scaleY(1);
+      opacity: 1;
    }
 }
