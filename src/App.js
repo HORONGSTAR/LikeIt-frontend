@@ -98,10 +98,24 @@ function App() {
             />
 
             {/* auth */}
-            <Route path="/login" element={<LoginPage />} />
+            <Route
+               path="/login"
+               element={
+                  <RedirectLoginRoute>
+                     <LoginPage />
+                  </RedirectLoginRoute>
+               }
+            />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/commonsignup" element={<CommonSignupPage />} />
-            <Route path="/findingpassword" element={<FindingPasswordPage />} />
+            <Route
+               path="/findingpassword"
+               element={
+                  <RedirectLoginRoute>
+                     <FindingPasswordPage />
+                  </RedirectLoginRoute>
+               }
+            />
             <Route
                path="/findingemail"
                element={

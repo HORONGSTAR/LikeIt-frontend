@@ -18,7 +18,6 @@ const FundingDetailPage = () => {
    const { user, isAuthenticated } = useSelector((state) => state.auth)
    const [project, setProject] = useState(null)
    const [noReward, setNoReward] = useState('')
-   const { user } = useSelector((state) => state.auth)
    const { creators } = useSelector((state) => state.creator)
    const isCreator = creators.some((creator) => creator.Creator?.User?.id === user?.id)
 
@@ -149,7 +148,7 @@ const FundingDetailPage = () => {
                                  <Link
                                     to={Object.keys(orderRewardBasket).length > 0 ? `/funding/order/${funding.id}` : undefined}
                                     onClick={(e) => {
-                                       if (Object.keys(orderRewardBasket).length === 0) {
+                                       if (Object.keys(orderRewardBasket).length === 0 || Object.values(orderRewardBasket).every((value) => value === 0)) {
                                           e.preventDefault()
                                           setNoReward('리워드를 선택해주세요')
                                        }
