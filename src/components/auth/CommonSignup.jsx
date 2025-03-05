@@ -24,9 +24,10 @@ const CommonSignup = () => {
    const [nickname, setNickname] = useState('')
    const [password, setPassword] = useState('')
    const [confirmPassword, setConfirmPassword] = useState('')
+   const { isSignupComplete, loading, error } = useSelector((state) => state.auth)
+   const [errorOpen, setErrorOpen] = useState(false)
 
    const dispatch = useDispatch()
-   const { isSignupComplete, error } = useSelector((state) => state.auth)
 
    const validatePhone = (phone) => {
       const phoneRegex1 = /^\d{11}$/ //true로 반환돼야 좋은거 - 길이 11인지 확인
@@ -67,22 +68,8 @@ const CommonSignup = () => {
          return
       }
 
-      dispatch(registerUserThunk({ email, phone, nickname, password }))
-         .unwrap()
-         .then()
-         .catch((error) => {
-            // 회원가입중 에러 발생시
-            // console.error('회원가입 에러:', error)
-            // alert(error)
-         })
+      dispatch(registerUserThunk({ email, phone, nickname, password })).unwrap().then().catch()
    }, [dispatch, email, phone, nickname, password, confirmPassword])
-
-   if (error)
-      return (
-         <>
-            <ErrorBox error={error} />
-         </>
-      )
 
    //회원가입이 완료 되었을 때
    if (isSignupComplete) {
@@ -108,6 +95,8 @@ const CommonSignup = () => {
          </>
       )
    }
+   if (loading) return <LoadingBox />
+   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
 
    return (
       <SignupForm>
@@ -129,7 +118,19 @@ const CommonSignup = () => {
             비밀번호는 영문, 숫자, 특수문자를 포함하여 공백 없이 8~20자로 입력.
          </Typography>
 
-         <TextField label="비밀번호 확인" variant="outlined" type="password" fullWidth margin="dense" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+         <TextField
+            label="비밀번호 확인"
+            variant="outlined"
+            type="password"
+            fullWidth
+            margin="dense"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            onKeyDown={(e) => {
+               if (e.key === 'Enter') handleCommonSignup()
+            }}
+         />
+
          <StyledButton fullWidth variant="contained" sx={{ backgroundColor: '#000000', color: '#FFFFFF' }} onClick={handleCommonSignup}>
             회원가입
          </StyledButton>

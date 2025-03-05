@@ -106,10 +106,24 @@ function App() {
                   </RedirectLoginRoute>
                }
             />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/commonsignup" element={<CommonSignupPage />} />
             <Route
-               path="/findingpassword"
+               path="/signup"
+               element={
+                  <RedirectLoginRoute>
+                     <SignupPage />
+                  </RedirectLoginRoute>
+               }
+            />
+            <Route
+               path="/commonsignup" //잘 작동함.
+               element={
+                  <RedirectLoginRoute>
+                     <CommonSignupPage />
+                  </RedirectLoginRoute>
+               }
+            />
+            <Route
+               path="/findingpassword" //잘 작동함.
                element={
                   <RedirectLoginRoute>
                      <FindingPasswordPage />
@@ -117,14 +131,21 @@ function App() {
                }
             />
             <Route
-               path="/findingemail"
+               path="/findingemail" //잘 작동함.
                element={
                   <RedirectLoginRoute>
                      <FindingEmailPage />
                   </RedirectLoginRoute>
                }
             />
-            <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
+            <Route
+               path="/additionalsignup" //잘 작동함.
+               element={
+                  <RedirectLoginRoute>
+                     <AdditionalSignupPage />
+                  </RedirectLoginRoute>
+               }
+            />
             <Route
                path="/my"
                element={
