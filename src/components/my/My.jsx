@@ -1,14 +1,13 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { Avatar, Button, TextField, Typography, Box, Link, Checkbox, FormControlLabel, Grid, Paper } from '@mui/material'
+import { Avatar, Button, TextField, Typography, Box, Checkbox, FormControlLabel, Grid, Paper } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import PostAddIcon from '@mui/icons-material/PostAdd'
-import { Main, Stack2, TextLink, ModifiedModalBox, LoadingBox, ErrorBox, ImgUploadBox, FundingCard } from '../../styles/BaseStyles'
+import { Main, TextLink, ModifiedModalBox, ImgUploadBox, FundingCard } from '../../styles/BaseStyles'
 import { styled } from '@mui/system'
 import CreateIcon from '@mui/icons-material/Create'
 import { Tabs } from '../../components/ui/Tabs'
-import { useDispatch, useSelector } from 'react-redux'
-import { changeEmailThunk, changePasswordThunk, registerUserThunk } from '../../features/authSlice'
-import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { changeEmailThunk, changePasswordThunk } from '../../features/authSlice'
 import { updateCategoryThunk, updateProfileThunk } from '../../features/pageSlice'
 
 const StyledPaper = styled(Paper)({
@@ -32,7 +31,6 @@ const IconWrapper = styled(Box)({
 
 function My({ initialValues = {}, orders = [], points = [], profits = [], allprojects = [] }) {
    const dispatch = useDispatch()
-   const navigate = useNavigate()
    const [email, setEmail] = useState(initialValues ? initialValues.email : '')
    const [currentPassword, setCurrentPassword] = useState('')
    const [passwordToChange, setPasswordToChange] = useState('')
@@ -403,7 +401,7 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
 
                   <Box>
                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={{ fontWeight: 'bold' }}>활동분야 : </Typography>
+                        {categoriesFromServer.length !== 0 ? <Typography sx={{ fontWeight: 'bold' }}>활동분야 : </Typography> : ''}
                         {categoriesFromServer?.map((category, index) => {
                            const categoryKr = {
                               food: '푸드',
