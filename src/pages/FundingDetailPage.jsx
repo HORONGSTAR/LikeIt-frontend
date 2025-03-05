@@ -18,7 +18,6 @@ const FundingDetailPage = () => {
    const { user, isAuthenticated } = useSelector((state) => state.auth)
    const [project, setProject] = useState(null)
    const [noReward, setNoReward] = useState('')
-   const { user } = useSelector((state) => state.auth)
    const { creators } = useSelector((state) => state.creator)
    const isCreator = creators.some((creator) => creator.Creator?.User?.id === user?.id)
 
@@ -111,7 +110,11 @@ const FundingDetailPage = () => {
                      <Card sx={{ p: 1, boxShadow: 'none' }}>
                         <CardContent sx={{ textAlign: 'left' }}>
                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                              <Avatar onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)} src={project.creator.profileImage} sx={{ width: 50, height: 50, mr: 2, cursor: 'pointer' }} />
+                              <Avatar
+                                 onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)}
+                                 src={project.creator.profileImage}
+                                 sx={{ width: 50, height: 50, mr: 2, cursor: 'pointer' }}
+                              />
                               <Box>
                                  <Typography onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)} variant="subtitle1" fontWeight="bold" sx={{ cursor: 'pointer' }}>
                                     {project.creator.name}
