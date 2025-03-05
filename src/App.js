@@ -66,6 +66,7 @@ function App() {
       findingemail: true,
       commonsignup: true,
       studio: <StudioNavber isAuthenticated={isAuthenticated} user={user} />,
+      additionalsignup: true,
    }
    const dontNeedNavber = pageName[path[1]]
 
@@ -87,40 +88,20 @@ function App() {
             <Route path="/category/:id" element={<CategoryPage />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/rank" element={<RankingPage />} />
-            <Route path="/admin" element={<AdminPage />} />
+            <Route
+               path="/admin"
+               element={
+                  <AdminRoute>
+                     <AdminPage />
+                  </AdminRoute>
+               }
+            />
+
             {/* auth */}
-            <Route
-               path="/login"
-               element={
-                  <RedirectLoginRoute>
-                     <LoginPage />
-                  </RedirectLoginRoute>
-               }
-            />
-            <Route
-               path="/signup"
-               element={
-                  <RedirectLoginRoute>
-                     <SignupPage />
-                  </RedirectLoginRoute>
-               }
-            />
-            <Route
-               path="/commonsignup"
-               element={
-                  <RedirectLoginRoute>
-                     <CommonSignupPage />
-                  </RedirectLoginRoute>
-               }
-            />
-            <Route
-               path="/findingpassword"
-               element={
-                  <RedirectLoginRoute>
-                     <FindingPasswordPage />
-                  </RedirectLoginRoute>
-               }
-            />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/commonsignup" element={<CommonSignupPage />} />
+            <Route path="/findingpassword" element={<FindingPasswordPage />} />
             <Route
                path="/findingemail"
                element={
@@ -129,14 +110,7 @@ function App() {
                   </RedirectLoginRoute>
                }
             />
-            <Route
-               path="/additionalsignup"
-               element={
-                  <RedirectLoginRoute>
-                     <AdditionalSignupPage />
-                  </RedirectLoginRoute>
-               }
-            />
+            <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
             <Route
                path="/my"
                element={
@@ -145,6 +119,18 @@ function App() {
                   </RedirectLogoutRoute>
                }
             />
+<<<<<<< HEAD
+=======
+            <Route
+               path="/notice"
+               element={
+                  <RedirectLogoutRoute>
+                     <NoticePage />
+                  </RedirectLogoutRoute>
+               }
+            />
+
+>>>>>>> 7cd74819a3347b64fb105b79e8f52372341c107b
             {/* studio */}
             <Route
                path="/studio"

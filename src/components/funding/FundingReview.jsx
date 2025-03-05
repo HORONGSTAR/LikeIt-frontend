@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchReviewsThunk, reviewDelThunk, reviewRecommendDelThunk, reviewRecommendRegThunk, reviewRegThunk } from '../../features/fundingSlice'
 import { Box, Grid2, Typography, Divider, Chip, Avatar, IconButton, TextField, Button, Rating, styled } from '@mui/material'
 import RecommendIcon from '@mui/icons-material/Recommend'
-import { ErrorBox, LoadingBox, ModalBox } from '../../styles/BaseStyles'
+import { ErrorBox, ImgUploadBox, LoadingBox, ModalBox } from '../../styles/BaseStyles'
 
 function FundingReview({ funding }) {
    const dispatch = useDispatch()
@@ -33,33 +33,6 @@ function FundingReview({ funding }) {
    const reviewDel = (id) => {
       dispatch(reviewDelThunk(id))
    }
-
-   // 이미지 파일 등록
-   const handleImgChange = useCallback((e) => {
-      const file = e.target.files[0]
-      if (!file) return
-
-      setImgFile(file)
-
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = (event) => {
-         setImgUrl(event.target.result)
-      }
-   }, [])
-
-   // 이미지 등록 버튼용
-   const VisuallyHiddenInput = styled('input')({
-      clip: 'rect(0 0 0 0)',
-      clipPath: 'inset(50%)',
-      height: 1,
-      overflow: 'hidden',
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      whiteSpace: 'nowrap',
-      width: 1,
-   })
 
    const loadMoreReviews = () => {
       setLoadingCount(loadingCount + 5)
@@ -204,13 +177,7 @@ function FundingReview({ funding }) {
                   <Box py={1} sx={{ '& > legend': { mt: 2 } }}>
                      <Rating name="simple-controlled" value={rating} onChange={(event, newRating) => setRating(newRating)} />
                   </Box>
-                  {/* 이미지 파일 미리보기 */}
-                  {ImgUrl && <img src={ImgUrl} alt="업로드 이미지 미리보기" style={{ height: '50px', width: '50px', display: 'block' }} />}
-                  {/* 이미지 등록 */}
-                  <Button component="label" role={undefined} variant="contained" tabIndex={-1}>
-                     이미지 업로드
-                     <VisuallyHiddenInput type="file" onChange={handleImgChange} name="reviewImg" />
-                  </Button>
+                  <ImgUploadBox setImgFile={setImgFile} imgUrl={ImgUrl} setImgUrl={setImgUrl} />
                   {/* 리뷰 등록 */}
                   <Button onClick={isAuthenticated ? submitReviewReg : () => (window.location.href = '/login')} sx={{ marginY: '8px' }} variant="contained">
                      등록

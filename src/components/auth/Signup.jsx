@@ -7,6 +7,10 @@ const Signup = () => {
       window.location.href = 'http://localhost:8000/auth/google'
    }
 
+   const kakaoLoginOrSignup = () => {
+      window.location.href = 'http://localhost:8000/auth/kakao'
+   }
+
    return (
       <Stack width={300} spacing={2}>
          <Stack2 justifyContent="center">
@@ -17,7 +21,7 @@ const Signup = () => {
          <Button component={Link} to={'/commonsignup'} fullWidth variant="contained">
             이메일로 회원가입
          </Button>
-         <Button variant="contained" sx={{ background: '#F9E000', color: '#3A1D1D' }} startIcon={<img src="/images/icon/kakao.svg" alt="kakao" />}>
+         <Button onClick={kakaoLoginOrSignup} variant="contained" sx={{ background: '#F9E000', color: '#3A1D1D' }} startIcon={<img src="/images/icon/kakao.svg" alt="kakao" />}>
             카카오 계정으로 회원가입
          </Button>
          <Button onClick={googleLoginOrSignup} variant="outlined" startIcon={<img src="/images/icon/google.svg" alt="google" />}>
