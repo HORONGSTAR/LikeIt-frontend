@@ -35,7 +35,7 @@ const CommuList = ({ setOpen }) => {
                         </Typography>
                      </Stack2>
                      <Stack2>
-                        <Avatar src={community.User?.imgUrl || '/images/default-profile.jpg'} sx={{ width: 18, height: 18, mr: 0.4 }} />
+                        <Avatar src={process.env.REACT_APP_API_URL + '/userImg' + community.User.imgUrl || '/images/default-profile.jpg'} sx={{ width: 18, height: 18, mr: 0.4 }} />
                         <Typography>{community.User?.name || '닉네임 없음'}</Typography>
                      </Stack2>
                   </Stack>
