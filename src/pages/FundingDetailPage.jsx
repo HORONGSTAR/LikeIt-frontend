@@ -92,7 +92,7 @@ const FundingDetailPage = () => {
          <Main>
             <Box sx={{ maxWidth: '1000px', margin: 'auto', mt: 5 }}>
                {/* 제목 */}
-               <Typography p={1} variant="h2" fontWeight="bold" sx={{ mb: 3, textAlign: 'center' }}>
+               <Typography p={1} variant="h2" fontWeight="bold" sx={{ mb: 2, textAlign: 'center' }}>
                   {project.title}
                </Typography>
 
@@ -143,22 +143,31 @@ const FundingDetailPage = () => {
                               </Link>
                            ) : status ? (
                               status
-                           ) : (
-                              <Link
-                                 to={isAuthenticated ? (Object.keys(orderRewardBasket).length > 0 ? `/funding/order/${funding.id}` : undefined) : '/login'}
-                                 onClick={(e) => {
-                                    if (Object.keys(orderRewardBasket).length === 0 || Object.values(orderRewardBasket).every((value) => value === 0)) {
-                                       e.preventDefault()
-                                       setNoReward('리워드를 선택해주세요')
-                                    }
-                                 }}
-                                 state={{ orderRewardBasket: orderRewardBasket }}
-                              >
-                                 <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
-                                    후원하기
-                                 </Button>
-                              </Link>
-                           )}
+                           ) : isAuthenticated ? (
+                              isCreator ? (
+                                 <Link to={`/creator/${funding.id}`}>
+                                    <Button variant="yellow" fullWidth sx={{ mt: 2, py: 2.5, fontSize: '1.1rem', color: '#ffffff' }}>
+                                       프로젝트 관리
+                                    </Button>
+                                 </Link>
+                              ) : (
+                                 <Link
+                                    to={Object.keys(orderRewardBasket).length > 0 ? `/funding/order/${funding.id}` : undefined}
+                                    onClick={(e) => {
+                                       if (Object.keys(orderRewardBasket).length === 0) {
+                                          e.preventDefault()
+                                          setNoReward('리워드를 선택해주세요')
+                                       }
+                                    }}
+                                    state={{ orderRewardBasket: orderRewardBasket }}
+                                 >
+                                    <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
+                                       후원하기
+                                    </Button>
+                                 </Link>
+                              )
+                           ) : null}
+
 
                            <Typography sx={{ color: 'red', textAlign: 'center' }}>{noReward}</Typography>
                         </CardContent>
@@ -169,10 +178,48 @@ const FundingDetailPage = () => {
             <Box sx={{ width: '100%', typography: 'body1' }}>
                <TabContext value={tabValue}>
                   <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                     <TabList onChange={handleTabChange} aria-label="lab API tabs example">
-                        <Tab label="프로젝트 소개" value="1" />
-                        <Tab label="진행 소식" value="2" />
-                        <Tab label="후기" value="3" />
+                     <TabList
+                        onChange={handleTabChange}
+                        aria-label="lab API tabs example"
+                        sx={{
+                           '& .MuiTabs-indicator': {
+                              backgroundColor: '#D97400',
+                           },
+                        }}
+                     >
+                        <Tab
+                           label="프로젝트 소개"
+                           value="1"
+                           sx={{
+                              color: '#666666',
+                              '&.Mui-selected': {
+                                 color: '#D97400',
+                                 fontWeight: 'bold',
+                              },
+                           }}
+                        />
+                        <Tab
+                           label="진행 소식"
+                           value="2"
+                           sx={{
+                              color: '#666666',
+                              '&.Mui-selected': {
+                                 color: '#D97400',
+                                 fontWeight: 'bold',
+                              },
+                           }}
+                        />
+                        <Tab
+                           label="후기"
+                           value="3"
+                           sx={{
+                              color: '#666666',
+                              '&.Mui-selected': {
+                                 color: '#D97400',
+                                 fontWeight: 'bold',
+                              },
+                           }}
+                        />
                      </TabList>
                   </Box>
                   <TabPanel value="1">

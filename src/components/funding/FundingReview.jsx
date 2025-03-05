@@ -31,8 +31,9 @@ function FundingReview({ funding }) {
    }, [])
 
    // 리뷰 삭제
-   const reviewDel = (id) => {
-      dispatch(reviewDelThunk(id))
+   const reviewDel = async (id) => {
+      await dispatch(reviewDelThunk(id))
+      dispatch(fetchReviewsThunk({ id: funding.id, page: 1, limit: 5 }))
    }
 
    const loadMoreReviews = () => {
@@ -82,6 +83,7 @@ function FundingReview({ funding }) {
                      xs: 'block',
                   },
                   border: '1px solid #dddddd',
+                  overflow: 'hidden',
                }}
                m={1}
             >
@@ -146,9 +148,14 @@ function FundingReview({ funding }) {
       formData.append('reviewImg', ImgFile)
       formData.append('star', rating)
       formData.append('review', reviewInput)
+
       await dispatch(reviewRegThunk(formData))
       setReviewInput('')
-      dispatch(fetchReviewsThunk({ id: funding.id, page, limit: 5 }))
+      setImgFile(null)
+      setImgUrl('')
+      setRating(0)
+      dispatch(fetchReviewsThunk({ id: funding.id, page: 1, limit: 5 }))
+
    }
 
    // 로딩 에러 처리

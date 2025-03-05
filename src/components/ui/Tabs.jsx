@@ -4,7 +4,7 @@ import { TabContext, TabList, TabPanel } from '@mui/lab'
 import { Link, Element } from 'react-scroll'
 import { Stack2 } from '../../styles/BaseStyles'
 
-export const Tabs = ({ tabItems = [] }) => {
+export const Tabs = ({ tabItems = [], sx = {} }) => {
    const [value, setValue] = useState(tabItems[0]?.label)
 
    const handleChange = (event, newValue) => {
@@ -15,9 +15,9 @@ export const Tabs = ({ tabItems = [] }) => {
       <Box sx={{ width: '100%', typography: 'body1' }}>
          <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-               <TabList onChange={handleChange} aria-label="tabs">
+               <TabList onChange={handleChange} aria-label="tabs" sx={sx}>
                   {tabItems.map((item) => (
-                     <Tab key={'label' + item.label} label={item.label} value={item.label} />
+                     <Tab key={'label' + item.label} label={item.label} value={item.label} sx={sx} />
                   ))}
                </TabList>
             </Box>
