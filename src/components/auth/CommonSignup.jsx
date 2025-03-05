@@ -25,7 +25,6 @@ const CommonSignup = () => {
    const [password, setPassword] = useState('')
    const [confirmPassword, setConfirmPassword] = useState('')
    const { isSignupComplete, loading, error } = useSelector((state) => state.auth)
-   const [errorOpen, setErrorOpen] = useState(false)
 
    const dispatch = useDispatch()
 
@@ -71,6 +70,8 @@ const CommonSignup = () => {
       dispatch(registerUserThunk({ email, phone, nickname, password })).unwrap().then().catch()
    }, [dispatch, email, phone, nickname, password, confirmPassword])
 
+   if (loading) return <LoadingBox />
+   if (error) return <Typography sx={{ color: 'red' }}>{error}</Typography>
    //회원가입이 완료 되었을 때
    if (isSignupComplete) {
       return (
@@ -95,8 +96,6 @@ const CommonSignup = () => {
          </>
       )
    }
-   if (loading) return <LoadingBox />
-   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
 
    return (
       <SignupForm>

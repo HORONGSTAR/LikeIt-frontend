@@ -21,10 +21,7 @@ const FindingPassword = () => {
                navigate('/login')
                alert('이메일로 임시비밀번호를 보냈습니다!')
             })
-            .catch((error) => {
-               console.error('로그인 실패:', error)
-               alert(error)
-            })
+            .catch()
       },
       [dispatch, navigate, email]
    )
@@ -35,12 +32,7 @@ const FindingPassword = () => {
             <LoadingBox />
          </>
       )
-   if (error)
-      return (
-         <>
-            <ErrorBox error={error} />
-         </>
-      )
+   if (error) return <Typography sx={{ color: 'red' }}>{error}</Typography>
 
    return (
       <Stack width={300} spacing={2}>
