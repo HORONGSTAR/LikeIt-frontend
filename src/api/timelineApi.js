@@ -17,9 +17,9 @@ export const createTimeline = async (timelineData) => {
 }
 
 // 타임라인 글 수정
-export const updateTimeline = async (id, timelineData) => {
+export const updateTimeline = async (id, formData) => {
    try {
-      const response = await likeitApi.put(`/timeline/${id}`, timelineData)
+      const response = await likeitApi.put(`/timeline/${id}`, formData)
       return response
    } catch (error) {
       console.error('타임라인 글 수정 실패:', error.response?.data?.message || error.message)
