@@ -118,7 +118,19 @@ const CommonSignup = () => {
             비밀번호는 영문, 숫자, 특수문자를 포함하여 공백 없이 8~20자로 입력.
          </Typography>
 
-         <TextField label="비밀번호 확인" variant="outlined" type="password" fullWidth margin="dense" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+         <TextField
+            label="비밀번호 확인"
+            variant="outlined"
+            type="password"
+            fullWidth
+            margin="dense"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            onKeyDown={(e) => {
+               if (e.key === 'Enter') handleCommonSignup()
+            }}
+         />
+
          <StyledButton fullWidth variant="contained" sx={{ backgroundColor: '#000000', color: '#FFFFFF' }} onClick={handleCommonSignup}>
             회원가입
          </StyledButton>
