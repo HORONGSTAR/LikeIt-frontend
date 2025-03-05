@@ -32,7 +32,7 @@ function Portfolio({ items }) {
                <CardMedia image={process.env.REACT_APP_API_URL + '/projectImg/' + items.new.imgUrl} sx={{ width: '45%', minHeight: 240 }} />
                <CardContent sx={{ width: '55%', display: 'flex', flexDirection: 'column' }}>
                   <Box sx={{ flexGrow: 1 }}>
-                     <Typography fontSize={32} fontWeight={600}>
+                     <Typography fontSize={32} fontWeight={700}>
                         {items.new.title}
                      </Typography>
                      <Typography>{items.new.contents}</Typography>

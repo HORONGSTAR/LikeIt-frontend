@@ -12,7 +12,21 @@ function CreatorTab() {
    ]
    return (
       <>
-         <Tabs tabItems={tabItems} />
+         <Tabs
+            tabItems={tabItems}
+            sx={{
+               '& .MuiTabs-indicator': {
+                  backgroundColor: '#D97400',
+               },
+               '& .MuiTab-root': {
+                  color: '#666666',
+               },
+               '& .Mui-selected': {
+                  color: '#D97400 !important',
+                  fontWeight: 'bold',
+               },
+            }}
+         />
       </>
    )
 }
