@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { loginUserThunk } from '../../features/authSlice'
 import { TextField, Button, Typography, Stack, Divider } from '@mui/material'
 import { Stack2, TextLink, Dot } from '../../styles/BaseStyles'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ErrorBox, LoadingBox } from '../../styles/BaseStyles'
 
 function Login() {
@@ -34,7 +34,15 @@ function Login() {
       [dispatch, navigate, email, password]
    )
 
-   if (error) return <Typography sx={{ color: 'red' }}>{error}</Typography>
+   if (error)
+      return (
+         <>
+            <Typography sx={{ color: 'red' }}>{error}</Typography>
+            <Typography>
+               <Link to="/">홈으로 돌아가기</Link>
+            </Typography>
+         </>
+      )
 
    return (
       <Stack width={300} spacing={2}>
