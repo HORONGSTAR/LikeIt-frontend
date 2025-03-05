@@ -1,6 +1,6 @@
 import { FormGrid } from '../../ui/FormGrid'
 import { Stack2 } from '../../../styles/BaseStyles'
-import { Button, InputBase, Divider, Card, Chip, Stack, IconButton, List, ListItem, ListItemText, Typography, Box } from '@mui/material'
+import { Button, InputBase, Divider, Card, Chip, Stack, IconButton, List, ListItem, ListItemText, Typography } from '@mui/material'
 import { AddCircle, RemoveCircleOutline } from '@mui/icons-material'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -152,7 +152,13 @@ function ProjectBudgetForm({ onSubmit, initVals = {} }) {
                {creaBudg.map((budget, index) => (
                   <Stack2 key={'creaBudg' + index} sx={{ width: '100%' }}>
                      <Card variant="outlined" sx={{ py: 1, px: 2, gap: 2, width: '100%' }}>
-                        <InputBase readOnly placeholder="창작자" value={names[budget.studioCreatorId] || ''} onClick={() => setOpen(index)} onChange={(e) => handleCreaBudgChange(index, 'contents', e.target.value)} />
+                        <InputBase
+                           readOnly
+                           placeholder="창작자"
+                           value={names[budget.studioCreatorId] || ''}
+                           onClick={() => setOpen(index)}
+                           onChange={(e) => handleCreaBudgChange(index, 'contents', e.target.value)}
+                        />
                         <Divider orientation="vertical" flexItem />
                         <InputBase fullWidth placeholder="예산 내용" value={budget.contents} onChange={(e) => handleCreaBudgChange(index, 'contents', e.target.value)} />
                         <Divider orientation="vertical" flexItem />

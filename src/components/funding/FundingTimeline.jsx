@@ -190,7 +190,11 @@ function FundingTimeline({ funding }) {
                         )}
                      </Typography>
 
-                     <img src={timeline.imgUrl ? `${process.env.REACT_APP_API_URL}${timeline.imgUrl}` : `${process.env.REACT_APP_FRONT_URL}/images/notFindImg.png`} width={'90%'} style={{ display: 'block', margin: '0 auto' }} />
+                     <img
+                        src={timeline.imgUrl ? `${process.env.REACT_APP_API_URL}${timeline.imgUrl}` : `${process.env.REACT_APP_FRONT_URL}/images/notFindImg.png`}
+                        width={'90%'}
+                        style={{ display: 'block', margin: '0 auto' }}
+                     />
                      <Typography m={2}>{timeline.contents}</Typography>
 
                      {showComments()}
@@ -222,7 +226,7 @@ function FundingTimeline({ funding }) {
                <>
                   {allTimelines}
                   <Box py={4}>
-                     <Divider>{loadingCount >= timelineCount ? <p style={{ textAlign: 'center', margin: '16px' }}>모든 프로젝트를 불러왔습니다</p> : <Chip onClick={loadMoreTimelines} label="더보기" />}</Divider>
+                     <Divider>{loadingCount >= timelineCount ? <Typography color="grey">모든 진행 소식을 불러왔습니다</Typography> : <Chip onClick={loadMoreTimelines} label="더보기" />}</Divider>
                   </Box>
                </>
             )

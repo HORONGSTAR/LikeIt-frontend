@@ -46,7 +46,11 @@ function Notice() {
                      },
                   }}
                >
-                  <Avatar src={process.env.REACT_APP_API_URL + messageType.folderUrl + message.imgUrl} sx={{ width: 50, height: 50, mr: 2, cursor: 'pointer' }} onClick={() => (window.location.href = messageType.link)} />
+                  <Avatar
+                     src={process.env.REACT_APP_API_URL + messageType.folderUrl + message.imgUrl}
+                     sx={{ width: 50, height: 50, mr: 2, cursor: 'pointer' }}
+                     onClick={() => (window.location.href = messageType.link)}
+                  />
                   {message.message}
                </Box>
             )
@@ -80,7 +84,7 @@ function Notice() {
                   {allMessages}
                </Box>
                <Box py={4}>
-                  <Divider>{loadingCount >= count ? <p style={{ textAlign: 'center', margin: '16px' }}>모든 메시지를 불러왔습니다</p> : <Chip onClick={loadMoreMessages} label="더보기" />}</Divider>
+                  <Divider>{loadingCount >= count ? <Typography color="grey">모든 메시지를 불러왔습니다</Typography> : <Chip onClick={loadMoreMessages} label="더보기" />}</Divider>
                </Box>
             </>
          ) : (

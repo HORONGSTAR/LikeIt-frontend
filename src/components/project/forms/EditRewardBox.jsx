@@ -25,7 +25,7 @@ function EditRewardBox({ onSubmit, open, products, reward, children }) {
    const handleSubmit = useCallback(() => {
       const { stock, limit } = checked
       const relation = products.map((product) => checked[product.id] && { id: product.id, count: checked[product.id] }).filter((product) => product)
-      if (!isBlank([name, contents, stock, limit, relation])) return
+      if (!isBlank([name, contents, stock, limit, relation])) return setAlert(true)
       const formData = new FormData()
       formData.append('price', price)
       formData.append('name', name)

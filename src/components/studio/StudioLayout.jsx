@@ -1,8 +1,7 @@
 import { Card, CardContent, CardMedia, Typography, Button, Divider, Stack } from '@mui/material'
 import { Stack2 } from '../../styles/BaseStyles'
 import { useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
-
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import StartButton from './space/StartButton'
 import StudioTab from './tab/StudioTab'
@@ -12,7 +11,7 @@ import { fetchStudioByIdThunk, studioFollowThunk, studioUnFollowThunk } from '..
 
 function StudioLayout() {
    const { studio, projects } = useSelector((state) => state.studio)
-   const { user } = useSelector((state) => state.auth)
+   const { user, isAuthenticated } = useSelector((state) => state.auth)
    const [start, setStart] = useState(false)
    const socket = useSocket()
    const dispatch = useDispatch()
@@ -52,7 +51,7 @@ function StudioLayout() {
    return (
       <>
          <Card variant="none" sx={{ display: 'flex', flexWrap: 'nowrap' }}>
-            <CardMedia sx={{ minWidth: 180, height: 180, borderRadius: '10px' }} image={studio.imgUrl ? process.env.REACT_APP_API_URL + studio.imgUrl : null} alt="스튜디오 프로필" />
+            <CardMedia sx={{ minWidth: 180, height: 180, borderRadius: '10px' }} image={studio.imgUrl ? process.env.REACT_APP_API_URL + '/studioImg' + studio.imgUrl : null} alt="스튜디오 프로필" />
             <CardContent sx={{ display: 'flex', flexDirection: 'column', py: 0 }}>
                <Stack2 mb={1} alignItems="center">
                   <Typography variant="h2" fontWeight="bold">

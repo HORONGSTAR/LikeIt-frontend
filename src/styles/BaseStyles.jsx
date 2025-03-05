@@ -1,6 +1,25 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Card, CardContent, CardMedia, Typography, Modal, Box, IconButton, Stack, CircularProgress, Dialog, DialogContent, DialogTitle, Container, Button, Link as MuiLink, CardHeader } from '@mui/material'
+import {
+   Card,
+   CardContent,
+   CardMedia,
+   Typography,
+   Modal,
+   Box,
+   IconButton,
+   Stack,
+   CircularProgress,
+   Dialog,
+   DialogContent,
+   DialogTitle,
+   Container,
+   Button,
+   Link as MuiLink,
+   CardHeader,
+   Chip,
+   Divider,
+} from '@mui/material'
 import { Close, PlayArrowRounded, AddPhotoAlternate } from '@mui/icons-material'
 import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
@@ -109,51 +128,6 @@ export const ModalBox = ({ children, openBtn, closeBtn, full }) => {
       </>
    )
 }
-
-// export const ModifiedModalBox = ({ children, openBtn, closeBtn }) => {
-//    const [open, setOpen] = useState(false)
-
-//    return (
-//       <>
-//          <Button variant="outlined" onClick={() => setOpen(true)}>
-//             {openBtn}
-//          </Button>
-//          <Modal open={open} onClose={() => closeBtn || setOpen(false)}>
-//             <Box
-//                sx={{
-//                   position: 'absolute',
-//                   boxSizing: 'border-box',
-//                   top: '50%',
-//                   left: '50%',
-//                   transform: 'translate(-50%, -50%)',
-//                   minWidth: 320,
-//                   bgcolor: 'background.paper',
-//                   borderRadius: 1,
-//                   boxShadow: 24,
-//                   px: 2,
-//                   py: 3,
-//                   maxHeight: 600,
-//                   overflowY: 'auto',
-//                }}
-//             >
-//                <IconButton
-//                   aria-label="close"
-//                   onClick={() => setOpen(false)}
-//                   sx={(theme) => ({
-//                      position: 'absolute',
-//                      right: 8,
-//                      top: 8,
-//                      color: theme.palette.grey[500],
-//                   })}
-//                >
-//                   <Close />
-//                </IconButton>
-//                {children}
-//             </Box>
-//          </Modal>
-//       </>
-//    )
-// }
 
 export const ModifiedModalBox = ({ children, openBtn, closeBtn }) => {
    const [open, setOpen] = useState(false)
@@ -333,40 +307,48 @@ export const FundingCard = ({ orders, point, totalOrderPrice }) => {
          }}
       >
          <CardHeader
-            title={
-               <>
-                  {orders.orders[0].Project?.title}
-                  <br />
+            title={orders.orders[0].Project?.title}
+            subheader={
+               <Typography color="grey" variant="caption">
                   주문 시각 : {new Date(orders.orderTime).toLocaleString()}
-               </>
+               </Typography>
             }
             sx={{ backgroundColor: '#f5f5f5', padding: 1, borderRadius: 1 }}
          />
          <Stack2>
-            {orders.orders[0].Project?.imgUrl && <CardMedia component="img" sx={{ width: 200, borderRadius: 1 }} image={`${process.env.REACT_APP_API_URL}/projectImg${orders.orders[0].Project.imgUrl}` || null} alt={orders.orders[0].Project.title} />}
+            {orders.orders[0].Project?.imgUrl && (
+               <CardMedia
+                  component="img"
+                  sx={{ width: 140, borderRadius: 1, m: 2 }}
+                  image={`${process.env.REACT_APP_API_URL}/projectImg${orders.orders[0].Project.imgUrl}` || null}
+                  alt={orders.orders[0].Project.title}
+               />
+            )}
             <CardContent>
                {orders.orders.map((order, index) => (
                   <Box key={index} sx={{ display: 'flex', flexDirection: 'row', pb: 1 }}>
                      <Stack>
-                        <Typography variant="subtitle1" fontWeight="bold">
-                           {order.Reward.name} × {order.orderCount}
-                        </Typography>
+                        <Stack2>
+                           <Typography fontWeight={600}>{order.Reward.name}</Typography>
+                           <Typography variant="body2" color="grey">
+                              &nbsp;× {order.orderCount}
+                           </Typography>
+                        </Stack2>
                         <Typography variant="body2" color="green">
-                           {order.orderPrice}원
+                           {Number(order.orderPrice).toLocaleString('ko-KR')}원
                         </Typography>
                      </Stack>
                   </Box>
                ))}
             </CardContent>
-
             <Box sx={{ ml: 'auto', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', mr: 2 }}>
-               {orders.orders[0].orderStatus === 'ON_FUNDING' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>펀딩진행중</Box>}
-               {orders.orders[0].orderStatus === 'FUNDING_COMPLETE_PAID' && <Box sx={{ backgroundColor: '#D0F0C0', m: 2, p: 1, borderRadius: 1, color: '#3BB143', display: 'inline-block' }}>펀딩성공/결제완료</Box>}
-               {orders.orders[0].orderStatus === 'FUNDING_COMPLETE_NOT_PAID' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>펀딩성공/결제실패</Box>}
-               {orders.orders[0].orderStatus === 'FUNDING_FAILED' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>펀딩실패</Box>}
-               {orders.orders[0].orderStatus === 'DELIVERY_WAITING' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>전달준비중</Box>}
-               {orders.orders[0].orderStatus === 'DELIVERY_STARTED' && <Box sx={{ backgroundColor: '#FFF700', m: 2, p: 1, borderRadius: 1, color: '#CC7722', display: 'inline-block' }}>전달시작</Box>}
-               {orders.orders[0].orderStatus === 'DELIVERY_COMPLETE' && <Box sx={{ backgroundColor: '#D0F0C0', m: 2, p: 1, borderRadius: 1, color: '#3BB143', display: 'inline-flex' }}>전달완료</Box>}
+               {orders.orders[0].orderStatus === 'ON_FUNDING' && <Chip variant="yellow" sx={{ p: 2 }} label={'펀딩진행중'} />}
+               {orders.orders[0].orderStatus === 'FUNDING_COMPLETE_PAID' && <Chip variant="yellow" sx={{ p: 2 }} label={'펀딩성공/결제완료'} />}
+               {orders.orders[0].orderStatus === 'FUNDING_COMPLETE_NOT_PAID' && <Chip variant="grey" sx={{ p: 2 }} label={'펀딩성공/결제실패'} />}
+               {orders.orders[0].orderStatus === 'FUNDING_FAILED' && <Chip variant="grey" sx={{ p: 2 }} label={'펀딩실패'} />}
+               {orders.orders[0].orderStatus === 'DELIVERY_WAITING' && <Chip variant="green" sx={{ p: 2 }} label={'전달준비중'} />}
+               {orders.orders[0].orderStatus === 'DELIVERY_STARTED' && <Chip variant="green" sx={{ p: 2 }} label={'전달시작'} />}
+               {orders.orders[0].orderStatus === 'DELIVERY_COMPLETE' && <Chip variant="green" sx={{ p: 2 }} label={'전달완료'} />}
                {orders.orders[0].orderStatus === 'DELIVERY_COMPLETE' && (
                   <Link>
                      <BorderColorIcon />
@@ -375,15 +357,13 @@ export const FundingCard = ({ orders, point, totalOrderPrice }) => {
                )}
             </Box>
          </Stack2>
-
-         <Box>
-            <Typography p={2} variant="h6">
-               {point} 포인트 사용
+         <Divider variant="middle" />
+         <Stack2 py={1} px={2} justifyContent="space-between">
+            <Typography fontSize={16}>
+               <b>합계</b> {Number(totalOrderPrice).toLocaleString('ko-KR')}원
             </Typography>
-            <Typography pl={2} pb={2} variant="h4">
-               합계 {Number(totalOrderPrice).toLocaleString('ko-KR')}원
-            </Typography>
-         </Box>
+            <Typography variant="body2">{point} 포인트 사용</Typography>
+         </Stack2>
       </Card>
    )
 }

@@ -1,7 +1,5 @@
 import { CommingCard } from '../../components/ui/Cards'
-import { Grid2 } from '@mui/material'
-import { Box, Divider, Chip } from '@mui/material'
-
+import { Box, Divider, Chip, Stack, Typography, Grid2 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchShowProjectsThunk, noticeRegThunk, noticeDelThunk } from '../../features/listSlice'
@@ -99,11 +97,15 @@ const CommingPage = () => {
                <p style={{ margin: '10px 0' }}>{count}개의 프로젝트가 있습니다.</p>
                {allCards}
                <Box py={4}>
-                  <Divider>{loadingCount >= count ? <p style={{ textAlign: 'center', margin: '16px' }}>모든 프로젝트를 불러왔습니다</p> : <Chip onClick={loadMoreProjects} label="더보기" />}</Divider>
+                  <Divider>{loadingCount >= count ? <Typography color="grey">모든 프로젝트를 불러왔습니다</Typography> : <Chip onClick={loadMoreProjects} label="더보기" />}</Divider>
                </Box>
             </>
          ) : (
-            <img src={process.env.REACT_APP_FRONT_URL + '/images/noProject.png'} width="100%" style={{ margin: '0 auto' }} alt="프로젝트 없음"></img>
+            <Stack alignItems="center" pb={12}>
+               <img src={process.env.REACT_APP_FRONT_URL + '/images/noProject.png'} width="100%" alt="프로젝트 없음" />
+               <Typography color="grey">진행 중인 프로젝트가 없습니다.</Typography>
+               <Typography variant="body2">당신의 아이디어를 뽐내보세요!</Typography>
+            </Stack>
          )}
       </Main>
    )

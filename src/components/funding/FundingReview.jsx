@@ -155,7 +155,6 @@ function FundingReview({ funding }) {
       setImgUrl('')
       setRating(0)
       dispatch(fetchReviewsThunk({ id: funding.id, page: 1, limit: 5 }))
-
    }
 
    // 로딩 에러 처리
@@ -208,7 +207,7 @@ function FundingReview({ funding }) {
                   <>
                      {showAllReviews()}
                      <Box py={4}>
-                        <Divider>{loadingCount >= reviewCount?.count ? <p style={{ textAlign: 'center', margin: '16px' }}>모든 리뷰를 불러왔습니다</p> : <Chip onClick={loadMoreReviews} label="더보기" />}</Divider>
+                        <Divider>{loadingCount >= reviewCount?.count ? <Typography color="grey">모든 리뷰를 불러왔습니다</Typography> : <Chip onClick={loadMoreReviews} label="더보기" />}</Divider>
                      </Box>
                   </>
                ) : (

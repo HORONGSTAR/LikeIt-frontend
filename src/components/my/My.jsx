@@ -6,7 +6,7 @@ import { Main, TextLink, ModifiedModalBox, ImgUploadBox, FundingCard } from '../
 import { styled } from '@mui/system'
 import CreateIcon from '@mui/icons-material/Create'
 import { Tabs } from '../../components/ui/Tabs'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { changeEmailThunk, changePasswordThunk } from '../../features/authSlice'
 import { updateCategoryThunk, updateProfileThunk } from '../../features/pageSlice'
 
@@ -38,6 +38,8 @@ function My({ initialValues = {}, orders = [], points = [], profits = [] }) {
    const [imgFile, setImgFile] = useState(null) //이미지 파일 객체
    const [imgUrl, setImgUrl] = useState(initialValues ? process.env.REACT_APP_API_URL + '/userImg' + initialValues.imgUrl : '')
    const [nickname, setNickname] = useState(initialValues ? initialValues.name : '')
+
+   const { loading, error } = useSelector((state) => state.auth)
 
    //창작자 정보 추가부분
    const [selectedValues, setSelectedValues] = useState({
@@ -231,15 +233,23 @@ function My({ initialValues = {}, orders = [], points = [], profits = [] }) {
                비밀번호 변경
             </Typography>
 
-            <TextField fullWidth variant="outlined" margin="dense" label="현재 비밀번호" type="password" onChange={(e) => setCurrentPassword(e.target.value)} />
+            <TextField fullWidth variant="outlined" margin="dense" label="현재 비밀번호" type="password" onChange={(e) => setCurrentPassword(e.target.value)} disabled={!initialValues?.password} />
 
-            <TextField fullWidth variant="outlined" margin="dense" label="변경할 비밀번호" type="password" onChange={(e) => setPasswordToChange(e.target.value)} />
-            <TextField fullWidth variant="outlined" margin="dense" label="변경할 비밀번호 확인" type="password" onChange={(e) => setConfirmPasswordToChange(e.target.value)} />
+            <TextField fullWidth variant="outlined" margin="dense" label="변경할 비밀번호" type="password" onChange={(e) => setPasswordToChange(e.target.value)} disabled={!initialValues?.password} />
+            <TextField
+               fullWidth
+               variant="outlined"
+               margin="dense"
+               label="변경할 비밀번호 확인"
+               type="password"
+               onChange={(e) => setConfirmPasswordToChange(e.target.value)}
+               disabled={!initialValues?.password}
+            />
          </Box>
 
          {/* Save/Cancel Buttons */}
          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
-            <Button variant="contained" color="primary" onClick={changePassword}>
+            <Button variant="contained" color="primary" onClick={changePassword} disabled={!initialValues?.password}>
                비밀번호 변경
             </Button>
             {/* <Button variant="outlined" color="inherit">
@@ -375,6 +385,13 @@ function My({ initialValues = {}, orders = [], points = [], profits = [] }) {
          page: initialValues?.Creator ? pointAndProfitList : pointList,
       },
    ]
+
+   if (error)
+      return (
+         <Typography variant="h4" sx={{ color: 'red', textAlign: 'center', my: 5 }}>
+            {error}
+         </Typography>
+      )
 
    return (
       <Main>

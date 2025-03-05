@@ -229,7 +229,7 @@ function AdminPage() {
                <p style={{ margin: '10px 0' }}>{count}개의 프로젝트가 있습니다.</p>
                {allCards}
                <Box py={4}>
-                  <Divider>{loadingCount >= count ? <p style={{ textAlign: 'center', margin: '16px' }}>모든 프로젝트를 불러왔습니다</p> : <Chip onClick={loadMoreProjects} label="더보기" />}</Divider>
+                  <Divider>{loadingCount >= count ? <Typography color="grey">모든 프로젝트를 불러왔습니다</Typography> : <Chip onClick={loadMoreProjects} label="더보기" />}</Divider>
                </Box>
             </>
          ) : (

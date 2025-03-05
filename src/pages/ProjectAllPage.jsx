@@ -22,19 +22,19 @@ function getStatusData(project) {
    if (project.proposalStatus === 'DENIED') {
       return {
          label: '승인 거부',
-         style: { backgroundColor: '#CCCCCC', color: '#666' },
+         style: { backgroundColor: '#CCCCCC', color: '#666', notLink: true },
       }
    }
    if (project.proposalStatus === 'REVIEW_REQ') {
       return {
          label: '검토 중',
-         style: { backgroundColor: '#DBE7D9', color: '#45843C' },
+         style: { backgroundColor: '#DBE7D9', color: '#45843C', notLink: true },
       }
    }
    if (project.proposalStatus === 'WRITING') {
       return {
          label: '작성 중',
-         style: { backgroundColor: '#CCCCCC', color: '#666' },
+         style: { backgroundColor: '#CCCCCC', color: '#666', notLink: true },
       }
    }
    switch (project.projectStatus) {
