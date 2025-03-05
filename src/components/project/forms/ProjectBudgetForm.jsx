@@ -152,17 +152,11 @@ function ProjectBudgetForm({ onSubmit, initVals = {} }) {
                {creaBudg.map((budget, index) => (
                   <Stack2 key={'creaBudg' + index} sx={{ width: '100%' }}>
                      <Card variant="outlined" sx={{ py: 1, px: 2, gap: 2, width: '100%' }}>
-                        <InputBase
-                           readOnly
-                           placeholder="창작자"
-                           value={names[budget.studioCreatorId] || ''}
-                           onClick={() => setOpen(index)}
-                           onChange={(e) => handleCreaBudgChange(index, 'contents', e.target.value)}
-                        />
+                        <InputBase readOnly placeholder="창작자" value={names[budget.studioCreatorId] || ''} onClick={() => setOpen(index)} onChange={(e) => handleCreaBudgChange(index, 'contents', e.target.value)} />
                         <Divider orientation="vertical" flexItem />
                         <InputBase fullWidth placeholder="예산 내용" value={budget.contents} onChange={(e) => handleCreaBudgChange(index, 'contents', e.target.value)} />
                         <Divider orientation="vertical" flexItem />
-                        <InputBase placeholder="비용" value={budget.money} onChange={(e) => handleCreaBudgChange(index, 'money', e.target.value)} />
+                        <InputBase placeholder="비율" value={budget.money} onChange={(e) => handleCreaBudgChange(index, 'money', e.target.value)} />
                      </Card>
                      <IconButton onClick={() => handleDeleteCreaBudg(index)}>
                         <RemoveCircleOutline color="action" />

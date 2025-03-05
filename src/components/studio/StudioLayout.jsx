@@ -1,17 +1,19 @@
 import { Card, CardContent, CardMedia, Typography, Button, Divider, Stack } from '@mui/material'
 import { Stack2 } from '../../styles/BaseStyles'
 import { useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import StartButton from './space/StartButton'
 import StudioTab from './tab/StudioTab'
 import SpaceBox from './space/SpaceBox'
 import useSocket from '../../hooks/useSocket'
+import { fetchStudioByIdThunk, studioFollowThunk, studioUnFollowThunk } from '../../features/studioSlice'
 
 function StudioLayout() {
    const { studio, projects } = useSelector((state) => state.studio)
-   const { user } = useSelector((state) => state.auth)
+   const { user, isAuthenticated } = useSelector((state) => state.auth)
    const socket = useSocket()
+   const dispatch = useDispatch()
 
    const navigate = useNavigate()
 
@@ -34,6 +36,16 @@ function StudioLayout() {
       return complete.length > 0 ? Math.floor(Math.max(...complete.map((p) => p.totalOrderPrice / p.goal)) * 100) : 0
    }, [complete])
 
+   const handleFollowing = async (isFollowing, id) => {
+      if (!isAuthenticated) {
+         window.location.href = '/login'
+         return
+      }
+      if (isFollowing) await dispatch(studioUnFollowThunk(id))
+      else await dispatch(studioFollowThunk(id))
+      dispatch(fetchStudioByIdThunk(studio.id))
+   }
+
    const Spen = (props) => <Typography component="span" color="green" {...props} />
 
    return (
@@ -55,7 +67,9 @@ function StudioLayout() {
                         )}
                      </Stack2>
                   ) : (
-                     <Button variant="contained">구독</Button>
+                     <Button onClick={() => handleFollowing(studio.isFollowing, studio.id)} variant="contained">
+                        {studio.isFollowing ? '구독해제' : '구독'}
+                     </Button>
                   )}
                </Stack2>
 
@@ -64,7 +78,7 @@ function StudioLayout() {
                      {studio.intro}
                   </Typography>
                   {isMumber.leader && (
-                     <Button sx={{ opacity: 0.8, width: 120, ml: 'auto' }} size="small" onClick={() => navigate(`/studio/profile/${studio.id}`)}>
+                     <Button sx={{ opacity: 0.8, width: 120 }} size="small" onClick={() => navigate(`/studio/profile/${studio.id}`)}>
                         <img alt="수정하기" src="/images/icon/edit.svg" width="15" />
                         &nbsp;소개 수정하기
                      </Button>
@@ -76,7 +90,7 @@ function StudioLayout() {
                   </Typography>
                   <Divider orientation="vertical" flexItem />
                   <Typography>
-                     구독자 <Spen>{studio.Users?.length}명</Spen>
+                     구독자 <Spen>{studio.Users?.length || 0}명</Spen>
                   </Typography>
                   <Divider orientation="vertical" flexItem />
                   <Typography>

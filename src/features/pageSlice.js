@@ -26,7 +26,7 @@ export const updateProfileThunk = createAsyncThunk('page/updateProfile', async (
 export const updateCategoryThunk = createAsyncThunk('page/updateCategory', async (selectedValues, { rejectWithValue }) => {
    try {
       const response = await updateCategory(selectedValues)
-      return response
+      return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '카테고리 변경 실패')
    }
