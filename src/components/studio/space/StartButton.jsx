@@ -18,10 +18,10 @@ function StartButton({ socket, studioId }) {
       <>
          {open && (
             <Dialog open={open}>
-               <DialogTitle>음성 스페이스 시작</DialogTitle>
+               <DialogTitle>음성 스페이스 생성</DialogTitle>
                <DialogContent>
                   <img src="/images/space.png" width="300" alt="스페이스를 통한 교류" />
-                  <DialogContentText>스페이스를 통해 스튜디오 구독자들과 소통할까요?</DialogContentText>
+                  <DialogContentText>스페이스를 열어 스튜디오 구독자들과 소통할까요?</DialogContentText>
                </DialogContent>
                <DialogActions>
                   <Button color="orenge" disabled={!socket} onClick={startSpace}>

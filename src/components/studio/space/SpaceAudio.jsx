@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import { Stack } from '@mui/material'
 import { SpaceScreen } from './SpaceAnimation'
+import { ErrorBox } from '../../../styles/BaseStyles'
 
 export const Broadcaster = ({ socket, info }) => {
    const [stream, setStream] = useState(null)
+   const [open, setOpen] = useState(false)
    const localStream = useRef(null)
    const peerConnections = useRef({})
    const studioId = info.studioId
@@ -42,7 +43,7 @@ export const Broadcaster = ({ socket, info }) => {
                      peer.setLocalDescription(offer)
                      socket.emit('offer', { offer, listenerId })
                   })
-                  .catch((err) => console.error(err))
+                  .catch(() => setOpen(true))
 
                peer.onicecandidate = (event) => {
                   if (event.candidate) socket.emit('ice-candidate', { sand: '방송자', targetId: listenerId, candidate: event.candidate })
@@ -54,7 +55,7 @@ export const Broadcaster = ({ socket, info }) => {
                   const peer = peerConnections.current[listenerId]
                   if (peer.signalingState === 'stable') return
 
-                  peer.setRemoteDescription(new RTCSessionDescription(answer)).catch((err) => console.error(err))
+                  peer.setRemoteDescription(new RTCSessionDescription(answer)).catch(() => setOpen(true))
                }
             })
 
@@ -64,7 +65,7 @@ export const Broadcaster = ({ socket, info }) => {
                }
             })
          })
-         .catch((err) => console.error(err))
+         .catch(() => setOpen(true))
 
       const peerConnectionsCurrent = peerConnections.current
 
@@ -77,6 +78,7 @@ export const Broadcaster = ({ socket, info }) => {
    return (
       <>
          <SpaceScreen stream={stream} info={info} />
+         <ErrorBox open={open} setOpen={setOpen} error={'스페이스 중 문제가 발생했습니다.'} />
       </>
    )
 }
@@ -86,6 +88,7 @@ export const Listener = ({ socket, info }) => {
    const audioRef = useRef(null)
    const peerConnection = useRef(null)
    const studioId = info.studioId
+   const [open, setOpen] = useState(false)
 
    useEffect(() => {
       if (!socket) return
@@ -116,18 +119,14 @@ export const Listener = ({ socket, info }) => {
             }
          }
 
-         socket.on('ice-candidate', ({ candidate, broadcasterId }) => {
-            console.log('ICE Candidate:', candidate)
-            peerConnection.current
-               .addIceCandidate(new RTCIceCandidate(candidate))
-               .then(() => console.log('ICE Candidate 추가 완료'))
-               .catch((err) => console.error('ICE Candidate 추가 실패:', err))
+         socket.on('ice-candidate', ({ candidate }) => {
+            peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate)).catch(() => setOpen(true))
          })
 
          peerConnection.current.ontrack = (event) => {
             const stream = event.streams[0]
             if (!audioRef.current) {
-               console.error('audioRef.current is null! Retrying in 500ms...')
+               setOpen(true)
                setTimeout(() => {
                   if (audioRef.current) {
                      audioRef.current.srcObject = stream
@@ -142,6 +141,10 @@ export const Listener = ({ socket, info }) => {
          }
       })
 
+      socket.on('end space', (msg) => {
+         if (msg) peerConnection.current?.close()
+      })
+
       return () => {
          peerConnection.current?.close()
       }
@@ -151,6 +154,7 @@ export const Listener = ({ socket, info }) => {
       <>
          <SpaceScreen stream={stream} info={info} />
          <audio ref={audioRef} />
+         <ErrorBox open={open} setOpen={setOpen} error={'스페이스 중 문제가 발생했습니다.'} />
       </>
    )
 }
