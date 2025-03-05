@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react'
 import { logoutUserThunk } from '../../features/authSlice'
 import { useDispatch } from 'react-redux'
 
-function AccountMenu({ items }) {
+function AccountMenu({ items, user }) {
    const [anchorEl, setAnchorEl] = useState(null)
    const userOpen = Boolean(anchorEl)
    const handleClick = (event) => {
@@ -32,7 +32,7 @@ function AccountMenu({ items }) {
       <>
          <Tooltip title="내 계정">
             <IconButton onClick={handleClick} size="small" aria-controls={userOpen ? 'account-menu' : undefined} aria-haspopup="true" aria-expanded={userOpen ? 'true' : undefined}>
-               <Avatar sx={{ width: 32, height: 32 }} src={process.env.REACT_APP_API_URL + ''} />
+               <Avatar sx={{ width: 32, height: 32 }} src={process.env.REACT_APP_API_URL + '/userImg' + user.imgUrl} />
             </IconButton>
          </Tooltip>
          <Menu

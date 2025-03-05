@@ -217,11 +217,11 @@ function My({ initialValues = {}, orders = [], points = [], profits = [] }) {
          {/* Email Update */}
          <Box sx={{ mb: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-               <Typography variant="subtitle1" sx={{ mb: 1 }}>
+               <Typography variant="subtitle1" sx={{}}>
                   이메일 주소 변경
                </Typography>
-               <TextField variant="outlined" margin="dense" value={email} onChange={(e) => setEmail(e.target.value)} />
-               <Button variant="contained" color="inherit" onClick={changeEmail}>
+               <TextField sx={{ ml: 2, mr: 1 }} variant="outlined" margin="dense" value={email} onChange={(e) => setEmail(e.target.value)} />
+               <Button variant="contained" onClick={changeEmail}>
                   변경
                </Button>
             </Box>

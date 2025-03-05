@@ -41,7 +41,7 @@ function Navber({ isAuthenticated, user }) {
       mobile: { sm: 'none', xs: 'block' },
       width: { md: 200, sm: 140 },
    }
-
+   console.log(user)
    return (
       <>
          <AppBar position="static">
@@ -61,7 +61,7 @@ function Navber({ isAuthenticated, user }) {
                            <Button variant="contained">로그인</Button>
                         </Link>
                      ) : (
-                        <AccountMenu items={user.creatorId ? accountMeunItems : accountMeunItems.splice(1, 2)} />
+                        <AccountMenu items={user.creatorId ? accountMeunItems : accountMeunItems.splice(1, 2)} user={user} />
                      )}
                   </Stack2>
                </Stack2>
