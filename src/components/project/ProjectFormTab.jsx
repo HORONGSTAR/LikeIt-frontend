@@ -21,6 +21,7 @@ function ProjectFormTab({ onSubmit, step, project }) {
       start: project?.startDate || null,
       end: project?.endDate || null,
       schedule: project?.schedule || '',
+      categoryId: Number(project?.categoryId) || null,
    }
 
    const rewardVals = {

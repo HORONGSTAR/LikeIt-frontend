@@ -54,7 +54,7 @@ const CommuList = ({ setOpen }) => {
                <Typography color="grey" variant="h4" mb={1}>
                   글이 없습니다. 글을 작성할까요?
                </Typography>
-               <Button variant="yellow" sx={{ color: '#fff', fontSize: '20px', borderRadius: '5px', px: 4 }} onClick={() => navigate('/studio/community/write')}>
+               <Button variant="yellow" sx={{ color: '#fff', fontSize: '20px', borderRadius: '5px', px: 4 }} onClick={() => navigate('/community/write')}>
                   글쓰기
                </Button>
             </Box>

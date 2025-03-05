@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { loginUserThunk } from '../../features/authSlice'
 import { TextField, Button, Typography, Stack, Divider } from '@mui/material'
 import { Stack2, TextLink, Dot } from '../../styles/BaseStyles'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ErrorBox, LoadingBox } from '../../styles/BaseStyles'
 
 function Login() {
@@ -12,14 +12,13 @@ function Login() {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { loading, error } = useSelector((state) => state.auth)
-   const [open, setOpen] = useState(false)
 
    const googleLoginOrSignup = () => {
-      window.location.href = 'http://localhost:8000/auth/google'
+      window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`
    }
 
    const kakaoLoginOrSignup = () => {
-      window.location.href = 'http://localhost:8000/auth/kakao'
+      window.location.href = `${process.env.REACT_APP_API_URL}/auth/kakao`
    }
 
    const handleLogin = useCallback(
@@ -29,19 +28,21 @@ function Login() {
             dispatch(loginUserThunk({ email, password }))
                .unwrap()
                .then(() => navigate('/'))
-               .catch((error) => {
-                  console.error('로그인실패:', error)
-                  alert(error)
-                  // setOpen(true)
-               })
+               .catch(() => {})
          }
       },
       [dispatch, navigate, email, password]
    )
 
-   if (loading) return <LoadingBox />
-
-   // if (error) return <ErrorBox error={error} open={open} setOpen={setOpen} />
+   if (error)
+      return (
+         <>
+            <Typography sx={{ color: 'red' }}>{error}</Typography>
+            <Typography>
+               <Link to="/">홈으로 돌아가기</Link>
+            </Typography>
+         </>
+      )
 
    return (
       <Stack width={300} spacing={2}>

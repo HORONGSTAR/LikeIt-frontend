@@ -39,7 +39,7 @@ function Portfolio({ items }) {
                   </Box>
 
                   <Box sx={{ mt: 'auto' }}>
-                     <Button fullWidth variant="contained">
+                     <Button onClick={() => (window.location.href = `/funding/${items.new.id}`)} fullWidth variant="contained">
                         프로젝트 펀딩 페이지로 이동
                      </Button>
                   </Box>
@@ -89,7 +89,7 @@ function Portfolio({ items }) {
                         <Typography variant="body2">{project.intro}</Typography>
                      </Ellipsis>
                      <Typography fontWeight="bold" color="green">
-                        {Math.floor((project.totalOrderPrice / project.goal) * 100)}% 달성
+                        {project.projectStatus !== 'REVIEW_REQ' ? Math.floor((project.totalOrderPrice / project.goal) * 100) + '% 달성' : '심사진행중'}
                      </Typography>
                   </TimelineContent>
                </TimelineItem>

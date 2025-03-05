@@ -5,7 +5,7 @@ import { loginUser, registerUser, snsRegisterUser, logoutUser, checkAuthStatus, 
 export const registerUserThunk = createAsyncThunk('auth/registerUser', async (userData, { rejectWithValue }) => {
    try {
       const response = await registerUser(userData)
-      return response.data.user
+      return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '회원가입실패')
    }
@@ -118,7 +118,7 @@ const authSlice = createSlice({
          })
          .addCase(registerUserThunk.fulfilled, (state, action) => {
             state.loading = false
-            state.user = action.payload
+            state.isSignupComplete = action.payload.isSignupComplete
          })
          .addCase(registerUserThunk.rejected, (state, action) => {
             state.loading = false

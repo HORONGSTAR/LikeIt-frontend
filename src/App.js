@@ -98,10 +98,38 @@ function App() {
             />
 
             {/* auth */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/commonsignup" element={<CommonSignupPage />} />
-            <Route path="/findingpassword" element={<FindingPasswordPage />} />
+            <Route
+               path="/login"
+               element={
+                  <RedirectLoginRoute>
+                     <LoginPage />
+                  </RedirectLoginRoute>
+               }
+            />
+            <Route
+               path="/signup"
+               element={
+                  <RedirectLoginRoute>
+                     <SignupPage />
+                  </RedirectLoginRoute>
+               }
+            />
+            <Route
+               path="/commonsignup"
+               element={
+                  <RedirectLoginRoute>
+                     <CommonSignupPage />
+                  </RedirectLoginRoute>
+               }
+            />
+            <Route
+               path="/findingpassword"
+               element={
+                  <RedirectLoginRoute>
+                     <FindingPasswordPage />
+                  </RedirectLoginRoute>
+               }
+            />
             <Route
                path="/findingemail"
                element={
@@ -110,7 +138,14 @@ function App() {
                   </RedirectLoginRoute>
                }
             />
-            <Route path="/additionalsignup" element={<AdditionalSignupPage />} />
+            <Route
+               path="/additionalsignup"
+               element={
+                  <RedirectLoginRoute>
+                     <AdditionalSignupPage />
+                  </RedirectLoginRoute>
+               }
+            />
             <Route
                path="/my"
                element={
@@ -209,7 +244,7 @@ function App() {
                }
             />
             {/* develop */}
-            <Route path="/desinguide" element={<DesignGuide />} />
+            {/* <Route path="/desinguide" element={<DesignGuide />} /> */}
          </Routes>
 
          {/* admin */}
@@ -219,9 +254,9 @@ function App() {
             </Button>
          )}
 
-         <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
+         {/* <Button component={Link} sx={{ position: 'fixed', right: 10, bottom: 10 }} variant="contained" to="/desinguide">
             디자인 가이드 확인하기
-         </Button>
+         </Button> */}
 
          <Footer />
       </>
