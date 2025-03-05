@@ -90,7 +90,7 @@ const HotPage = () => {
                </Box>
             </>
          ) : (
-            <img src={process.env.REACT_APP_FRONT_URL + '/images/noProject.png'} width="640px" style={{ margin: '0 auto' }} alt="프로젝트 없음"></img>
+            <img src={process.env.REACT_APP_FRONT_URL + '/images/noProject.png'} width="100%" style={{ margin: '0 auto' }} alt="프로젝트 없음"></img>
          )}
       </Main>
    )

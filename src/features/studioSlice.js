@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getStudio, createStudio, updateStudio, getStudioById } from '../api/studioApi'
+import { getStudio, createStudio, updateStudio, getStudioById, studioFollow, studioUnFollow } from '../api/studioApi'
 
 // 스튜디오 조회
 export const fetchStudioThunk = createAsyncThunk('studio/fetchStudioThunk', async (_, { rejectWithValue }) => {
@@ -38,6 +38,26 @@ export const updateStudioThunk = createAsyncThunk('studio/updateStudioThunk', as
       return response.data
    } catch (error) {
       return rejectWithValue(error.response?.data?.message || '스튜디오 수정 실패')
+   }
+})
+
+// 리뷰 추천
+export const studioFollowThunk = createAsyncThunk('studio/studioFollow', async (id, { rejectWithValue }) => {
+   try {
+      const response = await studioFollow(id)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '스튜디오 구독 실패')
+   }
+})
+
+// 리뷰 추천 취소
+export const studioUnFollowThunk = createAsyncThunk('studio/studioUnFollow', async (id, { rejectWithValue }) => {
+   try {
+      const response = await studioUnFollow(id)
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '스튜디오 구독 해제 실패')
    }
 })
 
@@ -103,6 +123,30 @@ const studioSlice = createSlice({
             state.loading = false
          })
          .addCase(updateStudioThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+         // 스튜디오 구독
+         .addCase(studioFollowThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(studioFollowThunk.fulfilled, (state, action) => {
+            state.loading = false
+         })
+         .addCase(studioFollowThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+         // 스튜디오 구독 해제
+         .addCase(studioUnFollowThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(studioUnFollowThunk.fulfilled, (state, action) => {
+            state.loading = false
+         })
+         .addCase(studioUnFollowThunk.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

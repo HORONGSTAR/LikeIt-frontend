@@ -56,26 +56,30 @@ function AdminPage() {
    }, [dispatch, page, searchSubmit])
 
    const bannerReg = useCallback(
-      (data) => {
-         dispatch(bannerRegThunk(data))
+      async (data) => {
+         await dispatch(bannerRegThunk(data))
+         dispatch(fetchShowAdminProjectsThunk({ page, searchTerm, selectProposal, selectCategory, selectBanner }))
       },
       [dispatch]
    )
    const bannerDel = useCallback(
-      (id) => {
-         dispatch(bannerDelThunk(id))
+      async (id) => {
+         await dispatch(bannerDelThunk(id))
+         dispatch(fetchShowAdminProjectsThunk({ page, searchTerm, selectProposal, selectCategory, selectBanner }))
       },
       [dispatch]
    )
    const proposalPass = useCallback(
-      (id) => {
-         dispatch(proposalPassThunk(id))
+      async (id) => {
+         await dispatch(proposalPassThunk(id))
+         dispatch(fetchShowAdminProjectsThunk({ page, searchTerm, selectProposal, selectCategory, selectBanner }))
       },
       [dispatch]
    )
    const proposalDeny = useCallback(
-      (id, denyMsg) => {
-         dispatch(proposalDenyThunk({ id, denyMsg }))
+      async (id, denyMsg) => {
+         await dispatch(proposalDenyThunk({ id, denyMsg }))
+         dispatch(fetchShowAdminProjectsThunk({ page, searchTerm, selectProposal, selectCategory, selectBanner }))
       },
       [dispatch]
    )

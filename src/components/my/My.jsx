@@ -1,14 +1,13 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { Avatar, Button, TextField, Typography, Box, Link, Checkbox, FormControlLabel, Grid, Paper } from '@mui/material'
+import { Avatar, Button, TextField, Typography, Box, Checkbox, FormControlLabel, Grid, Paper } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import PostAddIcon from '@mui/icons-material/PostAdd'
-import { Main, Stack2, TextLink, ModifiedModalBox, LoadingBox, ErrorBox, ImgUploadBox, FundingCard } from '../../styles/BaseStyles'
+import { Main, TextLink, ModifiedModalBox, ImgUploadBox, FundingCard } from '../../styles/BaseStyles'
 import { styled } from '@mui/system'
 import CreateIcon from '@mui/icons-material/Create'
 import { Tabs } from '../../components/ui/Tabs'
-import { useDispatch, useSelector } from 'react-redux'
-import { changeEmailThunk, changePasswordThunk, registerUserThunk } from '../../features/authSlice'
-import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { changeEmailThunk, changePasswordThunk } from '../../features/authSlice'
 import { updateCategoryThunk, updateProfileThunk } from '../../features/pageSlice'
 
 const StyledPaper = styled(Paper)({
@@ -30,9 +29,8 @@ const IconWrapper = styled(Box)({
    marginRight: '16px',
 })
 
-function My({ initialValues = {}, orders = [], points = [], profits = [], allprojects = [] }) {
+function My({ initialValues = {}, orders = [], points = [], profits = [] }) {
    const dispatch = useDispatch()
-   const navigate = useNavigate()
    const [email, setEmail] = useState(initialValues ? initialValues.email : '')
    const [currentPassword, setCurrentPassword] = useState('')
    const [passwordToChange, setPasswordToChange] = useState('')
@@ -55,8 +53,6 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
    })
 
    const categoriesFromServer = initialValues?.Creator?.Categories ?? []
-
-   //    console.log(categoriesFromServer)
 
    useEffect(() => {
       if (categoriesFromServer?.length > 0) {
@@ -160,11 +156,6 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
          return
       }
 
-      // if (!imgFile) {
-      //    alert('이미지 파일을 추가하세요')
-      //    return
-      // }
-
       const formData = new FormData()
       formData.append('name', nickname)
 
@@ -224,11 +215,11 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
          {/* Email Update */}
          <Box sx={{ mb: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-               <Typography variant="subtitle1" sx={{ mb: 1 }}>
+               <Typography variant="subtitle1" sx={{}}>
                   이메일 주소 변경
                </Typography>
-               <TextField variant="outlined" margin="dense" value={email} onChange={(e) => setEmail(e.target.value)} />
-               <Button variant="contained" color="inherit" onClick={changeEmail}>
+               <TextField sx={{ ml: 2, mr: 1 }} variant="outlined" margin="dense" value={email} onChange={(e) => setEmail(e.target.value)} />
+               <Button variant="contained" onClick={changeEmail}>
                   변경
                </Button>
             </Box>
@@ -403,7 +394,7 @@ function My({ initialValues = {}, orders = [], points = [], profits = [], allpro
 
                   <Box>
                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={{ fontWeight: 'bold' }}>활동분야 : </Typography>
+                        {categoriesFromServer.length !== 0 ? <Typography sx={{ fontWeight: 'bold' }}>활동분야 : </Typography> : ''}
                         {categoriesFromServer?.map((category, index) => {
                            const categoryKr = {
                               food: '푸드',

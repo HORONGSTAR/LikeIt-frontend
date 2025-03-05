@@ -48,7 +48,6 @@ const FollowPage = () => {
                </Grid2>
             )
 
-            console.log(row)
             // 4개마다 새로운 row로 묶기
             if (cardCount % 4 === 0 || index === followUser.Studios.length - 1) {
                newCards.push(
@@ -90,11 +89,11 @@ const FollowPage = () => {
                   </Box>
                </>
             ) : (
-               <img src={process.env.REACT_APP_FRONT_URL + '/images/noStudio.png'} width="640px" style={{ margin: '0 auto' }} alt="스튜디오 없음"></img>
+               <img src={process.env.REACT_APP_FRONT_URL + '/images/noStudio.png'} width="100%" style={{ margin: '0 auto' }} alt="스튜디오 없음"></img>
             )
          ) : (
             <Link to="/login" style={{ display: 'inline-block', width: '640px', margin: '0 auto' }}>
-               <img src={process.env.REACT_APP_FRONT_URL + '/images/loginRequest.png'} width="640px" alt="프로젝트 없음"></img>
+               <img src={process.env.REACT_APP_FRONT_URL + '/images/loginRequest.png'} width="100%" alt="프로젝트 없음"></img>
             </Link>
          )}
       </Main>
