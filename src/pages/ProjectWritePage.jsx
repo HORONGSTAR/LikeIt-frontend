@@ -60,13 +60,6 @@ function ProjectWritePage() {
       </Stack>
    )
 
-   if (project?.proposalStatus === 'REVIEW_REQ') {
-      return <>현재 프로젝트를 심사중입니다.</>
-   }
-   if (project?.proposalStatus === 'COMPLETE') {
-      return <>이미 심사가 끝난 프로젝트 입니다.</>
-   }
-
    return (
       <>
          <Main>{id ? <ProjectFormTab onSubmit={handleEditProject} step={step} project={project} /> : firstStep}</Main>

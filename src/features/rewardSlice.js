@@ -76,7 +76,8 @@ const rewardSlice = createSlice({
    initialState: {
       loading: false,
       error: null,
-      reward: null,
+      reward: [],
+      rewardProducts: [],
    },
    reducers: {},
    extraReducers: (builder) => {
@@ -87,7 +88,8 @@ const rewardSlice = createSlice({
          })
          .addCase(fetchRewardThunk.fulfilled, (state, action) => {
             state.loading = false
-            state.reward = action.payload.reward
+            state.reward = action.payload.reward.Rewards
+            state.rewardProducts = action.payload.reward.rewardProducts
          })
          .addCase(fetchRewardThunk.rejected, (state, action) => {
             state.loading = false

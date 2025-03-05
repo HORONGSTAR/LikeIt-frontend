@@ -34,6 +34,17 @@ function FundHistory() {
       return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
    }
 
+   const creatorRates = project?.CreatorBudgets?.map((budget) => Number(budget.money)) || []
+   const totalRate = 100 + creatorRates.reduce((sum, rate) => sum + rate, 0)
+   const baseAmount = totalSettlement / totalRate
+   const projectBudget = Math.floor(baseAmount * 100)
+   const creatorBudgets =
+      project?.CreatorBudgets?.map((budget) => ({
+         name: budget.contents,
+         rate: Number(budget.money),
+         amount: Math.floor(baseAmount * Number(budget.money)),
+      })) || []
+
    useEffect(() => {
       dispatch(fetchStudioThunk())
          .unwrap()
@@ -53,12 +64,6 @@ function FundHistory() {
    useEffect(() => {
       dispatch(fetchOrdersThunk(id))
    }, [dispatch, id])
-
-   useEffect(() => {
-      if (project?.Studio?.id) {
-         dispatch(fetchCreatorsThunk(project.Studio.id))
-      }
-   }, [dispatch, project])
 
    if (loading) return <LoadingBox />
    if (!project) return <LoadingBox />
@@ -145,18 +150,17 @@ function FundHistory() {
                <TableBody>
                   <TableRow>
                      <TableCell>프로젝트 예산</TableCell>
-                     <TableCell sx={{ textAlign: 'right' }}>원</TableCell>
+                     <TableCell sx={{ textAlign: 'right' }}>{formatWithComma(projectBudget)} 원</TableCell>
                   </TableRow>
 
-                  <TableRow>
-                     <TableCell>(프로젝트 예산의 %)</TableCell>
-                     <TableCell sx={{ textAlign: 'right' }}>원</TableCell>
-                  </TableRow>
-
-                  <TableRow>
-                     <TableCell sx={{ borderBottom: 'none' }}>(프로젝트 예산의 %)</TableCell>
-                     <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>원</TableCell>
-                  </TableRow>
+                  {creatorBudgets.map((creator, index) => (
+                     <TableRow key={index}>
+                        <TableCell sx={{ borderBottom: index === creatorBudgets.length - 1 ? 'none' : '1px solid #ccc' }}>
+                           {creator.name} (프로젝트 예산의 {creator.rate}%)
+                        </TableCell>
+                        <TableCell sx={{ textAlign: 'right', borderBottom: index === creatorBudgets.length - 1 ? 'none' : '1px solid #ccc' }}>{formatWithComma(creator.amount)} 원</TableCell>
+                     </TableRow>
+                  ))}
                </TableBody>
             </Table>
          </TableContainer>
