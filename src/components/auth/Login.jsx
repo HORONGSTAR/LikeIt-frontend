@@ -12,7 +12,7 @@ function Login() {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { loading, error } = useSelector((state) => state.auth)
-   const [open, setOpen] = useState(false)
+   const [errorOpen, setErrorOpen] = useState(false)
 
    const googleLoginOrSignup = () => {
       window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`
@@ -29,10 +29,8 @@ function Login() {
             dispatch(loginUserThunk({ email, password }))
                .unwrap()
                .then(() => navigate('/'))
-               .catch((error) => {
-                  console.error('로그인실패:', error)
-                  alert(error)
-                  // setOpen(true)
+               .catch(() => {
+                  setErrorOpen(true)
                })
          }
       },
@@ -40,7 +38,7 @@ function Login() {
    )
 
    if (loading) return <LoadingBox />
-
+   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
    // if (error) return <ErrorBox error={error} open={open} setOpen={setOpen} />
 
    return (

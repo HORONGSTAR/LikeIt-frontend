@@ -38,7 +38,7 @@ const FindingPassword = () => {
    if (error)
       return (
          <>
-            <ErrorBox />
+            <ErrorBox error={error} />
          </>
       )
 
