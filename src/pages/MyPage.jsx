@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getProfileThunk } from '../features/pageSlice'
 import { useEffect } from 'react'
 import { LoadingBox, ErrorBox } from '../styles/BaseStyles'
+import { Typography } from '@mui/material'
 
 const MyPage = () => {
    const dispatch = useDispatch()
@@ -21,9 +22,9 @@ const MyPage = () => {
       )
    if (error)
       return (
-         <>
-            <ErrorBox />
-         </>
+         <Typography variant="h4" sx={{ color: 'red', textAlign: 'center', my: 5 }}>
+            {error}
+         </Typography>
       )
 
    return <My initialValues={user} orders={orders} points={points} profits={profits} allprojects={allprojects} />

@@ -73,7 +73,6 @@ const CommonSignup = () => {
          .catch(() => {})
    }, [dispatch, email, phone, nickname, password, confirmPassword])
 
-   if (loading) return <LoadingBox />
    if (error) return <Typography sx={{ color: 'red' }}>{error}</Typography>
    //회원가입이 완료 되었을 때
    if (isSignupComplete) {

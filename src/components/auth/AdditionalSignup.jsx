@@ -40,13 +40,13 @@ const AdditionalSignup = () => {
          dispatch(snsRegisterUserThunk({ phone }))
             .unwrap()
             .then()
-            .catch(() => setErrorOpen(true))
+            .catch(() => {})
       },
       [phone]
    )
 
    if (loading) return <LoadingBox />
-   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
+   if (error) return <Typography sx={{ color: 'red' }}>{error}</Typography>
 
    //회원가입이 완료 되었을 때
    if (isSignupComplete) {
