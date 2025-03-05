@@ -166,7 +166,7 @@ export const AdminCard = ({ project, adminFunc }) => {
                   {/* 승인거부 모달박스 */}
                   <ModalBox openBtn={<Chip variant="outlined" sx={{ marginRight: '8px', cursor: 'pointer' }} label={'승인거부'} />} closeBtn>
                      <Typography>이 프로젝트의 펀딩을 거부하시겠습니까?</Typography>
-                     <textarea placeholder="펀딩을 허가하지 않는 이유를 작성해주세요" style={{ width: '240px' }} value={denyMsg} onChange={(e) => setDenyMsg(e.target.value)}></textarea>
+                     <textarea placeholder="펀딩을 허가하지 않는 이유를 작성해주세요" style={{ width: '90%', marginTop: '8px', padding: '8px' }} value={denyMsg} onChange={(e) => setDenyMsg(e.target.value)}></textarea>
                      <br />
                      <Button variant="outlined" onClick={() => adminFunc.proposalDeny(project.id, denyMsg)}>
                         승인거부
