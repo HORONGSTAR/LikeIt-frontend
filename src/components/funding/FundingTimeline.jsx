@@ -140,8 +140,7 @@ function FundingTimeline({ funding }) {
       }
    }
 
-   // 로딩 에러 처리\
-   if (!isCreator) return <LoadingBox />
+   // 로딩 에러 처리
    if (loading) return <LoadingBox />
    if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
 

@@ -119,8 +119,6 @@ function App() {
                   </RedirectLogoutRoute>
                }
             />
-<<<<<<< HEAD
-=======
             <Route
                path="/notice"
                element={
@@ -130,7 +128,6 @@ function App() {
                }
             />
 
->>>>>>> 7cd74819a3347b64fb105b79e8f52372341c107b
             {/* studio */}
             <Route
                path="/studio"

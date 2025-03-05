@@ -18,7 +18,6 @@ const FundingDetailPage = () => {
    const { user, isAuthenticated } = useSelector((state) => state.auth)
    const [project, setProject] = useState(null)
    const [noReward, setNoReward] = useState('')
-   const { user } = useSelector((state) => state.auth)
    const { creators } = useSelector((state) => state.creator)
    const isCreator = creators.some((creator) => creator.Creator?.User?.id === user?.id)
 
