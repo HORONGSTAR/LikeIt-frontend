@@ -15,15 +15,35 @@ function Support() {
    const [activeTab, setActiveTab] = useState('supporter')
    const { id } = useParams()
    const { totalSupporters } = useSelector((state) => state.order)
-   const { rewardProducts } = useSelector((state) => state.reward)
    const [file, setFile] = useState(null)
    const [uploadStatus, setUploadStatus] = useState('')
+   const [rewardProducts, setRewardProducts] = useState([])
 
    const sortedOrders = [...orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
 
    useEffect(() => {
       dispatch(fetchOrdersThunk(id))
       dispatch(fetchRewardThunk(id))
+         .unwrap()
+         .then((result) => {
+            const reward = result.reward.Rewards
+
+            const rewardProductsArray = reward.flatMap((item) => {
+               // 1. Orders의 orderCount 총합 계산
+               const totalOrderCount = item.Orders.reduce((sum, order) => sum + order.orderCount, 0)
+
+               // 2. RewardProducts 배열을 변환하면서 totalCount 추가
+               return item.RewardProducts.map((product) => ({
+                  ...product,
+                  totalCount: product.RewardProductRelation.stock * totalOrderCount,
+               }))
+            })
+
+            setRewardProducts(rewardProductsArray)
+         })
+         .catch((error) => {
+            console.error('리워드 데이터 변경 중 오류 발생:', error)
+         })
    }, [dispatch, id])
 
    const getStatusColor = (status) => {
@@ -253,7 +273,7 @@ function Support() {
                   {rewardProducts.map((product, index) => (
                      <TableRow key={index} sx={{ borderBottom: index === rewardProducts.length - 1 ? 'none' : '1px solid #ddd' }}>
                         <TableCell sx={{ borderBottom: 'none' }}>{product.title}</TableCell>
-                        <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>몇개</TableCell>
+                        <TableCell sx={{ textAlign: 'right', borderBottom: 'none' }}>{product.totalCount}개</TableCell>
                      </TableRow>
                   ))}
                </TableBody>
