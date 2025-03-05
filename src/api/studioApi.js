@@ -63,3 +63,25 @@ export const runSpace = async () => {
       throw error
    }
 }
+
+// 리뷰 추천
+export const studioFollow = async (id) => {
+   try {
+      const response = await likeitApi.post(`/studio/follow/${id}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}
+
+// 리뷰 추천 취소
+export const studioUnFollow = async (id) => {
+   try {
+      const response = await likeitApi.delete(`/studio/unfollow/${id}`)
+      return response
+   } catch (error) {
+      console.error(`API Request 오류: ${error.message}`)
+      throw error
+   }
+}

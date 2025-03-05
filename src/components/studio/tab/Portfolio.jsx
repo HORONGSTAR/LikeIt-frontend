@@ -89,7 +89,7 @@ function Portfolio({ items }) {
                         <Typography variant="body2">{project.intro}</Typography>
                      </Ellipsis>
                      <Typography fontWeight="bold" color="green">
-                        {project.totalOrderPrice ? Math.floor((project.totalOrderPrice / project.goal) * 100) + '% 달성' : '작성중'}
+                        {project.projectStatus === 'REVIEW_REQ' ? Math.floor((project.totalOrderPrice / project.goal) * 100) + '% 달성' : '심사진행중'}
                      </Typography>
                   </TimelineContent>
                </TimelineItem>
