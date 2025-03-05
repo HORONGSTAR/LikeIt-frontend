@@ -123,7 +123,7 @@ function Timeline() {
                   {timelineId ? '수정' : '등록'}
                </Button>
 
-               <Button variant="outlined" color="orange" onClick={() => navigate(`/creator/${id}`)}>
+               <Button variant="outlined" color="orenge" onClick={() => navigate(`/creator/${id}`)}>
                   취소
                </Button>
             </Stack>

@@ -39,6 +39,15 @@ const FundingDetailPage = () => {
       return dayjs(date).format('YYYY-MM-DD')
    }
 
+   const calculateDaysLeft = (endDate) => {
+      if (!endDate) return ''
+      const today = new Date()
+      const end = new Date(endDate)
+      const diffTime = end.getTime() - today.getTime()
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) // 남은 일 수 계산
+      return diffDays > 0 ? `${diffDays}일 남음` : '펀딩 종료'
+   }
+
    useEffect(() => {
       dispatch(fetchFundingThunk(id))
    }, [dispatch, id])
@@ -128,13 +137,19 @@ const FundingDetailPage = () => {
                               </Typography>
                            </Typography>
 
-                           <Typography color="text.secondary" sx={{ mt: 1 }}>
-                              목표 금액: {project.targetAmount.toLocaleString()}원
-                           </Typography>
+                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
+                              <Typography sx={{ fontWeight: 'bold' }}>목표 금액</Typography>
+                              <Typography>{project.targetAmount.toLocaleString()}원</Typography>
+                           </Box>
 
-                           <Typography color="text.secondary">
-                              펀딩 기간: {project.startDate} ~ {project.endDate}
-                           </Typography>
+                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                              <Typography sx={{ fontWeight: 'bold' }}>펀딩 기간</Typography>
+                              <Typography>
+                                 {project.startDate} ~ {project.endDate}
+                              </Typography>
+                              <Typography sx={{ fontWeight: 'bold', color: '#B25F00', backgroundColor: '#ECBD00', padding: '2px 5px' }}>{calculateDaysLeft(project.endDate)}</Typography>
+                           </Box>
+
                            {status ? (
                               status
                            ) : isAuthenticated ? (
@@ -155,7 +170,7 @@ const FundingDetailPage = () => {
                                     }}
                                     state={{ orderRewardBasket: orderRewardBasket }}
                                  >
-                                    <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
+                                    <Button variant="yellow" fullWidth sx={{ mt: 2, py: 2.5, fontSize: '1.1rem', color: '#ffffff' }}>
                                        후원하기
                                     </Button>
                                  </Link>

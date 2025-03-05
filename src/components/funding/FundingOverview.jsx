@@ -60,7 +60,7 @@ function FundingOverview({ funding, loading, error, orderPlusReward, orderMinusR
                                  xs: 12,
                                  sm: 6,
                               }}
-                              p={1}
+                              spacing={2}
                               key={product.id}
                            >
                               <img
@@ -85,9 +85,12 @@ function FundingOverview({ funding, loading, error, orderPlusReward, orderMinusR
                   })}
                </Box>
             ))}
-            <Typography variant="h5">선물 구성품</Typography>
+            <Typography variant="h5" mb={1} mt={3}>
+               선물 구성품
+            </Typography>
             <Grid2
                container
+               spacing={2}
                sx={{
                   flexDirection: {
                      xs: 'column',
@@ -120,38 +123,49 @@ function FundingOverview({ funding, loading, error, orderPlusReward, orderMinusR
                   <Box
                      key={reward.id}
                      sx={{
-                        position: 'relative', // 개수 표시를 오른쪽 상단에 배치하기 위해 필요
+                        position: 'relative',
                         border: '1px solid #dddddd',
                         borderRadius: '10px',
                         boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.1)',
                         p: 2,
-                        m: 1,
+                        ml: 2,
+                        mb: 2,
                         backgroundColor: 'white',
                      }}
                   >
-                     {/* 남은 개수 표시 (우측 상단) */}
-                     {reward.stock > 0 && (
-                        <Box
-                           sx={{
-                              position: 'absolute',
-                              top: 8,
-                              right: 8,
-                              backgroundColor: '#EEEEEE',
-                              color: '#666666',
-                              fontSize: '0.8rem',
-                              fontWeight: 'bold',
-                              px: 1.5,
-                              py: 0.5,
-                              borderRadius: '12px',
-                           }}
-                        >
-                           {reward.stock}개 남음
-                        </Box>
-                     )}
+                     {/* 가격 & 개수 남음 한 줄에 정렬 */}
+                     <Box
+                        sx={{
+                           display: 'flex',
+                           alignItems: 'center',
+                           justifyContent: 'space-between', // 가격과 개수 남음 양쪽 정렬
+                           mb: 1,
+                        }}
+                     >
+                        <Typography variant="h5" fontWeight="bold">
+                           {reward.price.toLocaleString()}원
+                        </Typography>
 
-                     <Typography variant="h5" mb={1}>
-                        {reward.price.toLocaleString()}원
-                     </Typography>
+                        {/* 남은 개수 표시 */}
+                        {reward.stock > 0 && (
+                           <Box
+                              sx={{
+                                 backgroundColor: '#EEEEEE',
+                                 color: '#666666',
+                                 fontSize: { xs: '0.75rem', sm: '0.8rem' }, // 반응형 폰트 크기
+                                 fontWeight: 'bold',
+                                 px: 1.5,
+                                 py: 0.5,
+                                 borderRadius: '12px',
+                                 whiteSpace: 'nowrap', // 줄바꿈 방지
+                              }}
+                           >
+                              {reward.stock}개 남음
+                           </Box>
+                        )}
+                     </Box>
+
+                     {/* 리워드 정보 */}
                      <Typography variant="body2" mb={1}>
                         {reward.name}
                      </Typography>
@@ -162,8 +176,8 @@ function FundingOverview({ funding, loading, error, orderPlusReward, orderMinusR
                      ))}
 
                      {/* 수량 선택 버튼 */}
-                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <IconButton sx={{ pl: 0 }} onClick={() => minusReward(rid)}>
+                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 1 }}>
+                        <IconButton onClick={() => minusReward(rid)}>
                            <RemoveCircle color="primary" />
                         </IconButton>
                         <Typography sx={{ lineHeight: '40px', px: 2 }}>{rewardBasket[rid]}</Typography>
@@ -179,47 +193,63 @@ function FundingOverview({ funding, loading, error, orderPlusReward, orderMinusR
    }
 
    const content = (
-      <div className="line">
+      <Box className="line">
          <SubTitle>프로젝트 소개</SubTitle>
-         <p mt={1}>{funding.contents}</p>
-      </div>
+         <Typography mt={1}>{funding.contents}</Typography>
+      </Box>
    )
 
    const gift = (
-      <div className="line">
+      <Box className="line">
          <SubTitle>선물 소개</SubTitle>
-         {showProduct()}
-      </div>
+         <Box mt={1}>{showProduct()}</Box>
+      </Box>
    )
 
    const schedule = (
-      <div className="line">
+      <Box className="line">
          <SubTitle>일정표</SubTitle>
-         {funding.schedule}
-      </div>
+         <Box mt={1}>{funding.schedule}</Box>
+      </Box>
    )
+
    const budget = (
-      <div className="line">
+      <Box className="line">
          <SubTitle>프로젝트 예산</SubTitle>
-         {showBudget()}
-         <Typography variant="body2">항목별 지출액은 상황에 따라 변동될 수 있으며, 펀딩 성공률에 의해 항목별 금액에 비례하여 지출됩니다.</Typography>
-      </div>
+         <Box mt={1}>
+            <ol style={{ paddingLeft: '20px', margin: '10px 0' }}>
+               {funding.ProjectBudgets.map((budget) => (
+                  <li key={budget.id} style={{ marginBottom: '5px' }}>
+                     <Typography>
+                        {budget.contents} {budget.money.toLocaleString()}원
+                     </Typography>
+                  </li>
+               ))}
+            </ol>
+         </Box>
+         <Typography variant="body2" mt={1} sx={{ color: '#666666' }}>
+            항목별 지출액은 상황에 따라 변동될 수 있으며, 펀딩 성공률에 의해 항목별 금액에 비례하여 지출됩니다.
+         </Typography>
+      </Box>
    )
+
    const teamIntro = (
-      <div className="line">
+      <Box className="line">
          <SubTitle>팀소개</SubTitle>
-         <img
-            src={process.env.REACT_APP_API_URL + funding.Studio.imgUrl}
-            style={{
-               width: '100%',
-               height: '180px',
-               objectFit: 'cover',
-               borderRadius: '10px',
-            }}
-         />
+         <Box mt={1}>
+            <img
+               src={process.env.REACT_APP_API_URL + funding.Studio.imgUrl}
+               style={{
+                  width: '180px',
+                  height: '180px',
+                  objectFit: 'cover',
+                  borderRadius: '10px',
+               }}
+            />
+         </Box>
          <Typography variant="h5">{funding.Studio.name}</Typography>
          <Typography>{funding.Studio.intro}</Typography>
-      </div>
+      </Box>
    )
 
    const tablinks = [
@@ -257,7 +287,7 @@ function FundingOverview({ funding, loading, error, orderPlusReward, orderMinusR
             <TabLink links={tablinks}></TabLink>
          </Grid2>
          <Grid2 size={{ sm: 3, xs: 12 }}>
-            <Typography sx={{ textAlign: 'center' }}>리워드 선택</Typography>
+            <Typography sx={{ textAlign: 'left', color: '#666666', fontSize: '16px', fontWeight: 'bold', ml: 2 }}>선물 선택</Typography>
             {showReward()}
          </Grid2>
       </Grid2>
