@@ -12,7 +12,6 @@ function Login() {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const { loading, error } = useSelector((state) => state.auth)
-   const [errorOpen, setErrorOpen] = useState(false)
 
    const googleLoginOrSignup = () => {
       window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`
@@ -29,17 +28,13 @@ function Login() {
             dispatch(loginUserThunk({ email, password }))
                .unwrap()
                .then(() => navigate('/'))
-               .catch(() => {
-                  setErrorOpen(true)
-               })
+               .catch(() => {})
          }
       },
       [dispatch, navigate, email, password]
    )
 
-   if (loading) return <LoadingBox />
-   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
-   // if (error) return <ErrorBox error={error} open={open} setOpen={setOpen} />
+   if (error) return <Typography sx={{ color: 'red' }}>{error}</Typography>
 
    return (
       <Stack width={300} spacing={2}>
