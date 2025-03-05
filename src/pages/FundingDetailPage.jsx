@@ -50,7 +50,7 @@ const FundingDetailPage = () => {
          title: funding.title,
          creator: {
             name: funding.Studio.name,
-            profileImage: process.env.REACT_APP_API_URL + funding.Studio.imgUrl, // 창작자 프로필 이미지
+            profileImage: process.env.REACT_APP_API_URL + '/studioImg' + funding.Studio.imgUrl, // 창작자 프로필 이미지
             subscribers: funding.Studio.subscribers || 0,
          },
          fundedAmount: Number(funding.totalOrderPrice), // 현재 모금 금액
@@ -76,13 +76,13 @@ const FundingDetailPage = () => {
    else if (funding?.projectStatus === 'FUNDING_FAILED')
       status = (
          <Typography variant="h5" pt={2}>
-            아쉽게도 펀딩이 실패로 종료됐습니다...
+            펀딩이 실패로 종료됐습니다.
          </Typography>
       )
    else if (funding?.projectStatus === 'WAITING_FUNDING')
       status = (
          <Typography variant="h5" pt={2}>
-            {dayjs(funding?.startDate).format('YYYY년 MM월 MM일')} 펀딩 시작을 기대해주세요
+            {dayjs(funding?.startDate).format('YYYY년 MM월 DD일')} 펀딩이 시작됩니다.
          </Typography>
       )
 
@@ -110,11 +110,7 @@ const FundingDetailPage = () => {
                      <Card sx={{ p: 1, boxShadow: 'none' }}>
                         <CardContent sx={{ textAlign: 'left' }}>
                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                              <Avatar
-                                 onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)}
-                                 src={project.creator.profileImage}
-                                 sx={{ width: 50, height: 50, mr: 2, cursor: 'pointer' }}
-                              />
+                              <Avatar onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)} src={project.creator.profileImage} sx={{ width: 50, height: 50, mr: 2, cursor: 'pointer' }} />
                               <Box>
                                  <Typography onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)} variant="subtitle1" fontWeight="bold" sx={{ cursor: 'pointer' }}>
                                     {project.creator.name}
@@ -139,32 +135,30 @@ const FundingDetailPage = () => {
                            <Typography color="text.secondary">
                               펀딩 기간: {project.startDate} ~ {project.endDate}
                            </Typography>
-                           {status ? (
+                           {isCreator ? (
+                              <Link to={`/creator/${funding.id}`}>
+                                 <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
+                                    프로젝트 관리
+                                 </Button>
+                              </Link>
+                           ) : status ? (
                               status
-                           ) : isAuthenticated ? (
-                              isCreator ? (
-                                 <Link to={`/creator/${funding.id}`}>
-                                    <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
-                                       프로젝트 관리
-                                    </Button>
-                                 </Link>
-                              ) : (
-                                 <Link
-                                    to={Object.keys(orderRewardBasket).length > 0 ? `/funding/order/${funding.id}` : undefined}
-                                    onClick={(e) => {
-                                       if (Object.keys(orderRewardBasket).length === 0 || Object.values(orderRewardBasket).every((value) => value === 0)) {
-                                          e.preventDefault()
-                                          setNoReward('리워드를 선택해주세요')
-                                       }
-                                    }}
-                                    state={{ orderRewardBasket: orderRewardBasket }}
-                                 >
-                                    <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
-                                       후원하기
-                                    </Button>
-                                 </Link>
-                              )
-                           ) : null}
+                           ) : (
+                              <Link
+                                 to={isAuthenticated ? (Object.keys(orderRewardBasket).length > 0 ? `/funding/order/${funding.id}` : undefined) : '/login'}
+                                 onClick={(e) => {
+                                    if (Object.keys(orderRewardBasket).length === 0 || Object.values(orderRewardBasket).every((value) => value === 0)) {
+                                       e.preventDefault()
+                                       setNoReward('리워드를 선택해주세요')
+                                    }
+                                 }}
+                                 state={{ orderRewardBasket: orderRewardBasket }}
+                              >
+                                 <Button variant="yellow" fullWidth sx={{ mt: 3, py: 1.5, fontSize: '1.1rem', color: '#ffffff' }}>
+                                    후원하기
+                                 </Button>
+                              </Link>
+                           )}
 
                            <Typography sx={{ color: 'red', textAlign: 'center' }}>{noReward}</Typography>
                         </CardContent>
