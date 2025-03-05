@@ -99,7 +99,7 @@ function App() {
 
             {/* auth */}
             <Route
-               path="/login"
+               path="/login" //에러 처리됨됨
                element={
                   <RedirectLoginRoute>
                      <LoginPage />
@@ -115,7 +115,7 @@ function App() {
                }
             />
             <Route
-               path="/commonsignup" //잘 작동함.
+               path="/commonsignup" //잘 작동함. 에러처리함함
                element={
                   <RedirectLoginRoute>
                      <CommonSignupPage />
@@ -123,7 +123,7 @@ function App() {
                }
             />
             <Route
-               path="/findingpassword" //잘 작동함.
+               path="/findingpassword" //망함함
                element={
                   <RedirectLoginRoute>
                      <FindingPasswordPage />
