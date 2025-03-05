@@ -41,7 +41,7 @@ function Navber({ isAuthenticated, user }) {
       mobile: { sm: 'none', xs: 'block' },
       width: { md: 200, sm: 140 },
    }
-   console.log(user)
+
    return (
       <>
          <AppBar position="static">

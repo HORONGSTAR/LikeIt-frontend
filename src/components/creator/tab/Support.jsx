@@ -1,4 +1,4 @@
-import { Typography, Stack, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, Box, Input } from '@mui/material'
+import { Typography, Stack, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Chip, Box, Input, Grid2 } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchOrdersThunk } from '../../../features/orderSlice'
@@ -149,11 +149,23 @@ function Support() {
 
    const supporter = (
       <Stack spacing={1}>
-         <Stack sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h5" p={1}>
-               후원자 {totalSupporters}명
-            </Typography>
-            <Stack direction="row" spacing={1}>
+         <Grid2 container sx={{}}>
+            <Grid2 size={{ sm: 3, xs: 12 }}>
+               <Typography variant="h5" p={1}>
+                  후원자 {totalSupporters}명
+               </Typography>
+            </Grid2>
+            <Grid2
+               size={{ sm: 9, xs: 12 }}
+               direction="row"
+               spacing={1}
+               sx={{
+                  textAlign: {
+                     sm: 'right',
+                     xs: 'left',
+                  },
+               }}
+            >
                <Button variant="outlined" onClick={handleDownloadTemplate}>
                   운송장 서식 다운로드
                </Button>
@@ -167,8 +179,8 @@ function Support() {
                <Button variant="outlined" onClick={handleExportExcel}>
                   엑셀 파일 받기
                </Button>
-            </Stack>
-         </Stack>
+            </Grid2>
+         </Grid2>
 
          <TableContainer component={Paper} sx={{ boxShadow: 'none', border: '1px solid #ccc' }}>
             <Table>

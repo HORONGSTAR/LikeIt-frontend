@@ -54,8 +54,6 @@ function My({ initialValues = {}, orders = [], points = [], profits = [] }) {
 
    const categoriesFromServer = initialValues?.Creator?.Categories ?? []
 
-   //    console.log(categoriesFromServer)
-
    useEffect(() => {
       if (categoriesFromServer?.length > 0) {
          setSelectedValues((prev) => {

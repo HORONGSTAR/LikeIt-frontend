@@ -67,7 +67,10 @@ const CommonSignup = () => {
          return
       }
 
-      dispatch(registerUserThunk({ email, phone, nickname, password })).unwrap().then().catch()
+      dispatch(registerUserThunk({ email, phone, nickname, password }))
+         .unwrap()
+         .then()
+         .catch(() => {})
    }, [dispatch, email, phone, nickname, password, confirmPassword])
 
    if (loading) return <LoadingBox />

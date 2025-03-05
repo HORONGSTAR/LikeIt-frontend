@@ -320,7 +320,6 @@ export const Ellipsis = styled.div`
 `
 
 export const FundingCard = ({ orders, point, totalOrderPrice }) => {
-   console.log(orders)
    return (
       <Card
          sx={{
