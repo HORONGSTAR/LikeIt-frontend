@@ -19,15 +19,31 @@ function Banner() {
    }, [dispatch])
 
    const showBanner = () => {
-      return banners.map((banner) => {
-         return (
-            <SwiperSlide key={banner.imgUrl}>
-               <Link to={`/funding/${banner.projectId}`}>
-                  <img src={process.env.REACT_APP_API_URL + '/bannerProject' + banner.imgUrl} alt="배너 프로젝트" width="100%" />
-               </Link>
-            </SwiperSlide>
-         )
-      })
+      return banners.length > 0 ? (
+         banners.map((banner) => {
+            return (
+               <SwiperSlide key={banner.imgUrl}>
+                  <Link to={`/funding/${banner.projectId}`}>
+                     <Box
+                        component="img"
+                        src={process.env.REACT_APP_API_URL + '/bannerProject' + banner.imgUrl}
+                        alt="배너 프로젝트"
+                        sx={{ borderRadius: 2.5, width: '100%', boxShadow: '0px 2px 4px rgba(0,0,0,0.25)' }}
+                     />
+                  </Link>
+               </SwiperSlide>
+            )
+         })
+      ) : (
+         <SwiperSlide>
+            <Box
+               component="img"
+               src={process.env.REACT_APP_FRONT_URL + '/images/noBanner.svg'}
+               alt="배너 프로젝트"
+               sx={{ borderRadius: 2.5, width: '100%', boxShadow: '0px 2px 4px rgba(0,0,0,0.25)' }}
+            />
+         </SwiperSlide>
+      )
    }
 
    return (

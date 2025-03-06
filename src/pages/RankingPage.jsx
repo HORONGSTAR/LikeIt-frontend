@@ -169,7 +169,7 @@ function RankingPage() {
    return (
       ranks && (
          <Main>
-            <img src="./images/rankBanner2.png" alt="후원랭킹배너" width="100%" style={{ margin: '20px 0' }} />
+            <Box src="./images/rankBanner2.svg" component="img" alt="후원랭킹배너" sx={{ borderRadius: 2.5, width: '100%', boxShadow: '0px 2px 4px rgba(0,0,0,0.25)' }} />
             <Typography variant="h4" pl={1}>
                후기 최다 작성자
             </Typography>
@@ -364,7 +364,7 @@ function RankingPage() {
                      }}
                   >
                      <Link to="/new">
-                        <img src="./images/rankBanner3.png" alt="후원랭킹배너" width="100%" style={{ margin: '20px 0' }} />
+                        <Box component="img" src="./images/rankBanner3.svg" alt="후원랭킹배너" sx={{ borderRadius: 2.5, width: '100%', boxShadow: '0px 2px 4px rgba(0,0,0,0.25)' }} />
                      </Link>
                   </Box>
                </Grid2>

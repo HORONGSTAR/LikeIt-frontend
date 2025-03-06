@@ -1,4 +1,4 @@
-import { Grid2 } from '@mui/material'
+import { Box } from '@mui/material'
 import { Main } from '../styles/BaseStyles'
 import Banner from '../components/home/Banner'
 import HomeProjects from '../components/home/HomeProjects'
@@ -10,7 +10,7 @@ function Home() {
          <Main>
             <Banner />
             <Link to="/rank">
-               <img src="./images/rankBanner.png" alt="후원랭킹배너" width="100%" />
+               <Box component="img" src="./images/rankBanner.svg" alt="후원랭킹배너" sx={{ borderRadius: 2.5, width: '100%', boxShadow: '0px 2px 4px rgba(0,0,0,0.25)' }} />
             </Link>
             <HomeProjects />
          </Main>

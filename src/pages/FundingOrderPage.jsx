@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Box, Typography, Avatar, Button, Grid2, Card, CardMedia, CardContent, TextField } from '@mui/material'
-import { useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchFundingThunk, orderRegThunk } from '../features/fundingSlice'
-import { ErrorBox, LoadingBox, Main } from '../styles/BaseStyles'
+import { LoadingBox, Main } from '../styles/BaseStyles'
 import dayjs from 'dayjs'
-import { padding } from '@mui/system'
 
 function FundingOrderPage() {
    const dispatch = useDispatch()
@@ -14,13 +13,13 @@ function FundingOrderPage() {
    const { user, isAuthenticated } = useSelector((state) => state.auth)
    const [project, setProject] = useState(null)
    const [orderFlag, setOrderFlag] = useState(false)
-   const [errorOpen, setErrorOpen] = useState(false)
 
    const [address, setAddress] = useState('')
    const [addressDetail, setAddressDetail] = useState('')
    const [phone, setPhone] = useState('')
    const [account, setAccount] = useState('')
    const [usePoint, setUsePoint] = useState(0)
+   const [errorWord, setErrorWord] = useState('')
 
    const location = useLocation()
    const orderRewardBasket = location.state?.orderRewardBasket || {}
@@ -108,15 +107,26 @@ function FundingOrderPage() {
             totalPrice,
          }
          if (usePoint) orderData.usePoint = usePoint
-         dispatch(orderRegThunk(orderData))
-         setOrderFlag(true)
+         if (address === '' || account === '' || addressDetail === '' || phone === '') setErrorWord('모든 데이터를 입력해주세요')
+         else {
+            dispatch(orderRegThunk(orderData))
+            setOrderFlag(true)
+         }
       },
       [address, account, usePoint, orderRewardBasket, dispatch]
    )
 
    // 로딩 에러 처리
    if (loading) return <LoadingBox />
-   if (error) return <ErrorBox error={error} open={errorOpen} setOpen={setErrorOpen} />
+   if (error)
+      return (
+         <>
+            <Typography sx={{ color: 'red', textAlign: 'center', py: 3 }}>{error}</Typography>
+            <Typography sx={{ textAlign: 'center', pb: 3 }}>
+               <Link to="/">홈으로 돌아가기</Link>
+            </Typography>
+         </>
+      )
 
    return orderFlag ? (
       <Main>
@@ -264,6 +274,9 @@ function FundingOrderPage() {
                   <Button onClick={handleSubmit} sx={{ backgroundColor: '#d97400' }} variant="contained">
                      후원하기
                   </Button>
+               </Grid2>
+               <Grid2 sx={{ textAlign: 'center', color: 'red' }} size={{ xs: 12 }}>
+                  {errorWord}
                </Grid2>
             </Grid2>
          </Main>

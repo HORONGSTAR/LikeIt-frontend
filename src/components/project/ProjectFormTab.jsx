@@ -5,7 +5,7 @@ import ProjectBudgetForm from './forms/ProjectBudgetForm'
 import ApprovaForm from './forms/ApprovaForm'
 import { StepperTabs } from '../ui/Tabs'
 import { isBlank } from '../../util/isBlank'
-import { Snackbar, Alert } from '@mui/material'
+import { Snackbar, Alert, Stack, Typography } from '@mui/material'
 
 function ProjectFormTab({ onSubmit, step, project }) {
    const [products, setProducts] = useState(project?.RewardProducts || [])
@@ -90,10 +90,20 @@ function ProjectFormTab({ onSubmit, step, project }) {
    ]
 
    if (project?.proposalStatus === 'REVIEW_REQ') {
-      return <>현재 프로젝트를 심사중입니다.</>
+      return (
+         <Stack alignItems="center" pb={12}>
+            <img src={process.env.REACT_APP_FRONT_URL + '/images/reqProject.png'} width="100%" alt="프로젝트 없음" />
+            <Typography color="grey">현재 프로젝트를 심사중입니다.</Typography>
+         </Stack>
+      )
    }
    if (project?.proposalStatus === 'COMPLETE') {
-      return <>이미 심사가 끝난 프로젝트 입니다.</>
+      return (
+         <Stack alignItems="center" pb={12}>
+            <img src={process.env.REACT_APP_FRONT_URL + '/images/reqProject.png'} width="100%" alt="프로젝트 없음" />
+            <Typography color="grey">이미 심사가 끝난 프로젝트 입니다.</Typography>
+         </Stack>
+      )
    }
 
    return (
