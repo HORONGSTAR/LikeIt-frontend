@@ -64,7 +64,7 @@ function FundingOverview({ funding, loading, error, orderPlusReward, orderMinusR
                               key={product.id}
                            >
                               <img
-                                 src={process.env.REACT_APP_API_URL + '/rewardProduct/' + product.imgUrl}
+                                 src={process.env.REACT_APP_IMG_URL + '/rewardProduct/' + product.imgUrl}
                                  style={{
                                     width: '100%',
                                     height: '180px',
@@ -209,7 +209,7 @@ function FundingOverview({ funding, loading, error, orderPlusReward, orderMinusR
       <div className="line">
          <SubTitle>팀소개</SubTitle>
          <img
-            src={process.env.REACT_APP_API_URL + '/studioImg' + funding.Studio.imgUrl}
+            src={process.env.REACT_APP_IMG_URL + '/studioImg' + funding.Studio.imgUrl}
             style={{
                width: '100%',
                height: '180px',

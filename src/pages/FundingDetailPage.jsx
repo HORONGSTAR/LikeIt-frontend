@@ -46,11 +46,11 @@ const FundingDetailPage = () => {
    useEffect(() => {
       if (!funding) return
       setProject({
-         image: process.env.REACT_APP_API_URL + '/projectImg' + funding.imgUrl,
+         image: process.env.REACT_APP_IMG_URL + '/projectImg' + funding.imgUrl,
          title: funding.title,
          creator: {
             name: funding.Studio.name,
-            profileImage: process.env.REACT_APP_API_URL + '/studioImg' + funding.Studio.imgUrl, // 창작자 프로필 이미지
+            profileImage: process.env.REACT_APP_IMG_URL + '/studioImg' + funding.Studio.imgUrl, // 창작자 프로필 이미지
             subscribers: funding.Studio.subscribers || 0,
          },
          fundedAmount: Number(funding.totalOrderPrice), // 현재 모금 금액
@@ -110,7 +110,11 @@ const FundingDetailPage = () => {
                      <Card sx={{ p: 1, boxShadow: 'none' }}>
                         <CardContent sx={{ textAlign: 'left' }}>
                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                              <Avatar onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)} src={project.creator.profileImage} sx={{ width: 50, height: 50, mr: 2, cursor: 'pointer' }} />
+                              <Avatar
+                                 onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)}
+                                 src={project.creator.profileImage}
+                                 sx={{ width: 50, height: 50, mr: 2, cursor: 'pointer' }}
+                              />
                               <Box>
                                  <Typography onClick={() => (window.location.href = `/studio/${funding.Studio.id}`)} variant="subtitle1" fontWeight="bold" sx={{ cursor: 'pointer' }}>
                                     {project.creator.name}
@@ -167,7 +171,6 @@ const FundingDetailPage = () => {
                                  </Link>
                               )
                            ) : null}
-
 
                            <Typography sx={{ color: 'red', textAlign: 'center' }}>{noReward}</Typography>
                         </CardContent>

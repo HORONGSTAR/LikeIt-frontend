@@ -320,7 +320,7 @@ export const FundingCard = ({ orders, point, totalOrderPrice }) => {
                <CardMedia
                   component="img"
                   sx={{ width: 140, borderRadius: 1, m: 2 }}
-                  image={`${process.env.REACT_APP_API_URL}/projectImg${orders.orders[0].Project.imgUrl}` || null}
+                  image={`${process.env.REACT_APP_IMG_URL}/projectImg${orders.orders[0].Project.imgUrl}` || null}
                   alt={orders.orders[0].Project.title}
                />
             )}

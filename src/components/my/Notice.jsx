@@ -47,7 +47,7 @@ function Notice() {
                   }}
                >
                   <Avatar
-                     src={process.env.REACT_APP_API_URL + messageType.folderUrl + message.imgUrl}
+                     src={process.env.REACT_APP_IMG_URL + messageType.folderUrl + message.imgUrl}
                      sx={{ width: 50, height: 50, mr: 2, cursor: 'pointer' }}
                      onClick={() => (window.location.href = messageType.link)}
                   />

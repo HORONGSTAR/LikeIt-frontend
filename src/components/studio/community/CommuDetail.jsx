@@ -33,7 +33,7 @@ const CommuDetail = ({ setOpen, id }) => {
       if (community) {
          setEditTitle(community.title)
          setEditContent(community.contents)
-         setEditImage(community.imgUrl ? process.env.REACT_APP_API_URL + community.imgUrl : null)
+         setEditImage(community.imgUrl ? process.env.REACT_APP_IMG_URL + community.imgUrl : null)
       }
    }, [community])
 
@@ -95,7 +95,11 @@ const CommuDetail = ({ setOpen, id }) => {
             <Card sx={{ flexDirection: 'column', mb: 1 }} variant="outlined">
                <CardContent>
                   <Stack sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                     {isEditing ? <TextField fullWidth variant="outlined" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} autoFocus /> : <Typography variant="h4">{community.title}</Typography>}
+                     {isEditing ? (
+                        <TextField fullWidth variant="outlined" value={editTitle} onChange={(e) => setEditTitle(e.target.value)} autoFocus />
+                     ) : (
+                        <Typography variant="h4">{community.title}</Typography>
+                     )}
 
                      {isCreator && (
                         <Stack sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
@@ -114,7 +118,7 @@ const CommuDetail = ({ setOpen, id }) => {
                   </Stack>
 
                   <Stack mt={1} direction="row" alignItems="center">
-                     <Avatar src={process.env.REACT_APP_API_URL + '/userImg' + community.User.imgUrl || '/images/default-profile.jpg'} sx={{ width: 32, height: 32, mr: 1 }} />
+                     <Avatar src={process.env.REACT_APP_IMG_URL + '/userImg' + community.User.imgUrl || '/images/default-profile.jpg'} sx={{ width: 32, height: 32, mr: 1 }} />
                      <Stack spacing={-0.5}>
                         <Typography>{community.User.name || '닉네임 없음'}</Typography>
                         <Typography color="grey" variant="caption">
@@ -142,7 +146,11 @@ const CommuDetail = ({ setOpen, id }) => {
                      editImage && <CardMedia component="img" image={editImage} alt="게시글 이미지" sx={{ borderRadius: 2, maxHeight: 300, objectFit: 'contain' }} />
                   )}
 
-                  {isEditing ? <TextField fullWidth multiline variant="outlined" value={editContent} onChange={(e) => setEditContent(e.target.value)} rows={4} /> : <Typography>{community.contents}</Typography>}
+                  {isEditing ? (
+                     <TextField fullWidth multiline variant="outlined" value={editContent} onChange={(e) => setEditContent(e.target.value)} rows={4} />
+                  ) : (
+                     <Typography>{community.contents}</Typography>
+                  )}
                </CardContent>
 
                {isEditing && (

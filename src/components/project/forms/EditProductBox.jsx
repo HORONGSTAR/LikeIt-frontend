@@ -5,7 +5,7 @@ import { isBlank } from '../../../util/isBlank'
 
 function EditProductBox({ open, onSubmit, product, children }) {
    const [imgFile, setImgFile] = useState(null)
-   const [imgUrl, setImgUrl] = useState(product?.imgUrl ? process.env.REACT_APP_API_URL + '/rewardProduct/' + product.imgUrl : '')
+   const [imgUrl, setImgUrl] = useState(product?.imgUrl ? process.env.REACT_APP_IMG_URL + '/rewardProduct/' + product.imgUrl : '')
    const [title, setTitle] = useState(product?.title || '')
    const [contents, setContents] = useState(product?.contents || '')
    const [alert, setAlert] = useState(false)

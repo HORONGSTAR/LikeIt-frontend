@@ -33,7 +33,7 @@ function Timeline() {
       if (timeline && timelineId) {
          setTitle(timeline.title || today)
          setContent(timeline.contents || '')
-         setImagePreview(timeline.imgUrl ? `${process.env.REACT_APP_API_URL}${timeline.imgUrl}` : null)
+         setImagePreview(timeline.imgUrl ? `${process.env.REACT_APP_IMG_URL}${timeline.imgUrl}` : null)
       }
    }, [timeline, timelineId])
 

@@ -44,7 +44,7 @@ function SpaceBox({ socket, studio, user, setStart }) {
          setInfo({
             studioId: studioId,
             name: info?.admin?.name,
-            imgUrl: info?.admin?.imgUrl ? process.env.REACT_APP_API_URL + '/userImg' + info?.admin?.imgUrl : '/default_profile.png',
+            imgUrl: info?.admin?.imgUrl ? process.env.REACT_APP_IMG_URL + '/userImg' + info?.admin?.imgUrl : '/default_profile.png',
             startTime: dayjs(info.startTime).format('YYYY년 MM월 DD일 HH시 mm분'),
             users: info?.users,
          })
@@ -134,7 +134,7 @@ function SpaceBox({ socket, studio, user, setStart }) {
                                           <Avatar
                                              key={users.velue[key].id}
                                              alt={users.velue[key].name}
-                                             src={users.velue[key].imgUrl ? process.env.REACT_APP_API_URL + '/userImg' + users.velue[key].imgUrl : '/default_profile.png'}
+                                             src={users.velue[key].imgUrl ? process.env.REACT_APP_IMG_URL + '/userImg' + users.velue[key].imgUrl : '/default_profile.png'}
                                           />
                                        ))}
                                  </AvatarGroup>

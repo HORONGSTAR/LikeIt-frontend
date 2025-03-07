@@ -310,7 +310,7 @@ export const HistoryCard = ({ project, studioName }) => {
    }
 
    return (
-      <BasicCard imgUrl={process.env.REACT_APP_API_URL + '/projectImg' + project.imgUrl} cardEf={cardEf}>
+      <BasicCard imgUrl={process.env.REACT_APP_IMG_URL + '/projectImg' + project.imgUrl} cardEf={cardEf}>
          <Typography variant="caption">BY.{studioName}</Typography>
          <Ellipsis $line={2}>
             <Typography sx={cententSx.title}>{project.title}</Typography>
@@ -360,7 +360,7 @@ export const StudioCard = ({ studio }) => {
 export const ListCard = ({ product, children }) => {
    return (
       <Card variant="outlined" key={'product' + product.id}>
-         <CardMedia image={product?.imgUrl ? process.env.REACT_APP_API_URL + '/rewardProduct/' + product.imgUrl : ''} sx={{ minHeight: 90, minWidth: 100 }} />
+         <CardMedia image={product?.imgUrl ? process.env.REACT_APP_IMG_URL + '/rewardProduct/' + product.imgUrl : ''} sx={{ minHeight: 90, minWidth: 100 }} />
          <Stack p={1} spacing={1} width="100%">
             <Stack2>
                <Typography fontWeight={600}>{product.title}</Typography>
