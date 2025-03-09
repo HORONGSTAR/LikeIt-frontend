@@ -72,9 +72,8 @@ export const Broadcaster = ({ setStart, socket, info }) => {
                }
             })
          })
-         .catch((err) => {
+         .catch(() => {
             setOpen(true)
-            console.error(err)
          })
 
       socket.on('end space', (msg) => {

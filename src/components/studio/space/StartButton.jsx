@@ -4,12 +4,15 @@ import { Mic } from '@mui/icons-material'
 
 function StartButton({ socket, studioId, start }) {
    const [open, setOpen] = useState(false)
+   const [noMic, setNoMic] = useState(false)
 
    const startSpace = useCallback(() => {
-      if (studioId) {
-         socket.emit('create space', studioId)
-         setOpen(false)
-      }
+      setOpen(false)
+      navigator.mediaDevices
+         .getUserMedia({ audio: true })
+         .then(() => studioId && socket.emit('create space', studioId))
+         .catch(() => setNoMic(true))
+
       return () => {
          socket.off('create space', studioId)
       }
@@ -29,6 +32,18 @@ function StartButton({ socket, studioId, start }) {
                      확인
                   </Button>
                   <Button onClick={() => setOpen(false)}>취소</Button>
+               </DialogActions>
+            </Dialog>
+         )}
+         {noMic && (
+            <Dialog open={noMic}>
+               <DialogTitle>마이크 연결 필요</DialogTitle>
+               <DialogContent>
+                  <img src="/images/notFindImg.png" width="300" alt="스페이스를 통한 교류" />
+                  <DialogContentText>연결된 마이크가 없습니다. 마이크를 연결한 뒤 다시 시도해주세요.</DialogContentText>
+               </DialogContent>
+               <DialogActions>
+                  <Button onClick={() => setNoMic(false)}>확인</Button>
                </DialogActions>
             </Dialog>
          )}
