@@ -82,7 +82,7 @@ const CommuComment = ({ communityId, auth }) => {
             {comments.map((comment) => (
                <List key={comment.id}>
                   <ListItem sx={{ py: 0 }}>
-                     <Avatar src={process.env.REACT_APP_API_URL + '/userImg' + comment.User.imgUrl} sx={{ width: 32, height: 32, mr: 0.5 }} />
+                     <Avatar src={process.env.REACT_APP_IMG_URL + '/userImg' + comment.User.imgUrl} sx={{ width: 32, height: 32, mr: 0.5 }} />
                      <Stack>
                         <Typography>{comment.User.name}</Typography>
                         <Typography variant="caption" color="grey">

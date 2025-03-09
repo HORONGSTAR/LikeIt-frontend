@@ -56,7 +56,7 @@ function FundingTimeline({ funding }) {
                >
                   <img
                      onClick={() => timelineDetail(timeline.id)}
-                     src={timeline.imgUrl ? `${process.env.REACT_APP_API_URL}${timeline.imgUrl}` : `${process.env.REACT_APP_FRONT_URL}/images/notFindImg.png`}
+                     src={timeline.imgUrl ? `${process.env.REACT_APP_IMG_URL}${timeline.imgUrl}` : `${process.env.REACT_APP_FRONT_URL}/images/notFindImg.png`}
                      width={'100%'}
                      height={'180px'}
                      style={{ display: 'block', cursor: 'pointer', objectFit: 'cover' }}
@@ -107,7 +107,7 @@ function FundingTimeline({ funding }) {
          return commentArray.map((comment) => (
             <Grid2 p={1} pb={3} m={1} container key={comment.id} sx={{ borderTop: '1px solid #dddddd' }}>
                <Grid2 sx={{ display: 'flex', position: 'relative' }} size={{ xs: 12 }}>
-                  <Avatar src={process.env.REACT_APP_API_URL + '/userImg' + comment.User.imgUrl} sx={{ width: 40, height: 40, mr: 2 }} />
+                  <Avatar src={process.env.REACT_APP_IMG_URL + '/userImg' + comment.User.imgUrl} sx={{ width: 40, height: 40, mr: 2 }} />
                   <Typography sx={{ lineHeight: '40px' }}>{comment.User.name}</Typography>
                   {user?.id === comment.User.id && (
                      <Button onClick={() => commentDel(comment.id)} sx={{ position: 'absolute', right: '0' }}>
@@ -191,7 +191,7 @@ function FundingTimeline({ funding }) {
                      </Typography>
 
                      <img
-                        src={timeline.imgUrl ? `${process.env.REACT_APP_API_URL}${timeline.imgUrl}` : `${process.env.REACT_APP_FRONT_URL}/images/notFindImg.png`}
+                        src={timeline.imgUrl ? `${process.env.REACT_APP_IMG_URL}${timeline.imgUrl}` : `${process.env.REACT_APP_FRONT_URL}/images/notFindImg.png`}
                         width={'90%'}
                         style={{ display: 'block', margin: '0 auto' }}
                      />

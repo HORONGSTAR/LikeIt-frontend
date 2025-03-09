@@ -40,11 +40,11 @@ function FundingOrderPage() {
    useEffect(() => {
       if (!funding) return
       setProject({
-         image: process.env.REACT_APP_API_URL + '/projectImg' + funding.imgUrl,
+         image: process.env.REACT_APP_IMG_URL + '/projectImg' + funding.imgUrl,
          title: funding.title,
          creator: {
             name: funding.Studio.name,
-            profileImage: process.env.REACT_APP_API_URL + '/studioImg' + funding.Studio.imgUrl, // 창작자 프로필 이미지
+            profileImage: process.env.REACT_APP_IMG_URL + '/studioImg' + funding.Studio.imgUrl, // 창작자 프로필 이미지
             subscribers: funding.Studio.subscribers || 0,
          },
          fundedAmount: Number(funding.totalOrderPrice), // 현재 모금 금액

@@ -93,7 +93,7 @@ function FundingReview({ funding }) {
                      sm: 4,
                   }}
                >
-                  <img src={process.env.REACT_APP_API_URL + '/projectReviewImg' + review.imgUrl} width={'100%'} height={'180px'} style={{ display: 'block', objectFit: 'cover' }} />
+                  <img src={process.env.REACT_APP_IMG_URL + '/projectReviewImg' + review.imgUrl} width={'100%'} height={'180px'} style={{ display: 'block', objectFit: 'cover' }} />
                </Grid2>
                <Grid2
                   size={{
@@ -103,7 +103,7 @@ function FundingReview({ funding }) {
                   p={2}
                >
                   <Box sx={{ display: 'flex', position: 'relative' }}>
-                     <Avatar src={process.env.REACT_APP_API_URL + '/userImg' + review.DirectReviews.imgUrl} sx={{ width: 40, height: 40, mr: 2 }} />
+                     <Avatar src={process.env.REACT_APP_IMG_URL + '/userImg' + review.DirectReviews.imgUrl} sx={{ width: 40, height: 40, mr: 2 }} />
                      <Typography sx={{ lineHeight: '40px' }}>{review.DirectReviews.name}</Typography>
                      {user?.id === review.userId && <Button onClick={() => reviewDel(review.id)}>삭제</Button>}
                      <IconButton onClick={() => handleRecommend(review.isRecommended, review.id)} sx={{ position: 'absolute', right: '0', color: review.isRecommended ? 'red' : '' }}>
@@ -132,7 +132,7 @@ function FundingReview({ funding }) {
                         </Typography>
                      }
                   >
-                     <img src={process.env.REACT_APP_API_URL + '/projectReviewImg' + review.imgUrl} width={'100%'} style={{ display: 'block', objectFit: 'cover' }} />
+                     <img src={process.env.REACT_APP_IMG_URL + '/projectReviewImg' + review.imgUrl} width={'100%'} style={{ display: 'block', objectFit: 'cover' }} />
                      {review.contents}
                   </ModalBox>
                </Grid2>

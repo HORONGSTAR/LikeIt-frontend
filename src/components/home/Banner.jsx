@@ -26,7 +26,7 @@ function Banner() {
                   <Link to={`/funding/${banner.projectId}`}>
                      <Box
                         component="img"
-                        src={process.env.REACT_APP_API_URL + '/bannerProject' + banner.imgUrl}
+                        src={process.env.REACT_APP_IMG_URL + '/bannerProject' + banner.imgUrl}
                         alt="배너 프로젝트"
                         sx={{ borderRadius: 2.5, width: '100%', boxShadow: '0px 2px 4px rgba(0,0,0,0.25)' }}
                      />

@@ -7,7 +7,7 @@ const useSocket = () => {
 
    useEffect(() => {
       if (!socketRef.current) {
-         socketRef.current = io(process.env.REACT_APP_API_URL, {
+         socketRef.current = io(process.env.REACT_APP_SOCKET_IO_URL, {
             withCredentials: true,
          })
          setSocket(socketRef.current)

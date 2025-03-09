@@ -52,7 +52,7 @@ function RankingPage() {
                         }}
                      >
                         <img
-                           src={process.env.REACT_APP_API_URL + '/userImg' + ranks.imgUrl}
+                           src={process.env.REACT_APP_IMG_URL + '/userImg' + ranks.imgUrl}
                            alt="profile"
                            style={{
                               width: '85%',

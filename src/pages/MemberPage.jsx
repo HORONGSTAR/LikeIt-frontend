@@ -110,7 +110,14 @@ function MemberPage() {
                creators.map((creator, index) => (
                   <Card key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: 2, padding: 2, boxShadow: 'none', border: '1px solid #AAA' }}>
                      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <Avatar sx={{ width: 128, height: 128 }} src={creator?.Creator?.User?.imgUrl ? `${process.env.REACT_APP_API_URL}/userImg/${creator.Creator.User.imgUrl}` : `${process.env.REACT_APP_API_URL}/userImg/default_profile.png`} />
+                        <Avatar
+                           sx={{ width: 128, height: 128 }}
+                           src={
+                              creator?.Creator?.User?.imgUrl
+                                 ? `${process.env.REACT_APP_IMG_URL}/userImg/${creator.Creator.User.imgUrl}`
+                                 : `${process.env.REACT_APP_IMG_URL}/userImg/default_profile.png`
+                           }
+                        />
 
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyItems: 'center', mt: 1 }}>
                            <Typography variant="body2">{creator.role === 'LEADER' ? `대표 ${creator.Creator?.User?.name || '이름 없음'}` : creator.Creator?.User?.name || '이름 없음'}</Typography>

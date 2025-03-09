@@ -14,7 +14,7 @@ function ProjectFormTab({ onSubmit, step, project }) {
 
    const infoVals = {
       imgFile: null,
-      imgUrl: project?.imgUrl ? process.env.REACT_APP_API_URL + '/uploads/projectImg' + project.imgUrl : '',
+      imgUrl: project?.imgUrl ? process.env.REACT_APP_IMG_URL + '/uploads/projectImg' + project.imgUrl : '',
       title: project?.title || '',
       intro: project?.intro || '',
       contents: project?.contents || '',

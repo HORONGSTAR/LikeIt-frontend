@@ -38,7 +38,7 @@ const FollowPage = () => {
                name: studio.name,
                intro: studio.intro,
                follow: studio.userCount,
-               imgUrl: process.env.REACT_APP_API_URL + '/studioImg/' + studio.imgUrl,
+               imgUrl: process.env.REACT_APP_IMG_URL + '/studioImg/' + studio.imgUrl,
             }
             cardCount++
             row.push(

@@ -18,7 +18,7 @@ function CreatorPicker({ setOpen, open, members, handleClick }) {
                         <Avatar
                            sx={{ width: 24, height: 24 }}
                            src={
-                              member?.Creator?.User?.imgUrl ? `${process.env.REACT_APP_API_URL}/userImg/${member.Creator.User.imgUrl}` : `${process.env.REACT_APP_API_URL}/userImg/default_profile.png`
+                              member?.Creator?.User?.imgUrl ? `${process.env.REACT_APP_IMG_URL}/userImg/${member.Creator.User.imgUrl}` : `${process.env.REACT_APP_IMG_URL}/userImg/default_profile.png`
                            }
                         />
                      </ListItemIcon>

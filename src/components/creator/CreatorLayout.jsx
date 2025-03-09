@@ -41,7 +41,7 @@ const CreatorLayout = () => {
             ) : project ? (
                <Grid2 container sx={{ border: '1px solid #ddd', borderRadius: 2, p: 1, display: 'flex', alignItems: 'center' }}>
                   <Grid2 p={1} size={{ sm: 6, xs: 12 }}>
-                     <img src={`${process.env.REACT_APP_API_URL}/projectImg/${project.imgUrl}`} alt={project.title} style={{ width: '100%', maxWidth: 300, borderRadius: 8 }} />
+                     <img src={`${process.env.REACT_APP_IMG_URL}/projectImg/${project.imgUrl}`} alt={project.title} style={{ width: '100%', maxWidth: 300, borderRadius: 8 }} />
                   </Grid2>
 
                   <Grid2 p={1} size={{ sm: 6, xs: 12 }}>

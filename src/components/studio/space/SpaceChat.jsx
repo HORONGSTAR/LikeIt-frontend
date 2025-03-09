@@ -57,7 +57,7 @@ function SpaceChat({ socket, studioId }) {
                {messages.length > 0 &&
                   messages.map((msg, index) => (
                      <Box key={index} sx={{ display: 'flex', alignItems: 'start' }}>
-                        <Avatar src={msg.imgUrl && process.env.REACT_APP_API_URL + '/userImg' + msg.imgUrl} sx={{ width: 32, height: 32, mr: 1 }} />
+                        <Avatar src={msg.imgUrl && process.env.REACT_APP_IMG_URL + '/userImg' + msg.imgUrl} sx={{ width: 32, height: 32, mr: 1 }} />
                         <Box>
                            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                               {msg.name}

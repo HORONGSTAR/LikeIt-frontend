@@ -158,7 +158,7 @@ function ProjectAllPage() {
                      >
                         <CardMedia
                            component="img"
-                           image={project.imgUrl ? `${process.env.REACT_APP_API_URL}/projectImg/${project.imgUrl}` : '/placeholder.png'}
+                           image={project.imgUrl ? `${process.env.REACT_APP_IMG_URL}/projectImg/${project.imgUrl}` : '/placeholder.png'}
                            alt={project.title}
                            sx={{
                               width: 200,

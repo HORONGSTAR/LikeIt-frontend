@@ -46,7 +46,7 @@ function HomeProjects() {
                      title: project.title,
                      intro: project.intro,
                      state: project.projectStatus,
-                     imgUrl: process.env.REACT_APP_API_URL + '/projectImg' + project.imgUrl,
+                     imgUrl: process.env.REACT_APP_IMG_URL + '/projectImg' + project.imgUrl,
                      startDate: project.startDate,
                      endDate: project.endDate,
                      userCount: project.userCount,

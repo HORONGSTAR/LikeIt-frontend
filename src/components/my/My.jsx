@@ -36,7 +36,7 @@ function My({ initialValues = {}, orders = [], points = [], profits = [] }) {
    const [passwordToChange, setPasswordToChange] = useState('')
    const [confirmPasswordToChange, setConfirmPasswordToChange] = useState('')
    const [imgFile, setImgFile] = useState(null) //이미지 파일 객체
-   const [imgUrl, setImgUrl] = useState(initialValues ? process.env.REACT_APP_API_URL + '/userImg' + initialValues.imgUrl : '')
+   const [imgUrl, setImgUrl] = useState(initialValues ? process.env.REACT_APP_IMG_URL + '/userImg' + initialValues.imgUrl : '')
    const [nickname, setNickname] = useState(initialValues ? initialValues.name : '')
 
    const { loading, error } = useSelector((state) => state.auth)
@@ -189,8 +189,6 @@ function My({ initialValues = {}, orders = [], points = [], profits = [] }) {
       orderTime: createdAt,
       orders: items,
    }))
-
-   //    <FundingCard key={order.id} image={`${process.env.REACT_APP_API_URL}/projectImg${order.Reward.Project.imgUrl}`} title={order.Reward.Project.title} subtitle={order.Reward.name} price={order.orderPrice} status={order.orderStatus}
 
    const sponsorList = (
       <>
@@ -398,7 +396,7 @@ function My({ initialValues = {}, orders = [], points = [], profits = [] }) {
          <Box>
             {/* Profile Section */}
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-               {initialValues && <Avatar sx={{ width: 64, height: 64, mr: 2, objectFit: 'cover', borderRadius: '50%' }} src={process.env.REACT_APP_API_URL + '/userImg' + initialValues?.imgUrl} />}
+               {initialValues && <Avatar sx={{ width: 64, height: 64, mr: 2, objectFit: 'cover', borderRadius: '50%' }} src={process.env.REACT_APP_IMG_URL + '/userImg' + initialValues?.imgUrl} />}
                <Box>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                      <Typography variant="h4" sx={{ mr: 1 }}>
