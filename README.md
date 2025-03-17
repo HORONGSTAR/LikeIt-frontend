@@ -1,5 +1,5 @@
 ﻿# LikeIt!
- *LikeIt - Backend Repository*
+ *LikeIt - Frontend Repository*
  
  ### 프로젝트 소개
  이젠 아카데미 풀스택개발 수업 졸업작품인 **LikeIt!** 의 백엔드 리포지토리입니다. 창작자를 위한 클라우드 펀딩 플랫폼을 구현해보았습니다.
